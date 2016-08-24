@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/brailleapps/dotify.text.impl.svg?branch=master)](https://travis-ci.org/brailleapps/dotify.text.impl)
-[![Type](https://img.shields.io/badge/type-service_bundle-blue.svg)](https://github.com/brailleapps/wiki/wiki/Badges)
+[![Type](https://img.shields.io/badge/type-provider_bundle-blue.svg)](https://github.com/brailleapps/wiki/wiki/Types)
 
 # Introduction #
 dotify.text.impl contains an implementation of the text interfaces of [dotify.api](https://github.com/joeha480/dotify/tree/master/dotify.api).
@@ -17,7 +17,7 @@ Access the implementations via the following APIs in [dotify.api](http://search.
 Build with `gradlew build` (Windows) or `./gradlew build` (Mac/Linux)
 
 ## Testing ##
-Tests are run with `gradlew test` (Windows) or `./gradlew test` (Mac/Linux).
+Tests are run with `gradlew test` (Windows) or `./gradlew test` (Mac/Linux)
 
 ## Requirements & Compatibility ##
 - Requires JDK 7
