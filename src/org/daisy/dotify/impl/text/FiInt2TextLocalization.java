@@ -3,7 +3,7 @@ package org.daisy.dotify.impl.text;
 import java.text.MessageFormat;
 
 class FiInt2TextLocalization extends BasicInteger2Text {
-	private final static String YKSI = "yksi";
+	private static final String YKSI = "yksi";
 
 	@Override
 	public String getDefinedValue(int value) throws UndefinedNumberException {

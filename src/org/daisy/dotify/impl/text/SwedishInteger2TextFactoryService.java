@@ -13,7 +13,7 @@ import aQute.bnd.annotation.component.Component;
 public class SwedishInteger2TextFactoryService implements
 		Integer2TextFactoryService {
 	
-	private final static List<String> locales;
+	private static final List<String> locales;
 	static {
 		locales = new ArrayList<>();
 		locales.add("sv-SE");
