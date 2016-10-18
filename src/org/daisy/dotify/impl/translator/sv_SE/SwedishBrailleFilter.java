@@ -10,7 +10,7 @@ import org.daisy.dotify.common.text.StringFilter;
 import org.daisy.dotify.common.text.UCharFilter;
 
 public class SwedishBrailleFilter implements StringFilter {
-	private final static String sv_SE = "sv-SE";
+	private static final String sv_SE = "sv-SE";
 	private CombinationFilter filters;
 	
 	public SwedishBrailleFilter() { 

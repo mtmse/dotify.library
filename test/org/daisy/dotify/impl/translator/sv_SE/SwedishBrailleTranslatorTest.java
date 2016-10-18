@@ -14,7 +14,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 public class SwedishBrailleTranslatorTest {
-	private final static String TEST_INPUT_STRING_1 = "Skillnaden mellan arbets- och vilodagar blev mindre skarp; hon kunde tillåta sig vilodagar mitt i veckan.";
+	private static final String TEST_INPUT_STRING_1 = "Skillnaden mellan arbets- och vilodagar blev mindre skarp; hon kunde tillåta sig vilodagar mitt i veckan.";
 	private final BrailleTranslator translator;
 	
 	public SwedishBrailleTranslatorTest() throws TranslatorConfigurationException {

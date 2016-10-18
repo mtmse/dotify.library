@@ -12,12 +12,12 @@ import org.daisy.dotify.common.text.StringSplitter;
  * @author Joel Håkansson
  */
 class CapitalizationMarkers implements StringFilter {
-	private final static String CHAR_MARKER = "\u2820";
-	private final static String WORD_MARKER = "\u2820\u2820";
-	private final static String WORD_PART_PREFIX = "\u2820\u2820";
-	private final static String WORD_PART_POSTFIX = "\u2831";
-	private final static String SEQ_PREFIX_MARKER = "\u2820\u2820\u2820";
-	private final static String SEQ_POSTFIX_MARKER = "\u2831";
+	private static final String CHAR_MARKER = "\u2820";
+	private static final String WORD_MARKER = "\u2820\u2820";
+	private static final String WORD_PART_PREFIX = "\u2820\u2820";
+	private static final String WORD_PART_POSTFIX = "\u2831";
+	private static final String SEQ_PREFIX_MARKER = "\u2820\u2820\u2820";
+	private static final String SEQ_POSTFIX_MARKER = "\u2831";
 	private final Pattern p1;
 	private final Pattern p2;
 	private final Pattern p3;

@@ -10,7 +10,7 @@ import org.daisy.dotify.api.translator.TranslatorConfigurationException;
 import org.daisy.dotify.translator.DefaultBrailleFilter;
 
 class SwedishBrailleFilterFactory implements BrailleFilterFactory {
-	private final static String sv_SE = "sv-SE";
+	private static final String sv_SE = "sv-SE";
 	private final HyphenatorFactoryMakerService hyphenatorService;
 
 	public SwedishBrailleFilterFactory(HyphenatorFactoryMakerService hyphenatorService) {

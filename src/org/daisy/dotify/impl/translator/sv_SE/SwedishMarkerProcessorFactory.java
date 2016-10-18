@@ -14,9 +14,9 @@ import org.daisy.dotify.translator.SimpleMarkerDictionary;
 import org.daisy.dotify.translator.TextAttributeFilter;
 
 class SwedishMarkerProcessorFactory implements MarkerProcessorFactory {
-	private final static String WHITESPACE_REGEX = "\\s+";
-	private final static String ALPHANUM_REGEX = "\\A[a-zA-Z0-9]+\\z";
-	private final static FilterLocale sv_SE = FilterLocale.parse("sv-SE");
+	private static final String WHITESPACE_REGEX = "\\s+";
+	private static final String ALPHANUM_REGEX = "\\A[a-zA-Z0-9]+\\z";
+	private static final FilterLocale sv_SE = FilterLocale.parse("sv-SE");
 
 	@Override
 	public MarkerProcessor newMarkerProcessor(String locale, String mode) throws MarkerProcessorConfigurationException {

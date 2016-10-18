@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 class StringProcessor {
-	private final static Pattern b = Pattern.compile("\\\\{1}([\\\\fnrstve]{1}|x{1}[0-9A-Fa-f]{4})");
+	private static final Pattern b = Pattern.compile("\\\\{1}([\\\\fnrstve]{1}|x{1}[0-9A-Fa-f]{4})");
 	private StringProcessor() {
 		//hide constructor
 	}

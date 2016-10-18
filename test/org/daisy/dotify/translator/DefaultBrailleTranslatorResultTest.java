@@ -11,8 +11,8 @@ import org.daisy.dotify.common.text.BreakPointHandler;
 import org.junit.Test;
 
 public class DefaultBrailleTranslatorResultTest {
-	private final static String INPUT_STR1 = "aaaaaaaaaaa bbb";
-	private final static String DUMMY_METRIC = "dummy-metric";
+	private static final String INPUT_STR1 = "aaaaaaaaaaa bbb";
+	private static final String DUMMY_METRIC = "dummy-metric";
 	
 	@Test
 	public void testSupportsMetrics_01() throws TranslationException {

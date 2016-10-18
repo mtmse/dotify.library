@@ -8,7 +8,7 @@ import org.daisy.dotify.translator.DefaultMarkerProcessor;
 class PreTranslatedMarkerProcessorFactory implements
 		MarkerProcessorFactory {
 	//TODO: remove when this string is part of the api
-	final static String PRE_TRANSLATED = "pre-translated";
+	static final String PRE_TRANSLATED = "pre-translated";
 
 	@Override
 	public MarkerProcessor newMarkerProcessor(String locale, String mode) throws MarkerProcessorConfigurationException {

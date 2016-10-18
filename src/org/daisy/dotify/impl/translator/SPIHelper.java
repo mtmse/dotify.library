@@ -16,7 +16,7 @@ import org.daisy.dotify.api.hyphenator.HyphenatorFactoryMakerService;
  */
 public class SPIHelper {
 	private static HyphenatorFactoryMakerService hyphenatorFactoryMaker;
-	private final static Logger logger = Logger.getLogger(SPIHelper.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(SPIHelper.class.getCanonicalName());
 	
 	/**
 	 * <p>Gets a table catalog instance, or null if not found.</p> 

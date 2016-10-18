@@ -12,8 +12,8 @@ import org.daisy.dotify.translator.SimpleBrailleTranslator;
 
 class SwedishBrailleTranslatorFactory implements BrailleTranslatorFactory {
 	//TODO: remove when this string is part of the api
-	final static String PRE_TRANSLATED = "pre-translated";
-	private final static String sv_SE = "sv-SE";
+	static final String PRE_TRANSLATED = "pre-translated";
+	private static final String sv_SE = "sv-SE";
 	private final HyphenatorFactoryMakerService hyphenatorService;
 
 	public SwedishBrailleTranslatorFactory(HyphenatorFactoryMakerService hyphenatorService) {
