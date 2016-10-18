@@ -38,16 +38,16 @@ public class Braillo300Embosser extends BrailloEmbosser {
 	 */
 	private static final long serialVersionUID = -8583526053587599469L;
 	private boolean zFoldingEnabled;
-	private final static String EMBOSSER_FEATURE_FALLBACK = "fallback";
-	private final static String EMBOSSER_FEATURE_REPLACEMENT = "replacement";
-	private final static String TEMPORAL_EXTENSION_FILE = ".tmp";
-	private final static String EMBOSSER_UNSUPPORTED_MESSAGE = "Unsupported paper for embosser ";
-	private final static String EMBOSSER_UNSUPPORTED_Z_FOLDING = "Unsupported value for z-folding.";
-	private final static String EMBOSSER_UNSUPPORTED_FEATURE = "Embosser does not support this feature.";
-	private final static String HEADER_TOO_WIDE_HIGH_MSG = "Paper too wide or high: ";
-	private final static String HEADER_TOO_NARROW_SHORT_MSG = "Paper too wide or high: ";
-	private final static String HEADER_INCHES_MSG = " inches.";
-	private final static String HEADER_CHARS_MSG = " chars x ";
+	private static final String EMBOSSER_FEATURE_FALLBACK = "fallback";
+	private static final String EMBOSSER_FEATURE_REPLACEMENT = "replacement";
+	private static final String TEMPORAL_EXTENSION_FILE = ".tmp";
+	private static final String EMBOSSER_UNSUPPORTED_MESSAGE = "Unsupported paper for embosser ";
+	private static final String EMBOSSER_UNSUPPORTED_Z_FOLDING = "Unsupported value for z-folding.";
+	private static final String EMBOSSER_UNSUPPORTED_FEATURE = "Embosser does not support this feature.";
+	private static final String HEADER_TOO_WIDE_HIGH_MSG = "Paper too wide or high: ";
+	private static final String HEADER_TOO_NARROW_SHORT_MSG = "Paper too wide or high: ";
+	private static final String HEADER_INCHES_MSG = " inches.";
+	private static final String HEADER_CHARS_MSG = " chars x ";
 	
 
 	/**

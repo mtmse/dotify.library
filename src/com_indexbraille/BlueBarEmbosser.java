@@ -35,8 +35,8 @@ public class BlueBarEmbosser extends IndexEmbosser {
 	 * 
 	 */
 	private static final long serialVersionUID = -2619451994009139923L;
-	private final static TableFilter tableFilter;
-    private final static String table6dot = IndexTableProvider.class.getCanonicalName() + ".TableType.INDEX_TRANSPARENT_6DOT";
+	private static final TableFilter tableFilter;
+    private static final String table6dot = IndexTableProvider.class.getCanonicalName() + ".TableType.INDEX_TRANSPARENT_6DOT";
     
     static {
         tableFilter = new TableFilter() {

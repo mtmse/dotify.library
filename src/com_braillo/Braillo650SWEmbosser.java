@@ -20,7 +20,7 @@ public class Braillo650SWEmbosser extends AbstractBraillo440Embosser {
 	 * 
 	 */
 	private static final long serialVersionUID = 5180536285534261888L;
-	private final static String EMBOSSER_UNSUPPORTED_MESSAGE = "Unsupported value for saddle stitch.";
+	private static final String EMBOSSER_UNSUPPORTED_MESSAGE = "Unsupported value for saddle stitch.";
 
 	public Braillo650SWEmbosser(TableCatalogService service, FactoryProperties props) {
 		super(service, props);

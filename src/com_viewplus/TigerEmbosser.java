@@ -63,9 +63,9 @@ public class TigerEmbosser extends AbstractEmbosser {
     private boolean duplexEnabled = false;
     private boolean eightDotsEnabled = false;
 
-    private final static TableFilter tableFilter;
-    private final static String table6dot = "org.daisy.braille.impl.table.DefaultTableProvider.TableType.EN_US";
-  //private final static String table8dot = "com_viewplusViewPlusTableProvider.TableType.TIGER_INLINE_SUBSTITUTION_8DOT";
+    private static final TableFilter tableFilter;
+    private static final String table6dot = "org.daisy.braille.impl.table.DefaultTableProvider.TableType.EN_US";
+  //private static final String table8dot = "com_viewplusViewPlusTableProvider.TableType.TIGER_INLINE_SUBSTITUTION_8DOT";
 
     static {
         tableFilter = new TableFilter() {
@@ -80,7 +80,7 @@ public class TigerEmbosser extends AbstractEmbosser {
         };
     }
 
-    private final static int maxLinesInHeight = 42;
+    private static final int maxLinesInHeight = 42;
 
     private int marginInner = 0;
     private int marginOuter = 0;

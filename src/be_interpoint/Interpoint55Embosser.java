@@ -55,12 +55,12 @@ public class Interpoint55Embosser extends AbstractEmbosser {
 	 * 
 	 */
 	private static final long serialVersionUID = 6878058097412223168L;
-	private final static PrintDirection PRINT_DIRECTION = PrintDirection.SIDEWAYS;
-    private final static TableFilter tableFilter;
-    private final static String table_US1 =     "org_daisy.EmbosserTableProvider.TableType.MIT";
-    private final static String table_US2 =     "org_daisy.EmbosserTableProvider.TableType.NABCC";
-    private final static String table_DE =      "org_daisy.EmbosserTableProvider.TableType.DE_DE";
-  //private final static String table_US_8dot = "be_interpoint.InterpointTableProvider.TableType.USA1_8";
+	private static final PrintDirection PRINT_DIRECTION = PrintDirection.SIDEWAYS;
+    private static final TableFilter tableFilter;
+    private static final String table_US1 =     "org_daisy.EmbosserTableProvider.TableType.MIT";
+    private static final String table_US2 =     "org_daisy.EmbosserTableProvider.TableType.NABCC";
+    private static final String table_DE =      "org_daisy.EmbosserTableProvider.TableType.DE_DE";
+  //private static final String table_US_8dot = "be_interpoint.InterpointTableProvider.TableType.USA1_8";
 
     static {
         tableFilter = new TableFilter() {

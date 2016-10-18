@@ -80,9 +80,9 @@ public abstract class EnablingTechnologiesEmbosser extends AbstractEmbosser {
     protected boolean duplexEnabled = false;
     protected boolean eightDotsEnabled = false;
 
-    private final static TableFilter tableFilter;
-    private final static String table6dot = "org.daisy.braille.impl.table.DefaultTableProvider.TableType.EN_US";
-  //private final static String table8dot = "";
+    private static final TableFilter tableFilter;
+    private static final String table6dot = "org.daisy.braille.impl.table.DefaultTableProvider.TableType.EN_US";
+  //private static final String table8dot = "";
 
     static {
         tableFilter = new TableFilter() {

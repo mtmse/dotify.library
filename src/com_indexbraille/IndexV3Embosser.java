@@ -42,9 +42,9 @@ public class IndexV3Embosser extends IndexEmbosser {
 	 * 
 	 */
 	private static final long serialVersionUID = 192884103325881800L;
-	private final static TableFilter tableFilter;
-    private final static String table6dot = "org.daisy.braille.impl.table.DefaultTableProvider.TableType.EN_US";
-  //private final static String table8dot = "com_indexbraille.IndexTableProvider.TableType.INDEX_TRANSPARENT_8DOT";
+	private static final TableFilter tableFilter;
+    private static final String table6dot = "org.daisy.braille.impl.table.DefaultTableProvider.TableType.EN_US";
+  //private static final String table8dot = "com_indexbraille.IndexTableProvider.TableType.INDEX_TRANSPARENT_8DOT";
 
     static {
         tableFilter = new TableFilter() {

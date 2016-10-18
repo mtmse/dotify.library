@@ -42,9 +42,9 @@ public abstract class AbstractBraillo440Embosser extends BrailloEmbosser {
 	 * 
 	 */
 	private static final long serialVersionUID = 3735464395595074473L;
-	private final static double cellWidth = 19*EmbosserTools.INCH_IN_MM/80d; //6;
-	private final static double cellHeight = 10;
-	private final static double constant = 11*EmbosserTools.INCH_IN_MM/80d;
+	private static final double cellWidth = 19*EmbosserTools.INCH_IN_MM/80d; //6;
+	private static final double cellHeight = 10;
+	private static final double constant = 11*EmbosserTools.INCH_IN_MM/80d;
 	
 	protected boolean saddleStitchEnabled;
 

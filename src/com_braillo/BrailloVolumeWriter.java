@@ -32,7 +32,7 @@ import org.daisy.braille.impl.embosser.VolumeWriter;
  *
  */
 public abstract class BrailloVolumeWriter implements VolumeWriter {
-	public final static byte[] ffSeq = new byte[]{'\r', '\n', 0x0c}; 
+	public static final byte[] ffSeq = new byte[]{'\r', '\n', 0x0c}; 
 
 	public abstract List<? extends List<Byte>> reorder(List<? extends List<Byte>> pages);
 	public abstract byte[] getHeader(int pages) throws IOException;

@@ -35,8 +35,8 @@ import aQute.bnd.annotation.component.Component;
 
 @Component
 public class CXTableProvider implements TableProvider {
-//	public final static String IS_ONE_TO_ONE = "is one-to-one";
-//	public final static String IS_DISPLAY_FORMAT = "is display format";
+//	public static final String IS_ONE_TO_ONE = "is one-to-one";
+//	public static final String IS_DISPLAY_FORMAT = "is display format";
 	
 	enum TableType implements FactoryProperties {
 		SV_SE_CX("Swedish CX", "Matches the Swedish representation in CX");

@@ -54,8 +54,8 @@ public class MountbattenEmbosser extends AbstractEmbosser {
 
     //TODO: continuous paper?
 
-    private final static TableFilter tableFilter;
-    private final static String table6dot = "org_daisy.EmbosserTableProvider.TableType.NABCC";
+    private static final TableFilter tableFilter;
+    private static final String table6dot = "org_daisy.EmbosserTableProvider.TableType.NABCC";
 
     static {
         tableFilter = new TableFilter() {

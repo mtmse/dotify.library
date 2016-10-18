@@ -30,7 +30,7 @@ import java.util.BitSet;
  *
  */
 public class EightToSixDotMapper {
-	private final static int[] bitMap = {0x01, 0x08, 0x02, 0x10, 0x04, 0x20, 0x40, 0x80};
+	private static final int[] bitMap = {0x01, 0x08, 0x02, 0x10, 0x04, 0x20, 0x40, 0x80};
 	private final int width;
 	private ArrayList<BitSet> bs;
 	private StringBuilder sb;

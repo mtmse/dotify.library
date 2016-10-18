@@ -29,7 +29,7 @@ public abstract class BrailloEmbosser extends AbstractEmbosser {
 	 * 
 	 */
 	private static final long serialVersionUID = 7640218914742790228L;
-	private final static TableFilter tableFilter;
+	private static final TableFilter tableFilter;
 	static {
 		tableFilter = new TableFilter() {
 			public boolean accept(FactoryProperties object) {

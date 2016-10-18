@@ -43,7 +43,7 @@ public class GenericEmbosser extends AbstractEmbosser {
 	 * 
 	 */
 	private static final long serialVersionUID = -5756220386304696977L;
-	private final static TableFilter tableFilter;
+	private static final TableFilter tableFilter;
 	
 	static {
 		tableFilter = new TableFilter() {

@@ -10,7 +10,7 @@ import org.daisy.braille.api.table.BrailleConstants;
 import org.daisy.braille.impl.table.StringTranslator.MatchMode;
 import org.junit.Test;
 public class AdvancedBrailleConverterTest {
-	private final static String[] glyphs = new String[]{
+	private static final String[] glyphs = new String[]{
 		"a", "ab", "aba", "c", "d", "e", "f", "g", "h", "i", 
 		"a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1", "i1", "j1",
 		"a2", "b2", "c2", "d2", "e2", "f2", "g2", "h2", "i2", "j2",

@@ -35,8 +35,8 @@ import aQute.bnd.annotation.component.Component;
 
 @Component
 public class BrailloTableProvider implements TableProvider {
-	//public final static String IS_ONE_TO_ONE = "is one-to-one";
-	//public final static String IS_DISPLAY_FORMAT = "is display format";
+	//public static final String IS_ONE_TO_ONE = "is one-to-one";
+	//public static final String IS_DISPLAY_FORMAT = "is display format";
 	
 	enum TableType implements FactoryProperties {
 		BRAILLO_6DOT_001_00("Braillo USA 6 DOT 001.00", "Compatible with Braillo USA 6 DOT 001.00"), 

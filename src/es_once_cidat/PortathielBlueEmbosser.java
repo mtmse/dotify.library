@@ -45,12 +45,12 @@ public class PortathielBlueEmbosser extends CidatEmbosser {
 	 * 
 	 */
 	private static final long serialVersionUID = -2862233116704332024L;
-	private final static TableFilter tableFilter;
-    private final static String transparentTable = "es_once_cidat.CidatTableProvider.TableType.PORTATHIEL_TRANSPARENT_6DOT";
-  //private final static String transparent8dotTable = CidatTableProvider.class.getCanonicalName() + ".TableType.PORTATHIEL_TRANSPARENT_8DOT";
-    private final static String mitTable = "org_daisy.EmbosserTableProvider.TableType.MIT";
-    private final static String nabccTable = "org_daisy.EmbosserTableProvider.TableType.NABCC";
-    private final static String gbTable = "org_daisy.EmbosserTableProvider.TableType.EN_GB";
+	private static final TableFilter tableFilter;
+    private static final String transparentTable = "es_once_cidat.CidatTableProvider.TableType.PORTATHIEL_TRANSPARENT_6DOT";
+  //private static final String transparent8dotTable = CidatTableProvider.class.getCanonicalName() + ".TableType.PORTATHIEL_TRANSPARENT_8DOT";
+    private static final String mitTable = "org_daisy.EmbosserTableProvider.TableType.MIT";
+    private static final String nabccTable = "org_daisy.EmbosserTableProvider.TableType.NABCC";
+    private static final String gbTable = "org_daisy.EmbosserTableProvider.TableType.EN_GB";
 
     static {
         tableFilter = new TableFilter() {
