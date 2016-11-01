@@ -70,12 +70,12 @@ public class PEFValidatorFacade {
 		}
 		if (!ok && msg!=null) {
 			msg.println("Messages returned by the validator:");
-			InputStreamReader report = new InputStreamReader(pv.getReportStream());
-			int c;
-			while ((c = report.read()) != -1) {
-				msg.print((char)c);
+			try (InputStreamReader report = new InputStreamReader(pv.getReportStream(), "utf-8")) {
+				int c;
+				while ((c = report.read()) != -1) {
+					msg.print((char)c);
+				}
 			}
-			report.close();
 			return ok;
 		}
 		return ok;

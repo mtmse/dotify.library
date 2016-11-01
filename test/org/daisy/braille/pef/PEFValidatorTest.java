@@ -1,9 +1,11 @@
 package org.daisy.braille.pef;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 
 import org.junit.Test;
@@ -16,11 +18,14 @@ public class PEFValidatorTest {
 		PEFValidator v = new PEFValidator();
 		boolean ret = v.validate(input);
 
-		InputStream is = v.getReportStream();
+		InputStreamReader is = new InputStreamReader(v.getReportStream(), "utf-8");
 		int r;
+		int c = 0;
 		while ((r = is.read()) > -1) {
+			c++;
 			System.out.print((char) r);
 		}
+		assertEquals(0, c);
 		assertTrue(ret);
 	}
 
@@ -30,7 +35,7 @@ public class PEFValidatorTest {
 		PEFValidator v = new PEFValidator();
 		assertTrue(!v.validate(input));
 
-		InputStream is = v.getReportStream();
+		InputStreamReader is = new InputStreamReader(v.getReportStream(), "utf-8");
 		int r;
 		while ((r = is.read()) > -1) {
 			System.out.print((char) r);

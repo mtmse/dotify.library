@@ -17,13 +17,16 @@
  */
 package org.daisy.braille.pef;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -65,13 +68,20 @@ public class PEFValidator extends AbstractFactory implements org.daisy.braille.a
 		/**
 		 * Light mode validation only validates the document against the Relax NG schema
 		 */
-		LIGHT_MODE, 
+		LIGHT_MODE("resource-files/pef-2008-1-light.rng", false), 
 		/**
 		 * In addition to schema validation, performs other tests required by the PEF-specification.
 		 */
-		FULL_MODE
-	};
-	private File report;
+		FULL_MODE("resource-files/pef-2008-1-full.rng", true);
+		private final String schemaPath;
+		private final boolean hasSchematron;
+		Mode(String schemaPath, boolean hasSchematron) {
+			this.schemaPath = schemaPath;
+			this.hasSchematron = hasSchematron;
+		}
+	}
+	private static final Logger logger = Logger.getLogger(PEFValidator.class.getCanonicalName());
+	private ByteArrayOutputStream report;
 	private Mode mode;
 	
 	/**
@@ -92,56 +102,30 @@ public class PEFValidator extends AbstractFactory implements org.daisy.braille.a
 	}
 	
 	private boolean validate(URL input, Mode modeLocal) {
-		boolean hasSchematron = true;
-		String schemaPath = "resource-files/pef-2008-1-full.rng";
-		switch (modeLocal) {
-			case FULL_MODE: 
-				schemaPath = "resource-files/pef-2008-1-full.rng";
-				hasSchematron = true;
-				break;
-			case LIGHT_MODE: 
-				schemaPath = "resource-files/pef-2008-1-light.rng";
-				hasSchematron = false;
-				break;
-		}
-		PrintStream orErr = System.err;
-		try {
-			report = File.createTempFile("Validator", ".tmp");
-			report.deleteOnExit();
-		} catch (IOException e1) {
-			report = null;
-		}
+		report = new ByteArrayOutputStream();
 		
-		PrintStream ps = null;
-		try {
-			ps = new PrintStream(report);
-		} catch (FileNotFoundException e) { }
-		try {
-
-			System.setErr(ps);
-
+		try (PrintStream ps = new PrintStream(report, false, "utf-8")) {
+			TestError errorHandler = new TestError(ps);
 			boolean ok;
-			ok = runValidation(input, this.getClass().getResource(schemaPath));
-			if (hasSchematron) {
+			ok = runValidation(input, this.getClass().getResource(modeLocal.schemaPath), errorHandler);
+			if (modeLocal.hasSchematron) {
 				try {
-					File schematron = transformSchematron(this.getClass().getResource(schemaPath));
-					ok &= runValidation(input, schematron.toURI().toURL());
+					File schematron = transformSchematron(this.getClass().getResource(modeLocal.schemaPath));
+					ok &= runValidation(input, schematron.toURI().toURL(), errorHandler);
 				} catch (Exception e) {
-					e.printStackTrace();
+					logger.log(Level.WARNING, "Validation failed.", e);
 					ok = false;
 				}
 			}
 			return ok;
-		} finally {
-			if (ps != null) {
-				ps.close();
-			}
-			System.setErr(orErr);
+		} catch (UnsupportedEncodingException e1) {
+			//With utf-8 this should never happen, but if the value above is changed for some reason, it might, so we'll log a descriptive error message.
+			logger.log(Level.WARNING, "Unsupported encoding.", e1);
+			return false;
 		}
 	}
 	
-	private boolean runValidation(URL url, URL schema) {
-		TestError errorHandler = new TestError();
+	private boolean runValidation(URL url, URL schema, TestError errorHandler) {
 		PropertyMapBuilder propertyBuilder = new PropertyMapBuilder();
 
 		propertyBuilder.put(ValidateProperty.ERROR_HANDLER, errorHandler);
@@ -150,10 +134,8 @@ public class PEFValidator extends AbstractFactory implements org.daisy.braille.a
         try {
 			vd.loadSchema(new InputSource(schema.openStream()));
 			return vd.validate(new InputSource(url.openStream()));
-		} catch (SAXException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (SAXException | IOException e) {
+			logger.log(Level.WARNING, "Valdation failed.", e);
 		}
 		return false;
 	}
@@ -169,10 +151,14 @@ public class PEFValidator extends AbstractFactory implements org.daisy.braille.a
         
         Source xslt = new StreamSource(this.getClass().getResourceAsStream("resource-files/RNG2Schtrn.xsl"));
         TransformerFactory factory = TransformerFactory.newInstance();
-        System.err.println(factory.getClass().getName()); 
+        if (logger.isLoggable(Level.FINE)) {
+        	logger.fine(this.getClass() + " is using transformer factory: " + factory.getClass().getName());
+        }
 		try {
 			factory.setAttribute("http://saxon.sf.net/feature/version-warning", Boolean.FALSE);
-		} catch (IllegalArgumentException iae) { }
+		} catch (IllegalArgumentException iae) {
+			logger.log(Level.FINE, "Failed to set saxon feature warning flag.", iae);
+		}
         Transformer transformer = factory.newTransformer(xslt);
 
         transformer.transform(xml, new StreamResult(schematronSchema.toURI().toString()));
@@ -184,6 +170,11 @@ public class PEFValidator extends AbstractFactory implements org.daisy.braille.a
 	
 	static class TestError implements ErrorHandler {
 		private boolean hasErrors = false;
+		private final PrintStream printStream;
+		
+		TestError(PrintStream writer) {
+			this.printStream = writer;
+		}
 
 		@Override
 		public void warning(SAXParseException exception) throws SAXException {
@@ -209,20 +200,20 @@ public class PEFValidator extends AbstractFactory implements org.daisy.braille.a
 		private void buildErrorMessage(String type, SAXParseException e) {
 			int line = e.getLineNumber();
 			int column = e.getColumnNumber();
-			System.err.print(type);
+			printStream.print(type);
 			if (line > -1 || column > -1) {
-				System.err.print(" at");
+				printStream.print(" at");
 				if (line > -1) {
-					System.err.print(" line " + line);
+					printStream.print(" line " + line);
 				}
 				if (line > -1 && column > -1) {
-					System.err.print(",");
+					printStream.print(",");
 				}
 				if (column > -1) {
-					System.err.print(" column " + column);
+					printStream.print(" column " + column);
 				}
 			}
-			System.err.println(": " + e.getMessage());
+			printStream.println(": " + e.getMessage());
 		}
 	}
 
@@ -230,11 +221,7 @@ public class PEFValidator extends AbstractFactory implements org.daisy.braille.a
 		if (report==null) {
 			return null;
 		}
-		try {
-			return new FileInputStream(report);
-		} catch (FileNotFoundException e) {
-			return null;
-		}
+		return new ByteArrayInputStream(report.toByteArray());	
 	}
 
 	public Object getFeature(String key) {
@@ -254,7 +241,7 @@ public class PEFValidator extends AbstractFactory implements org.daisy.braille.a
 			try {
 				mode = (Mode)value;
 			} catch (ClassCastException e) {
-				throw new IllegalArgumentException("Unsupported value for " + FEATURE_MODE + " '" + value + "'");
+				throw new IllegalArgumentException("Unsupported value for " + FEATURE_MODE + " '" + value + "'", e);
 			}
 		} else {
 			throw new IllegalArgumentException("Unknown feature: '" + key +"'");
