@@ -48,57 +48,57 @@ public class PEFConverterFacade {
 	 * Key for parsePefFile setting,
 	 * corresponding settings value should match an embosser identifier
 	 */
-	public final static String KEY_EMBOSSER = "embosser";
+	public static final String KEY_EMBOSSER = "embosser";
 	/**
 	 * Key for parsePefFile setting,
 	 * corresponding settings value should match a table identifier
 	 */
-	public final static String KEY_TABLE = "table";
+	public static final String KEY_TABLE = "table";
 	/**
 	 * Key for parsePefFile setting,
 	 * corresponding settings value should match a value in StandardLineBreaks.Type
 	 */
-	public final static String KEY_BREAKS = "breaks";
+	public static final String KEY_BREAKS = "breaks";
 	/**
 	 * Key for parsePefFile setting,
 	 * corresponding settings value should match a range
 	 */
-	public final static String KEY_RANGE = "range";
+	public static final String KEY_RANGE = "range";
 	/**
 	 * Key for parsePefFile setting,
 	 * corresponding settings value should match a value in {@link EightDotFallbackMethod}
 	 */
-	public final static String KEY_FALLBACK = "fallback";
+	public static final String KEY_FALLBACK = "fallback";
 	/**
 	 * Key for parsePefFile setting,
 	 * corresponding settings value should be a character in the range 0x2800-0x283F
 	 */
-	public final static String KEY_REPLACEMENT = "replacement";
+	public static final String KEY_REPLACEMENT = "replacement";
 	/**
 	 * Key for parsePefFile setting,
 	 * corresponding settings value should match a padding style
 	 */
-	public final static String KEY_PADDING = "pad";
+	public static final String KEY_PADDING = "pad";
 	/**
 	 * Key for parsePefFile setting,
 	 * corresponding settings value should be the number of characters to offset alignment by  
 	 */
-	public final static String KEY_ALIGNMENT_OFFSET = "alignmentOffset";
+	public static final String KEY_ALIGNMENT_OFFSET = "alignmentOffset";
 	/**
 	 * Key for parsePefFile setting,
 	 * corresponding settings value should match a value in {@link Alignment}
 	 */
-	public final static String KEY_ALIGN = "align";
+	public static final String KEY_ALIGN = "align";
 	/**
 	 * Key for parsePefFile setting,
 	 * corresponding settings value should be a number, in millimeters
 	 */
-	public final static String KEY_CELL_WIDTH = "cellWidth";
+	public static final String KEY_CELL_WIDTH = "cellWidth";
 	/**
 	 * Key for parsePefFile setting,
 	 * corresponding settings value should be a number, in millimeters 
 	 */
-	public final static String KEY_CELL_HEIGHT = "cellHeight";
+	public static final String KEY_CELL_HEIGHT = "cellHeight";
 	
 	private final EmbosserCatalogService ef;
 	public PEFConverterFacade(EmbosserCatalogService embosserFactory) {

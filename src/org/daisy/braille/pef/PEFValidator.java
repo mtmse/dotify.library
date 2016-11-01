@@ -57,7 +57,7 @@ public class PEFValidator extends AbstractFactory implements org.daisy.braille.a
 	 * Key for getFeature/setFeature,
 	 * corresponding value should be a {@link Mode} value
 	 */
-	public final static String FEATURE_MODE = "validator mode";
+	public static final String FEATURE_MODE = "validator mode";
 	/**
 	 * Defines the modes available to the validator.
 	 */

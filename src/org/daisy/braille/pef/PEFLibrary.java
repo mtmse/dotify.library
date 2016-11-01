@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.logging.Logger;
 
 public class PEFLibrary {
-    private final static FileFilter ff;
-    private final static Logger logger;
+    private static final FileFilter ff;
+    private static final Logger logger;
     static {
     	ff = new FileFilter() {
     		@Override

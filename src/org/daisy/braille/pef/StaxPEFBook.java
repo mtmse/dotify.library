@@ -21,17 +21,17 @@ import javax.xml.stream.events.XMLEvent;
 class StaxPEFBook {
 	private static final Pattern eightDotPattern = Pattern.compile("[\u2840-\u28ff]");
 	
-	private final static String pefns = "http://www.daisy.org/ns/2008/pef";
-	private final static String dcns = "http://purl.org/dc/elements/1.1/";
-	private final static QName meta = new QName(pefns, "meta");
-	private final static QName volume = new QName(pefns, "volume");
-	private final static QName section = new QName(pefns, "section");
-	private final static QName page = new QName(pefns, "page");
-	private final static QName row = new QName(pefns, "row");
+	private static final String pefns = "http://www.daisy.org/ns/2008/pef";
+	private static final String dcns = "http://purl.org/dc/elements/1.1/";
+	private static final QName meta = new QName(pefns, "meta");
+	private static final QName volume = new QName(pefns, "volume");
+	private static final QName section = new QName(pefns, "section");
+	private static final QName page = new QName(pefns, "page");
+	private static final QName row = new QName(pefns, "row");
 	
-	private final static QName rowsqn = new QName("rows");
-	private final static QName colsqn = new QName("cols");
-	private final static QName duplexqn = new QName("duplex");
+	private static final QName rowsqn = new QName("rows");
+	private static final QName colsqn = new QName("cols");
+	private static final QName duplexqn = new QName("duplex");
 	
 	private final XMLInputFactory inFactory;
 	private XMLEventReader reader;

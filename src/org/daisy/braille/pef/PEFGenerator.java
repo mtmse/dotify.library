@@ -83,7 +83,7 @@ public class PEFGenerator {
 	 */
 	public static String KEY_DUPLEX = "duplex";
 
-	private final static Map<String, String> defaults;
+	private static final Map<String, String> defaults;
 	static {
 		defaults = new HashMap<String, String>();
 		defaults.put(KEY_VOLUMES, "3");

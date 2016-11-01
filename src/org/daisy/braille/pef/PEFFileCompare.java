@@ -15,7 +15,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 public class PEFFileCompare {
-	private final static NormalizationResource def = new PackageNormalizationResource("resource-files/strip-meta.xsl");
+	private static final NormalizationResource def = new PackageNormalizationResource("resource-files/strip-meta.xsl");
 	private final NormalizationResource nr;
 	private int pos = -1;
 

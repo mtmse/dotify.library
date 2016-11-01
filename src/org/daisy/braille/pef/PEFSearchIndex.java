@@ -2,7 +2,7 @@ package org.daisy.braille.pef;
 
 
 public class PEFSearchIndex extends SearchIndex<PEFBook> {
-    private final static String REGEX = "[\\s\\.,:/-]";
+    private static final String REGEX = "[\\s\\.,:/-]";
 
 	public void add(PEFBook p) {
 		for (String key : p.getMetadataKeys()) {

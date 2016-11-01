@@ -37,7 +37,7 @@ import org.daisy.braille.api.table.TableCatalogService;
  * @author Joel Håkansson
  */
 public class TextHandler {
-	public final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
 	private final File input;
 	private final File output;

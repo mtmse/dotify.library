@@ -9,42 +9,42 @@ import java.util.Map;
 import org.daisy.braille.api.table.TableCatalogService;
 
 public class TextConverterFacade {
-	public final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 	/**
 	 * Key for parseTextFile setting,
 	 * corresponding settings value should contain the title of the publication
 	 */
-	public final static String KEY_TITLE = "title";
+	public static final String KEY_TITLE = "title";
 	/**
 	 * Key for parseTextFile setting,
 	 * corresponding settings value should contain the author of the publication
 	 */
-	public final static String KEY_AUTHOR = "author";
+	public static final String KEY_AUTHOR = "author";
 	/**
 	 * Key for parseTextFile setting,
 	 * corresponding settings value should contain the identifier for the publication 
 	 */
-	public final static String KEY_IDENTIFIER = "identifier";
+	public static final String KEY_IDENTIFIER = "identifier";
 	/**
 	 * Key for parseTextFile setting,
 	 * corresponding settings value should match the table to use
 	 */
-	public final static String KEY_MODE = "mode";
+	public static final String KEY_MODE = "mode";
 	/**
 	 * Key for parseTextFile setting,
 	 * corresponding settings value should contain the language of the publication
 	 */
-	public final static String KEY_LANGUAGE = "language";
+	public static final String KEY_LANGUAGE = "language";
 	/**
 	 * Key for parseTextFile setting,
 	 * corresponding settings value should be "true" for duplex or "false" for simplex
 	 */
-	public final static String KEY_DUPLEX = "duplex";
+	public static final String KEY_DUPLEX = "duplex";
 	/**
 	 * Key for parseTextFile setting,
 	 * corresponding settings value should be a string containing a valid date on the form yyyy-MM-dd
 	 */
-	public final static String KEY_DATE = "date";
+	public static final String KEY_DATE = "date";
 	
 	private final TableCatalogService factory;
 	

@@ -18,7 +18,7 @@ import javax.xml.transform.stream.StreamSource;
  * @author Joel Håkansson
  */
 public class XMLFileCompare extends FileCompare {
-	//private final static String TRANSFORMER_FACTORY_KEY = "javax.xml.transform.TransformerFactory";
+	//private static final String TRANSFORMER_FACTORY_KEY = "javax.xml.transform.TransformerFactory";
 	private final TransformerFactory factory;
 
 	/**

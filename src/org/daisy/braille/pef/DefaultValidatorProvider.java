@@ -12,9 +12,9 @@ import aQute.bnd.annotation.component.Component;
 
 @Component
 public class DefaultValidatorProvider implements ValidatorProvider {
-	private final static String PEF_MIME = "application/x-pef+xml"; 
+	private static final String PEF_MIME = "application/x-pef+xml"; 
 	//Legacy value for PEF Validator value provider
-	private final static String PEF_LEGACY = PEFValidator.class.getCanonicalName();
+	private static final String PEF_LEGACY = PEFValidator.class.getCanonicalName();
 	
 	private static class PEFValidatorProperties implements FactoryProperties {
 		private final String identifier;

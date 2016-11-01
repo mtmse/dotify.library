@@ -10,9 +10,9 @@ import java.util.Map;
 import java.util.Set;
 
 public class SearchIndex<E> {
-	private final static boolean debug = false;
+	private static final boolean debug = false;
 	private final Map<String, Set<E>> index;
-    private final static String REGEX = "[\\s\\.,:/-]";
+    private static final String REGEX = "[\\s\\.,:/-]";
 
 	public SearchIndex() {
 		index = new Hashtable<String, Set<E>>();

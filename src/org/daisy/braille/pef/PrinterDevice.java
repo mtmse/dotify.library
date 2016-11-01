@@ -43,8 +43,8 @@ import org.daisy.braille.api.embosser.Device;
  * @version 3 jul 2008
  */
 public class PrinterDevice implements Device {
-	//private final static DocFlavor FLAVOR = DocFlavor.BYTE_ARRAY.AUTOSENSE;
-	private final static DocFlavor FLAVOR = DocFlavor.INPUT_STREAM.AUTOSENSE;
+	//private static final DocFlavor FLAVOR = DocFlavor.BYTE_ARRAY.AUTOSENSE;
+	private static final DocFlavor FLAVOR = DocFlavor.INPUT_STREAM.AUTOSENSE;
 	private PrintService service;
 	
 	/**

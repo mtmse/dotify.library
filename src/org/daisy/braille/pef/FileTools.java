@@ -34,7 +34,7 @@ import java.util.logging.Logger;
  * @author Joel Håkansson
  */
 public class FileTools {
-	private final static Logger logger = Logger.getLogger(FileTools.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(FileTools.class.getCanonicalName());
 	
 	/**
 	 * Copies an input stream to an output stream

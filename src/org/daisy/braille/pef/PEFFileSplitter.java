@@ -54,11 +54,11 @@ public class PEFFileSplitter implements ErrorHandler  {
 	/**
 	 * Defines the default prefix for generated file names.
 	 */
-	public final static String PREFIX = "volume-";
+	public static final String PREFIX = "volume-";
 	/**
 	 * Defines the default postfix for generated file names.
 	 */
-	public final static String POSTFIX = ".pef";
+	public static final String POSTFIX = ".pef";
 	enum State {HEADER, BODY, FOOTER};
 	private Logger logger;
 	private final ValidatorFactoryService validatorFactory;
