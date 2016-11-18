@@ -6,7 +6,6 @@ import java.util.Collection;
 import org.daisy.dotify.api.hyphenator.HyphenatorFactoryMakerService;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactoryService;
-import org.daisy.dotify.api.translator.TranslatorConfigurationException;
 import org.daisy.dotify.api.translator.TranslatorSpecification;
 import org.daisy.dotify.impl.translator.SPIHelper;
 
@@ -49,17 +48,6 @@ public class SwedishBrailleTranslatorFactoryService implements
 
 	public void unsetHyphenator(HyphenatorFactoryMakerService hyphenator) {
 		this.hyphenator = null;
-	}
-	
-	@Override
-	@Deprecated
-	public <T> void setReference(Class<T> c, T reference)
-			throws TranslatorConfigurationException {
-		if (c.equals(HyphenatorFactoryMakerService.class)) {
-			setHyphenator((HyphenatorFactoryMakerService)reference);
-		} else {
-			throw new TranslatorConfigurationException("Unrecognized reference: " + reference);
-		}
 	}
 
 	@Override
