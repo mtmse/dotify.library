@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import org.junit.Ignore;
 import org.junit.Test;
 
+@SuppressWarnings("javadoc")
 public class SwedishBrailleFilterTest {
 	private final SwedishBrailleFilter filter;
 	

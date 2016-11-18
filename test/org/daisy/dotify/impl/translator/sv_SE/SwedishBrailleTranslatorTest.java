@@ -13,6 +13,7 @@ import org.daisy.dotify.consumer.hyphenator.HyphenatorFactoryMaker;
 import org.junit.Ignore;
 import org.junit.Test;
 
+@SuppressWarnings("javadoc")
 public class SwedishBrailleTranslatorTest {
 	private static final String TEST_INPUT_STRING_1 = "Skillnaden mellan arbets- och vilodagar blev mindre skarp; hon kunde tillåta sig vilodagar mitt i veckan.";
 	private final BrailleTranslator translator;

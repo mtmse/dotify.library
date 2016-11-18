@@ -10,6 +10,7 @@ import org.daisy.dotify.api.translator.UnsupportedMetricException;
 import org.daisy.dotify.common.text.BreakPointHandler;
 import org.junit.Test;
 
+@SuppressWarnings("javadoc")
 public class DefaultBrailleTranslatorResultTest {
 	private static final String INPUT_STR1 = "aaaaaaaaaaa bbb";
 	private static final String DUMMY_METRIC = "dummy-metric";

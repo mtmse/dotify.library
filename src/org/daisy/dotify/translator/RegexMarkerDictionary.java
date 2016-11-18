@@ -100,6 +100,11 @@ public class RegexMarkerDictionary implements MarkerDictionary {
 			return this;
 		}
 
+		/**
+		 * Sets a text attribute filter.
+		 * @param filter the filter
+		 * @return returns this builder
+		 */
 		public Builder filter(TextAttributeFilter filter) {
 			this.filter = filter;
 			return this;

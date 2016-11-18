@@ -8,6 +8,7 @@ import org.daisy.dotify.api.translator.MarkerProcessor;
 import org.daisy.dotify.api.translator.MarkerProcessorConfigurationException;
 import org.junit.Test;
 
+@SuppressWarnings("javadoc")
 public class SwedishMarkerProcessorFactoryTest {
 	private final MarkerProcessor processor;
 

@@ -26,10 +26,23 @@ public class SimpleBrailleTranslator implements BrailleTranslator {
 	
 	private boolean hyphenating;
 	
+	/**
+	 * Creates a new simple braille translator.
+	 * @param filter the braille filter to use
+	 * @param locale the locale
+	 * @param translatorMode the translator mode
+	 */
 	public SimpleBrailleTranslator(BrailleFilter filter, String locale, String translatorMode) {
 		this(filter, null, locale, translatorMode);
 	}
 	
+	/**
+	 * Creates a new simple braille translator.
+	 * @param filter the braille filter to use
+	 * @param finalizer the braille finalizer to use
+	 * @param locale the locale
+	 * @param translatorMode the translator mode
+	 */
 	public SimpleBrailleTranslator(BrailleFilter filter, BrailleFinalizer finalizer, String locale, String translatorMode) {
 		this.filter = filter;
 		this.finalizer = finalizer;

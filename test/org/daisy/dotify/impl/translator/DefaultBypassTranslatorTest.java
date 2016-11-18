@@ -9,6 +9,7 @@ import org.daisy.dotify.api.translator.TranslatorConfigurationException;
 import org.junit.Ignore;
 import org.junit.Test;
 
+@SuppressWarnings("javadoc")
 public class DefaultBypassTranslatorTest {
 	private final BrailleTranslator bypass;
 	

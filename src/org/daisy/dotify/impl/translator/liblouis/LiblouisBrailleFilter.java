@@ -9,11 +9,18 @@ import java.util.regex.Pattern;
 
 import org.daisy.dotify.common.text.StringFilter;
 
+/**
+ * Provides a braille filter for liblouis files.
+ * @author Joel Håkansson
+ */
 public class LiblouisBrailleFilter implements StringFilter {
 	private final Map<Integer, Substitution> mSubstitutionTable;
 
 	private final List<RegexReplace> replacers;
 
+	/**
+	 * Provides a builder for liblouis braille filters.
+	 */
 	public static class Builder {
 		private final Logger logger;
 		private final Map<Integer, Substitution> mSubstitutionTable;
@@ -27,11 +34,21 @@ public class LiblouisBrailleFilter implements StringFilter {
 		//private String noletsignbefore = "";
 		//private String noletsignafter = "";
 
+		/**
+		 * Creates a new builder.
+		 */
 		public Builder() {
 			this.mSubstitutionTable = new HashMap<>();
 			this.logger = Logger.getLogger(this.getClass().getCanonicalName());
 		}
 		
+		/**
+		 * Adds a character mapping between input and braille.
+		 * @param key the codepoint of the input character
+		 * @param replacement the replacement string (in unicode braille patterns)
+		 * @param g the character class
+		 * @return returns this builder
+		 */
 		public Builder put(Integer key, String replacement, CharClass g) {
 			//System.out.println((key>=32?(char)key.intValue():"#"+key) + " -> " + replacement +  " " + g);
 			Substitution s = mSubstitutionTable.get(key);
@@ -43,6 +60,11 @@ public class LiblouisBrailleFilter implements StringFilter {
 			return this;
 		}
 		
+		/**
+		 * Sets the number sign.
+		 * @param value a string of unicode braille patterns representing a number sign.
+		 * @return returns this builder
+		 */
 		public Builder numsign(String value) {
 			if (!"".equals(numsign)) {
 				logger.warning("Numsign already set: " + numsign + " -> " + value);
@@ -51,6 +73,11 @@ public class LiblouisBrailleFilter implements StringFilter {
 			return this;
 		}
 		
+		/**
+		 * Sets the capital letter sign.
+		 * @param value a string of unicode braille patterns representing a capital letter.
+		 * @return returns this builder
+		 */
 		public Builder capsign(String value) {
 			if (!"".equals(capsign)) {
 				logger.warning("Capsign already set: " + capsign + " -> " + value);
@@ -59,6 +86,10 @@ public class LiblouisBrailleFilter implements StringFilter {
 			return this;
 		}
 		
+		/**
+		 * Creates a new liblouis braille filter.
+		 * @return returns a new liblouis braille filter
+		 */
 		public LiblouisBrailleFilter build() {
 			return new LiblouisBrailleFilter(this);
 		}

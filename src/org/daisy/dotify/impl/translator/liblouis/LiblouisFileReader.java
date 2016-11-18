@@ -19,6 +19,7 @@ class LiblouisFileReader {
 
 	/**
 	 * Creates a new empty filter.
+	 * @param resolver a resource resolver
 	 */
 	public LiblouisFileReader(ResourceResolver resolver) {
 		this.rr = resolver;
@@ -42,9 +43,8 @@ class LiblouisFileReader {
 	/**
 	 * Parses a Liblouis input stream with the specified encoding and
 	 * adds its contents to the filter.
-	 * @param in
-	 * @param encoding
-	 * @throws IOException
+	 * @param resource a resource descriptor
+	 * @throws IOException if the resource cannot be read
 	 */
 	public void parse(ResourceDescriptor resource) throws IOException {
 		TextFileReader tfr = new TextFileReader.Builder(resource.getInputStream()).

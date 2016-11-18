@@ -9,14 +9,26 @@ import org.daisy.dotify.common.text.RegexFilter;
 import org.daisy.dotify.common.text.StringFilter;
 import org.daisy.dotify.common.text.UCharFilter;
 
+/**
+ * Provides a braille filter for Swedish.
+ * @author Joel Håkansson
+ */
 public class SwedishBrailleFilter implements StringFilter {
 	private static final String sv_SE = "sv-SE";
 	private CombinationFilter filters;
 	
+	/**
+	 * Creates a new Swedish braille filter.
+	 */
 	public SwedishBrailleFilter() { 
 		this(false);
 	}
 
+	/**
+	 * Creates a new Swedish braille filter with the specified mode.
+	 * @param strict if true the result is braille only, if false the result 
+	 * 			contains break point characters such as space, dash and soft hyphen.
+	 */
 	public SwedishBrailleFilter(boolean strict) {
 		filters = new CombinationFilter();
 		// Remove zero width space
@@ -48,8 +60,11 @@ public class SwedishBrailleFilter implements StringFilter {
 	
 	/**
 	 * Retrieve a URL of a resource associated with this class.
+	 * @param subPath path to the resource
+	 * @return returns the url of the resource
+	 * @throws IllegalArgumentException if the path cannot be found
 	 */
-	final protected URL getResource(String subPath) throws IllegalArgumentException {
+	protected final URL getResource(String subPath) {
 		//TODO check the viability of this method
 		URL url;
 	    url = this.getClass().getResource(subPath);

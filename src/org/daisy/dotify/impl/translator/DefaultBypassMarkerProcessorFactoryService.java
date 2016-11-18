@@ -6,6 +6,10 @@ import org.daisy.dotify.api.translator.MarkerProcessorFactoryService;
 
 import aQute.bnd.annotation.component.Component;
 
+/**
+ * Provides a pass through marker processor factory service.
+ * @author Joel Håkansson
+ */
 @Component
 public class DefaultBypassMarkerProcessorFactoryService implements
 		MarkerProcessorFactoryService {

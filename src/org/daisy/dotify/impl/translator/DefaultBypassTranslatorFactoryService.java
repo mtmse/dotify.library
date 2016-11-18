@@ -11,6 +11,11 @@ import org.daisy.dotify.api.translator.TranslatorSpecification;
 import aQute.bnd.annotation.component.Component;
 import aQute.bnd.annotation.component.Reference;
 
+/**
+ * Provides a pass through translator factory service.
+ * @author Joel Håkansson
+ *
+ */
 @Component
 public class DefaultBypassTranslatorFactoryService implements
 		BrailleTranslatorFactoryService {
@@ -27,11 +32,19 @@ public class DefaultBypassTranslatorFactoryService implements
 		return new DefaultBypassTranslatorFactory(hyphenator);
 	}
 
+	/**
+	 * Sets the hyphenator factory maker service.
+	 * @param hyphenator the hyphenator factory maker service.
+	 */
 	@Reference
 	public void setHyphenator(HyphenatorFactoryMakerService hyphenator) {
 		this.hyphenator = hyphenator;
 	}
 
+	/**
+	 * Unsets the hyphenator factory maker service.
+	 * @param hyphenator the instance to unset.
+	 */
 	public void unsetHyphenator(HyphenatorFactoryMakerService hyphenator) {
 		this.hyphenator = null;
 	}

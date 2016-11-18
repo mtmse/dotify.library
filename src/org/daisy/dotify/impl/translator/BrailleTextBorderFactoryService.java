@@ -5,6 +5,10 @@ import org.daisy.dotify.api.translator.TextBorderFactoryService;
 
 import aQute.bnd.annotation.component.Component;
 
+/**
+ * Provides a braille text border factory service.
+ * @author Joel Håkansson
+ */
 @Component
 public class BrailleTextBorderFactoryService implements
 		TextBorderFactoryService {

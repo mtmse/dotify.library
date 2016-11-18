@@ -2,6 +2,7 @@ package org.daisy.dotify.impl.translator.sv_SE;
 
 import org.daisy.dotify.impl.translator.sv_SE.DigitFilter.Algorithm;
 
+@SuppressWarnings("javadoc")
 public class BenchmarkDigitFilter {
 
 	public static void main(String[] args) {

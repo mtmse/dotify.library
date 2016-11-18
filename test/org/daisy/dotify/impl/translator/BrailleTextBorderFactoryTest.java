@@ -9,6 +9,7 @@ import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.api.translator.TextBorderConfigurationException;
 import org.daisy.dotify.api.translator.TextBorderStyle;
 import org.junit.Test;
+@SuppressWarnings("javadoc")
 public class BrailleTextBorderFactoryTest {
 
 	@Test

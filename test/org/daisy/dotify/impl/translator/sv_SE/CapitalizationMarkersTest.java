@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.daisy.dotify.impl.translator.sv_SE.CapitalizationMarkers;
 import org.junit.Test;
 
+@SuppressWarnings("javadoc")
 public class CapitalizationMarkersTest {
 	private final CapitalizationMarkers f;
 

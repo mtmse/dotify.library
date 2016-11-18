@@ -13,6 +13,11 @@ import org.daisy.dotify.impl.translator.SPIHelper;
 import aQute.bnd.annotation.component.Component;
 import aQute.bnd.annotation.component.Reference;
 
+/**
+ * Provides a Swedish braille filter factory service.
+ * @author Joel Håkansson
+ *
+ */
 @Component
 public class SwedishBrailleFilterFactoryService implements
 		BrailleFilterFactoryService {
@@ -20,6 +25,9 @@ public class SwedishBrailleFilterFactoryService implements
 	private HyphenatorFactoryMakerService hyphenator = null;
 	private final ArrayList<TranslatorSpecification> specs;
 
+	/**
+	 * Creates a new Swedish braille filter factory service.
+	 */
 	public SwedishBrailleFilterFactoryService() {
 		this.specs = new ArrayList<>();
 		specs.add(new TranslatorSpecification("sv-SE", BrailleTranslatorFactory.MODE_UNCONTRACTED));
@@ -35,11 +43,19 @@ public class SwedishBrailleFilterFactoryService implements
 		return new SwedishBrailleFilterFactory(hyphenator);
 	}
 
+	/**
+	 * Sets the hyphenator factory maker service.
+	 * @param hyphenator the hyphenator factory maker service.
+	 */
 	@Reference
 	public void setHyphenator(HyphenatorFactoryMakerService hyphenator) {
 		this.hyphenator = hyphenator;
 	}
 
+	/**
+	 * Unsets the hyphenator factory maker service.
+	 * @param hyphenator the instance to unset.
+	 */
 	public void unsetHyphenator(HyphenatorFactoryMakerService hyphenator) {
 		this.hyphenator = null;
 	}
