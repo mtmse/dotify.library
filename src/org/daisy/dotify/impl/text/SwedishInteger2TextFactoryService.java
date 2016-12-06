@@ -9,6 +9,10 @@ import org.daisy.dotify.api.text.Integer2TextFactoryService;
 
 import aQute.bnd.annotation.component.Component;
 
+/**
+ * Provides a Swedish integer to text implementation.
+ * @author Joel Håkansson
+ */
 @Component
 public class SwedishInteger2TextFactoryService implements
 		Integer2TextFactoryService {

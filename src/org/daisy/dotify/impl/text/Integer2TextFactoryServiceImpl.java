@@ -8,6 +8,10 @@ import org.daisy.dotify.api.text.Integer2TextFactoryService;
 
 import aQute.bnd.annotation.component.Component;
 
+/**
+ * Provides an integer to text factory service.
+ * @author Joel Håkansson
+ */
 @Component
 public class Integer2TextFactoryServiceImpl implements Integer2TextFactoryService {
 	

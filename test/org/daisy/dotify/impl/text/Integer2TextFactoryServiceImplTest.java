@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import org.daisy.dotify.api.text.Integer2TextConfigurationException;
 import org.junit.Test;
 
+@SuppressWarnings("javadoc")
 public class Integer2TextFactoryServiceImplTest {
 
 	@Test

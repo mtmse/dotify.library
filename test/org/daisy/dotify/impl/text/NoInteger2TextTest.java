@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.daisy.dotify.api.text.IntegerOutOfRange;
 import org.junit.Test;
 
+@SuppressWarnings("javadoc")
 public class NoInteger2TextTest {
 	private BasicInteger2Text int2text = new NoInt2TextLocalization();
 
