@@ -81,7 +81,7 @@ abstract class BasicInteger2Text implements Integer2Text {
 
 	private String intToTextInner(int value) throws IntegerOutOfRange {
 		if (value >= 10000) {
-			throw new IntegerOutOfRange();
+			throw new IntegerOutOfRange("Value out of range: " + value);
 		} else if (value < 0) {
 			return formatNegative(intToTextInner(-value));
 		} else {
