@@ -46,12 +46,7 @@ public class RegexMarkerDictionary implements MarkerDictionary {
 	 */
 	public static class Builder {
 		private final Map<Pattern, MarkerPair> patterns;
-		private TextAttributeFilter filter = new TextAttributeFilter() {
-			@Override
-			public boolean appliesTo(TextAttribute atts) {
-				return true;
-			}
-		};
+		private TextAttributeFilter filter = atts -> true;
 
 		/**
 		 * Creates a new builder. Note that, for the resulting object
