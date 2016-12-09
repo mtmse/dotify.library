@@ -35,12 +35,12 @@ class SwedishBrailleTranslatorFactory implements BrailleTranslatorFactory {
 
 			return new SimpleBrailleTranslator(
 					new DefaultBrailleFilter(new SwedishBrailleFilter(), sv_SE, sap, hyphenatorService),
-					new SwedishBrailleFinalizer(), sv_SE, mode);
+					new SwedishBrailleFinalizer(), mode);
 		} else if (sv_SE.equalsIgnoreCase(locale) && mode.equals(PRE_TRANSLATED)) {
 			return new SimpleBrailleTranslator(
 					new PreTranslatedBrailleFilter(),
 					new SwedishBrailleFinalizer(),
-					sv_SE, mode);
+					mode);
 		}
 		throw new SwedishTranslatorConfigurationException("Factory does not support " + locale + "/" + mode);
 	}

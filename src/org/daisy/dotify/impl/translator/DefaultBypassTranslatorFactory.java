@@ -22,7 +22,7 @@ class DefaultBypassTranslatorFactory implements BrailleTranslatorFactory {
 		} else if (mode.equals(MODE_BYPASS)) {
 			return new SimpleBrailleTranslator(
 					new DefaultBrailleFilter(new IdentityFilter(), locale, hyphenatorService),
-					locale, mode);
+					mode);
 		}
 		throw new DefaultBypassTranslatorConfigurationException("Factory does not support " + locale + "/" + mode);
 	}
