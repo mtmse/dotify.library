@@ -117,10 +117,20 @@ public final class SplitPointDataList<T extends SplitPointUnit> implements Split
 	public SplitPointDataSource<T> tail(int n) {
 		return new SplitPointDataList<T>(units, supplements, offset+n);
 	}
+	
+	@Override
+	public SplitResult<T> split(int atIndex) {
+		return new SplitResult<T>(head(atIndex), tail(atIndex));
+	}
 
 	@Override
 	public int getSize(int limit) {
 		return Math.min(this.units.size()-offset, limit);
+	}
+
+	@Override
+	public boolean supportsReuse() {
+		return true;
 	}
 
 }

@@ -21,13 +21,15 @@ public interface SplitPointDataSource<T extends SplitPointUnit> {
 	 * @throws IndexOutOfBoundsException if the index is beyond the end of the stream
 	 */
 	public T get(int index);
-	
+
 	/**
 	 * Gets the items before index.
 	 * @param toIndex the index, exclusive
 	 * @return returns a head list
 	 * @throws IndexOutOfBoundsException if the index is beyond the end of the stream
+	 * @deprecated use {@link #split(int)}
 	 */
+	@Deprecated
 	public List<T> head(int toIndex);
 	
 	/**
@@ -43,8 +45,19 @@ public interface SplitPointDataSource<T extends SplitPointUnit> {
 	 * @param fromIndex the starting index, inclusive
 	 * @return returns a new split point data source starting from fromIndex
 	 * @throws IndexOutOfBoundsException if the index is beyond the end of the stream
+	 * @deprecated use {@link #split(int)}
 	 */
+	@Deprecated
 	public SplitPointDataSource<T> tail(int fromIndex);
+	
+	/**
+	 * Gets the result of splitting at the specified index.
+	 * @param atIndex the index where the tail starts
+	 * @return returns a split result at the specified index
+	 * @throws ReuseNotSupportedException if the implementation
+	 * 		   does not support reuse 
+	 */
+	public SplitResult<T> split(int atIndex);
 	
 	/**
 	 * Returns true if the manager has an element at the specified index
@@ -73,5 +86,14 @@ public interface SplitPointDataSource<T extends SplitPointUnit> {
 	 * @return the supplements
 	 */
 	public Supplements<T> getSupplements();
+	
+	/**
+	 * Returns true if reuse is supported, false otherwise.
+	 * Multiple calls to {@link #split(int)} or {@link #getRemaining()} 
+	 * is considered reuse.
+	 * 
+	 * @return returns true if reuse is supported, false otherwise.
+	 */
+	public boolean supportsReuse();
 
 }
