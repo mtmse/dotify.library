@@ -115,6 +115,7 @@ public class SplitPointHandler<T extends SplitPointUnit> {
 	/**
 	 * Splits the data according to the supplied specification. A specification can be created by using 
 	 * {@link #find(float, SplitPointDataSource, SplitPointCost, SplitOption...)} on the data source.
+	 * No data is beyond the specified split point is produced using this method.
 	 * 
 	 * @param spec the specification
 	 * @param data the data
@@ -131,6 +132,10 @@ public class SplitPointHandler<T extends SplitPointUnit> {
 		} else {
 			return makeBreakpoint(data, spec);
 		}
+	}
+	
+	public SplitPointSpecification find(float breakPoint, SplitPointDataSource<T> data, SplitOption ... options) {
+		return find(breakPoint, data, defaultCost, options);
 	}
 
 	/**
@@ -278,6 +283,7 @@ public class SplitPointHandler<T extends SplitPointUnit> {
 	
 	/**
 	 * Skips leading units in the supplied list. The result is backed by the original data source.
+	 * No data is beyond index is produced using this method.  
 	 * @param in the list to trim
 	 * @param index the index of the split point
 	 * @return a split point, the leading units are placed in {@link SplitPoint#getDiscarded()}, the
