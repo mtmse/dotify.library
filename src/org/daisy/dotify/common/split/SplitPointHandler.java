@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.daisy.dotify.common.collection.SplitList;
+import org.daisy.dotify.common.split.SplitPointSpecification.Type;
 
 
 /**
@@ -90,25 +91,45 @@ public class SplitPointHandler<T extends SplitPointUnit> {
 	 * @throws IllegalArgumentException if cost is null
 	 */
 	public SplitPoint<T> split(float breakPoint, SplitPointDataSource<T> data, SplitPointCost<T> cost, SplitOption ... options) {
+		SplitPointSpecification spec = find(breakPoint, data, cost, options);
+		SplitOptions opts = SplitOptions.parse(options);
+		if (cost==null) {
+			throw new IllegalArgumentException("Null cost not allowed.");
+		}
+		if (spec.getType()==Type.EMPTY) {
+			// pretty simple...
+			return new SplitPoint<>(EMPTY_LIST, EMPTY_LIST, SplitPointDataList.emptyManager(), EMPTY_LIST, false);
+		} else if (spec.getType()==Type.NONE) {
+			return emptyHead(data);
+		} else if (spec.getType()==Type.ALL) {
+			return finalizeBreakpointTrimTail(new SplitList<>(data.getRemaining(), EMPTY_LIST), SplitPointDataList.emptyManager(), data.getSupplements(), false);
+		} else {
+			return makeBreakpoint(data, spec, cost, opts.trimTrailing);
+		}
+	}
+	
+	public SplitPointSpecification find(float breakPoint, SplitPointDataSource<T> data, SplitPointCost<T> cost, SplitOption ... options) {
 		SplitOptions opts = SplitOptions.parse(options);
 		if (cost==null) {
 			throw new IllegalArgumentException("Null cost not allowed.");
 		}
 		if (data.isEmpty()) {
 			// pretty simple...
-			return new SplitPoint<>(EMPTY_LIST, EMPTY_LIST, SplitPointDataList.emptyManager(), EMPTY_LIST, false);
+			return SplitPointSpecification.empty();
 		} else if (breakPoint<=0) {
-			return emptyHead(data);
+			return SplitPointSpecification.none();
 		} else if (fits(data, breakPoint)) {
-			return finalizeBreakpointTrimTail(new SplitList<>(data.getRemaining(), EMPTY_LIST), SplitPointDataList.emptyManager(), data.getSupplements(), false);
+			return SplitPointSpecification.all();
 		} else {
 			int startPos = findCollapse(data, new SizeStep<>(breakPoint, data.getSupplements()));
+			// If no units are returned here it's because even the first unit doesn't fit.
+			// Therefore, force will not help.
 			if (startPos<0) {
-				return emptyHead(data);
+				return SplitPointSpecification.none();
 			} else {
 				return findBreakpoint(data, opts.useForce, startPos, cost, opts.trimTrailing);
 			}
-		}
+		}		
 	}
 	
 	private static class SplitOptions {
@@ -135,23 +156,31 @@ public class SplitPointHandler<T extends SplitPointUnit> {
 	private SplitPoint<T> emptyHead(SplitPointDataSource<T> data) {
 		return finalizeBreakpointTrimTail(new SplitList<>(EMPTY_LIST, EMPTY_LIST), data, data.getSupplements(), false);
 	}
-
-	private SplitPoint<T> findBreakpoint(SplitPointDataSource<T> data, boolean force, int startPos, SplitPointCost<T> cost, boolean trimTrailing) {
+	
+	private SplitPointSpecification findBreakpoint(SplitPointDataSource<T> data, boolean force, int startPos, SplitPointCost<T> cost, boolean trimTrailing) {
 		Supplements<T> map = data.getSupplements();
 		int strPos = forwardSkippable(data, startPos);
 		// check next unit to see if it can be removed.
 		if (!data.hasElementAt(strPos+1)) { // last unit?
+			return SplitPointSpecification.all();
+		} else {
+			return findBreakpointFromPosition(data, strPos, map, force, cost, trimTrailing);
+		}
+	}
+
+	private SplitPoint<T> makeBreakpoint(SplitPointDataSource<T> data, SplitPointSpecification spec, SplitPointCost<T> cost, boolean trimTrailing) {
+		Supplements<T> map = data.getSupplements();
+		if (spec.getType()==Type.FORWARD_ALL) { // last unit?
 			SplitResult<T> res = new SplitResult<T>(data.getRemaining(), new SplitPointDataList<T>());
 			return finalizeBreakpointFull(res, map, false, trimTrailing);
 		} else {
-			return newBreakpointFromPosition(data, strPos, map, force, cost, trimTrailing);
+			return newBreakpointFromPosition(data, spec, map, cost, trimTrailing);
 		}
 	}
 	
-	private SplitPoint<T> newBreakpointFromPosition(SplitPointDataSource<T> data, int strPos, Supplements<T> map, boolean force, SplitPointCost<T> cost, boolean trimTrailing) {
+	private SplitPointSpecification findBreakpointFromPosition(SplitPointDataSource<T> data, int strPos, Supplements<T> map, boolean force, SplitPointCost<T> cost, boolean trimTrailing) {
 		// back up
 		BreakPointScannerResult result=findBreakpointBefore(data, strPos, cost);
-		SplitResult<T> split;
 		boolean hard = false;
 		int tailStart;
 		if (result.bestBreakable!=result.bestSplitPoint) { // no breakable found, break hard 
@@ -164,13 +193,16 @@ public class SplitPointHandler<T extends SplitPointUnit> {
 		} else {
 			tailStart = result.bestBreakable+1;
 		}
-		split = getResult(data, tailStart);
-		return finalizeBreakpointFull(split, map, hard, trimTrailing);
+		return new SplitPointSpecification(tailStart, hard);
+	}
+
+	
+	private SplitPoint<T> newBreakpointFromPosition(SplitPointDataSource<T> data, SplitPointSpecification spec, Supplements<T> map, SplitPointCost<T> cost, boolean trimTrailing) {
+		SplitResult<T> split = getResult(data, spec.getIndex());
+		return finalizeBreakpointFull(split, map, spec.isHard(), trimTrailing);
 	}
 	
 	private SplitPoint<T> finalizeBreakpointFull(SplitResult<T> result, Supplements<T> map, boolean hard, boolean trimTrailing) {
-		//SplitPointDataSource<T> tail = getTail(data, tailStart);
-
 		if (trimTrailing) {
 			return finalizeBreakpointTrimTail(trimTrailing(result.head()), result.tail(), map, hard);
 		} else {
