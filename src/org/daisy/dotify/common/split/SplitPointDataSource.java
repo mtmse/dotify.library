@@ -86,14 +86,5 @@ public interface SplitPointDataSource<T extends SplitPointUnit> {
 	 * @return the supplements
 	 */
 	public Supplements<T> getSupplements();
-	
-	/**
-	 * Returns true if reuse is supported, false otherwise.
-	 * Multiple calls to {@link #split(int)} or {@link #getRemaining()} 
-	 * is considered reuse.
-	 * 
-	 * @return returns true if reuse is supported, false otherwise.
-	 */
-	public boolean supportsReuse();
 
 }

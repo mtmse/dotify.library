@@ -105,10 +105,12 @@ public final class SplitPointDataList<T extends SplitPointUnit> implements Split
 		return this.units.get(offset+n);
 	}
 	
+	@Override
 	public List<T> head(int n) {
 		return this.units.subList(offset, offset+n);
 	}
 	
+	@Override
 	public List<T> getRemaining() {
 		return this.units.subList(offset, units.size());
 	}
@@ -126,11 +128,6 @@ public final class SplitPointDataList<T extends SplitPointUnit> implements Split
 	@Override
 	public int getSize(int limit) {
 		return Math.min(this.units.size()-offset, limit);
-	}
-
-	@Override
-	public boolean supportsReuse() {
-		return true;
 	}
 
 }

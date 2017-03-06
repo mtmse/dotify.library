@@ -16,6 +16,11 @@ import org.daisy.dotify.common.split.SplitPointSpecification.Type;
  *
  * @param <T> the type of split point units
  */
+/**
+ * @author Joel Håkansson
+ *
+ * @param <T>
+ */
 public class SplitPointHandler<T extends SplitPointUnit> {
 	private final List<T> EMPTY_LIST = Collections.emptyList();
 	private final SplitPointCost<T> defaultCost = new SplitPointCost<T>() {
@@ -92,7 +97,6 @@ public class SplitPointHandler<T extends SplitPointUnit> {
 	 */
 	public SplitPoint<T> split(float breakPoint, SplitPointDataSource<T> data, SplitPointCost<T> cost, SplitOption ... options) {
 		SplitPointSpecification spec = find(breakPoint, data, cost, options);
-		SplitOptions opts = SplitOptions.parse(options);
 		if (cost==null) {
 			throw new IllegalArgumentException("Null cost not allowed.");
 		}
@@ -102,12 +106,44 @@ public class SplitPointHandler<T extends SplitPointUnit> {
 		} else if (spec.getType()==Type.NONE) {
 			return emptyHead(data);
 		} else if (spec.getType()==Type.ALL) {
-			return finalizeBreakpointTrimTail(new SplitList<>(data.getRemaining(), EMPTY_LIST), SplitPointDataList.emptyManager(), data.getSupplements(), false);
+			return finalizeBreakpoint(new SplitList<>(data.getRemaining(), EMPTY_LIST), SplitPointDataList.emptyManager(), data.getSupplements(), false);
 		} else {
-			return makeBreakpoint(data, spec, cost, opts.trimTrailing);
+			return makeBreakpoint(data, spec);
 		}
 	}
 	
+	/**
+	 * Splits the data according to the supplied specification. A specification can be created by using 
+	 * {@link #find(float, SplitPointDataSource, SplitPointCost, SplitOption...)} on the data source.
+	 * 
+	 * @param spec the specification
+	 * @param data the data
+	 * @return returns a split point result
+	 */
+	public SplitPoint<T> split(SplitPointSpecification spec, SplitPointDataSource<T> data) {
+		if (spec.getType()==Type.EMPTY) {
+			// pretty simple...
+			return new SplitPoint<>(EMPTY_LIST, EMPTY_LIST, SplitPointDataList.emptyManager(), EMPTY_LIST, false);
+		} else if (spec.getType()==Type.NONE) {
+			return emptyHead(data);
+		} else if (spec.getType()==Type.ALL) {
+			return finalizeBreakpoint(new SplitList<>(data.getRemaining(), EMPTY_LIST), SplitPointDataList.emptyManager(), data.getSupplements(), false);
+		} else {
+			return makeBreakpoint(data, spec);
+		}
+	}
+
+	/**
+	 * Finds a split point at, or before, the supplied breakPoint according to the rules
+	 * in the data. If force is used, rules may be broken to achieve a result.
+	 * 
+	 * @param breakPoint the split point
+	 * @param data the data to split
+	 * @param cost the cost function used when determining the optimal <i>forced</i> split point. In other words,
+	 * 		 the cost function is only used if there are no breakable units available.
+	 * @param options the split options
+	 * @return returns a split point specification
+	 */
 	public SplitPointSpecification find(float breakPoint, SplitPointDataSource<T> data, SplitPointCost<T> cost, SplitOption ... options) {
 		SplitOptions opts = SplitOptions.parse(options);
 		if (cost==null) {
@@ -154,7 +190,7 @@ public class SplitPointHandler<T extends SplitPointUnit> {
 	}
 	
 	private SplitPoint<T> emptyHead(SplitPointDataSource<T> data) {
-		return finalizeBreakpointTrimTail(new SplitList<>(EMPTY_LIST, EMPTY_LIST), data, data.getSupplements(), false);
+		return finalizeBreakpoint(new SplitList<>(EMPTY_LIST, EMPTY_LIST), data, data.getSupplements(), false);
 	}
 	
 	private SplitPointSpecification findBreakpoint(SplitPointDataSource<T> data, boolean force, int startPos, SplitPointCost<T> cost, boolean trimTrailing) {
@@ -168,13 +204,14 @@ public class SplitPointHandler<T extends SplitPointUnit> {
 		}
 	}
 
-	private SplitPoint<T> makeBreakpoint(SplitPointDataSource<T> data, SplitPointSpecification spec, SplitPointCost<T> cost, boolean trimTrailing) {
+	private SplitPoint<T> makeBreakpoint(SplitPointDataSource<T> data, SplitPointSpecification spec) {
 		Supplements<T> map = data.getSupplements();
 		if (spec.getType()==Type.FORWARD_ALL) { // last unit?
 			SplitResult<T> res = new SplitResult<T>(data.getRemaining(), new SplitPointDataList<T>());
-			return finalizeBreakpointFull(res, map, false, trimTrailing);
+			return finalizeBreakpointFull(res, map, false, spec.shouldTrimTrailing());
 		} else {
-			return newBreakpointFromPosition(data, spec, map, cost, trimTrailing);
+			SplitResult<T> split = getResult(data, spec.getIndex());
+			return finalizeBreakpointFull(split, map, spec.isHard(), spec.shouldTrimTrailing());
 		}
 	}
 	
@@ -193,24 +230,18 @@ public class SplitPointHandler<T extends SplitPointUnit> {
 		} else {
 			tailStart = result.bestBreakable+1;
 		}
-		return new SplitPointSpecification(tailStart, hard);
+		return new SplitPointSpecification(tailStart, hard, trimTrailing);
 	}
 
-	
-	private SplitPoint<T> newBreakpointFromPosition(SplitPointDataSource<T> data, SplitPointSpecification spec, Supplements<T> map, SplitPointCost<T> cost, boolean trimTrailing) {
-		SplitResult<T> split = getResult(data, spec.getIndex());
-		return finalizeBreakpointFull(split, map, spec.isHard(), trimTrailing);
-	}
-	
 	private SplitPoint<T> finalizeBreakpointFull(SplitResult<T> result, Supplements<T> map, boolean hard, boolean trimTrailing) {
 		if (trimTrailing) {
-			return finalizeBreakpointTrimTail(trimTrailing(result.head()), result.tail(), map, hard);
+			return finalizeBreakpoint(trimTrailing(result.head()), result.tail(), map, hard);
 		} else {
-			return finalizeBreakpointTrimTail(new SplitList<>(result.head(), EMPTY_LIST), result.tail(), map, hard);
+			return finalizeBreakpoint(new SplitList<>(result.head(), EMPTY_LIST), result.tail(), map, hard);
 		}
 	}
 
-	private SplitPoint<T> finalizeBreakpointTrimTail(SplitList<T> head, SplitPointDataSource<T> tail, Supplements<T> map, boolean hard) {
+	private SplitPoint<T> finalizeBreakpoint(SplitList<T> head, SplitPointDataSource<T> tail, Supplements<T> map, boolean hard) {
 		TrimStep<T> trimmed = new TrimStep<>(map);
 		findCollapse(new SplitPointDataList<T>(head.getFirstPart()), trimmed);
 		List<T> discarded = trimmed.getDiscarded();
@@ -236,10 +267,9 @@ public class SplitPointHandler<T extends SplitPointUnit> {
 		}
 		return SplitList.split(in, i);
 	}
-	
-	
+
 	/**
-	 * Trims leading skippable units in the supplied list. The result is backed by the
+	 * Trims leading skippable units in the supplied data source. The result is backed by the
 	 * original data source.
 	 * 
 	 * @param in the list to trim
@@ -248,14 +278,34 @@ public class SplitPointHandler<T extends SplitPointUnit> {
 	 * remainder are placed in {@link SplitPoint#getTail()}
 	 */
 	public static <T extends SplitPointUnit> SplitPoint<T> trimLeading(SplitPointDataSource<T> in) {
+		return skipLeading(in, findLeading(in));
+	}
+	
+	/**
+	 * Skips leading units in the supplied list. The result is backed by the original data source.
+	 * @param in the list to trim
+	 * @param index the index of the split point
+	 * @return a split point, the leading units are placed in {@link SplitPoint#getDiscarded()}, the
+	 * remainder are placed in {@link SplitPoint#getTail()}
+	 */
+	public static <T extends SplitPointUnit> SplitPoint<T> skipLeading(SplitPointDataSource<T> in, int index) {
+		SplitResult<T> res = in.split(index);
+		return new SplitPoint<T>(null, null, res.tail(), res.head(), false);
+	}
+	
+	/**
+	 * Finds leading skippable units in the supplied data source.
+	 * @param in the data source to search
+	 * @return returns the index of the first non-skippable unit
+	 */
+	public static <T extends SplitPointUnit> int findLeading(SplitPointDataSource<T> in) {
 		int i;
 		for (i = 0; in.hasElementAt(i); i++) {
 			if (!in.get(i).isSkippable()) {
 				break;
 			}
-		}
-		SplitResult<T> res = in.split(i);
-		return new SplitPoint<T>(null, null, res.tail(), res.head(), false);
+		};
+		return i;
 	}
 
 	static <T extends SplitPointUnit> T maxSize(T u1, T u2) {

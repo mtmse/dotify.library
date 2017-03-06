@@ -15,6 +15,7 @@ public class SplitPointSpecification {
 	private final int index;
 	private final boolean hard;
 	private final Type type;
+	private final boolean trimTrailing;
 
 	private SplitPointSpecification(Type type) {
 		if (type==Type.INDEX) {
@@ -23,49 +24,55 @@ public class SplitPointSpecification {
 		this.type = type;
 		this.hard = false;
 		this.index = -1;
+		this.trimTrailing = false;
 	}
 
-	public SplitPointSpecification(int index, boolean hard) {
+	SplitPointSpecification(int index, boolean hard, boolean trimTrailing) {
 		if (index<0) {
 			throw new IllegalArgumentException("Index out of bounds: " + index);
 		}
 		this.type = Type.INDEX;
 		this.hard = hard;
 		this.index = index;
+		this.trimTrailing = trimTrailing;
 	}
 	
-	public static SplitPointSpecification none() {
+	static SplitPointSpecification none() {
 		return INSTANCE_NONE;
 	}
 	
-	public static SplitPointSpecification empty() {
+	static SplitPointSpecification empty() {
 		return INSTANCE_EMPTY;
 	}
 	
-	public static SplitPointSpecification all() {
+	static SplitPointSpecification all() {
 		return INSTANCE_ALL;
 	}
 	
-	public static SplitPointSpecification forwardAll() {
+	static SplitPointSpecification forwardAll() {
 		return INSTANCE_FORWARD_ALL;
 	}
 	
-	public Type getType() {
+	Type getType() {
 		return type;
 	}
 		
-	public int getIndex() {
+	int getIndex() {
 		if (type!=Type.INDEX) {
 			throw new IllegalStateException("This type doesn't support this method.");
 		}
 		return index;
 	}
 	
-	public boolean isHard() {
+	boolean isHard() {
 		if (type!=Type.INDEX) {
 			throw new IllegalStateException("This type doesn't support this method.");
 		}
 		return hard;
+	}
+	
+	boolean shouldTrimTrailing() {
+		return trimTrailing;
 	}
 
 }
