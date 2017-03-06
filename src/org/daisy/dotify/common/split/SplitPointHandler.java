@@ -154,25 +154,17 @@ public class SplitPointHandler<T extends SplitPointUnit> {
 		SplitResult<T> split;
 		boolean hard = false;
 		int tailStart;
-		List<T> head;
-		SplitPointDataSource<T> tail;
 		if (result.bestBreakable!=result.bestSplitPoint) { // no breakable found, break hard 
 			if (force) {
 				hard = true;
-				head = data.head(result.bestSplitPoint+1);
 				tailStart = result.bestSplitPoint+1;
-				tail = getTail(data, tailStart);
 			} else {
-				head = EMPTY_LIST;
 				tailStart = 0;
-				tail = getTail(data, tailStart);
 			}
 		} else {
-			head = data.head(result.bestBreakable+1);
 			tailStart = result.bestBreakable+1;
-			tail = getTail(data, tailStart);
 		}
-		split = new SplitResult<T>(head, tail);
+		split = getResult(data, tailStart);
 		return finalizeBreakpointFull(split, map, hard, trimTrailing);
 	}
 	
@@ -248,12 +240,13 @@ public class SplitPointHandler<T extends SplitPointUnit> {
 		return SplitList.split(in, i+1);
 	}
 	
-	@Deprecated
-	static <T extends SplitPointUnit> SplitPointDataSource<T> getTail(SplitPointDataSource<T> data, int tailStart) {
-		if (data.hasElementAt(tailStart)) {
-			return data.tail(tailStart);
+	static <T extends SplitPointUnit> SplitResult<T> getResult(SplitPointDataSource<T> data, int tailStart) {
+		if (tailStart==0) {
+			return new SplitResult<T>(Collections.emptyList(), data);
+		} else if (data.hasElementAt(tailStart)) {
+			return data.split(tailStart);
 		} else {
-			return SplitPointDataList.emptyManager();
+			return new SplitResult<T>(data.getRemaining(), SplitPointDataList.emptyManager());
 		}
 	}
 	
