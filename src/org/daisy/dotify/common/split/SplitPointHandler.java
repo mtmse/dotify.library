@@ -206,13 +206,8 @@ public class SplitPointHandler<T extends SplitPointUnit> {
 
 	private SplitPoint<T> makeBreakpoint(SplitPointDataSource<T> data, SplitPointSpecification spec) {
 		Supplements<T> map = data.getSupplements();
-		if (spec.getType()==Type.FORWARD_ALL) { // last unit?
-			SplitResult<T> res = new SplitResult<T>(data.getRemaining(), new SplitPointDataList<T>());
-			return finalizeBreakpointFull(res, map, false, spec.shouldTrimTrailing());
-		} else {
-			SplitResult<T> split = getResult(data, spec.getIndex());
-			return finalizeBreakpointFull(split, map, spec.isHard(), spec.shouldTrimTrailing());
-		}
+		SplitResult<T> split = getResult(data, spec.getIndex());
+		return finalizeBreakpointFull(split, map, spec.isHard(), spec.shouldTrimTrailing());
 	}
 	
 	private SplitPointSpecification findBreakpointFromPosition(SplitPointDataSource<T> data, int strPos, Supplements<T> map, boolean force, SplitPointCost<T> cost, boolean trimTrailing) {

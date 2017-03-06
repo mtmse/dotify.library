@@ -3,7 +3,6 @@ package org.daisy.dotify.common.split;
 public class SplitPointSpecification {
 	enum Type {
 		ALL,
-		FORWARD_ALL,
 		NONE,
 		EMPTY,
 		INDEX;
@@ -11,7 +10,6 @@ public class SplitPointSpecification {
 	private static final SplitPointSpecification INSTANCE_NONE = new SplitPointSpecification(Type.NONE);
 	private static final SplitPointSpecification INSTANCE_EMPTY = new SplitPointSpecification(Type.EMPTY);
 	private static final SplitPointSpecification INSTANCE_ALL = new SplitPointSpecification(Type.ALL);
-	private static final SplitPointSpecification INSTANCE_FORWARD_ALL = new SplitPointSpecification(Type.FORWARD_ALL);
 	private final int index;
 	private final boolean hard;
 	private final Type type;
@@ -48,11 +46,7 @@ public class SplitPointSpecification {
 	static SplitPointSpecification all() {
 		return INSTANCE_ALL;
 	}
-	
-	static SplitPointSpecification forwardAll() {
-		return INSTANCE_FORWARD_ALL;
-	}
-	
+
 	Type getType() {
 		return type;
 	}
