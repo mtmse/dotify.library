@@ -326,7 +326,7 @@ public class SplitPointHandler<T extends SplitPointUnit> {
 	static <T extends SplitPointUnit> SplitResult<T> getResult(SplitPointDataSource<T> data, int tailStart) {
 		if (tailStart==0) {
 			return new SplitResult<T>(Collections.emptyList(), data);
-		} else if (data.hasElementAt(tailStart)) {
+		} else if (data.hasElementAt(tailStart-1)) {
 			return data.split(tailStart);
 		} else {
 			return new SplitResult<T>(data.getRemaining(), SplitPointDataList.emptyManager());
