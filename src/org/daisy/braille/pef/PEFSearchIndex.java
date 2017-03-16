@@ -4,6 +4,14 @@ package org.daisy.braille.pef;
 public class PEFSearchIndex extends SearchIndex<PEFBook> {
     private static final String REGEX = "[\\s\\.,:/-]";
 
+	public PEFSearchIndex() {
+		super();
+	}
+
+	public PEFSearchIndex(int exclude) {
+		super(exclude);
+	}
+
 	public void add(PEFBook p) {
 		for (String key : p.getMetadataKeys()) {
 			for (String val : p.getMetadata(key)) {
