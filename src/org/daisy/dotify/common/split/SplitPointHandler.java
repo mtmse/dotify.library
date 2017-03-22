@@ -19,7 +19,7 @@ import org.daisy.dotify.common.split.SplitPointSpecification.Type;
 /**
  * @author Joel Håkansson
  *
- * @param <T>
+ * @param <T> the type of object
  */
 public class SplitPointHandler<T extends SplitPointUnit> {
 	private final List<T> EMPTY_LIST = Collections.emptyList();
@@ -286,6 +286,7 @@ public class SplitPointHandler<T extends SplitPointUnit> {
 	 * No data is beyond index is produced using this method.  
 	 * @param in the list to trim
 	 * @param index the index of the split point
+	 * @param <T> the type of object
 	 * @return a split point, the leading units are placed in {@link SplitPoint#getDiscarded()}, the
 	 * remainder are placed in {@link SplitPoint#getTail()}
 	 */
@@ -297,6 +298,7 @@ public class SplitPointHandler<T extends SplitPointUnit> {
 	/**
 	 * Finds leading skippable units in the supplied data source.
 	 * @param in the data source to search
+	 * @param <T> the type of object
 	 * @return returns the index of the first non-skippable unit
 	 */
 	public static <T extends SplitPointUnit> int findLeading(SplitPointDataSource<T> in) {

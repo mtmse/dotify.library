@@ -54,8 +54,6 @@ public interface SplitPointDataSource<T extends SplitPointUnit> {
 	 * Gets the result of splitting at the specified index.
 	 * @param atIndex the index where the tail starts
 	 * @return returns a split result at the specified index
-	 * @throws ReuseNotSupportedException if the implementation
-	 * 		   does not support reuse 
 	 */
 	public SplitResult<T> split(int atIndex);
 	
