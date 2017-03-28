@@ -1,6 +1,7 @@
 package org.daisy.braille.pef;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.ArrayList;
@@ -81,21 +82,23 @@ class StaxPEFBook {
 		maxWidth = 0;
 		maxHeight = 0;
 		containsEightDot = false;
-		reader = inFactory.createXMLEventReader(uri.toURL().openStream());
-		
-		while (reader.hasNext()) {
-			event = reader.nextEvent();
-			if (event.getEventType()==XMLStreamConstants.START_ELEMENT) {
-				if (volume.equals(event.asStartElement().getName())) {
-					scanVolume();
-				} else if (meta.equals(event.asStartElement().getName())) {
-					scanMeta();
+		try (InputStream is = uri.toURL().openStream()) {
+			reader = inFactory.createXMLEventReader(is);
+			
+			while (reader.hasNext()) {
+				event = reader.nextEvent();
+				if (event.getEventType()==XMLStreamConstants.START_ELEMENT) {
+					if (volume.equals(event.asStartElement().getName())) {
+						scanVolume();
+					} else if (meta.equals(event.asStartElement().getName())) {
+						scanMeta();
+					}
+				} else if (event.getEventType()==XMLStreamConstants.START_DOCUMENT) {
+					StartDocument sd = (StartDocument)event;
+	            	if (sd.encodingSet()) {
+	            	    encoding = sd.getCharacterEncodingScheme();
+	            	}
 				}
-			} else if (event.getEventType()==XMLStreamConstants.START_DOCUMENT) {
-				StartDocument sd = (StartDocument)event;
-            	if (sd.encodingSet()) {
-            	    encoding = sd.getCharacterEncodingScheme();
-            	}
 			}
 		}
 		if (evenLast) {
