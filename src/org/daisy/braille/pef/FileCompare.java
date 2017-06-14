@@ -96,9 +96,8 @@ public class FileCompare {
 	 * @throws IOException if IO fails
 	 */
 	public boolean compareBinary(InputStream f1, InputStream f2) throws IOException {
-		InputStream bf1 = new BufferedInputStream(f1);
-		InputStream bf2 = new BufferedInputStream(f2);
-		try {
+		try (	InputStream bf1 = new BufferedInputStream(f1);
+				InputStream bf2 = new BufferedInputStream(f2) ){
 			int b1;
 			int b2;
 			pos = 0;
@@ -111,9 +110,6 @@ public class FileCompare {
 			}
 			pos = -1;
 			return true;
-		} finally {
-			bf1.close();
-			bf2.close();
 		}
 	}
 }

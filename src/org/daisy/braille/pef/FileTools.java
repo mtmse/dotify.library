@@ -43,15 +43,13 @@ public class FileTools {
 	 * @throws IOException if IO fails
 	 */
 	public static void copy(InputStream is, OutputStream os) throws IOException {
-		InputStream bis = new BufferedInputStream(is);
-		OutputStream bos = new BufferedOutputStream(os);
-		int b;
-		while ((b = bis.read())!=-1) {
-			bos.write(b);
+		try (	InputStream bis = new BufferedInputStream(is);
+				OutputStream bos = new BufferedOutputStream(os)) {
+			int b;
+			while ((b = bis.read())!=-1) {
+				bos.write(b);
+			}
 		}
-		bos.flush();
-		bos.close();
-		bis.close();
 	}
 	
 	/**

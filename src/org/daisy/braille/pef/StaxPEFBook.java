@@ -21,24 +21,23 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 class StaxPEFBook {
-	private static final Pattern eightDotPattern = Pattern.compile("[\u2840-\u28ff]");
+	private static final Pattern EIGHT_DOT_PATTERN = Pattern.compile("[\u2840-\u28ff]");
 	
-	private static final String pefns = "http://www.daisy.org/ns/2008/pef";
-	private static final String dcns = "http://purl.org/dc/elements/1.1/";
-	private static final QName meta = new QName(pefns, "meta");
-	private static final QName volume = new QName(pefns, "volume");
-	private static final QName section = new QName(pefns, "section");
-	private static final QName page = new QName(pefns, "page");
-	private static final QName row = new QName(pefns, "row");
+	private static final String PEF_NS = "http://www.daisy.org/ns/2008/pef";
+	private static final String DC_NS = "http://purl.org/dc/elements/1.1/";
+	private static final QName META_TAG = new QName(PEF_NS, "meta");
+	private static final QName VOLUME_TAG = new QName(PEF_NS, "volume");
+	private static final QName SECTION_TAG = new QName(PEF_NS, "section");
+	private static final QName PAGE_TAG = new QName(PEF_NS, "page");
+	private static final QName ROW_TAG = new QName(PEF_NS, "row");
 	
-	private static final QName rowsqn = new QName("rows");
-	private static final QName colsqn = new QName("cols");
-	private static final QName duplexqn = new QName("duplex");
+	private static final QName ROWS_ATTR = new QName("rows");
+	private static final QName COLS_ATTR = new QName("cols");
+	private static final QName DUPLEX_ATTR = new QName("duplex");
 	
 	private final XMLInputFactory inFactory;
 	private XMLEventReader reader;
-	
-	private String encoding;
+
 	private int volumes;
 	private int sectionNumber;
 	private int pages;
@@ -71,22 +70,18 @@ class StaxPEFBook {
 		try {
 			spb.compatibilityMode = compatibilityMode;
 			return spb.parse(uri);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (XMLStreamException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (XMLStreamException | IOException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 
-	private PEFBook parse(URI uri) throws MalformedURLException, XMLStreamException, IOException {
-		encoding = null;
+	private PEFBook parse(URI uri) throws XMLStreamException, IOException {
+		String encoding = null;
 		volumes = 0;
 		pages = 0;
 		pageTags = 0;
-		metadata = new HashMap<String, List<String>>();
+		metadata = new HashMap<>();
 		started = new HashMap<>();
 		sectionsInVolume = new ArrayList<>();
 		maxWidth = 0;
@@ -98,9 +93,9 @@ class StaxPEFBook {
 			while (reader.hasNext()) {
 				event = reader.nextEvent();
 				if (event.getEventType()==XMLStreamConstants.START_ELEMENT) {
-					if (volume.equals(event.asStartElement().getName())) {
+					if (VOLUME_TAG.equals(event.asStartElement().getName())) {
 						scanVolume();
-					} else if (meta.equals(event.asStartElement().getName())) {
+					} else if (META_TAG.equals(event.asStartElement().getName())) {
 						scanMeta();
 					}
 				} else if (event.getEventType()==XMLStreamConstants.START_DOCUMENT) {
@@ -125,7 +120,7 @@ class StaxPEFBook {
 	}
 	
 	private void scanMeta() throws XMLStreamException {
-		if (!(event.getEventType()==XMLStreamConstants.START_ELEMENT && meta.equals(event.asStartElement().getName()))) {
+		if (!(event.getEventType()==XMLStreamConstants.START_ELEMENT && META_TAG.equals(event.asStartElement().getName()))) {
 			throw new XMLStreamException("Parse error.");
 		}
 		int level = 1;
@@ -135,7 +130,7 @@ class StaxPEFBook {
 			if (event.getEventType()==XMLStreamConstants.START_ELEMENT) {
 				level++;
 				QName start = event.asStartElement().getName();
-				if (event.asStartElement().getName().getNamespaceURI().equals(dcns)) {
+				if (event.asStartElement().getName().getNamespaceURI().equals(DC_NS)) {
 					String s = "";
 					while (reader.hasNext()) {
 						event = reader.nextEvent();
@@ -153,7 +148,7 @@ class StaxPEFBook {
 					if (metadata.containsKey(name)) {
 						al = metadata.remove(name);
 					} else {
-						al = new ArrayList<String>();
+						al = new ArrayList<>();
 					}
 					al.add(s);
 					metadata.put(name, al);
@@ -168,21 +163,21 @@ class StaxPEFBook {
 	}
 	
 	private void scanVolume() throws XMLStreamException {
-		if (!eventIsStartElement(volume)) {
+		if (!eventIsStartElement(VOLUME_TAG)) {
 			throw new XMLStreamException("Parse error.");
 		}
 		volumes++;
 		sectionNumber = 0;
-		SectionAttributes v = new SectionAttributes(parseIntAttribute(event.asStartElement(), rowsqn, 0), 
-								parseIntAttribute(event.asStartElement(), colsqn, 0),
-								parseBooleanAttribute(event.asStartElement(), duplexqn, false));
+		SectionAttributes v = new SectionAttributes(parseIntAttribute(event.asStartElement(), ROWS_ATTR, 0), 
+								parseIntAttribute(event.asStartElement(), COLS_ATTR, 0),
+								parseBooleanAttribute(event.asStartElement(), DUPLEX_ATTR, false));
 		while (reader.hasNext()) {
 			event = reader.nextEvent();
 			if (event.getEventType()==XMLStreamConstants.START_ELEMENT) {
-				if (section.equals(event.asStartElement().getName())) {
+				if (SECTION_TAG.equals(event.asStartElement().getName())) {
 					scanSection(v);
 				}
-			} else if (eventIsEndElement(volume)) {
+			} else if (eventIsEndElement(VOLUME_TAG)) {
 				break;
 			}
 		}
@@ -190,7 +185,7 @@ class StaxPEFBook {
 	}
 	
 	private void scanSection(SectionAttributes v) throws XMLStreamException {
-		if (!eventIsStartElement(section)) {
+		if (!eventIsStartElement(SECTION_TAG)) {
 			throw new XMLStreamException("Parse error.");
 		}
 		sectionNumber++;
@@ -198,21 +193,21 @@ class StaxPEFBook {
 		if (!compatibilityMode || sectionNumber==1) {
 			started.put(new SectionIdentifier(volumes, sectionNumber), pages+1);
 		}
-		SectionAttributes s = new SectionAttributes(parseIntAttribute(event.asStartElement(), rowsqn, v.rows), 
-				parseIntAttribute(event.asStartElement(), colsqn, v.cols),
-				parseBooleanAttribute(event.asStartElement(), duplexqn, v.duplex));
+		SectionAttributes s = new SectionAttributes(parseIntAttribute(event.asStartElement(), ROWS_ATTR, v.rows), 
+				parseIntAttribute(event.asStartElement(), COLS_ATTR, v.cols),
+				parseBooleanAttribute(event.asStartElement(), DUPLEX_ATTR, v.duplex));
 
 		while (reader.hasNext()) {
 			event = reader.nextEvent();
 			if (event.getEventType()==XMLStreamConstants.START_ELEMENT) {
-				if (page.equals(event.asStartElement().getName())) {
+				if (PAGE_TAG.equals(event.asStartElement().getName())) {
 					pageTags++;
 					pages += (s.duplex?1:2);
 					scanPage();
 				}
-			} else if (eventIsEndElement(section)) {
+			} else if (eventIsEndElement(SECTION_TAG)) {
 				//two operations in one, stack.pop() must be performed
-				if (s.duplex==true && pages % 2 == 1) {
+				if (s.duplex && pages % 2 == 1) {
 					pages++;
 					evenLast = true;
 				} else {
@@ -224,46 +219,32 @@ class StaxPEFBook {
 	}
 	
 	private void scanPage() throws XMLStreamException {
-		if (!eventIsStartElement(page)) {
+		if (!eventIsStartElement(PAGE_TAG)) {
 			throw new XMLStreamException("Parse error.");
 		}
 		while (reader.hasNext()) {
 			event = reader.nextEvent();
 			if (event.getEventType()==XMLStreamConstants.START_ELEMENT) {
-				if (row.equals(event.asStartElement().getName())) {
+				if (ROW_TAG.equals(event.asStartElement().getName())) {
 					scanRow();
 				}
-			} else if (eventIsEndElement(page)) {
+			} else if (eventIsEndElement(PAGE_TAG)) {
 				break;
 			}
 		}
 	}
-	
-	
-	/*
-	 * count(//pef:section[ancestor-or-self::pef:*[@duplex][1][@duplex='false']]/descendant::pef:page)*2 +
-	 * Count all pages in non-duplex sections as 2 pages
-	 * 
-	 * count(//pef:section[ancestor-or-self::pef:*[@duplex][1][@duplex='true']]/descendant::pef:page) + 
-	 * Count all pages in duplex sections as 1 page
-	 * 
-	 * count(//pef:section[count(descendant::pef:page) mod 2 = 1][ancestor-or-self::pef:*[@duplex][1][@duplex='true']])
-	 * Count all sections where duplex is true and page count is uneven...
-	 * 
-	 * -count(((//pef:section)[last()])[count(descendant::pef:page) mod 2 = 1][ancestor-or-self::pef:*[@duplex][1][@duplex='true']])
-	 * except the last one
-	 */
+
 	private void scanRow() throws XMLStreamException {
-		if (!eventIsStartElement(row)) {
+		if (!eventIsStartElement(ROW_TAG)) {
 			throw new XMLStreamException("Parse error.");
 		}
 		while (reader.hasNext()) {
 			event = reader.nextEvent();
 			if (event.getEventType()==XMLStreamConstants.CHARACTERS) {
-				if (eightDotPattern.matcher(event.asCharacters().getData()).find()) {
+				if (EIGHT_DOT_PATTERN.matcher(event.asCharacters().getData()).find()) {
 					containsEightDot = true;
 				}
-			} else if (eventIsEndElement(row)) {
+			} else if (eventIsEndElement(ROW_TAG)) {
 				break;
 			}
 		}
@@ -297,8 +278,9 @@ class StaxPEFBook {
 		return def;
 	}
 
-	private class SectionAttributes {
-		private final int rows, cols;
+	private final class SectionAttributes {
+		private final int rows;
+		private final int cols;
 		private final boolean duplex;
 		
 		public SectionAttributes(int rows, int cols, boolean duplex) {

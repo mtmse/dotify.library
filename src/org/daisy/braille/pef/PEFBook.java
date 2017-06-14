@@ -20,6 +20,7 @@ package org.daisy.braille.pef;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URI;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -41,6 +42,7 @@ public class PEFBook implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1528085103073735540L;
+	private static final String VALUE_OUT_OF_RANGE = "Value out of range: {0}";
 
 	private final Map<String, List<String>> metadata;
 	
@@ -55,15 +57,6 @@ public class PEFBook implements Serializable {
 	private final boolean containsEightDot;
 	private final Map<SectionIdentifier, Integer> startPages;
 	private final int[] sectionsInVolume;
-
-	/**
-	 * Loads information about a PEF-document from the supplied uri.
-	 * @param uri the uri to a PEF-document
-	 * @return returns a PEFBook object containing the information collected from the supplied PEF-document
-	 */
-	public static PEFBook load(URI uri) throws ParserConfigurationException, SAXException, XPathExpressionException, IOException {
-		return StaxPEFBook.loadStax(uri);
-	}
 	
 	PEFBook(URI uri, Map<String, List<String>> metadata, int volumes, int pages, int pageTags, int maxWidth, int maxHeight, String inputEncoding, boolean containsEightDot, int[] startPages) {
 		this(uri, metadata, volumes, pages, pageTags, maxWidth, maxHeight, inputEncoding, containsEightDot, getLocations(startPages), generateSections(volumes));
@@ -83,6 +76,20 @@ public class PEFBook implements Serializable {
 		this.sectionsInVolume = sectionsInVolume;
 	}
 
+	/**
+	 * Loads information about a PEF-document from the supplied URI.
+	 * @param uri the URI to a PEF-document
+	 * @return returns a PEFBook object containing the information collected from the supplied PEF-document, or null if an error occurred
+	 * @throws ParserConfigurationException never thrown
+	 * @throws SAXException never thrown
+	 * @throws XPathExpressionException never thrown
+	 * @throws IOException never thrown
+	 */
+	public static PEFBook load(URI uri) throws ParserConfigurationException, SAXException, XPathExpressionException, IOException {
+		//FIXME: the above exceptions are not actually thrown from this method. Note that removing the would require a new major version.
+		return StaxPEFBook.loadStax(uri);
+	}
+
 	private static Map<SectionIdentifier, Integer> getLocations(int[] startPages) {
 		Map<SectionIdentifier, Integer> locations = new HashMap<>();
 		for (int i=0; i<startPages.length; i++) {
@@ -99,6 +106,7 @@ public class PEFBook implements Serializable {
 
 	/**
 	 * Gets the encoding used for this document at the time of the parsing.
+	 * @return returns the input encoding
 	 */
 	public String getInputEncoding() {
 		return inputEncoding;
@@ -114,6 +122,7 @@ public class PEFBook implements Serializable {
 	
 	/**
 	 * Gets the number of volumes in this document.
+	 * @return returns the number of volumes
 	 */
 	public int getVolumes() {
 		return volumes;
@@ -127,13 +136,14 @@ public class PEFBook implements Serializable {
 	 */
 	public int getSectionsInVolume(int volume) {
 		if (volume<1 || volume > getVolumes()) {
-			throw new IllegalArgumentException("Value out of range: " + volume);
+			throw new IllegalArgumentException(MessageFormat.format(VALUE_OUT_OF_RANGE, volume));
 		}
 		return sectionsInVolume[volume-1];
 	}
 	
 	/**
-	 * Gets the total number of pages in this document
+	 * Gets the total number of pages in this document.
+	 * @return returns the number of pages
 	 */
 	public int getPages() {
 		return pages;
@@ -141,6 +151,7 @@ public class PEFBook implements Serializable {
 	
 	/**
 	 * Gets the number of page tags in this document.
+	 * @return returns the number of page tags
 	 */
 	public int getPageTags() {
 		return pageTags;
@@ -148,20 +159,22 @@ public class PEFBook implements Serializable {
 	
 	/**
 	 * Gets the number of sheets in this document.
+	 * @return returns the number of sheets
 	 */
 	public int getSheets() {
 		return (pages+1)/2;
 	}
 
 	/**
-	 * Gets the number of sheets in the specified volume
-	 * @param volume the desired volume, where the first volume is 1 and the last equals getVolumes
+	 * Gets the number of sheets in the specified volume.
+	 * @param volume the volume number, one based
 	 * @return returns the number of sheets in the specified volume
-	 * @throws IllegalArgumentException if the volume is less than 1 or greater than getVolumes
+	 * @throws IllegalArgumentException if the volume is less than 1 or greater than
+	 * {@link #getVolumes()}
 	 */
 	public int getSheets(int volume) {
 		if (volume<1 || volume > getVolumes()) {
-			throw new IllegalArgumentException("Value out of range: " + volume);
+			throw new IllegalArgumentException(MessageFormat.format(VALUE_OUT_OF_RANGE, volume));
 		}
 		return ((getLastPage(volume)-(getFirstPage(volume)-1))+1)/2;
 	}
@@ -176,16 +189,17 @@ public class PEFBook implements Serializable {
 	 */
 	public int getSheets(int volume, int section) {
 		if (volume<1 || volume > getVolumes()) {
-			throw new IllegalArgumentException("Value out of range: " + volume);
+			throw new IllegalArgumentException(MessageFormat.format(VALUE_OUT_OF_RANGE, volume));
 		}
 		return ((getLastPage(volume, section)-(getFirstPage(volume, section)-1))+1)/2;
 	}
 	
 	/**
 	 * Gets the first page number in the specified volume
-	 * @param volume the desired volume, where the first volume is 1 and the last equals getVolumes.
+	 * @param volume the volume number, one based
 	 * @return returns the first page number in the specified volume
-	 * @throws IllegalArgumentException if the volume is less than 1 or greater than getVolumes
+	 * @throws IllegalArgumentException if the volume is less than 1 or greater than
+	 * {@link #getVolumes()}
 	 */
 	public int getFirstPage(int volume) {
 		return getFirstPage(volume, 1);
@@ -201,20 +215,21 @@ public class PEFBook implements Serializable {
 	 */
 	public int getFirstPage(int volume, int section) {
 		if (volume<1 || volume > getVolumes()) {
-			throw new IllegalArgumentException("Value out of range: " + volume);
+			throw new IllegalArgumentException(MessageFormat.format(VALUE_OUT_OF_RANGE, volume));
 		}
 		
 		if (section<1 || section > getSectionsInVolume(volume)) {
-			throw new IllegalArgumentException("Value out of range: " + section);
+			throw new IllegalArgumentException(MessageFormat.format(VALUE_OUT_OF_RANGE, section));
 		}		
 		return startPages.get(new SectionIdentifier(volume, section));
 	}
 	
 	/**
-	 * Gets the last page number in the specified volume
-	 * @param volume the desired volume (the first volume is 1 and the last is getVolumes)
+	 * Gets the last page number in the specified volume.
+	 * @param volume the volume number, one based
 	 * @return returns the last page number in the specified volume
-	 * @throws IllegalArgumentException if the volume is less than 1 or greater than getVolumes
+	 * @throws IllegalArgumentException if the volume is less than 1 or greater than
+	 * {@link #getVolumes()}
 	 */
 	public int getLastPage(int volume) {
 		return getLastPage(volume, getSectionsInVolume(volume));
@@ -232,14 +247,14 @@ public class PEFBook implements Serializable {
 		if (volume<1 || volume > getVolumes()) {
 			throw new IllegalArgumentException("Value out of range: " + volume);
 		}
-		int sectionsInVolume = getSectionsInVolume(volume);
-		if (section<1 || section > sectionsInVolume) {
+		int sectionsInSpecifiedVolume = getSectionsInVolume(volume);
+		if (section<1 || section > sectionsInSpecifiedVolume) {
 			throw new IllegalArgumentException("Value out of range: " + section);
 		}
-		if (volume == getVolumes() && section == sectionsInVolume) {
+		if (volume == getVolumes() && section == sectionsInSpecifiedVolume) {
 			return getPages();
 		} else {
-			if (section < sectionsInVolume) {
+			if (section < sectionsInSpecifiedVolume) {
 				return startPages.get(new SectionIdentifier(volume, section+1)) - 1;
 			} else {
 				return startPages.get(new SectionIdentifier(volume+1)) - 1;
@@ -248,34 +263,33 @@ public class PEFBook implements Serializable {
 	}
 	
 	/**
-	 * Gets the maximum defined page width, in chars 
+	 * Gets the maximum defined page width, in chars.
+	 * @return returns the maximum page width 
 	 */
 	public int getMaxWidth() {
 		return maxWidth;
 	}
 	
 	/**
-	 * Gets the maximum defined page height, in rows
+	 * Gets the maximum defined page height, in rows.
+	 * @return returns the maximum page height
 	 */
 	public int getMaxHeight() {
 		return maxHeight;
 	}
 	
 	/**
-	 * Returns true if this document contains eight dot patterns, false otherwise
+	 * Returns true if this document contains eight dot patterns, false otherwise.
+	 * @return returns true if the document contains eight dot patterns, false otherwise
 	 */
 	public boolean containsEightDot() {
 		return containsEightDot;
 	}
-/*
-	public HashMap<String, List<String>> getMetadata() {
-		return metadata;
-	}
-*/	
+
 	/**
 	 * Gets a collection of all metadata keys in this document.
 	 * A metadata key is a local element name in the http://purl.org/dc/elements/1.1/ namespace.
-	 * 
+	 * @return returns the metadata keys
 	 */
 	public Iterable<String> getMetadataKeys() {
 		return metadata.keySet();
@@ -285,31 +299,29 @@ public class PEFBook implements Serializable {
 	 * Gets a collection of values for a specfied metadata key.
 	 * A metadata key is a local element name in the http://purl.org/dc/elements/1.1/ namespace.
 	 * @param key the metadata to get values for
+	 * @return returns the values for the specified key
 	 */
 	public Iterable<String> getMetadata(String key) {
 		List<String> c = metadata.get(key);
 		if (c!=null) {
 			return c;
 		}
-		return null;
-		/*
-		if (metadata.containsKey(key)) {
-			String[] ret = new String[metadata.get(key).size()];
-			metadata.get(key).toArray(ret);
-			return ret;
-		}
-		return null;*/
+		return Collections.emptyList();
 	}
 	
 	/**
-	 * Gets the document title from this document's metadata. Convenience method for getMetadata("title")  
+	 * Gets the document titles from this document's metadata. Convenience method for 
+	 * <code>getMetadata("title")</code>.
+	 * @return returns the document titles  
 	 */
 	public Iterable<String> getTitle() {
 		return getMetadata("title");
 	}
 	
 	/**
-	 * Gets the document authors from this document's metadata. Convenience method for getMetadata("creator")
+	 * Gets the document authors from this document's metadata. Convenience method for
+	 * <code>getMetadata("creator")</code>.
+	 * @return returns the document authors
 	 */
 	public Iterable<String> getAuthors() {
 		return getMetadata("creator");
@@ -404,6 +416,5 @@ public class PEFBook implements Serializable {
 				+ inputEncoding + ", containsEightDot=" + containsEightDot + ", startPages=" + startPages
 				+ ", sectionsInVolume=" + Arrays.toString(sectionsInVolume) + "]";
 	}
-	
 
 }
