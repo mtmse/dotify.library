@@ -7,6 +7,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import javax.xml.namespace.QName;
@@ -39,13 +40,16 @@ class StaxPEFBook {
 	
 	private String encoding;
 	private int volumes;
+	private int sectionNumber;
 	private int pages;
 	private int pageTags;
 	private HashMap<String, List<String>> metadata;
-	private List<Integer> started;
+	private Map<SectionIdentifier, Integer> started;
+	private List<Integer> sectionsInVolume;
 	private int maxWidth;
 	private int maxHeight;
 	private boolean containsEightDot;
+	private boolean compatibilityMode;
 	
 	private XMLEvent event;
 	boolean evenLast = false;
@@ -59,8 +63,13 @@ class StaxPEFBook {
 	}
 
 	static PEFBook loadStax(URI uri) {
+		return loadStax(uri, false);
+	}
+
+	static PEFBook loadStax(URI uri, boolean compatibilityMode) {
 		StaxPEFBook spb = new StaxPEFBook();
 		try {
+			spb.compatibilityMode = compatibilityMode;
 			return spb.parse(uri);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
@@ -78,7 +87,8 @@ class StaxPEFBook {
 		pages = 0;
 		pageTags = 0;
 		metadata = new HashMap<String, List<String>>();
-		started = new ArrayList<Integer>();
+		started = new HashMap<>();
+		sectionsInVolume = new ArrayList<>();
 		maxWidth = 0;
 		maxHeight = 0;
 		containsEightDot = false;
@@ -105,11 +115,13 @@ class StaxPEFBook {
 			pages--;
 		}		
 
-		int[] str = new int[started.size()];
-		for (int i=0; i<started.size(); i++) {
-			str[i] = started.get(i);
+		// This is done because toArray cannot cast Integer to int
+		int[] sectionsInVolumeArray = new int[sectionsInVolume.size()];
+		for (int i=0; i<sectionsInVolume.size(); i++) {
+			sectionsInVolumeArray[i] = sectionsInVolume.get(i);
 		}
-		return new PEFBook(uri, metadata, volumes, pages, pageTags, maxWidth, maxHeight, encoding, containsEightDot, str);
+
+		return new PEFBook(uri, metadata, volumes, pages, pageTags, maxWidth, maxHeight, encoding, containsEightDot, started, sectionsInVolumeArray);
 	}
 	
 	private void scanMeta() throws XMLStreamException {
@@ -160,7 +172,7 @@ class StaxPEFBook {
 			throw new XMLStreamException("Parse error.");
 		}
 		volumes++;
-		started.add(pages+1);
+		sectionNumber = 0;
 		SectionAttributes v = new SectionAttributes(parseIntAttribute(event.asStartElement(), rowsqn, 0), 
 								parseIntAttribute(event.asStartElement(), colsqn, 0),
 								parseBooleanAttribute(event.asStartElement(), duplexqn, false));
@@ -174,11 +186,17 @@ class StaxPEFBook {
 				break;
 			}
 		}
+		sectionsInVolume.add(compatibilityMode?1:sectionNumber);
 	}
 	
 	private void scanSection(SectionAttributes v) throws XMLStreamException {
 		if (!eventIsStartElement(section)) {
 			throw new XMLStreamException("Parse error.");
+		}
+		sectionNumber++;
+		//in compatibility mode, only store section nr 1
+		if (!compatibilityMode || sectionNumber==1) {
+			started.put(new SectionIdentifier(volumes, sectionNumber), pages+1);
 		}
 		SectionAttributes s = new SectionAttributes(parseIntAttribute(event.asStartElement(), rowsqn, v.rows), 
 				parseIntAttribute(event.asStartElement(), colsqn, v.cols),

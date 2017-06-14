@@ -35,7 +35,7 @@ class BenchmarkPEFBook {
 					long t1 = System.currentTimeMillis();
 					PEFBook p1 = XPathPEFBook.load(f.toURI());
 					long t2 = System.currentTimeMillis();
-					PEFBook p2 = StaxPEFBook.loadStax(f.toURI());
+					PEFBook p2 = StaxPEFBook.loadStax(f.toURI(), true);
 					long t3 = System.currentTimeMillis();
 					a1+=(t2-t1);
 					a2+=(t3-t2);
