@@ -11,7 +11,7 @@ public final class SectionIdentifier implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 8867238589988623140L;
+	private static final long serialVersionUID = 3213882015553073590L;
 	private final int volume;
 	private final int section;
 
