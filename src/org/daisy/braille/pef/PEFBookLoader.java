@@ -6,6 +6,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
@@ -20,6 +22,7 @@ import org.xml.sax.SAXException;
  *
  */
 public class PEFBookLoader {
+	private static final Logger logger = Logger.getLogger(PEFBookLoader.class.getCanonicalName());
 	private final File dir;
 	
 	public PEFBookLoader() {
@@ -27,33 +30,29 @@ public class PEFBookLoader {
 	}
 	
 	public PEFBookLoader(File dir) {
-		System.out.println(dir);
+		if (logger.isLoggable(Level.FINE)) {
+			logger.fine("Storing loaded PEF-files in " + dir);
+		}
 		this.dir = dir;
 	}
 	
 	public PEFBook load(File f) throws XPathExpressionException, ParserConfigurationException, SAXException, IOException {
-		File serial = new File(dir, f.getName()+"-"+f.hashCode()+".v2meta");
+		File serial = new File(dir, f.getName()+"-"+f.hashCode()+".v3meta");
 		PEFBook book;
 		if (serial.exists() && serial.lastModified()>f.lastModified()) {
-			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(serial));
-			try {
+			try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(serial))) {
 				book = (PEFBook)ois.readObject();
 			} catch (Exception e) {
-				e.printStackTrace();
+				logger.log(Level.WARNING, "Failed to deserialize: " + serial, e);
 				book = PEFBook.load(f.toURI());
 				if (!serial.delete()) {
 					serial.deleteOnExit();
 				}
-			} finally {
-				ois.close();
 			}
 		} else {
 			book = PEFBook.load(f.toURI());
-			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(serial));
-			try {
+			try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(serial))) {
 				oos.writeObject(book);
-			} finally {
-				oos.close();
 			}
 		}
 		return book;
