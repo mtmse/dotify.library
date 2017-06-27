@@ -1,4 +1,5 @@
 package org.daisy.braille.pef;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -55,6 +56,30 @@ public class RangeTest {
 		assertTrue("Assert that value is in range.", r.inRange(2));
 		assertTrue("Assert that value is in range.", r.inRange(5));
 		assertTrue("Assert that value is not in range.", !r.inRange(6));
+	}
+	
+	@Test
+	public void testToString_01() {
+		Range r = new Range(1, 2);
+		assertEquals("1-2", r.toString());
+	}
+	
+	@Test
+	public void testToString_02() {
+		Range r = new Range(1);
+		assertEquals("1-", r.toString());
+	}
+	
+	@Test
+	public void testGetFrom() {
+		Range r = new Range(1, 2);
+		assertEquals(1, r.getFrom());
+	}
+	
+	@Test
+	public void testGetTo() {
+		Range r = new Range(1, 2);
+		assertEquals(2, r.getTo());
 	}
 
 }

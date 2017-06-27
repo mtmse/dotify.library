@@ -21,9 +21,11 @@ package org.daisy.braille.pef;
  * Provides a range data object.
  * @author  Joel Håkansson
  */
+//TODO: make class final in next major release
+//May be value based in the future: https://docs.oracle.com/javase/8/docs/api/java/lang/doc-files/ValueBased.html
 public class Range {
-	private int from;
-	private int to;
+	private final int from;
+	private final int to;
 	
 	/**
 	 * Create a new range.
@@ -31,7 +33,11 @@ public class Range {
 	 * @param to last page, inclusive
 	 */
 	public Range(int from, int to) {
-		init(from, to);
+		if (to<from || from<1 || to<1) {
+			throw new IllegalArgumentException("Illegal range: " + from + "-" + to);
+		}
+		this.from = from;
+		this.to = to;
 	}
 	
 	/**
@@ -39,15 +45,7 @@ public class Range {
 	 * @param from first page, inclusive
 	 */
 	public Range(int from) {
-		init(from, Integer.MAX_VALUE);
-	}
-	
-	private void init(int from, int to) {
-		if (to<from || from<1 || to<1) {
-			throw new IllegalArgumentException("Illegal range: " + from + "-" + to);
-		}
-		this.from = from;
-		this.to = to;
+		this(from, Integer.MAX_VALUE);
 	}
 	
 	/**
@@ -79,7 +77,58 @@ public class Range {
 	 * @return returns true if value is in range, false otherwise
 	 */
 	public boolean inRange(int value) {
-		if (value>=from && value<=to) return true;
-		return false;
+		return value>=from && value<=to;
 	}
+	
+	/**
+	 * Gets the from value, inclusive.
+	 * @return returns the from value
+	 */
+	public int getFrom() {
+		return from;
+	}
+	
+	/**
+	 * Gets the to value, inclusive.
+	 * @return returns the to value
+	 */
+	public int getTo() {
+		return to;
+	}
+
+	@Override
+	public String toString() {
+		return from + "-" + (to==Integer.MAX_VALUE?"":to);
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + from;
+		result = prime * result + to;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		Range other = (Range) obj;
+		if (from != other.from) {
+			return false;
+		}
+		if (to != other.to) {
+			return false;
+		}
+		return true;
+	}
+
 }
