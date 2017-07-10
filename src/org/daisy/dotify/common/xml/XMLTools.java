@@ -2,6 +2,7 @@ package org.daisy.dotify.common.xml;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -121,29 +122,34 @@ public class XMLTools {
 		transformer.setURIResolver(new CachingURIResolver(parserFactory));
         //Create a SAXSource, hook up an entityresolver
         if(source.getSystemId()!=null && source.getSystemId().length()>0) {
-        	try{
-	            SAXSource saxSource = null;
-				if(!(source instanceof SAXSource)) {
+        	try {
+				if (source instanceof SAXSource) {
+					transformer.transform(setEntityResolver((SAXSource) source), result);
+				} else {
 					SAXParser parser = parserFactory.newSAXParser();
 					parser.getXMLReader().setFeature("http://xml.org/sax/features/validation", false);
-			        saxSource = new SAXSource(parser.getXMLReader(), new InputSource(new URLCache().openStream(new URI(source.getSystemId()).toURL())));        
-			        saxSource.setSystemId(source.getSystemId());
-				}else{
-					saxSource = (SAXSource) source;
+					try (InputStream is = new URLCache().openStream(new URI(source.getSystemId()).toURL())) {
+						InputSource isource = new InputSource(is);
+						isource.setSystemId(source.getSystemId());
+						SAXSource saxSource = new SAXSource(parser.getXMLReader(), isource);
+						saxSource.setSystemId(source.getSystemId());
+						transformer.transform(setEntityResolver(saxSource), result);
+					}
 				}
-				if(saxSource.getXMLReader().getEntityResolver()==null) {
-					saxSource.getXMLReader().setEntityResolver(new EntityResolverCache());
-				}	
-				source = saxSource;
-        	}catch (Exception e) {
+        	} catch (TransformerException e) {
+    			throw new XMLToolsException(e);
+    		} catch (Exception e) {
+    			//TODO: really catch everything?
 				e.printStackTrace();
 			}
         }
-		try {
-			transformer.transform(source, result);
-		} catch (TransformerException e) {
-			throw new XMLToolsException(e);
+	}
+	
+	private static SAXSource setEntityResolver(SAXSource source) {
+		if(source.getXMLReader().getEntityResolver()==null) {
+			source.getXMLReader().setEntityResolver(new EntityResolverCache());
 		}
+		return source;
 	}
 
 	private static Source toSource(Object source) throws XMLToolsException {
@@ -263,7 +269,7 @@ public class XMLTools {
 			throw new XMLToolsException("Failed to set up XML parser.", e);
 		}
 		XMLHandler dh = new XMLHandler(peek);
-		try {
+		try (InputStream is = uri.toURL().openStream()) {
 	        XMLReader reader = saxParser.getXMLReader();
 	        if (dh != null) {
 	            reader.setContentHandler(dh);
@@ -274,7 +280,9 @@ public class XMLTools {
 	            reader.setErrorHandler(dh);
 	            reader.setDTDHandler(dh);
 	        }
-			saxParser.getXMLReader().parse(new InputSource(uri.toASCIIString()));
+	        InputSource source = new InputSource(is);
+	        source.setSystemId(uri.toASCIIString());
+			saxParser.getXMLReader().parse(source);
 		} catch (StopParsing e) {
 			//thrown if peek is true
 		} catch (SAXException e) {
