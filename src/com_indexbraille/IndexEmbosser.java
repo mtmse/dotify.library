@@ -152,6 +152,21 @@ public abstract class IndexEmbosser extends AbstractEmbosser {
 			break;
 		case INDEX_BRAILLE_BOX_V4:
 			break;
+		case INDEX_BASIC_D_V5:
+		case INDEX_FANFOLD_V5:
+			minPrintPageWidth = 120d;
+			minPrintPageHeight = 1*EmbosserTools.INCH_IN_MM;
+			maxPrintPageWidth = 325d;
+			maxPrintPageHeight = 17*EmbosserTools.INCH_IN_MM;
+			break;
+		case INDEX_EVEREST_D_V5:
+			minPageLengthAcrossFeed = 130d;
+			maxPageLengthAcrossFeed = 297d;
+			minPageLengthAlongFeed = 120d;
+			maxPageLengthAlongFeed = 590d;
+			break;
+		case INDEX_BRAILLE_BOX_V5:
+			break;
 		default:
 			throw new IllegalArgumentException("Unsupported embosser type");
 		}
@@ -241,6 +256,10 @@ public abstract class IndexEmbosser extends AbstractEmbosser {
 		case INDEX_BASIC_D_V4:
 		case INDEX_EVEREST_D_V4:
 		case INDEX_BRAILLE_BOX_V4:
+		case INDEX_BASIC_D_V5:
+		case INDEX_FANFOLD_V5:
+		case INDEX_EVEREST_D_V5:
+		case INDEX_BRAILLE_BOX_V5:
 			return true;
 		case INDEX_BASIC_BLUE_BAR:
 		case INDEX_BASIC_S_V2:
@@ -257,6 +276,8 @@ public abstract class IndexEmbosser extends AbstractEmbosser {
 		case INDEX_BASIC_D_V2:
 		case INDEX_BASIC_D_V3:
 		case INDEX_BASIC_D_V4:
+		case INDEX_BASIC_D_V5:
+		case INDEX_FANFOLD_V5:
 		case INDEX_4WAVES_PRO_V3:
 			return true;
 		case INDEX_BASIC_BLUE_BAR:
@@ -264,9 +285,11 @@ public abstract class IndexEmbosser extends AbstractEmbosser {
 		case INDEX_EVEREST_D_V2:
 		case INDEX_EVEREST_D_V3:
 		case INDEX_EVEREST_D_V4:
+		case INDEX_EVEREST_D_V5:
 		case INDEX_4X4_PRO_V2:
 		case INDEX_4X4_PRO_V3:
 		case INDEX_BRAILLE_BOX_V4:
+		case INDEX_BRAILLE_BOX_V5:
 		default:
 			return false;
 		}
@@ -278,7 +301,9 @@ public abstract class IndexEmbosser extends AbstractEmbosser {
 		case INDEX_4X4_PRO_V2:
 		case INDEX_4X4_PRO_V3:
 		case INDEX_EVEREST_D_V4:
+		case INDEX_EVEREST_D_V5:
 		case INDEX_BRAILLE_BOX_V4:
+		case INDEX_BRAILLE_BOX_V5:
 			return true;
 		case INDEX_BASIC_D_V2:
 		case INDEX_EVEREST_D_V2:
@@ -286,6 +311,8 @@ public abstract class IndexEmbosser extends AbstractEmbosser {
 		case INDEX_EVEREST_D_V3:
 		case INDEX_4WAVES_PRO_V3:
 		case INDEX_BASIC_D_V4:
+		case INDEX_BASIC_D_V5:
+		case INDEX_FANFOLD_V5:
 		case INDEX_BASIC_BLUE_BAR:
 		case INDEX_BASIC_S_V2:
 		case INDEX_BASIC_S_V3:
@@ -300,6 +327,8 @@ public abstract class IndexEmbosser extends AbstractEmbosser {
 		case INDEX_BASIC_D_V2:
 		case INDEX_BASIC_D_V3:
 		case INDEX_BASIC_D_V4:
+		case INDEX_BASIC_D_V5:
+		case INDEX_FANFOLD_V5:
 		case INDEX_BASIC_S_V2:
 		case INDEX_BASIC_S_V3:
 		case INDEX_4WAVES_PRO_V3:
@@ -307,9 +336,11 @@ public abstract class IndexEmbosser extends AbstractEmbosser {
 		case INDEX_EVEREST_D_V2:
 		case INDEX_EVEREST_D_V3:
 		case INDEX_EVEREST_D_V4:
+		case INDEX_EVEREST_D_V5:
 		case INDEX_4X4_PRO_V2:
 		case INDEX_4X4_PRO_V3:
 		case INDEX_BRAILLE_BOX_V4:
+		case INDEX_BRAILLE_BOX_V5:
 		default:
 			return Paper.Type.SHEET;
 		}
@@ -323,10 +354,12 @@ public abstract class IndexEmbosser extends AbstractEmbosser {
 			//return saddleStitchEnabled?PrintDirection.SIDEWAYS:PrintDirection.UPRIGHT;
 			return PrintDirection.SIDEWAYS;
 		case INDEX_EVEREST_D_V4:
+		case INDEX_EVEREST_D_V5:
 			return saddleStitchEnabled?PrintDirection.SIDEWAYS:PrintDirection.UPRIGHT;
 			//case INDEX_BASIC_D_V4:
 			//return swZFoldingEnabled?PrintDirection.SIDEWAYS:PrintDirection.UPRIGHT;
 		case INDEX_BRAILLE_BOX_V4:
+		case INDEX_BRAILLE_BOX_V5:
 			return PrintDirection.SIDEWAYS;
 		default:
 			return PrintDirection.UPRIGHT;
@@ -458,6 +491,8 @@ public abstract class IndexEmbosser extends AbstractEmbosser {
 			printablePageHeight = Math.min(lengthAcrossFeed, 248.5);
 			break;
 		case INDEX_BASIC_D_V4:
+		case INDEX_BASIC_D_V5:
+		case INDEX_FANFOLD_V5:
 			printablePageWidth = Math.min(lengthAcrossFeed, 301.152);
 			break;
 		case INDEX_EVEREST_D_V2:

@@ -52,7 +52,11 @@ public class IndexEmbosserProvider implements EmbosserProvider {
 		INDEX_4WAVES_PRO_V3("Index 4Waves Pro",""),
 		INDEX_BASIC_D_V4("Index Basic-D V4",""),
 		INDEX_EVEREST_D_V4("Index Everest-D V4",""),
-		INDEX_BRAILLE_BOX_V4("Index Braille Box","");
+		INDEX_BRAILLE_BOX_V4("Index Braille Box V4",""),
+		INDEX_BASIC_D_V5("Index Basic-D V5",""),
+		INDEX_EVEREST_D_V5("Index Everest-D V5",""),
+		INDEX_BRAILLE_BOX_V5("Index Braille Box V5",""),
+		INDEX_FANFOLD_V5("Index Fanfold","");
 
 		private final String name;
 		private final String desc;
@@ -94,6 +98,10 @@ public class IndexEmbosserProvider implements EmbosserProvider {
 		addEmbosser(EmbosserType.INDEX_BASIC_D_V4);
 		addEmbosser(EmbosserType.INDEX_EVEREST_D_V4);
 		addEmbosser(EmbosserType.INDEX_BRAILLE_BOX_V4);
+		addEmbosser(EmbosserType.INDEX_BASIC_D_V5);
+		addEmbosser(EmbosserType.INDEX_FANFOLD_V5);
+		addEmbosser(EmbosserType.INDEX_EVEREST_D_V5);
+		addEmbosser(EmbosserType.INDEX_BRAILLE_BOX_V5);
 	}
 
 	private void addEmbosser(FactoryProperties e) {
@@ -130,6 +138,14 @@ public class IndexEmbosserProvider implements EmbosserProvider {
 			return new IndexV4Embosser(tableCatalogService, EmbosserType.INDEX_EVEREST_D_V4);
 		case INDEX_BRAILLE_BOX_V4:
 			return new IndexV4Embosser(tableCatalogService, EmbosserType.INDEX_BRAILLE_BOX_V4);
+		case INDEX_BASIC_D_V5:
+			return new IndexV4Embosser(tableCatalogService, EmbosserType.INDEX_BASIC_D_V5);
+		case INDEX_EVEREST_D_V5:
+			return new IndexV4Embosser(tableCatalogService, EmbosserType.INDEX_EVEREST_D_V5);
+		case INDEX_BRAILLE_BOX_V5:
+			return new IndexV4Embosser(tableCatalogService, EmbosserType.INDEX_BRAILLE_BOX_V5);
+		case INDEX_FANFOLD_V5:
+			return new IndexV4Embosser(tableCatalogService, EmbosserType.INDEX_FANFOLD_V5);
 		default:
 			return null;
 		}

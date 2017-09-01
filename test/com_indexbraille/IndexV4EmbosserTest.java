@@ -1,10 +1,163 @@
 package com_indexbraille;
 
+import org.daisy.braille.utils.api.embosser.EmbosserCatalog;
+import org.daisy.braille.utils.api.embosser.EmbosserFeatures;
+import org.daisy.braille.utils.api.embosser.EmbosserWriter;
 import org.daisy.braille.utils.api.factory.FactoryProperties;
+import org.daisy.braille.utils.api.paper.PageFormat;
+import org.daisy.braille.utils.api.paper.PaperCatalog;
+import org.daisy.braille.utils.api.paper.SheetPaper;
+import org.daisy.braille.utils.api.paper.SheetPaperFormat;
+import org.daisy.braille.utils.api.paper.TractorPaper;
+import org.daisy.braille.utils.api.paper.TractorPaperFormat;
+import org.daisy.braille.utils.pef.FileCompare;
+import org.daisy.braille.utils.pef.FileTools;
+import org.daisy.braille.utils.pef.PEFConverterFacade;
+import org.daisy.braille.utils.pef.PEFHandler;
+import org.daisy.braille.utils.pef.UnsupportedWidthException;
 import org.junit.Test;
+import org.xml.sax.SAXException;
+
 import static org.junit.Assert.*;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+@SuppressWarnings("javadoc")
 public class IndexV4EmbosserTest {
+	
+	private static EmbosserCatalog ec = EmbosserCatalog.newInstance();
+	private static IndexV4Embosser everest = (IndexV4Embosser)ec.get("com_indexbraille.IndexEmbosserProvider.EmbosserType.INDEX_EVEREST_D_V5");
+	private static IndexV4Embosser basic_d = (IndexV4Embosser)ec.get("com_indexbraille.IndexEmbosserProvider.EmbosserType.INDEX_BASIC_D_V5");
+
+	private static PaperCatalog pc = PaperCatalog.newInstance();
+	private static PageFormat a3 = new SheetPaperFormat((SheetPaper)pc.get("org_daisy.ISO216PaperProvider.PaperSize.A3"), SheetPaperFormat.Orientation.DEFAULT);
+	private static PageFormat _280mm_12inch = new TractorPaperFormat((TractorPaper)pc.get("org_daisy.TractorPaperProvider.PaperSize.W280MM_X_H12INCH"));
+
+	@Test
+	public void testDuplex() {
+		assertTrue("Assert that duplex is supported for " + basic_d.getDisplayName(), basic_d.supportsDuplex());
+		assertTrue("Assert that duplex is supported for " + everest.getDisplayName(), everest.supportsDuplex());
+	}
+
+	@Test
+	public void test8dot() {
+		assertTrue("Assert that 8-dot is not supported", !basic_d.supports8dot());
+		assertTrue("Assert that 8-dot is not supported", !everest.supports8dot());
+	}
+
+	@Test
+	public void testAligning() {
+
+		assertTrue("Assert that aligning is supported", basic_d.supportsAligning());
+		assertTrue("Assert that aligning is supported", everest.supportsAligning());
+	}
+
+	@Test
+	public void testEmbosserWriter() throws IOException,
+	ParserConfigurationException,
+	SAXException,
+	UnsupportedWidthException {
+
+		File prn1 = File.createTempFile("test_indexv3_", ".prn");
+		File prn2 = File.createTempFile("test_indexv3_", ".prn");
+		File pef =  File.createTempFile("test_indexv3_", ".pef");
+
+		FileCompare fc = new FileCompare();
+		PEFHandler.Builder builder;
+		EmbosserWriter w;
+
+		basic_d.setFeature(EmbosserFeatures.PAGE_FORMAT, _280mm_12inch);
+		everest.setFeature(EmbosserFeatures.PAGE_FORMAT, a3);
+
+		// Single sided on a double sided printer
+
+		basic_d.setFeature(EmbosserFeatures.Z_FOLDING, false);
+		w = basic_d.newEmbosserWriter(new FileOutputStream(prn1));
+		builder = new PEFHandler.Builder(w)
+				.range(null)
+				.align(PEFHandler.Alignment.INNER)
+				.offset(0)
+				.topOffset(0);
+		FileTools.copy(this.getClass().getResourceAsStream("resource-files/single_sided.pef"), new FileOutputStream(pef));
+		FileTools.copy(this.getClass().getResourceAsStream("resource-files/basic_d_v5_single_sided.prn"), new FileOutputStream(prn2));
+		new PEFConverterFacade(EmbosserCatalog.newInstance()).parsePefFile(pef, builder.build());
+		assertTrue("Assert that the contents of the file is as expected.",
+				fc.compareBinary(new FileInputStream(prn1), new FileInputStream(prn2))
+				);
+
+		// Z-folding, single sided
+
+		basic_d.setFeature(EmbosserFeatures.Z_FOLDING, true);
+		w = basic_d.newEmbosserWriter(new FileOutputStream(prn1));
+		builder = new PEFHandler.Builder(w)
+				.range(null)
+				.align(PEFHandler.Alignment.INNER)
+				.offset(0)
+				.topOffset(0);
+
+		FileTools.copy(this.getClass().getResourceAsStream("resource-files/basic_d_v5_zfolding_single_sided.prn"), new FileOutputStream(prn2));
+		new PEFConverterFacade(EmbosserCatalog.newInstance()).parsePefFile(pef, builder.build());
+		assertTrue("Assert that the contents of the file is as expected.",
+				fc.compareBinary(new FileInputStream(prn1), new FileInputStream(prn2))
+				);
+
+		// Double sided
+
+		basic_d.setFeature(EmbosserFeatures.Z_FOLDING, false);
+		w = basic_d.newEmbosserWriter(new FileOutputStream(prn1));
+		builder = new PEFHandler.Builder(w)
+				.range(null)
+				.align(PEFHandler.Alignment.INNER)
+				.offset(0)
+				.topOffset(0);
+
+		FileTools.copy(this.getClass().getResourceAsStream("resource-files/double_sided.pef"), new FileOutputStream(pef));
+		FileTools.copy(this.getClass().getResourceAsStream("resource-files/basic_d_v5_double_sided.prn"), new FileOutputStream(prn2));
+		new PEFConverterFacade(EmbosserCatalog.newInstance()).parsePefFile(pef, builder.build());
+		assertTrue("Assert that the contents of the file is as expected.",
+				fc.compareBinary(new FileInputStream(prn1), new FileInputStream(prn2))
+				);
+
+		// Z-folding, double sided
+
+		basic_d.setFeature(EmbosserFeatures.Z_FOLDING, true);
+		w = basic_d.newEmbosserWriter(new FileOutputStream(prn1));
+		builder = new PEFHandler.Builder(w)
+				.range(null)
+				.align(PEFHandler.Alignment.INNER)
+				.offset(0)
+				.topOffset(0);
+
+		FileTools.copy(this.getClass().getResourceAsStream("resource-files/basic_d_v5_zfolding_double_sided.prn"), new FileOutputStream(prn2));
+		new PEFConverterFacade(EmbosserCatalog.newInstance()).parsePefFile(pef, builder.build());
+		assertTrue("Assert that the contents of the file is as expected.",
+				fc.compareBinary(new FileInputStream(prn1), new FileInputStream(prn2))
+				);
+
+		// Everest
+
+		w = everest.newEmbosserWriter(new FileOutputStream(prn1));
+		builder = new PEFHandler.Builder(w)
+				.range(null)
+				.align(PEFHandler.Alignment.INNER)
+				.offset(0)
+				.topOffset(0);
+
+		FileTools.copy(this.getClass().getResourceAsStream("resource-files/everest_v5_double_sided.prn"), new FileOutputStream(prn2));
+		new PEFConverterFacade(EmbosserCatalog.newInstance()).parsePefFile(pef, builder.build());
+		assertTrue("Assert that the contents of the file is as expected.",
+				fc.compareBinary(new FileInputStream(prn1), new FileInputStream(prn2))
+				);
+
+		prn1.deleteOnExit();
+		prn2.deleteOnExit();
+		pef.deleteOnExit();
+	}
 
 	@Test
 	public void testTableFilter() {

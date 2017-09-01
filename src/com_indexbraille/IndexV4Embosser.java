@@ -34,6 +34,9 @@ import org.daisy.braille.utils.api.table.TableFilter;
 
 import com_indexbraille.IndexEmbosserProvider.EmbosserType;
 
+/**
+ * Provides an implementation for Index V4/V5 embossers.
+ */
 public class IndexV4Embosser extends IndexEmbosser {
 
 	/**
@@ -54,10 +57,14 @@ public class IndexV4Embosser extends IndexEmbosser {
 
 		switch (type) {
 		case INDEX_BASIC_D_V4:
+		case INDEX_BASIC_D_V5:
+		case INDEX_FANFOLD_V5:
 			maxCellsInWidth = 49;
 			break;
 		case INDEX_EVEREST_D_V4:
+		case INDEX_EVEREST_D_V5:
 		case INDEX_BRAILLE_BOX_V4:
+		case INDEX_BRAILLE_BOX_V5:
 			maxCellsInWidth = 48;
 			break;
 		default:
@@ -80,7 +87,7 @@ public class IndexV4Embosser extends IndexEmbosser {
 		if (dim==null) {
 			return false;
 		}
-		if (type == EmbosserType.INDEX_BRAILLE_BOX_V4) {
+		if (type == EmbosserType.INDEX_BRAILLE_BOX_V4 || type == EmbosserType.INDEX_BRAILLE_BOX_V5) {
 			Length across = dim.getLengthAcrossFeed();
 			Length along = dim.getLengthAlongFeed();
 			if (saddleStitchEnabled) {
