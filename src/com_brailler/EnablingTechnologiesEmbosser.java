@@ -174,7 +174,7 @@ public abstract class EnablingTechnologiesEmbosser extends AbstractEmbosser {
         return false;
     }
 
-    //jvw1.6@Override
+    @Override
     public boolean supportsPageFormat(PageFormat format) {
         if (format == null) { return false; }
         try {

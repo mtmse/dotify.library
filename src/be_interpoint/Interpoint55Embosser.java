@@ -118,7 +118,7 @@ public class Interpoint55Embosser extends AbstractEmbosser {
         }
     }
 
-    //jvw1.6@Override
+    @Override
     public boolean supportsPageFormat(PageFormat format) {
         if (format == null) { return false; }
         try {
