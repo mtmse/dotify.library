@@ -35,19 +35,19 @@ public class Braillo440SFEmbosser extends AbstractBraillo440Embosser {
 		super(service, props);
 		saddleStitchEnabled = true;
 	}
-	
+
 	@Override
 	public void setFeature(String key, Object value) {
 		if (EmbosserFeatures.SADDLE_STITCH.equals(key)) {
-            try {
-            	saddleStitchEnabled = (Boolean)value;
-            	if (!saddleStitchEnabled) {
-            		saddleStitchEnabled = true;
-            		throw new IllegalArgumentException("Unsupported value for saddle stitch.");
-            	}
-            } catch (ClassCastException e) {
-            	throw new IllegalArgumentException("Unsupported value for saddle stitch.");
-            }
+			try {
+				saddleStitchEnabled = (Boolean)value;
+				if (!saddleStitchEnabled) {
+					saddleStitchEnabled = true;
+					throw new IllegalArgumentException("Unsupported value for saddle stitch.");
+				}
+			} catch (ClassCastException e) {
+				throw new IllegalArgumentException("Unsupported value for saddle stitch.");
+			}
 		} else {
 			super.setFeature(key, value);
 		}
@@ -64,9 +64,9 @@ public class Braillo440SFEmbosser extends AbstractBraillo440Embosser {
 	@Override
 	public boolean supportsPaper(Paper paper) {
 		return paper.getType() == Type.ROLL
-			&& paper.asRollPaper().getLengthAcrossFeed().asMillimeter() <= 330;
+				&& paper.asRollPaper().getLengthAcrossFeed().asMillimeter() <= 330;
 	}
-	
+
 	@Override
 	public boolean supportsPrintMode(PrintMode mode) {
 		return mode == PrintMode.MAGAZINE;

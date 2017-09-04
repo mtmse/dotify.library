@@ -30,7 +30,7 @@ import org.daisy.braille.impl.table.StringTranslator.MatchMode;
  * @author Bert Frees
  */
 public class AdvancedBrailleConverter implements BrailleConverter {
-	
+
 	private HashMap<Character, String> b2t;
 	private StringTranslator t2b;
 	private final Charset charset;
@@ -38,7 +38,7 @@ public class AdvancedBrailleConverter implements BrailleConverter {
 	private final Character replacement;
 	private final boolean ignoreCase;
 	private final boolean supports8dot;
-	
+
 	/**
 	 * Creates a new 6-dot table. Each string in the table array represents a braille character.
 	 * The string at index <tt>i</tt> in the array is interpreted as the 
@@ -54,7 +54,7 @@ public class AdvancedBrailleConverter implements BrailleConverter {
 	public AdvancedBrailleConverter(String[] table, Charset charset, EightDotFallbackMethod fallback, char replacement, boolean ignoreCase, MatchMode mode) {
 		this(table, charset, fallback, replacement, ignoreCase, false, mode);
 	}
-	
+
 	/**
 	 * Creates a new 8-dot table. Each string in the table array represents a braille character.
 	 * The string at index <tt>i</tt> in the array is interpreted as the 
@@ -125,16 +125,16 @@ public class AdvancedBrailleConverter implements BrailleConverter {
 			int val = (braillePattern + "").codePointAt(0);
 			if (val >= 0x2840 && val <= 0x28FF) {
 				switch (fallback) {
-					case MASK:
-						return toText((char) (val & 0x283F));
-					case REPLACE:
-						if (b2t.get(replacement) != null) {
-							return toText(replacement);
-						} else {
-							throw new IllegalArgumentException("Replacement char not found.");
-						}
-					case REMOVE:
-						return null;
+				case MASK:
+					return toText((char) (val & 0x283F));
+				case REPLACE:
+					if (b2t.get(replacement) != null) {
+						return toText(replacement);
+					} else {
+						throw new IllegalArgumentException("Replacement char not found.");
+					}
+				case REMOVE:
+					return null;
 				}
 			} else {
 				throw new IllegalArgumentException("Braille pattern '" + braillePattern + "' not found.");

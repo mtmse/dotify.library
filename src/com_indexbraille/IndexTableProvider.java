@@ -42,8 +42,8 @@ import aQute.bnd.annotation.component.Component;
 public class IndexTableProvider implements TableProvider {
 
 	enum TableType implements FactoryProperties {
-			INDEX_TRANSPARENT_6DOT("Index transparent 6 dot", "Table for transparent mode, 6 dot"),
-			INDEX_TRANSPARENT_8DOT("Index transparent 8 dot", "Table for transparent mode, 8 dot");
+		INDEX_TRANSPARENT_6DOT("Index transparent 6 dot", "Table for transparent mode, 6 dot"),
+		INDEX_TRANSPARENT_8DOT("Index transparent 8 dot", "Table for transparent mode, 8 dot");
 		private final String name;
 		private final String desc;
 		private final String identifier;
@@ -71,9 +71,9 @@ public class IndexTableProvider implements TableProvider {
 	public IndexTableProvider() {
 		tables = new HashMap<String, FactoryProperties>();
 		addTable(TableType.INDEX_TRANSPARENT_6DOT);
-        //tables.add(new EmbosserTable<TableType>("Index transparent 8 dot", "Table for transparent mode, 8 dot", TableType.INDEX_TRANSPARENT_8DOT, this));
+		//tables.add(new EmbosserTable<TableType>("Index transparent 8 dot", "Table for transparent mode, 8 dot", TableType.INDEX_TRANSPARENT_8DOT, this));
 	}
-	
+
 	private void addTable(FactoryProperties t) {
 		tables.put(t.getIdentifier(), t);
 	}
@@ -110,8 +110,8 @@ public class IndexTableProvider implements TableProvider {
 					}
 					return new EmbosserBrailleConverter(sb.toString(), Charset.forName("US-ASCII"), fallback, replacement, false);
 				}};
-			default:
-				return null;
+		default:
+			return null;
 		}
 	}
 

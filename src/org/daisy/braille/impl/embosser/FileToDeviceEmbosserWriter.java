@@ -35,7 +35,7 @@ public class FileToDeviceEmbosserWriter implements EmbosserWriter {
 	private final EmbosserWriter w;
 	private final File f;
 	private final Device bd;
-	
+
 	/**
 	 * Creates a new file-to-device embosser writer.
 	 * @param w the underlying EmbosserWriter
@@ -127,7 +127,7 @@ public class FileToDeviceEmbosserWriter implements EmbosserWriter {
 	public boolean supportsVolumes() {
 		return w.supportsVolumes();
 	}
-	
+
 	@Override
 	public boolean supportsZFolding() {
 		return w.supportsZFolding();

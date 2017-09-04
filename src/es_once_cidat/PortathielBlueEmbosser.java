@@ -41,125 +41,125 @@ import es_once_cidat.CidatEmbosserProvider.EmbosserType;
  */
 public class PortathielBlueEmbosser extends CidatEmbosser {
 
-    /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -2862233116704332024L;
 	private static final TableFilter tableFilter;
-    private static final String transparentTable = "es_once_cidat.CidatTableProvider.TableType.PORTATHIEL_TRANSPARENT_6DOT";
-  //private static final String transparent8dotTable = CidatTableProvider.class.getCanonicalName() + ".TableType.PORTATHIEL_TRANSPARENT_8DOT";
-    private static final String mitTable = "org_daisy.EmbosserTableProvider.TableType.MIT";
-    private static final String nabccTable = "org_daisy.EmbosserTableProvider.TableType.NABCC";
-    private static final String gbTable = "org_daisy.EmbosserTableProvider.TableType.EN_GB";
+	private static final String transparentTable = "es_once_cidat.CidatTableProvider.TableType.PORTATHIEL_TRANSPARENT_6DOT";
+	//private static final String transparent8dotTable = CidatTableProvider.class.getCanonicalName() + ".TableType.PORTATHIEL_TRANSPARENT_8DOT";
+	private static final String mitTable = "org_daisy.EmbosserTableProvider.TableType.MIT";
+	private static final String nabccTable = "org_daisy.EmbosserTableProvider.TableType.NABCC";
+	private static final String gbTable = "org_daisy.EmbosserTableProvider.TableType.EN_GB";
 
-    static {
-        tableFilter = new TableFilter() {
-            @Override
-            public boolean accept(FactoryProperties object) {
-                if (object == null) { return false; }
-                if (object.getIdentifier().equals(transparentTable))     { return true; }
-              //if (object.getIdentifier().equals(transparent8dotTable)) { return true; }
-                if (object.getIdentifier().equals(mitTable))             { return true; }
-                if (object.getIdentifier().equals(nabccTable))           { return true; }
-                if (object.getIdentifier().equals(gbTable))              { return true; }
-                return false;
-            }
-        };
-    }
+	static {
+		tableFilter = new TableFilter() {
+			@Override
+			public boolean accept(FactoryProperties object) {
+				if (object == null) { return false; }
+				if (object.getIdentifier().equals(transparentTable))     { return true; }
+				//if (object.getIdentifier().equals(transparent8dotTable)) { return true; }
+				if (object.getIdentifier().equals(mitTable))             { return true; }
+				if (object.getIdentifier().equals(nabccTable))           { return true; }
+				if (object.getIdentifier().equals(gbTable))              { return true; }
+				return false;
+			}
+		};
+	}
 
-    public PortathielBlueEmbosser(TableCatalogService service, EmbosserType props) {
-        
-        super(service, props);
-        setTable = service.newTable(transparentTable);
-    }
+	public PortathielBlueEmbosser(TableCatalogService service, EmbosserType props) {
 
-    @Override
+		super(service, props);
+		setTable = service.newTable(transparentTable);
+	}
+
+	@Override
 	public TableFilter getTableFilter() {
-        return tableFilter;
-    }
+		return tableFilter;
+	}
 
-    @Override
+	@Override
 	public EmbosserWriter newEmbosserWriter(OutputStream os) {
 
-        PageFormat page = getPageFormat();
-        
-        if (!supportsPageFormat(page)) {
-            throw new IllegalArgumentException("Unsupported paper");
-        }
+		PageFormat page = getPageFormat();
 
-        try {
+		if (!supportsPageFormat(page)) {
+			throw new IllegalArgumentException("Unsupported paper");
+		}
 
-            boolean transparentMode = (setTable.getIdentifier().equals(transparentTable));
-            byte[] header = getPortathielHeader(duplexEnabled, eightDotsEnabled, transparentMode);
+		try {
 
-            ConfigurableEmbosser.Builder b = new ConfigurableEmbosser.Builder(os, setTable.newBrailleConverter())
-                .padNewline(ConfigurableEmbosser.Padding.NONE)
-                .embosserProperties(
-                    new SimpleEmbosserProperties(getMaxWidth(page), getMaxHeight(page))
-                        .supportsDuplex(duplexEnabled)
-                        .supportsAligning(true)
-                        .supports8dot(eightDotsEnabled)
-                )
-                .header(header);
+			boolean transparentMode = (setTable.getIdentifier().equals(transparentTable));
+			byte[] header = getPortathielHeader(duplexEnabled, eightDotsEnabled, transparentMode);
 
-            if (transparentMode) {
-                b = b.breaks(new CidatLineBreaks(CidatLineBreaks.Type.PORTATHIEL_TRANSPARENT))
-                     .pagebreaks(new CidatPageBreaks(CidatPageBreaks.Type.PORTATHIEL_TRANSPARENT));
-            } else {
-                b = b.breaks(new StandardLineBreaks(StandardLineBreaks.Type.DOS))
-                     .pagebreaks(new StandardPageBreaks());
-            }
+			ConfigurableEmbosser.Builder b = new ConfigurableEmbosser.Builder(os, setTable.newBrailleConverter())
+					.padNewline(ConfigurableEmbosser.Padding.NONE)
+					.embosserProperties(
+							new SimpleEmbosserProperties(getMaxWidth(page), getMaxHeight(page))
+							.supportsDuplex(duplexEnabled)
+							.supportsAligning(true)
+							.supports8dot(eightDotsEnabled)
+							)
+					.header(header);
 
-            return b.build();
+			if (transparentMode) {
+				b = b.breaks(new CidatLineBreaks(CidatLineBreaks.Type.PORTATHIEL_TRANSPARENT))
+						.pagebreaks(new CidatPageBreaks(CidatPageBreaks.Type.PORTATHIEL_TRANSPARENT));
+			} else {
+				b = b.breaks(new StandardLineBreaks(StandardLineBreaks.Type.DOS))
+						.pagebreaks(new StandardPageBreaks());
+			}
 
-        } catch (EmbosserFactoryException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
+			return b.build();
 
-    private byte[] getPortathielHeader(boolean duplex,
-                                       boolean eightDots,
-                                       boolean transparentMode)
-                                throws EmbosserFactoryException {
+		} catch (EmbosserFactoryException e) {
+			throw new IllegalArgumentException(e);
+		}
+	}
 
-        PrintPage page = getPrintPage(getPageFormat());
-        int pageLength = (int)Math.ceil(page.getHeight()/EmbosserTools.INCH_IN_MM);
-        int charsPerLine = EmbosserTools.getWidth(page, getCellWidth());
-        int linesPerPage = EmbosserTools.getHeight(page, getCellHeight()); // depends on rowgap
+	private byte[] getPortathielHeader(boolean duplex,
+			boolean eightDots,
+			boolean transparentMode)
+					throws EmbosserFactoryException {
 
-        if (pageLength   < 8  || pageLength   > 13) { throw new UnsupportedPaperException("Paper height = " + pageLength + " inches, must be in [8,13]"); }
-        if (charsPerLine < 12 || charsPerLine > 42) { throw new UnsupportedPaperException("Characters per line = " + charsPerLine + ", must be in [12,42]"); }
-        if (linesPerPage < 10 || linesPerPage > 31) { throw new UnsupportedPaperException("Lines per page = " + linesPerPage + ", must be in [10,31]"); }
+		PrintPage page = getPrintPage(getPageFormat());
+		int pageLength = (int)Math.ceil(page.getHeight()/EmbosserTools.INCH_IN_MM);
+		int charsPerLine = EmbosserTools.getWidth(page, getCellWidth());
+		int linesPerPage = EmbosserTools.getHeight(page, getCellHeight()); // depends on rowgap
 
-        StringBuffer header = new StringBuffer();
-        byte[] bytes;
+		if (pageLength   < 8  || pageLength   > 13) { throw new UnsupportedPaperException("Paper height = " + pageLength + " inches, must be in [8,13]"); }
+		if (charsPerLine < 12 || charsPerLine > 42) { throw new UnsupportedPaperException("Characters per line = " + charsPerLine + ", must be in [12,42]"); }
+		if (linesPerPage < 10 || linesPerPage > 31) { throw new UnsupportedPaperException("Lines per page = " + linesPerPage + ", must be in [10,31]"); }
 
-        if (transparentMode) {
-            header.append("\u001b!TP");                                                 // Transparent mode ON
-        } else {
-            header.append("\u001b!CS2");                                                // Character set = MIT
-        }
-        header.append("\r\u001b!DT");  header.append(eightDots?'8':'6');                // 6 or 8 dots
-        header.append("\r\u001b!DS");  header.append(duplex?'1':'0');                   // Front-side or double-sided embossing
-        header.append("\r\u001b!LM0");                                                  // Left margin
-        header.append("\r\u001b!SL1");                                                  // Interline space = 1/10 inch
-        header.append("\r\u001b!PL");  bytes = EmbosserTools.toBytes(pageLength, 2);
-                                       header.append((char)bytes[0]);
-                                       header.append((char)bytes[1]);                   // Page length in inches
-        header.append("\r\u001b!LP");  bytes = EmbosserTools.toBytes(linesPerPage, 2);
-                                       header.append((char)bytes[0]);
-                                       header.append((char)bytes[1]);                   // Lines per page
-        header.append("\r\u001b!CL");  bytes = EmbosserTools.toBytes(charsPerLine, 2);
-                                       header.append((char)bytes[0]);
-                                       header.append((char)bytes[1]);                   // Characters per line
-        header.append("\r\u001b!CT1");                                                  // Cut off words
-        header.append("\r\u001b!NI1");                                                  // No indent
-        header.append("\r\u001b!JB0");                                                  // Jumbo mode OFF
-        header.append("\r\u001b!FF1");                                                  // Form feeds ON
-        header.append('\r');
+		StringBuffer header = new StringBuffer();
+		byte[] bytes;
 
-        return header.toString().getBytes();
-    }
+		if (transparentMode) {
+			header.append("\u001b!TP");                                                 // Transparent mode ON
+		} else {
+			header.append("\u001b!CS2");                                                // Character set = MIT
+		}
+		header.append("\r\u001b!DT");  header.append(eightDots?'8':'6');                // 6 or 8 dots
+		header.append("\r\u001b!DS");  header.append(duplex?'1':'0');                   // Front-side or double-sided embossing
+		header.append("\r\u001b!LM0");                                                  // Left margin
+		header.append("\r\u001b!SL1");                                                  // Interline space = 1/10 inch
+		header.append("\r\u001b!PL");  bytes = EmbosserTools.toBytes(pageLength, 2);
+		header.append((char)bytes[0]);
+		header.append((char)bytes[1]);                   // Page length in inches
+		header.append("\r\u001b!LP");  bytes = EmbosserTools.toBytes(linesPerPage, 2);
+		header.append((char)bytes[0]);
+		header.append((char)bytes[1]);                   // Lines per page
+		header.append("\r\u001b!CL");  bytes = EmbosserTools.toBytes(charsPerLine, 2);
+		header.append((char)bytes[0]);
+		header.append((char)bytes[1]);                   // Characters per line
+		header.append("\r\u001b!CT1");                                                  // Cut off words
+		header.append("\r\u001b!NI1");                                                  // No indent
+		header.append("\r\u001b!JB0");                                                  // Jumbo mode OFF
+		header.append("\r\u001b!FF1");                                                  // Form feeds ON
+		header.append('\r');
+
+		return header.toString().getBytes();
+	}
 
 	@Override
 	public boolean supportsZFolding() {

@@ -31,55 +31,55 @@ import com_indexbraille.IndexEmbosserProvider.EmbosserType;
 
 public class BlueBarEmbosser extends IndexEmbosser {
 
-    /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -2619451994009139923L;
 	private static final TableFilter tableFilter;
-    private static final String table6dot = IndexTableProvider.class.getCanonicalName() + ".TableType.INDEX_TRANSPARENT_6DOT";
-    
-    static {
-        tableFilter = new TableFilter() {
-            @Override
-            public boolean accept(FactoryProperties object) {
-                if (object == null) { return false; }
-                String tableID = object.getIdentifier();
-                if (tableID.equals(table6dot)) { return true; }
-                return false;
-            }
-        };
-    }
+	private static final String table6dot = IndexTableProvider.class.getCanonicalName() + ".TableType.INDEX_TRANSPARENT_6DOT";
 
-    public BlueBarEmbosser(TableCatalogService service, EmbosserType props) {
-        
-        super(service, props);
-        setTable = service.newTable(table6dot);
-    }
+	static {
+		tableFilter = new TableFilter() {
+			@Override
+			public boolean accept(FactoryProperties object) {
+				if (object == null) { return false; }
+				String tableID = object.getIdentifier();
+				if (tableID.equals(table6dot)) { return true; }
+				return false;
+			}
+		};
+	}
 
-    @Override
+	public BlueBarEmbosser(TableCatalogService service, EmbosserType props) {
+
+		super(service, props);
+		setTable = service.newTable(table6dot);
+	}
+
+	@Override
 	public TableFilter getTableFilter() {
-        return tableFilter;
-    }
+		return tableFilter;
+	}
 
-    @Override
+	@Override
 	public EmbosserWriter newEmbosserWriter(OutputStream os) {
 
-        PageFormat page = getPageFormat();
+		PageFormat page = getPageFormat();
 
-        if (!supportsPageFormat(page)) {
-            throw new IllegalArgumentException("Unsupported paper for embosser " + getDisplayName());
-        }
+		if (!supportsPageFormat(page)) {
+			throw new IllegalArgumentException("Unsupported paper for embosser " + getDisplayName());
+		}
 
-        EmbosserWriterProperties props =
-                new SimpleEmbosserProperties(getMaxWidth(page), getMaxHeight(page))
-                    .supports8dot(eightDotsEnabled)
-                    .supportsDuplex(duplexEnabled)
-                    .supportsAligning(supportsAligning());
+		EmbosserWriterProperties props =
+				new SimpleEmbosserProperties(getMaxWidth(page), getMaxHeight(page))
+				.supports8dot(eightDotsEnabled)
+				.supportsDuplex(duplexEnabled)
+				.supportsAligning(supportsAligning());
 
-        return new IndexTransparentEmbosserWriter(os,
-                                                  setTable.newBrailleConverter(),
-                                                  null,
-                                                  null,
-                                                  props);
-    }
+		return new IndexTransparentEmbosserWriter(os,
+				setTable.newBrailleConverter(),
+				null,
+				null,
+				props);
+	}
 }

@@ -65,7 +65,7 @@ public class BrailleEditorsTableProvider implements TableProvider {
 	};
 
 	private final Map<String, FactoryProperties> tables;
-	
+
 	public BrailleEditorsTableProvider() {
 		tables = new HashMap<String, FactoryProperties>(); 
 		addTable(TableType.MICROBRAILLE);

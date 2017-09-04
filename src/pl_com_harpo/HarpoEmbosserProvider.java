@@ -34,14 +34,14 @@ import aQute.bnd.annotation.component.Reference;
 @Component
 public class HarpoEmbosserProvider implements EmbosserProvider {
 
-    public static enum EmbosserType implements FactoryProperties {
-        MOUNTBATTEN_LS("Mountbatten LS", ""),
-        MOUNTBATTEN_PRO("Mountbatten Pro", ""),
-        MOUNTBATTEN_WRITER_PLUS("Mountbatten Writer+", "");
+	public static enum EmbosserType implements FactoryProperties {
+		MOUNTBATTEN_LS("Mountbatten LS", ""),
+		MOUNTBATTEN_PRO("Mountbatten Pro", ""),
+		MOUNTBATTEN_WRITER_PLUS("Mountbatten Writer+", "");
 		private final String name;
 		private final String desc;
 		private final String identifier;
-    	EmbosserType (String name, String desc) {
+		EmbosserType (String name, String desc) {
 			this.name = name;
 			this.desc = desc;
 			this.identifier = this.getClass().getCanonicalName() + "." + this.toString();
@@ -58,17 +58,17 @@ public class HarpoEmbosserProvider implements EmbosserProvider {
 		public String getDescription() {
 			return desc;
 		}
-    };
+	};
 
-    private final Map<String, FactoryProperties> embossers;
-    private TableCatalogService tableCatalogService = null;
+	private final Map<String, FactoryProperties> embossers;
+	private TableCatalogService tableCatalogService = null;
 
-    public HarpoEmbosserProvider() {
-        embossers = new HashMap<String, FactoryProperties>();
-        addEmbosser(EmbosserType.MOUNTBATTEN_LS);
-        addEmbosser(EmbosserType.MOUNTBATTEN_PRO);
-        addEmbosser(EmbosserType.MOUNTBATTEN_WRITER_PLUS);
-    }
+	public HarpoEmbosserProvider() {
+		embossers = new HashMap<String, FactoryProperties>();
+		addEmbosser(EmbosserType.MOUNTBATTEN_LS);
+		addEmbosser(EmbosserType.MOUNTBATTEN_PRO);
+		addEmbosser(EmbosserType.MOUNTBATTEN_WRITER_PLUS);
+	}
 
 	private void addEmbosser(FactoryProperties e) {
 		embossers.put(e.getIdentifier(), e);
@@ -89,16 +89,16 @@ public class HarpoEmbosserProvider implements EmbosserProvider {
 		}
 	}
 
-    @Override
+	@Override
 	public Collection<FactoryProperties> list() {
-        return Collections.unmodifiableCollection(embossers.values());
-    }
-    
+		return Collections.unmodifiableCollection(embossers.values());
+	}
+
 	@Reference
 	public void setTableCatalog(TableCatalogService service) {
 		this.tableCatalogService = service;
 	}
-	
+
 	public void unsetTableCatalog(TableCatalogService service) {
 		this.tableCatalogService = null;
 	}

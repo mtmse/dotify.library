@@ -26,20 +26,20 @@ public class Braillo650SFEmbosser extends AbstractBraillo440Embosser {
 		super(service, props);
 		saddleStitchEnabled = true;
 	}
-	
+
 	@Override
 	public void setFeature(String key, Object value) {
 		if (EmbosserFeatures.SADDLE_STITCH.equals(key)) {
-            try {
-            	saddleStitchEnabled = (Boolean)value;
-            	if (!saddleStitchEnabled) {
-            		saddleStitchEnabled = true;
-            		throw new IllegalArgumentException(EMBOSSER_UNSUPPORTED_MESSAGE);
-            	}
-            } 
-            catch (ClassCastException e) {
-            	throw new IllegalArgumentException(EMBOSSER_UNSUPPORTED_MESSAGE);
-            }
+			try {
+				saddleStitchEnabled = (Boolean)value;
+				if (!saddleStitchEnabled) {
+					saddleStitchEnabled = true;
+					throw new IllegalArgumentException(EMBOSSER_UNSUPPORTED_MESSAGE);
+				}
+			} 
+			catch (ClassCastException e) {
+				throw new IllegalArgumentException(EMBOSSER_UNSUPPORTED_MESSAGE);
+			}
 		} 
 		else {
 			super.setFeature(key, value);

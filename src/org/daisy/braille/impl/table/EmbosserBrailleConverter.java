@@ -39,7 +39,7 @@ public class EmbosserBrailleConverter implements BrailleConverter {
 	private char replacement;
 	private boolean ignoreCase;
 	private boolean supports8dot;
-	
+
 	/**
 	 * Creates a new EmbosserBrailleConverter
 	 * @param table the characters in the table, in Unicode order. Must contain 64 or 256 characters.
@@ -52,7 +52,7 @@ public class EmbosserBrailleConverter implements BrailleConverter {
 	public EmbosserBrailleConverter(String table, Charset charset, EightDotFallbackMethod fallback, char replacement, boolean ignoreCase) {
 		this(table, charset, fallback, replacement, ignoreCase, null);
 	}
-	
+
 	/**
 	 * Creates a new EmbosserBrailleConverter
 	 * @param table the characters in the table, in Unicode order. Must contain 64 or 256 characters.
@@ -108,7 +108,7 @@ public class EmbosserBrailleConverter implements BrailleConverter {
 	public Charset getPreferredCharset() {
 		return charset;
 	}
-	
+
 	@Override
 	public boolean supportsEightDot() {
 		return supports8dot;
@@ -136,16 +136,16 @@ public class EmbosserBrailleConverter implements BrailleConverter {
 			int val = (braillePattern+"").codePointAt(0);
 			if (val>=0x2840 && val<=0x28FF) {
 				switch (fallback) {
-					case MASK:
-						return toText((char)(val&0x283F));
-					case REPLACE:
-						if (b2t.get(replacement)!=null) {
-							return toText(replacement);
-						} else {
-							throw new IllegalArgumentException("Replacement char not found.");
-						}
-					case REMOVE:
-						return null;
+				case MASK:
+					return toText((char)(val&0x283F));
+				case REPLACE:
+					if (b2t.get(replacement)!=null) {
+						return toText(replacement);
+					} else {
+						throw new IllegalArgumentException("Replacement char not found.");
+					}
+				case REMOVE:
+					return null;
 				}
 			} else {			
 				throw new IllegalArgumentException("Braille pattern '" + braillePattern + "' not found.");

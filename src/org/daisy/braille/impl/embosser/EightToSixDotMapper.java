@@ -34,7 +34,7 @@ public class EightToSixDotMapper {
 	private final int width;
 	private ArrayList<BitSet> bs;
 	private StringBuilder sb;
-	
+
 	/**
 	 * Creates a new SixDotMapper with the specified line length
 	 * @param width the length of the lines, in characters
@@ -45,8 +45,8 @@ public class EightToSixDotMapper {
 		new BitSet(width*2);
 		sb = new StringBuilder();
 	}
-	
-	
+
+
 	/**
 	 * Writes a string of braille. Values must be between 0x2800 and 0x28FF.
 	 * @param braille characters in the range 0x2800 to 0x28FF
@@ -58,7 +58,7 @@ public class EightToSixDotMapper {
 		}
 		sb.append(braille);
 	}
-	
+
 	/**
 	 * Starts a new line
 	 * @param rowgap the row gap following the line currently in the buffer
@@ -76,7 +76,7 @@ public class EightToSixDotMapper {
 	public void flush() {
 		flushToBitSet();
 	}
-	
+
 	private void flushToBitSet() {
 		String t = sb.toString();
 		for (int i=0; i<4; i++) {
@@ -92,11 +92,11 @@ public class EightToSixDotMapper {
 		}
 		sb = new StringBuilder();
 	}
-	
+
 	public boolean hasMoreFullLines() {
 		return bs.size()>=3;
 	}
-	
+
 	public boolean hasMoreLines() {
 		return bs.size()>0;
 	}

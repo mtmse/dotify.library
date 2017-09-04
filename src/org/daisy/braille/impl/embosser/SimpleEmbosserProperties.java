@@ -45,14 +45,14 @@ public class SimpleEmbosserProperties implements EmbosserWriterProperties {
 		this.maxWidth = maxWidth;
 		this.maxHeight = maxHeight;
 	}
-	
+
 	/**
 	 * Sets the value of eight dot support
 	 * @param val the new value
 	 * @return returns this object
 	 */
 	public SimpleEmbosserProperties supports8dot(boolean val) { supports8dot = val; return this; }
-	
+
 	/**
 	 * Sets the value of duplex support
 	 * @param val the new value
@@ -66,7 +66,7 @@ public class SimpleEmbosserProperties implements EmbosserWriterProperties {
 	 * @return returns this object
 	 */
 	public SimpleEmbosserProperties supportsAligning(boolean val) { supportsAligning = val; return this; }
-	
+
 	/**
 	 * Sets the value of volumes support
 	 * @param val the new value
@@ -80,21 +80,21 @@ public class SimpleEmbosserProperties implements EmbosserWriterProperties {
 	 * @return returns this object
 	 */
 	public SimpleEmbosserProperties supportsZFolding(boolean val) { supportsZFolding = val; return this; }
-	
+
 	/**
 	 * Sets the value of magazine layout support
 	 * @param val the new value
 	 * @return returns this object
 	 */
 	public SimpleEmbosserProperties supportsMagazineLayout(boolean val) { supportsMagazineLayout = val; return this; }
-	
+
 	/**
 	 * Sets the value of cell width
 	 * @param val the new value
 	 * @return returns this object
 	 */
 	public SimpleEmbosserProperties cellWidth(double val) { cellWidth = val; return this; }
-	
+
 	/**
 	 * Sets the value of cell height
 	 * @param val the new value
@@ -131,7 +131,7 @@ public class SimpleEmbosserProperties implements EmbosserWriterProperties {
 	public boolean supportsVolumes() {
 		return supportsVolumes;
 	}
-	
+
 	@Override
 	public boolean supportsZFolding() {
 		return supportsZFolding;
@@ -149,7 +149,7 @@ public class SimpleEmbosserProperties implements EmbosserWriterProperties {
 	public double getCellWidth() {
 		return cellWidth;
 	}
-	
+
 	/**
 	 * Gets the cell height, in millimeters
 	 * @return returns the cell height, in millimeters

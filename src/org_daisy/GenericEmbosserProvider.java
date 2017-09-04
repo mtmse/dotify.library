@@ -38,7 +38,7 @@ public class GenericEmbosserProvider implements EmbosserProvider {
 		private final String name;
 		private final String desc;
 		private final String identifier;
-    	EmbosserType (String name, String desc) {
+		EmbosserType (String name, String desc) {
 			this.name = name;
 			this.desc = desc;
 			this.identifier = this.getClass().getCanonicalName() + "." + this.toString();
@@ -56,10 +56,10 @@ public class GenericEmbosserProvider implements EmbosserProvider {
 			return desc;
 		}
 	};
-	
+
 	private final Map<String, FactoryProperties> embossers;
 	private TableCatalogService tableCatalogService = null;
-	
+
 	public GenericEmbosserProvider() {
 		embossers = new HashMap<String, FactoryProperties>();
 		addEmbosser(EmbosserType.NONE);
@@ -84,12 +84,12 @@ public class GenericEmbosserProvider implements EmbosserProvider {
 	public Collection<FactoryProperties> list() {
 		return Collections.unmodifiableCollection(embossers.values());
 	}
-	
+
 	@Reference
 	public void setTableCatalog(TableCatalogService service) {
 		this.tableCatalogService = service;
 	}
-	
+
 	public void unsetTableCatalog(TableCatalogService service) {
 		this.tableCatalogService = null;
 	}
@@ -102,4 +102,4 @@ public class GenericEmbosserProvider implements EmbosserProvider {
 	}
 
 }
- 
+

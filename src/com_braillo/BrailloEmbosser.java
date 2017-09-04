@@ -52,5 +52,5 @@ public abstract class BrailloEmbosser extends AbstractEmbosser {
 	public TableFilter getTableFilter() {
 		return tableFilter;
 	}
-        
+
 }

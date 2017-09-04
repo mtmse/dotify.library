@@ -45,7 +45,7 @@ public abstract class AbstractBraillo440Embosser extends BrailloEmbosser {
 	private static final double cellWidth = 19*EmbosserTools.INCH_IN_MM/80d; //6;
 	private static final double cellHeight = 10;
 	private static final double constant = 11*EmbosserTools.INCH_IN_MM/80d;
-	
+
 	protected boolean saddleStitchEnabled;
 
 	public AbstractBraillo440Embosser(TableCatalogService service, FactoryProperties props) {
@@ -100,13 +100,13 @@ public abstract class AbstractBraillo440Embosser extends BrailloEmbosser {
 		public int getMaxWidth() {	return width;}
 		 */
 		SimpleEmbosserProperties ep = new SimpleEmbosserProperties(width, height)
-			.supports8dot(false)
-			.supportsAligning(true)
-			.supportsDuplex(true);
+				.supports8dot(false)
+				.supportsAligning(true)
+				.supportsDuplex(true);
 		BufferedVolumeEmbosser.Builder b = new BufferedVolumeEmbosser.Builder(device, tc.newBrailleConverter(), bvw, ep)
-			.breaks(new StandardLineBreaks(StandardLineBreaks.Type.DOS))
-			.padNewline(BufferedVolumeEmbosser.Padding.NONE) // JH100408: changed from BEFORE
-			.autoLineFeedOnEmptyPage(true);
+				.breaks(new StandardLineBreaks(StandardLineBreaks.Type.DOS))
+				.padNewline(BufferedVolumeEmbosser.Padding.NONE) // JH100408: changed from BEFORE
+				.autoLineFeedOnEmptyPage(true);
 		return b.build();
 	}
 	/*
@@ -114,35 +114,35 @@ public abstract class AbstractBraillo440Embosser extends BrailloEmbosser {
 		return (int)Math.floor((paper.getWidth()+constant-EmbosserTools.INCH_IN_MM) / getCellWidth());
 	}*/
 
-    @Override
+	@Override
 	public boolean supports8dot() {
-        return false;
-    }
+		return false;
+	}
 
-    @Override
+	@Override
 	public boolean supportsDuplex() {
-        return true;
-    }
+		return true;
+	}
 
-    @Override
+	@Override
 	public boolean supportsAligning() {
-        return true;
-    }
+		return true;
+	}
 
-    @Override
+	@Override
 	public boolean supportsVolumes() {
-        return true;
-    }
+		return true;
+	}
 
 	@Override
 	public PrintPage getPrintPage(PageFormat pageFormat) {
 		return new PrintPage(pageFormat,
 				PrintDirection.SIDEWAYS,
 				(saddleStitchEnabled?PrintMode.MAGAZINE:PrintMode.REGULAR)
-			);
+				);
 	}
 
-        @Override
+	@Override
 	public Area getPrintableArea(PageFormat pageFormat) {
 		PrintPage printPage = getPrintPage(pageFormat);
 		return new Area(printPage.getWidth(), printPage.getHeight(), 0, 0);

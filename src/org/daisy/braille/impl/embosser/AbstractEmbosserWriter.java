@@ -62,7 +62,7 @@ public abstract class AbstractEmbosserWriter implements EmbosserWriter {
 	private int charsOnRow;
 	private int rowsOnPage;
 	private EmbosserWriterProperties props;
-    protected PageBreaks pagebreaks = new StandardPageBreaks();
+	protected PageBreaks pagebreaks = new StandardPageBreaks();
 
 	/**
 	 * Gets the line break style for the EmbosserWriter
@@ -140,7 +140,7 @@ public abstract class AbstractEmbosserWriter implements EmbosserWriter {
 		currentDuplex = duplex;
 		// Contract does not affect the implementation here, subclasses should override this method,
 		// to make use of contract information
-		
+
 	}
 
 	/**
@@ -194,19 +194,19 @@ public abstract class AbstractEmbosserWriter implements EmbosserWriter {
 			throw new IOException("The maximum number of rows on a page was exceeded (page is too short)");
 		}
 		switch (getPaddingStyle()) {
-			case BEFORE:
-				lineFeed();
-			case NONE:
-				addAll(getPagebreakStyle().getString().getBytes());
-				break;
-			case BOTH:
-				lineFeed();
-			case AFTER:
-				addAll(getPagebreakStyle().getString().getBytes());
-				lineFeed();
-				break;
+		case BEFORE:
+			lineFeed();
+		case NONE:
+			addAll(getPagebreakStyle().getString().getBytes());
+			break;
+		case BOTH:
+			lineFeed();
+		case AFTER:
+			addAll(getPagebreakStyle().getString().getBytes());
+			lineFeed();
+			break;
 
-                
+
 
 		}
 		currentPage++;
@@ -214,9 +214,9 @@ public abstract class AbstractEmbosserWriter implements EmbosserWriter {
 		charsOnRow = 0;
 	}
 
-        protected PageBreaks getPagebreakStyle() {
-            return pagebreaks;
-        }
+	protected PageBreaks getPagebreakStyle() {
+		return pagebreaks;
+	}
 
 	@Override
 	public void newPage() throws IOException {
@@ -279,17 +279,17 @@ public abstract class AbstractEmbosserWriter implements EmbosserWriter {
 	public boolean supportsVolumes() {
 		return props.supportsVolumes();
 	}
-	
+
 	@Override
 	public boolean supportsZFolding() {
 		return props.supportsZFolding();
 	}
-	
+
 	@Override
 	public boolean supportsPrintMode(PrintMode mode) {
 		return props.supportsPrintMode(mode);
 	}
-	
+
 
 
 }
