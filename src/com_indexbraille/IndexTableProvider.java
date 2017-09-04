@@ -90,6 +90,7 @@ public class IndexTableProvider implements TableProvider {
 		return newFactory(t.getIdentifier()).newBrailleConverter();
 	}
 
+	@Override
 	public Table newFactory(String identifier) {
 		FactoryProperties fp = tables.get(identifier);
 		switch ((TableType)fp) {

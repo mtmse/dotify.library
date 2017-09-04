@@ -99,6 +99,7 @@ public class ViewPlusEmbosserProvider implements EmbosserProvider {
 		embossers.put(e.getIdentifier(), e);
 	}
 
+	@Override
 	public Embosser newFactory(String identifier) {
 		FactoryProperties fp = embossers.get(identifier);
 		switch ((EmbosserType)fp) {
@@ -127,7 +128,8 @@ public class ViewPlusEmbosserProvider implements EmbosserProvider {
 		}
 	}
 
-    public Collection<FactoryProperties> list() {
+    @Override
+	public Collection<FactoryProperties> list() {
         return Collections.unmodifiableCollection(embossers.values());
     }
     

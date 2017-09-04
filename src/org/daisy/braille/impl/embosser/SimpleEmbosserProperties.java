@@ -102,34 +102,42 @@ public class SimpleEmbosserProperties implements EmbosserWriterProperties {
 	 */
 	public SimpleEmbosserProperties cellHeight(double val) { cellHeight = val; return this; }
 
+	@Override
 	public int getMaxHeight() {
 		return maxHeight;
 	}
 
+	@Override
 	public int getMaxWidth() {
 		return maxWidth;
 	}
 
+	@Override
 	public boolean supports8dot() {
 		return supports8dot;
 	}
 
+	@Override
 	public boolean supportsAligning() {
 		return supportsAligning;
 	}
 
+	@Override
 	public boolean supportsDuplex() {
 		return supportsDuplex;
 	}
 
+	@Override
 	public boolean supportsVolumes() {
 		return supportsVolumes;
 	}
 	
+	@Override
 	public boolean supportsZFolding() {
 		return supportsZFolding;
 	}
 
+	@Override
 	public boolean supportsPrintMode(PrintMode mode) {
 		return supportsMagazineLayout || PrintMode.REGULAR == mode;
 	}

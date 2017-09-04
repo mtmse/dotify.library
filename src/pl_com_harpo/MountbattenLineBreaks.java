@@ -32,7 +32,8 @@ public class MountbattenLineBreaks implements LineBreaks {
         newline = "{np}";
     }
 
-    public String getString() {
+    @Override
+	public String getString() {
         return newline;
     }
 }

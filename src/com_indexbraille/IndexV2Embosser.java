@@ -80,11 +80,13 @@ public class IndexV2Embosser extends IndexEmbosser {
         maxCellsInWidth = 42;
     }
 
-    public TableFilter getTableFilter() {
+    @Override
+	public TableFilter getTableFilter() {
         return tableFilter;
     }
 
-    public EmbosserWriter newEmbosserWriter(OutputStream os) {
+    @Override
+	public EmbosserWriter newEmbosserWriter(OutputStream os) {
 
       //int pageCount = 1;                                 // ???
       //boolean magazine = false;

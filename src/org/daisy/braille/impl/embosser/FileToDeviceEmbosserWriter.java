@@ -128,10 +128,12 @@ public class FileToDeviceEmbosserWriter implements EmbosserWriter {
 		return w.supportsVolumes();
 	}
 	
+	@Override
 	public boolean supportsZFolding() {
 		return w.supportsZFolding();
 	}
 
+	@Override
 	public boolean supportsPrintMode(PrintMode mode) {
 		return w.supportsPrintMode(mode);
 	}

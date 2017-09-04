@@ -101,14 +101,17 @@ public class AdvancedBrailleConverter implements BrailleConverter {
 		b2t.put(braille, glyphs);
 	}
 
+	@Override
 	public Charset getPreferredCharset() {
 		return charset;
 	}
 
+	@Override
 	public boolean supportsEightDot() {
 		return supports8dot;
 	}
 
+	@Override
 	public String toBraille(String text) {
 		if (ignoreCase) {
 			text = text.toLowerCase();
@@ -140,6 +143,7 @@ public class AdvancedBrailleConverter implements BrailleConverter {
 		return (b2t.get(braillePattern));
 	}
 
+	@Override
 	public String toText(String braille) {
 		StringBuffer sb = new StringBuffer();
 		String t;

@@ -56,10 +56,12 @@ public class EnablingTechnologiesSingleSidedEmbosser extends EnablingTechnologie
         duplexEnabled = false;
     }
 
-    public boolean supportsDuplex() {
+    @Override
+	public boolean supportsDuplex() {
         return false;
     }
 
+	@Override
 	public boolean supportsZFolding() {
 		return false;
 	}

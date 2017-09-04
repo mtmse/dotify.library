@@ -100,6 +100,7 @@ public abstract class EmbosserTable extends AbstractTable {
 		}
 	}
 	
+	@Override
 	public void setFeature(String key, Object value) {
 		if ("replacement".equals(key)) {
 			if (value!=null) {
@@ -114,6 +115,7 @@ public abstract class EmbosserTable extends AbstractTable {
 		}
 	}
 	
+	@Override
 	public Object getFeature(String key) {
 		if ("replacement".equals(key)) {
 			return replacement;

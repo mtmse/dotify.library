@@ -114,22 +114,27 @@ public abstract class AbstractBraillo440Embosser extends BrailloEmbosser {
 		return (int)Math.floor((paper.getWidth()+constant-EmbosserTools.INCH_IN_MM) / getCellWidth());
 	}*/
 
-    public boolean supports8dot() {
+    @Override
+	public boolean supports8dot() {
         return false;
     }
 
-    public boolean supportsDuplex() {
+    @Override
+	public boolean supportsDuplex() {
         return true;
     }
 
-    public boolean supportsAligning() {
+    @Override
+	public boolean supportsAligning() {
         return true;
     }
 
-    public boolean supportsVolumes() {
+    @Override
+	public boolean supportsVolumes() {
         return true;
     }
 
+	@Override
 	public PrintPage getPrintPage(PageFormat pageFormat) {
 		return new PrintPage(pageFormat,
 				PrintDirection.SIDEWAYS,
@@ -143,6 +148,7 @@ public abstract class AbstractBraillo440Embosser extends BrailloEmbosser {
 		return new Area(printPage.getWidth(), printPage.getHeight(), 0, 0);
 	}
 
+	@Override
 	public boolean supportsZFolding() {
 		return false;
 	}

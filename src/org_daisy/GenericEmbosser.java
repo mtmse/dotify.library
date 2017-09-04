@@ -126,23 +126,28 @@ public class GenericEmbosser extends AbstractEmbosser {
 		throw new IllegalArgumentException("Embosser does not support this feature.");
 	}
 
-    public boolean supportsVolumes() {
+    @Override
+	public boolean supportsVolumes() {
         return false;
     }
 
-    public boolean supports8dot() {
+    @Override
+	public boolean supports8dot() {
         return false;
     }
 
-    public boolean supportsDuplex() {
+    @Override
+	public boolean supportsDuplex() {
         return true;
     }
 
-    public boolean supportsAligning() {
+    @Override
+	public boolean supportsAligning() {
     	//should this be true?
         return true;
     }
 
+	@Override
 	public boolean supportsZFolding() {
 		return false;
 	}

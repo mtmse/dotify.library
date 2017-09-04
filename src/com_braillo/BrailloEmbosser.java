@@ -32,6 +32,7 @@ public abstract class BrailloEmbosser extends AbstractEmbosser {
 	private static final TableFilter tableFilter;
 	static {
 		tableFilter = new TableFilter() {
+			@Override
 			public boolean accept(FactoryProperties object) {
 				if (object.getIdentifier().equals(DefaultTableProvider.class.getCanonicalName() + ".TableType.EN_US")) { return true; }
 				if (object.getIdentifier().startsWith(BrailloTableProvider.class.getCanonicalName() + ".TableType.")) { return true; }

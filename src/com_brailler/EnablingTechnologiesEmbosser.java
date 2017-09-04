@@ -184,7 +184,8 @@ public abstract class EnablingTechnologiesEmbosser extends AbstractEmbosser {
         }
     }
 
-    public boolean supportsPrintPage(PrintPage dim) {
+    @Override
+	public boolean supportsPrintPage(PrintPage dim) {
         if (dim==null) { return false; }
         return (dim.getWidth()  <= maxPageWidth)  &&
                (dim.getWidth()  >= minPageWidth)  &&
@@ -192,23 +193,28 @@ public abstract class EnablingTechnologiesEmbosser extends AbstractEmbosser {
                (dim.getHeight() >= minPageHeight);
     }
 
-    public TableFilter getTableFilter() {
+    @Override
+	public TableFilter getTableFilter() {
         return tableFilter;
     }
 
-    public boolean supportsVolumes() {
+    @Override
+	public boolean supportsVolumes() {
         return false;
     }
 
-    public boolean supports8dot() {
+    @Override
+	public boolean supports8dot() {
         return false;
     }
 
-    public boolean supportsAligning() {
+    @Override
+	public boolean supportsAligning() {
         return true;
     }
 
-    public EmbosserWriter newEmbosserWriter(Device device) {
+    @Override
+	public EmbosserWriter newEmbosserWriter(Device device) {
 
         try {
             File f = File.createTempFile(this.getClass().getCanonicalName(), ".tmp");
@@ -220,7 +226,8 @@ public abstract class EnablingTechnologiesEmbosser extends AbstractEmbosser {
         throw new IllegalArgumentException("Embosser does not support this feature.");
     }
 
-    public EmbosserWriter newEmbosserWriter(OutputStream os) {
+    @Override
+	public EmbosserWriter newEmbosserWriter(OutputStream os) {
 
         boolean eightDots = supports8dot() && false;       // examine PEF file: rowgap / char > 283F
         PageFormat page = getPageFormat();

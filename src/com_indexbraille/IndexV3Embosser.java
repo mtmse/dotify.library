@@ -91,11 +91,13 @@ public class IndexV3Embosser extends IndexEmbosser {
         }
     }
 
-    public TableFilter getTableFilter() {
+    @Override
+	public TableFilter getTableFilter() {
         return tableFilter;
     }
 
-    public EmbosserWriter newEmbosserWriter(OutputStream os) {
+    @Override
+	public EmbosserWriter newEmbosserWriter(OutputStream os) {
 
         PageFormat page = getPageFormat();
         if (!supportsPageFormat(page)) {

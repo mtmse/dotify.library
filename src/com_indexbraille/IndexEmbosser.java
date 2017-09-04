@@ -194,7 +194,8 @@ public abstract class IndexEmbosser extends AbstractEmbosser {
         return false;
     }
 
-    public boolean supportsPrintPage(PrintPage dim) {
+    @Override
+	public boolean supportsPrintPage(PrintPage dim) {
 
         if (dim==null) { return false; }
         double w = dim.getWidth();
@@ -212,19 +213,23 @@ public abstract class IndexEmbosser extends AbstractEmbosser {
                (along >= minPageLengthAlongFeed);
     }
 
-    public boolean supportsVolumes() {
+    @Override
+	public boolean supportsVolumes() {
         return false;
     }
 
-    public boolean supportsAligning() {
+    @Override
+	public boolean supportsAligning() {
         return true;
     }
 
-    public boolean supports8dot() {
+    @Override
+	public boolean supports8dot() {
         return false;
     }
 
-    public boolean supportsDuplex() {
+    @Override
+	public boolean supportsDuplex() {
         switch (type) {
             case INDEX_BASIC_D_V2:
             case INDEX_EVEREST_D_V2:
@@ -328,7 +333,8 @@ public abstract class IndexEmbosser extends AbstractEmbosser {
         }
     }
 
-    public EmbosserWriter newEmbosserWriter(Device device) {
+    @Override
+	public EmbosserWriter newEmbosserWriter(Device device) {
 
         try {
             File f = File.createTempFile(this.getClass().getCanonicalName(), ".tmp");

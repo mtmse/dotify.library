@@ -153,19 +153,23 @@ public abstract class AbstractBraillo200Embosser extends BrailloEmbosser {
 		}
 	}
 
-    public boolean supports8dot() {
+    @Override
+	public boolean supports8dot() {
         return false;
     }
 
-    public boolean supportsDuplex() {
+    @Override
+	public boolean supportsDuplex() {
         return true;
     }
 
-    public boolean supportsAligning() {
+    @Override
+	public boolean supportsAligning() {
         return true;
     }
 
-    public boolean supportsVolumes() {
+    @Override
+	public boolean supportsVolumes() {
         return false;
     }
 
@@ -180,6 +184,7 @@ public abstract class AbstractBraillo200Embosser extends BrailloEmbosser {
 		return new PrintPage(pageFormat, PrintDirection.UPRIGHT, PrintMode.REGULAR);
 	}
 	
+	@Override
 	public boolean supportsZFolding() {
 		// even 400SR supports z-folding! But since it uses roll paper, 
 		// that option will not be presented to a user at this moment.

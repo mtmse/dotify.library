@@ -69,11 +69,13 @@ public class ImpactoEmbosser extends CidatEmbosser {
         setTable = service.newTable(transparentTable);
     }
 
-    public TableFilter getTableFilter() {
+    @Override
+	public TableFilter getTableFilter() {
         return tableFilter;
     }
 
-    public EmbosserWriter newEmbosserWriter(OutputStream os) {
+    @Override
+	public EmbosserWriter newEmbosserWriter(OutputStream os) {
 
         PageFormat page = getPageFormat();
         
@@ -186,6 +188,7 @@ public class ImpactoEmbosser extends CidatEmbosser {
         }
     }
 
+	@Override
 	public boolean supportsZFolding() {
 		return false;
 	}

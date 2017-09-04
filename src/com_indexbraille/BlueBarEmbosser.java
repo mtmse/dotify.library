@@ -56,11 +56,13 @@ public class BlueBarEmbosser extends IndexEmbosser {
         setTable = service.newTable(table6dot);
     }
 
-    public TableFilter getTableFilter() {
+    @Override
+	public TableFilter getTableFilter() {
         return tableFilter;
     }
 
-    public EmbosserWriter newEmbosserWriter(OutputStream os) {
+    @Override
+	public EmbosserWriter newEmbosserWriter(OutputStream os) {
 
         PageFormat page = getPageFormat();
 

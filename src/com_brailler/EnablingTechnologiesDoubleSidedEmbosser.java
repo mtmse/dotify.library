@@ -85,6 +85,7 @@ public class EnablingTechnologiesDoubleSidedEmbosser extends EnablingTechnologie
         }
     }
 
+	@Override
 	public boolean supportsZFolding() {
 		return false;
 	}

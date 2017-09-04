@@ -103,7 +103,8 @@ public class Interpoint55Embosser extends AbstractEmbosser {
         setCellHeight(eightDotsEnabled?12.5d:10d);
     }
 
-    public TableFilter getTableFilter() {
+    @Override
+	public TableFilter getTableFilter() {
         return tableFilter;
     }
 
@@ -128,7 +129,8 @@ public class Interpoint55Embosser extends AbstractEmbosser {
         }
     }
 
-    public boolean supportsPrintPage(PrintPage dim) {
+    @Override
+	public boolean supportsPrintPage(PrintPage dim) {
         if (dim==null) { return false; }
         double across = dim.getLengthAcrossFeed().asMillimeter();
         double along = dim.getLengthAlongFeed().asMillimeter();
@@ -138,19 +140,23 @@ public class Interpoint55Embosser extends AbstractEmbosser {
                (along >= minCutLength);
     }
 
-    public boolean supportsVolumes() {
+    @Override
+	public boolean supportsVolumes() {
         return false;
     }
 
-    public boolean supports8dot() {
+    @Override
+	public boolean supports8dot() {
         return false;
     }
 
-    public boolean supportsDuplex() {
+    @Override
+	public boolean supportsDuplex() {
         return true;
     }
 
-    public boolean supportsAligning() {
+    @Override
+	public boolean supportsAligning() {
         return true;
     }
 
@@ -164,7 +170,8 @@ public class Interpoint55Embosser extends AbstractEmbosser {
         return true;
     }
 
-    public EmbosserWriter newEmbosserWriter(OutputStream os) {
+    @Override
+	public EmbosserWriter newEmbosserWriter(OutputStream os) {
 
         PageFormat page = getPageFormat();
         if (!supportsPageFormat(page)) {
@@ -256,7 +263,8 @@ public class Interpoint55Embosser extends AbstractEmbosser {
         if (os != null) { os.close(); }
     }
 
-    public EmbosserWriter newEmbosserWriter(Device device) {
+    @Override
+	public EmbosserWriter newEmbosserWriter(Device device) {
 
         throw new IllegalArgumentException(new EmbosserFactoryException(getDisplayName() +
                 " does not support printing directly to a Device. " +

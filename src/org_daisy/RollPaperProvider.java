@@ -48,6 +48,7 @@ public class RollPaperProvider implements PaperProvider {
 		this.papers = Collections.unmodifiableCollection(tmp);
 	}
 
+	@Override
 	public Collection<Paper> list() {
 		return papers;
 	}

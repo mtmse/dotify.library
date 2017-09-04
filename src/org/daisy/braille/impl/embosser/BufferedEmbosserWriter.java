@@ -87,10 +87,12 @@ public class BufferedEmbosserWriter implements EmbosserWriter {
 		return writer.supportsAligning();
 	}
 	
+	@Override
 	public boolean supportsZFolding() {
 		return writer.supportsZFolding();
 	}
 
+	@Override
 	public boolean supportsPrintMode(PrintMode mode) {
 		return writer.supportsPrintMode(mode);
 	}

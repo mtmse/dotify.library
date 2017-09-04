@@ -119,6 +119,7 @@ public abstract class AbstractEmbosser extends AbstractFactory implements Emboss
 		return new Area(printPage.getWidth(), printPage.getHeight(), 0, 0);
 	}
 
+	@Override
 	public Object getFeature(String key) {
 		if (EmbosserFeatures.PAGE_FORMAT.equals(key)) {
 			return pageFormat;
@@ -141,7 +142,8 @@ public abstract class AbstractEmbosser extends AbstractFactory implements Emboss
      * @param key key with which the specified value is to be associated.
      * @param value value to be associated with the specified key.
      */
- 	public void setFeature(String key, Object value) {
+ 	@Override
+	public void setFeature(String key, Object value) {
 		if (EmbosserFeatures.PAGE_FORMAT.equals(key)) {
 			try {
 				if (!supportsPageFormat((PageFormat)value)) {

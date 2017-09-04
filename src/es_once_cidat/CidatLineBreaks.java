@@ -45,7 +45,8 @@ public class CidatLineBreaks implements LineBreaks {
         }
     }
 
-    public String getString() {
+    @Override
+	public String getString() {
         return newline;
     }
 }

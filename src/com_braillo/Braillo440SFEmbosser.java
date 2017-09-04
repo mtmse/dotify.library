@@ -53,6 +53,7 @@ public class Braillo440SFEmbosser extends AbstractBraillo440Embosser {
 		}
 	}
 
+	@Override
 	public boolean supportsPageFormat(PageFormat pageFormat) {
 		return pageFormat.getPageFormatType() == PageFormat.Type.ROLL 
 				&& pageFormat.asRollPaperFormat().getLengthAcrossFeed().asMillimeter() <= 330
@@ -60,6 +61,7 @@ public class Braillo440SFEmbosser extends AbstractBraillo440Embosser {
 				&& pageFormat.asRollPaperFormat().getLengthAlongFeed().asMillimeter() <= 585;
 	}
 
+	@Override
 	public boolean supportsPaper(Paper paper) {
 		return paper.getType() == Type.ROLL
 			&& paper.asRollPaper().getLengthAcrossFeed().asMillimeter() <= 330;

@@ -96,23 +96,28 @@ public class BrailleEditorsFileFormat extends AbstractFactory implements FileFor
         table = tableCatalog.newTable("org_daisy.EmbosserTableProvider.TableType.MIT");
     }
 
-    public TableFilter getTableFilter() {
+    @Override
+	public TableFilter getTableFilter() {
             return tableFilter;
     }
     
-    public boolean supportsTable(Table table) {
+    @Override
+	public boolean supportsTable(Table table) {
         return getTableFilter().accept(table);
     }
 
-    public boolean supportsDuplex() {
+    @Override
+	public boolean supportsDuplex() {
         return false;
     }
 
-    public boolean supports8dot() {
+    @Override
+	public boolean supports8dot() {
         return false;
     }
 
-    public EmbosserWriter newEmbosserWriter(OutputStream os) {
+    @Override
+	public EmbosserWriter newEmbosserWriter(OutputStream os) {
 
         if (!supportsTable(table)) {
             throw new IllegalArgumentException("Unsupported table: " + table.getDisplayName());
@@ -148,11 +153,13 @@ public class BrailleEditorsFileFormat extends AbstractFactory implements FileFor
         }
     }
     
-    public String getFileExtension() {
+    @Override
+	public String getFileExtension() {
         return "." + type.name().toLowerCase();
     }
 
-    public void setFeature(String key, Object value) {
+    @Override
+	public void setFeature(String key, Object value) {
 
         if (EmbosserFeatures.TABLE.equals(key)) {
             if (value == null) {
@@ -174,7 +181,8 @@ public class BrailleEditorsFileFormat extends AbstractFactory implements FileFor
         }
     }
 
-    public Object getFeature(String key) {
+    @Override
+	public Object getFeature(String key) {
 
         if (EmbosserFeatures.TABLE.equals(key)) {
             return table;
@@ -183,7 +191,8 @@ public class BrailleEditorsFileFormat extends AbstractFactory implements FileFor
         }
     }
 
-    public Object getProperty(String key) {
+    @Override
+	public Object getProperty(String key) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }

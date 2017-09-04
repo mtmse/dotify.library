@@ -86,7 +86,8 @@ public class IndexV4Embosser extends IndexEmbosser {
         maxMarginTop = 10;
     }
 
-    public TableFilter getTableFilter() {
+    @Override
+	public TableFilter getTableFilter() {
         return tableFilter;
     }
 
@@ -110,7 +111,8 @@ public class IndexV4Embosser extends IndexEmbosser {
         }
     }
 
-    public EmbosserWriter newEmbosserWriter(OutputStream os) {
+    @Override
+	public EmbosserWriter newEmbosserWriter(OutputStream os) {
 
         PageFormat page = getPageFormat();
         if (!supportsPageFormat(page)) {

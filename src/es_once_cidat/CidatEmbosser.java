@@ -108,7 +108,8 @@ public abstract class CidatEmbosser extends AbstractEmbosser {
         }
     }
 
-    public boolean supportsPrintPage(PrintPage dim) {
+    @Override
+	public boolean supportsPrintPage(PrintPage dim) {
         if (dim==null) { return false; }
         return (dim.getWidth()  <= maxPageWidth)  &&
                (dim.getWidth()  >= minPageWidth)  &&
@@ -116,23 +117,28 @@ public abstract class CidatEmbosser extends AbstractEmbosser {
                (dim.getHeight() >= minPageHeight);
     }
 
-    public boolean supportsVolumes() {
+    @Override
+	public boolean supportsVolumes() {
         return false;
     }
 
-    public boolean supports8dot() {
+    @Override
+	public boolean supports8dot() {
         return false;
     }
 
-    public boolean supportsDuplex() {
+    @Override
+	public boolean supportsDuplex() {
         return true;
     }
 
-    public boolean supportsAligning() {
+    @Override
+	public boolean supportsAligning() {
         return true;
     }
 
-    public EmbosserWriter newEmbosserWriter(Device device) {
+    @Override
+	public EmbosserWriter newEmbosserWriter(Device device) {
 
         try {
             File f = File.createTempFile(this.getClass().getCanonicalName(), ".tmp");

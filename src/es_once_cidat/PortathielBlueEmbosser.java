@@ -73,11 +73,13 @@ public class PortathielBlueEmbosser extends CidatEmbosser {
         setTable = service.newTable(transparentTable);
     }
 
-    public TableFilter getTableFilter() {
+    @Override
+	public TableFilter getTableFilter() {
         return tableFilter;
     }
 
-    public EmbosserWriter newEmbosserWriter(OutputStream os) {
+    @Override
+	public EmbosserWriter newEmbosserWriter(OutputStream os) {
 
         PageFormat page = getPageFormat();
         
@@ -159,6 +161,7 @@ public class PortathielBlueEmbosser extends CidatEmbosser {
         return header.toString().getBytes();
     }
 
+	@Override
 	public boolean supportsZFolding() {
 		return false;
 	}

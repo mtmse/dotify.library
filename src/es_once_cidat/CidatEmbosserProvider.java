@@ -78,6 +78,7 @@ public class CidatEmbosserProvider implements EmbosserProvider {
 		embossers.put(e.getIdentifier(), e);
 	}
 
+	@Override
 	public Embosser newFactory(String identifier) {
 		FactoryProperties fp = embossers.get(identifier);
 		switch ((EmbosserType)fp) {

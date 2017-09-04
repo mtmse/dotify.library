@@ -72,11 +72,13 @@ public class BrailleEditorsFileFormatProvider implements FileFormatProvider {
         formats.put(FileType.BRA.getIdentifier(), FileType.BRA);
     }
 
-    public Collection<FactoryProperties> list() {
+    @Override
+	public Collection<FactoryProperties> list() {
         return Collections.unmodifiableCollection(formats.values());
     }
 
-    public FileFormat newFactory(String identifier) {
+    @Override
+	public FileFormat newFactory(String identifier) {
         FileType type = (FileType)formats.get(identifier);
         if (type != null)
             return new BrailleEditorsFileFormat(type, tableCatalogService);

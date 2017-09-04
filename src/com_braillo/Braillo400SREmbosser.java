@@ -33,6 +33,7 @@ public class Braillo400SREmbosser extends AbstractBraillo200Embosser {
 		super(service, props);
 	}
 
+	@Override
 	public boolean supportsPageFormat(PageFormat pageFormat) {
 		return pageFormat.getPageFormatType() == PageFormat.Type.ROLL
 			&& pageFormat.asRollPaperFormat().getLengthAcrossFeed().asMillimeter() >= 140
@@ -41,6 +42,7 @@ public class Braillo400SREmbosser extends AbstractBraillo200Embosser {
 			&& pageFormat.asRollPaperFormat().getLengthAlongFeed().asInches() <= 14;
 	}
 
+	@Override
 	public boolean supportsPaper(Paper paper) {
 		return paper.getType() == Paper.Type.ROLL 
 			&& paper.asRollPaper().getLengthAcrossFeed().asMillimeter() >= 140

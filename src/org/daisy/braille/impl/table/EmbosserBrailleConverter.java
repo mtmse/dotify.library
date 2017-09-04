@@ -104,10 +104,12 @@ public class EmbosserBrailleConverter implements BrailleConverter {
 		b2t.put(braille, glyph);
 	}
 
+	@Override
 	public Charset getPreferredCharset() {
 		return charset;
 	}
 	
+	@Override
 	public boolean supportsEightDot() {
 		return supports8dot;
 	}
@@ -120,6 +122,7 @@ public class EmbosserBrailleConverter implements BrailleConverter {
 		return (t2b.get(c));
 	}
 
+	@Override
 	public String toBraille(String text) {
 		StringBuffer sb = new StringBuffer();
 		for (char c : text.toCharArray()) {
@@ -151,6 +154,7 @@ public class EmbosserBrailleConverter implements BrailleConverter {
 		return (b2t.get(braillePattern));
 	}
 
+	@Override
 	public String toText(String braille) {
 		StringBuffer sb = new StringBuffer();
 		Character t;

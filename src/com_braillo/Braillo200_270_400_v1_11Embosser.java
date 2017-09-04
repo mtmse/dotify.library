@@ -137,19 +137,23 @@ public class Braillo200_270_400_v1_11Embosser extends BrailloEmbosser {
 		};
 	}
 	
-    public boolean supports8dot() {
+    @Override
+	public boolean supports8dot() {
         return false;
     }
 
-    public boolean supportsDuplex() {
+    @Override
+	public boolean supportsDuplex() {
         return true;
     }
 
-    public boolean supportsAligning() {
+    @Override
+	public boolean supportsAligning() {
         return true;
     }
 
-    public boolean supportsVolumes() {
+    @Override
+	public boolean supportsVolumes() {
         return false;
     }
 
@@ -164,6 +168,7 @@ public class Braillo200_270_400_v1_11Embosser extends BrailloEmbosser {
 		return new PrintPage(pageFormat, PrintDirection.UPRIGHT, PrintMode.REGULAR);
 	}
 	
+	@Override
 	public boolean supportsZFolding() {
 		return false;
 	}
@@ -173,6 +178,7 @@ public class Braillo200_270_400_v1_11Embosser extends BrailloEmbosser {
 		return mode == PrintMode.REGULAR;
 	}
 
+	@Override
 	public boolean supportsPageFormat(PageFormat pageFormat) {
 		return pageFormat.getPageFormatType() == PageFormat.Type.TRACTOR
 		&& pageFormat.asTractorPaperFormat().getLengthAcrossFeed().asInches() >= 4
@@ -181,6 +187,7 @@ public class Braillo200_270_400_v1_11Embosser extends BrailloEmbosser {
 		&& pageFormat.asTractorPaperFormat().getLengthAlongFeed().asInches() <= 14;
 	}
 
+	@Override
 	public boolean supportsPaper(Paper paper) {
 		return paper.getType() == Paper.Type.TRACTOR
 		&& paper.asTractorPaper().getLengthAcrossFeed().asInches() >= 4

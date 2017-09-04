@@ -156,7 +156,8 @@ public class TigerEmbosser extends AbstractEmbosser {
         }
     }
 
-    public boolean supportsPrintPage(PrintPage dim) {
+    @Override
+	public boolean supportsPrintPage(PrintPage dim) {
         if (dim==null) { return false; }
         return (dim.getWidth()  <= maxPageWidth)  &&
                (dim.getWidth()  >= minPageWidth)  &&
@@ -164,19 +165,23 @@ public class TigerEmbosser extends AbstractEmbosser {
                (dim.getHeight() >= minPageHeight);
     }
     
-    public TableFilter getTableFilter() {
+    @Override
+	public TableFilter getTableFilter() {
         return tableFilter;
     }
 
-    public boolean supportsVolumes() {
+    @Override
+	public boolean supportsVolumes() {
         return false;
     }
 
-    public boolean supportsAligning() {
+    @Override
+	public boolean supportsAligning() {
         return true;
     }
 
-    public boolean supports8dot() {
+    @Override
+	public boolean supports8dot() {
 
         switch (type) {
             default:
@@ -184,7 +189,8 @@ public class TigerEmbosser extends AbstractEmbosser {
         }
     }
 
-    public boolean supportsDuplex() {
+    @Override
+	public boolean supportsDuplex() {
 
         switch (type) {
             case PREMIER_80:
@@ -203,7 +209,8 @@ public class TigerEmbosser extends AbstractEmbosser {
         }
     }
 
-    public EmbosserWriter newEmbosserWriter(Device device) {
+    @Override
+	public EmbosserWriter newEmbosserWriter(Device device) {
 
         try {
             File f = File.createTempFile(this.getClass().getCanonicalName(), ".tmp");
@@ -215,7 +222,8 @@ public class TigerEmbosser extends AbstractEmbosser {
         throw new IllegalArgumentException("Embosser does not support this feature.");
     }
 
-    public EmbosserWriter newEmbosserWriter(OutputStream os) {
+    @Override
+	public EmbosserWriter newEmbosserWriter(OutputStream os) {
 
         PageFormat page = getPageFormat();
 
@@ -317,6 +325,7 @@ public class TigerEmbosser extends AbstractEmbosser {
                         marginTop * cellHeight);
     }
 
+	@Override
 	public boolean supportsZFolding() {
 		return false;
 	}
