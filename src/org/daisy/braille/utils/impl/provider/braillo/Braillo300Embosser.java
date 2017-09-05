@@ -7,13 +7,13 @@ import java.io.OutputStream;
 
 import org.daisy.braille.utils.api.embosser.Device;
 import org.daisy.braille.utils.api.embosser.EmbosserFactoryException;
+import org.daisy.braille.utils.api.embosser.EmbosserFactoryProperties;
 import org.daisy.braille.utils.api.embosser.EmbosserFeatures;
 import org.daisy.braille.utils.api.embosser.EmbosserWriter;
 import org.daisy.braille.utils.api.embosser.PrintPage;
 import org.daisy.braille.utils.api.embosser.PrintPage.PrintDirection;
 import org.daisy.braille.utils.api.embosser.StandardLineBreaks;
 import org.daisy.braille.utils.api.embosser.UnsupportedPaperException;
-import org.daisy.braille.utils.api.factory.FactoryProperties;
 import org.daisy.braille.utils.api.paper.Dimensions;
 import org.daisy.braille.utils.api.paper.PageFormat;
 import org.daisy.braille.utils.api.paper.Paper;
@@ -54,7 +54,7 @@ public class Braillo300Embosser extends BrailloEmbosser {
 	 * @param service the table catalog
 	 * @param props the embosser properties
 	 */
-	public Braillo300Embosser(TableCatalogService service, FactoryProperties props) {
+	public Braillo300Embosser(TableCatalogService service, EmbosserFactoryProperties props) {
 		super(service, props);
 		this.zFoldingEnabled = false;
 	}

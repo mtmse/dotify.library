@@ -1,7 +1,7 @@
 package org.daisy.braille.utils.impl.provider.braillo;
 
+import org.daisy.braille.utils.api.embosser.EmbosserFactoryProperties;
 import org.daisy.braille.utils.api.embosser.EmbosserFeatures;
-import org.daisy.braille.utils.api.factory.FactoryProperties;
 import org.daisy.braille.utils.api.paper.PageFormat;
 import org.daisy.braille.utils.api.paper.Paper;
 import org.daisy.braille.utils.api.paper.Paper.Type;
@@ -22,7 +22,7 @@ public class Braillo650SWEmbosser extends AbstractBraillo440Embosser {
 	private static final long serialVersionUID = 5180536285534261888L;
 	private static final String EMBOSSER_UNSUPPORTED_MESSAGE = "Unsupported value for saddle stitch.";
 
-	public Braillo650SWEmbosser(TableCatalogService service, FactoryProperties props) {
+	public Braillo650SWEmbosser(TableCatalogService service, EmbosserFactoryProperties props) {
 		super(service, props);
 	}
 

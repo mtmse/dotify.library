@@ -86,7 +86,7 @@ public class TigerEmbosser extends AbstractEmbosser {
 
 	public TigerEmbosser(TableCatalogService service, EmbosserType props) {
 
-		super(service, props.getDisplayName(), props.getDescription(), props.getIdentifier());
+		super(service, props);
 
 		type = props;
 

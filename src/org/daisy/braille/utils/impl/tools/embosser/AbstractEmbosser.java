@@ -20,6 +20,7 @@ package org.daisy.braille.utils.impl.tools.embosser;
 import java.util.HashMap;
 
 import org.daisy.braille.utils.api.embosser.Embosser;
+import org.daisy.braille.utils.api.embosser.EmbosserFactoryProperties;
 import org.daisy.braille.utils.api.embosser.EmbosserFeatures;
 import org.daisy.braille.utils.api.embosser.PrintPage;
 import org.daisy.braille.utils.api.factory.AbstractFactory;
@@ -39,6 +40,8 @@ public abstract class AbstractEmbosser extends AbstractFactory implements Emboss
 	 * 
 	 */
 	private static final long serialVersionUID = 374888389077716688L;
+	private final String make;
+	private final String model;
 	private final HashMap<String, Object> props;
 	private final HashMap<String, String> settings;
 	protected final TableCatalogService tableCatalogService;
@@ -49,18 +52,30 @@ public abstract class AbstractEmbosser extends AbstractFactory implements Emboss
 	/**
 	 * Creates a new AbstractEmbosser with the supplied name, description and identifier
 	 * @param service the table catalog
-	 * @param name the embosser name
-	 * @param desc the embosser description
-	 * @param identifier an identifier
+	 * @param emProps the properties
 	 */
-	public AbstractEmbosser(TableCatalogService service, String name, String desc, String identifier) {
-		super(name, desc, identifier);
+	public AbstractEmbosser(TableCatalogService service, EmbosserFactoryProperties emProps) {
+		super(emProps.getDisplayName(), emProps.getDescription(), emProps.getIdentifier());
+		this.make = emProps.getMake();
+		this.model = emProps.getModel();
 		this.props = new HashMap<>();
 		this.settings = new HashMap<>();
 		this.tableCatalogService = service;
 		defaultTable = service.newTable(DefaultTableProvider.TableType.EN_US.getIdentifier());
 		setTable = defaultTable;
 	}
+
+	@Override
+	public String getMake() {
+		return make;
+	}
+
+	@Override
+	public String getModel() {
+		return model;
+	}
+
+
 
 	/**
 	 * Gets the page format

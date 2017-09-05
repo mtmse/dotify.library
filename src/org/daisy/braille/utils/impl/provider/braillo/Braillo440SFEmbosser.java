@@ -17,8 +17,8 @@
  */
 package org.daisy.braille.utils.impl.provider.braillo;
 
+import org.daisy.braille.utils.api.embosser.EmbosserFactoryProperties;
 import org.daisy.braille.utils.api.embosser.EmbosserFeatures;
-import org.daisy.braille.utils.api.factory.FactoryProperties;
 import org.daisy.braille.utils.api.paper.PageFormat;
 import org.daisy.braille.utils.api.paper.Paper;
 import org.daisy.braille.utils.api.paper.Paper.Type;
@@ -31,7 +31,7 @@ public class Braillo440SFEmbosser extends AbstractBraillo440Embosser {
 	 */
 	private static final long serialVersionUID = 3642071434258027472L;
 
-	public Braillo440SFEmbosser(TableCatalogService service, FactoryProperties props) {
+	public Braillo440SFEmbosser(TableCatalogService service, EmbosserFactoryProperties props) {
 		super(service, props);
 		saddleStitchEnabled = true;
 	}

@@ -24,12 +24,12 @@ import java.io.OutputStream;
 
 import org.daisy.braille.utils.api.embosser.Device;
 import org.daisy.braille.utils.api.embosser.EmbosserFactoryException;
+import org.daisy.braille.utils.api.embosser.EmbosserFactoryProperties;
 import org.daisy.braille.utils.api.embosser.EmbosserWriter;
 import org.daisy.braille.utils.api.embosser.PrintPage;
 import org.daisy.braille.utils.api.embosser.PrintPage.PrintDirection;
 import org.daisy.braille.utils.api.embosser.StandardLineBreaks;
 import org.daisy.braille.utils.api.embosser.UnsupportedPaperException;
-import org.daisy.braille.utils.api.factory.FactoryProperties;
 import org.daisy.braille.utils.api.paper.Area;
 import org.daisy.braille.utils.api.paper.Dimensions;
 import org.daisy.braille.utils.api.paper.PageFormat;
@@ -67,7 +67,7 @@ public class Braillo200_270_400_v1_11Embosser extends BrailloEmbosser {
 		return true;
 	}
 
-	public Braillo200_270_400_v1_11Embosser(TableCatalogService service, FactoryProperties props) {
+	public Braillo200_270_400_v1_11Embosser(TableCatalogService service, EmbosserFactoryProperties props) {
 		super(service, props);
 	}
 

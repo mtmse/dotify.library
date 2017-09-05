@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.daisy.braille.utils.api.embosser.Embosser;
+import org.daisy.braille.utils.api.embosser.EmbosserFactoryProperties;
 import org.daisy.braille.utils.api.embosser.EmbosserProvider;
 import org.daisy.braille.utils.api.factory.FactoryProperties;
 import org.daisy.braille.utils.api.table.TableCatalog;
@@ -38,29 +39,32 @@ import org.osgi.service.component.annotations.ReferenceCardinality;
 @Component
 public class EnablingTechnologiesEmbosserProvider implements EmbosserProvider {
 
-	public static enum EmbosserType implements FactoryProperties {
-		ROMEO_ATTACHE("Enabling Technologies - Romeo Attache", ""),
-		ROMEO_ATTACHE_PRO("Enabling Technologies - Romeo Attache Pro", ""),
-		ROMEO_25("Enabling Technologies - Romeo 25", ""),
-		ROMEO_PRO_50("Enabling Technologies - Romeo Pro 50", ""),
-		ROMEO_PRO_LE_NARROW("Enabling Technologies - Romeo Pro LE Narrow", ""),
-		ROMEO_PRO_LE_WIDE("Enabling Technologies - Romeo Pro LE Wide", ""),
-		THOMAS("Enabling Technologies - Thomas", ""),
-		THOMAS_PRO("Enabling Technologies - Thomas Pro", ""),
-		MARATHON("Enabling Technologies - Marathon", ""),
-		ET("Enabling Technologies - ET", ""),
-		JULIET_PRO("Enabling Technologies - Juliet Pro", ""),
-		JULIET_PRO_60("Enabling Technologies - Juliet Pro 60", ""),
-		JULIET_CLASSIC("Enabling Technologies - Juliet Classic", ""),
-		BOOKMAKER("Enabling Technologies - Bookmaker", ""),
-		BRAILLE_EXPRESS_100("Enabling Technologies - Braille Express 100", ""),
-		BRAILLE_EXPRESS_150("Enabling Technologies - Braille Express 150", ""),
-		BRAILLE_PLACE("Enabling Technologies - BraillePlace", "");
+	public enum EmbosserType implements EmbosserFactoryProperties {
+		ROMEO_ATTACHE("Romeo Attache", ""),
+		ROMEO_ATTACHE_PRO("Romeo Attache Pro", ""),
+		ROMEO_25("Romeo 25", ""),
+		ROMEO_PRO_50("Romeo Pro 50", ""),
+		ROMEO_PRO_LE_NARROW("Romeo Pro LE Narrow", ""),
+		ROMEO_PRO_LE_WIDE("Romeo Pro LE Wide", ""),
+		THOMAS("Thomas", ""),
+		THOMAS_PRO("Thomas Pro", ""),
+		MARATHON("Marathon", ""),
+		ET("ET", ""),
+		JULIET_PRO("Juliet Pro", ""),
+		JULIET_PRO_60("Juliet Pro 60", ""),
+		JULIET_CLASSIC("Juliet Classic", ""),
+		BOOKMAKER("Bookmaker", ""),
+		BRAILLE_EXPRESS_100("Braille Express 100", ""),
+		BRAILLE_EXPRESS_150("Braille Express 150", ""),
+		BRAILLE_PLACE("BraillePlace", "");
+		private static final String MAKE = "Enabling Technologies";
 		private final String name;
+		private final String model;
 		private final String desc;
 		private final String identifier;
-		EmbosserType (String name, String desc) {
-			this.name = name;
+		EmbosserType(String model, String desc) {
+			this.name = MAKE + " - " + model;
+			this.model = model;
 			this.desc = desc;
 			this.identifier = "com_brailler.EnablingTechnologiesEmbosserProvider.EmbosserType." + this.toString();
 		}
@@ -76,13 +80,21 @@ public class EnablingTechnologiesEmbosserProvider implements EmbosserProvider {
 		public String getDescription() {
 			return desc;
 		}
-	};
+		@Override
+		public String getMake() {
+			return MAKE;
+		}
+		@Override
+		public String getModel() {
+			return model;
+		}
+	}
 
-	private final Map<String, FactoryProperties> embossers;
+	private final Map<String, EmbosserFactoryProperties> embossers;
 	private TableCatalogService tableCatalogService = null;
 
 	public EnablingTechnologiesEmbosserProvider() {
-		embossers = new HashMap<String, FactoryProperties>();
+		embossers = new HashMap<>();
 
 		// Single sided
 		addEmbosser(EmbosserType.ROMEO_ATTACHE);
@@ -108,7 +120,7 @@ public class EnablingTechnologiesEmbosserProvider implements EmbosserProvider {
 		addEmbosser(EmbosserType.BRAILLE_PLACE);
 	}
 
-	private void addEmbosser(FactoryProperties e) {
+	private void addEmbosser(EmbosserFactoryProperties e) {
 		embossers.put(e.getIdentifier(), e);
 	}
 
@@ -156,7 +168,7 @@ public class EnablingTechnologiesEmbosserProvider implements EmbosserProvider {
 	}
 
 	@Override
-	public Collection<FactoryProperties> list() {
+	public Collection<EmbosserFactoryProperties> list() {
 		return Collections.unmodifiableCollection(embossers.values());
 	}
 

@@ -24,6 +24,7 @@ import java.io.OutputStream;
 
 import org.daisy.braille.utils.api.embosser.Device;
 import org.daisy.braille.utils.api.embosser.EmbosserFactoryException;
+import org.daisy.braille.utils.api.embosser.EmbosserFactoryProperties;
 import org.daisy.braille.utils.api.embosser.EmbosserWriter;
 import org.daisy.braille.utils.api.embosser.PrintPage;
 import org.daisy.braille.utils.api.factory.FactoryProperties;
@@ -72,9 +73,9 @@ public class MountbattenEmbosser extends AbstractEmbosser {
 		return tableFilter;
 	}
 
-	public MountbattenEmbosser(TableCatalogService service, FactoryProperties props) {
+	public MountbattenEmbosser(TableCatalogService service, EmbosserFactoryProperties props) {
 
-		super(service, props.getDisplayName(), props.getDescription(), props.getIdentifier());
+		super(service, props);
 
 		setTable = service.newTable(table6dot);
 	}

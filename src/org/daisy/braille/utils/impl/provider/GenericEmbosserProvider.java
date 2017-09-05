@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.daisy.braille.utils.api.embosser.Embosser;
+import org.daisy.braille.utils.api.embosser.EmbosserFactoryProperties;
 import org.daisy.braille.utils.api.embosser.EmbosserProvider;
 import org.daisy.braille.utils.api.factory.FactoryProperties;
 import org.daisy.braille.utils.api.table.TableCatalog;
@@ -33,13 +34,12 @@ import org.osgi.service.component.annotations.ReferenceCardinality;
 
 @Component
 public class GenericEmbosserProvider implements EmbosserProvider {
-	public static enum EmbosserType implements FactoryProperties {
-		NONE("Unspecified", "Limited support for unknown embossers");
-		private final String name;
+	public enum EmbosserType implements EmbosserFactoryProperties {
+		NONE("Limited support for unknown embossers");
+		private static final String UNSPECIFIED = "Unspecified";
 		private final String desc;
 		private final String identifier;
-		EmbosserType (String name, String desc) {
-			this.name = name;
+		EmbosserType(String desc) {
 			this.desc = desc;
 			this.identifier = "org_daisy.GenericEmbosserProvider.EmbosserType." + this.toString();
 		}
@@ -49,23 +49,31 @@ public class GenericEmbosserProvider implements EmbosserProvider {
 		}
 		@Override
 		public String getDisplayName() {
-			return name;
+			return UNSPECIFIED;
 		}
 		@Override
 		public String getDescription() {
 			return desc;
 		}
-	};
+		@Override
+		public String getMake() {
+			return UNSPECIFIED;
+		}
+		@Override
+		public String getModel() {
+			return UNSPECIFIED;
+		}
+	}
 
-	private final Map<String, FactoryProperties> embossers;
+	private final Map<String, EmbosserFactoryProperties> embossers;
 	private TableCatalogService tableCatalogService = null;
 
 	public GenericEmbosserProvider() {
-		embossers = new HashMap<String, FactoryProperties>();
+		embossers = new HashMap<>();
 		addEmbosser(EmbosserType.NONE);
 	}
 
-	private void addEmbosser(FactoryProperties e) {
+	private void addEmbosser(EmbosserFactoryProperties e) {
 		embossers.put(e.getIdentifier(), e);
 	}
 
@@ -81,7 +89,7 @@ public class GenericEmbosserProvider implements EmbosserProvider {
 	}
 
 	@Override
-	public Collection<FactoryProperties> list() {
+	public Collection<EmbosserFactoryProperties> list() {
 		return Collections.unmodifiableCollection(embossers.values());
 	}
 

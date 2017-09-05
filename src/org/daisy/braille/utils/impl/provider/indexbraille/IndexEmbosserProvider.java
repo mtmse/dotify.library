@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.function.BiFunction;
 
 import org.daisy.braille.utils.api.embosser.Embosser;
+import org.daisy.braille.utils.api.embosser.EmbosserFactoryProperties;
 import org.daisy.braille.utils.api.embosser.EmbosserProvider;
 import org.daisy.braille.utils.api.factory.FactoryProperties;
 import org.daisy.braille.utils.api.paper.Length;
@@ -42,39 +43,43 @@ public class IndexEmbosserProvider implements EmbosserProvider {
 			.bottom(Length.newMillimeterValue(5))
 			.build();
 
-	public static enum EmbosserType implements FactoryProperties {
+	public static enum EmbosserType implements EmbosserFactoryProperties {
 //		INDEX_3_7("", ""), //Not implemented
 //		INDEX_ADVANCED("", ""), //Not implemented
 //		INDEX_CLASSIC("", ""), //Not implemented
 //		INDEX_DOMINO("", ""), //Not implemented
 //		INDEX_EVEREST_S_V1("", ""), //Not implemented
 //		INDEX_EVEREST_D_V1("", ""), //Not implemented
-		INDEX_BASIC_BLUE_BAR("Index Basic Blue-Bar", "Early Index Basic embosser", (t, u)->new BlueBarEmbosser(t, u), EMPTY_MARGIN),
-		INDEX_BASIC_S_V2("Index Basic-S V2", "", (t, u)->new IndexV2Embosser(t, u), EMPTY_MARGIN),
-		INDEX_BASIC_D_V2("Index Basic-D V2", "", (t, u)->new IndexV2Embosser(t, u), EMPTY_MARGIN),
-		INDEX_EVEREST_D_V2("Index Everest-D V2", "", (t, u)->new IndexV2Embosser(t, u), EMPTY_MARGIN),
-		INDEX_4X4_PRO_V2("Index 4X4 Pro V2", "", (t, u)->new IndexV2Embosser(t, u), EMPTY_MARGIN),
-		INDEX_BASIC_S_V3("Index Basic-S V3", "", (t, u)->new IndexV3Embosser(t, u), EMPTY_MARGIN),
-		INDEX_BASIC_D_V3("Index Basic-D V3", "", (t, u)->new IndexV3Embosser(t, u), EMPTY_MARGIN),
-		INDEX_EVEREST_D_V3("Index Everest-D V3", "", (t, u)->new IndexV3Embosser(t, u), EMPTY_MARGIN),
-		INDEX_4X4_PRO_V3("Index 4X4 Pro V3", "", (t, u)->new IndexV3Embosser(t, u), EMPTY_MARGIN),
-		INDEX_4WAVES_PRO_V3("Index 4Waves Pro", "", (t, u)->new IndexV3Embosser(t, u), EMPTY_MARGIN),
-		INDEX_BASIC_D_V4("Index Basic-D V4", "", (t, u)->new IndexV4Embosser(t, u), V4_MARGIN),
-		INDEX_EVEREST_D_V4("Index Everest-D V4", "", (t, u)->new IndexV4Embosser(t, u), V4_MARGIN),
-		INDEX_BRAILLE_BOX_V4("Index Braille Box V4", "", (t, u)->new IndexV4Embosser(t, u), V4_MARGIN),
-		INDEX_BASIC_D_V5("Index Basic-D V5", "", (t, u)->new IndexV4Embosser(t, u), V4_MARGIN),
-		INDEX_EVEREST_D_V5("Index Everest-D V5", "", (t, u)->new IndexV4Embosser(t, u), V4_MARGIN),
-		INDEX_BRAILLE_BOX_V5("Index Braille Box V5", "", (t, u)->new IndexV4Embosser(t, u), V4_MARGIN),
-		INDEX_FANFOLD_V5("Index Fanfold", "", (t, u)->new IndexV4Embosser(t, u), V4_MARGIN);
+		INDEX_BASIC_BLUE_BAR("Basic Blue-Bar", "Early Index Basic embosser", (t, u)->new BlueBarEmbosser(t, u), EMPTY_MARGIN),
+		INDEX_BASIC_S_V2("Basic-S V2", "", (t, u)->new IndexV2Embosser(t, u), EMPTY_MARGIN),
+		INDEX_BASIC_D_V2("Basic-D V2", "", (t, u)->new IndexV2Embosser(t, u), EMPTY_MARGIN),
+		INDEX_EVEREST_D_V2("Everest-D V2", "", (t, u)->new IndexV2Embosser(t, u), EMPTY_MARGIN),
+		INDEX_4X4_PRO_V2("4X4 Pro V2", "", (t, u)->new IndexV2Embosser(t, u), EMPTY_MARGIN),
+		INDEX_BASIC_S_V3("Basic-S V3", "", (t, u)->new IndexV3Embosser(t, u), EMPTY_MARGIN),
+		INDEX_BASIC_D_V3("Basic-D V3", "", (t, u)->new IndexV3Embosser(t, u), EMPTY_MARGIN),
+		INDEX_EVEREST_D_V3("Everest-D V3", "", (t, u)->new IndexV3Embosser(t, u), EMPTY_MARGIN),
+		INDEX_4X4_PRO_V3("4X4 Pro V3", "", (t, u)->new IndexV3Embosser(t, u), EMPTY_MARGIN),
+		INDEX_4WAVES_PRO_V3("4Waves Pro", "", (t, u)->new IndexV3Embosser(t, u), EMPTY_MARGIN),
+		INDEX_BASIC_D_V4("Basic-D V4", "", (t, u)->new IndexV4Embosser(t, u), V4_MARGIN),
+		INDEX_EVEREST_D_V4("Everest-D V4", "", (t, u)->new IndexV4Embosser(t, u), V4_MARGIN),
+		INDEX_BRAILLE_BOX_V4("Braille Box V4", "", (t, u)->new IndexV4Embosser(t, u), V4_MARGIN),
+		INDEX_BASIC_D_V5("Basic-D V5", "", (t, u)->new IndexV4Embosser(t, u), V4_MARGIN),
+		INDEX_EVEREST_D_V5("Everest-D V5", "", (t, u)->new IndexV4Embosser(t, u), V4_MARGIN),
+		INDEX_BRAILLE_BOX_V5("Braille Box V5", "", (t, u)->new IndexV4Embosser(t, u), V4_MARGIN),
+		INDEX_FANFOLD_V5("Fanfold", "", (t, u)->new IndexV4Embosser(t, u), V4_MARGIN);
 
+		private static final String MAKE = "Index";
 		private final String name;
+		private final String model;
 		private final String desc;
 		private final String identifier;
 		private final BiFunction<TableCatalogService, EmbosserType, Embosser> instanceCreator;
 		private final Margin unprintable;
 
-		EmbosserType (String name, String desc, BiFunction<TableCatalogService, EmbosserType, Embosser> instanceCreator, Margin unprintable) {
-			this.name = name;
+        EmbosserType (String model, String desc, BiFunction<TableCatalogService, EmbosserType, Embosser> instanceCreator, Margin unprintable) {
+			this.name = MAKE + " " + model;
+			// Make is included in the model name here
+			this.model = name;
 			this.desc = desc;
 			this.identifier = "com_indexbraille.IndexEmbosserProvider.EmbosserType." + this.toString();
 			this.instanceCreator = instanceCreator;
@@ -100,13 +105,23 @@ public class IndexEmbosserProvider implements EmbosserProvider {
 		Margin getUnprintable() {
 			return unprintable;
 		}
+
+		@Override
+		public String getMake() {
+			return MAKE;
+		}
+
+		@Override
+		public String getModel() {
+			return model;
+		}
 	};
 
-	private final Map<String, FactoryProperties> embossers;
+	private final Map<String, EmbosserFactoryProperties> embossers;
 	private TableCatalogService tableCatalogService = null;
 
 	public IndexEmbosserProvider() {
-		embossers = new HashMap<String, FactoryProperties>();
+		embossers = new HashMap<>();
 		for (EmbosserType e : EmbosserType.values()) {
 			embossers.put(e.getIdentifier(), e);			
 		}
@@ -119,7 +134,7 @@ public class IndexEmbosserProvider implements EmbosserProvider {
 	}
 
 	@Override
-	public Collection<FactoryProperties> list() {
+	public Collection<EmbosserFactoryProperties> list() {
 		return Collections.unmodifiableCollection(embossers.values());
 	}
 

@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.daisy.braille.utils.api.embosser.Embosser;
+import org.daisy.braille.utils.api.embosser.EmbosserFactoryProperties;
 import org.daisy.braille.utils.api.embosser.EmbosserProvider;
 import org.daisy.braille.utils.api.factory.FactoryProperties;
 import org.daisy.braille.utils.api.table.TableCatalog;
@@ -34,15 +35,19 @@ import org.osgi.service.component.annotations.ReferenceCardinality;
 @Component
 public class HarpoEmbosserProvider implements EmbosserProvider {
 
-	public static enum EmbosserType implements FactoryProperties {
-		MOUNTBATTEN_LS("Mountbatten LS", ""),
-		MOUNTBATTEN_PRO("Mountbatten Pro", ""),
-		MOUNTBATTEN_WRITER_PLUS("Mountbatten Writer+", "");
+	public enum EmbosserType implements EmbosserFactoryProperties {
+		MOUNTBATTEN_LS("LS", ""),
+		MOUNTBATTEN_PRO("Pro", ""),
+		MOUNTBATTEN_WRITER_PLUS("Writer+", "");
+		private static final String MAKE = "Mountbatten";
 		private final String name;
+		private final String model;
 		private final String desc;
 		private final String identifier;
-		EmbosserType (String name, String desc) {
-			this.name = name;
+		EmbosserType (String model, String desc) {
+			this.name = MAKE + " " + model;
+			// Make is included in the model name here
+			this.model = name;
 			this.desc = desc;
 			this.identifier = "pl_com_harpo.HarpoEmbosserProvider.EmbosserType." + this.toString();
 		}
@@ -58,19 +63,27 @@ public class HarpoEmbosserProvider implements EmbosserProvider {
 		public String getDescription() {
 			return desc;
 		}
-	};
+		@Override
+		public String getMake() {
+			return MAKE;
+		}
+		@Override
+		public String getModel() {
+			return model;
+		}
+	}
 
-	private final Map<String, FactoryProperties> embossers;
+	private final Map<String, EmbosserFactoryProperties> embossers;
 	private TableCatalogService tableCatalogService = null;
 
 	public HarpoEmbosserProvider() {
-		embossers = new HashMap<String, FactoryProperties>();
+		embossers = new HashMap<>();
 		addEmbosser(EmbosserType.MOUNTBATTEN_LS);
 		addEmbosser(EmbosserType.MOUNTBATTEN_PRO);
 		addEmbosser(EmbosserType.MOUNTBATTEN_WRITER_PLUS);
 	}
 
-	private void addEmbosser(FactoryProperties e) {
+	private void addEmbosser(EmbosserFactoryProperties e) {
 		embossers.put(e.getIdentifier(), e);
 	}
 
@@ -90,7 +103,7 @@ public class HarpoEmbosserProvider implements EmbosserProvider {
 	}
 
 	@Override
-	public Collection<FactoryProperties> list() {
+	public Collection<EmbosserFactoryProperties> list() {
 		return Collections.unmodifiableCollection(embossers.values());
 	}
 

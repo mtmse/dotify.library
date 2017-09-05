@@ -28,6 +28,7 @@ import java.util.Properties;
 
 import org.daisy.braille.utils.api.embosser.Device;
 import org.daisy.braille.utils.api.embosser.EmbosserFactoryException;
+import org.daisy.braille.utils.api.embosser.EmbosserFactoryProperties;
 import org.daisy.braille.utils.api.embosser.EmbosserFeatures;
 import org.daisy.braille.utils.api.embosser.EmbosserWriter;
 import org.daisy.braille.utils.api.embosser.PrintPage;
@@ -91,9 +92,9 @@ public class Interpoint55Embosser extends AbstractEmbosser {
 	private int maxPagesInQuire = 0;                  // 0 == no quires
 	private int numberOfCopies = 1;
 
-	public Interpoint55Embosser(TableCatalogService service, FactoryProperties props) {
+	public Interpoint55Embosser(TableCatalogService service, EmbosserFactoryProperties props) {
 
-		super(service, props.getDisplayName(), props.getDescription(), props.getIdentifier());
+		super(service, props);
 
 		setTable = service.newTable(table_US1);
 	}

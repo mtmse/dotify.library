@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.daisy.braille.utils.api.embosser.Embosser;
+import org.daisy.braille.utils.api.embosser.EmbosserFactoryProperties;
 import org.daisy.braille.utils.api.embosser.EmbosserProvider;
 import org.daisy.braille.utils.api.factory.FactoryProperties;
 import org.daisy.braille.utils.api.table.TableCatalog;
@@ -38,15 +39,18 @@ import org.osgi.service.component.annotations.ReferenceCardinality;
 @Component
 public class CidatEmbosserProvider implements EmbosserProvider {
 
-	public static enum EmbosserType implements FactoryProperties {
-		IMPACTO_600("Cidat - Impacto 600", "High-quality, high-speed (600 pages per hour) double-sided embosser"),
-		IMPACTO_TEXTO("Cidat - Impacto Texto", "High-quality, high-speed (800 pages per hour) double-sided embosser"),
-		PORTATHIEL_BLUE("Cidat - Portathiel Blue", "Small, lightweight, portable double-sided embosser");
+	public enum EmbosserType implements EmbosserFactoryProperties {
+		IMPACTO_600("Impacto 600", "High-quality, high-speed (600 pages per hour) double-sided embosser"),
+		IMPACTO_TEXTO("Impacto Texto", "High-quality, high-speed (800 pages per hour) double-sided embosser"),
+		PORTATHIEL_BLUE("Portathiel Blue", "Small, lightweight, portable double-sided embosser");
+		private static final String MAKE = "Cidat";
 		private final String name;
+		private final String model;
 		private final String desc;
 		private final String identifier;
-		EmbosserType (String name, String desc) {
-			this.name = name;
+		EmbosserType (String model, String desc) {
+			this.name = MAKE + " - " + model;
+			this.model = model;
 			this.desc = desc;
 			this.identifier = "es_once_cidat.CidatEmbosserProvider.EmbosserType." + this.toString();
 		}
@@ -62,19 +66,27 @@ public class CidatEmbosserProvider implements EmbosserProvider {
 		public String getDescription() {
 			return desc;
 		}
+		@Override
+		public String getMake() {
+			return MAKE;
+		}
+		@Override
+		public String getModel() {
+			return model;
+		}
 	};
 
-	private final Map<String, FactoryProperties> embossers;
+	private final Map<String, EmbosserFactoryProperties> embossers;
 	private TableCatalogService tableCatalogService = null;
 
 	public CidatEmbosserProvider() {
-		embossers = new HashMap<String, FactoryProperties>();
+		embossers = new HashMap<>();
 		addEmbosser(EmbosserType.IMPACTO_600);
 		addEmbosser(EmbosserType.IMPACTO_TEXTO);
 		addEmbosser(EmbosserType.PORTATHIEL_BLUE);
 	}
 
-	private void addEmbosser(FactoryProperties e) {
+	private void addEmbosser(EmbosserFactoryProperties e) {
 		embossers.put(e.getIdentifier(), e);
 	}
 
@@ -94,7 +106,7 @@ public class CidatEmbosserProvider implements EmbosserProvider {
 	}
 
 	@Override
-	public Collection<FactoryProperties> list() {
+	public Collection<EmbosserFactoryProperties> list() {
 		return Collections.unmodifiableCollection(embossers.values());
 	}
 

@@ -17,6 +17,7 @@
  */
 package org.daisy.braille.utils.impl.provider.braillo;
 
+import org.daisy.braille.utils.api.embosser.EmbosserFactoryProperties;
 import org.daisy.braille.utils.api.factory.FactoryProperties;
 import org.daisy.braille.utils.api.table.TableCatalogService;
 import org.daisy.braille.utils.api.table.TableFilter;
@@ -40,8 +41,8 @@ public abstract class BrailloEmbosser extends AbstractEmbosser {
 		};
 	}
 
-	public BrailloEmbosser(TableCatalogService service, FactoryProperties props) {
-		super(service, props.getDisplayName(), props.getDescription(), props.getIdentifier());
+	public BrailloEmbosser(TableCatalogService service, EmbosserFactoryProperties props) {
+		super(service, props);
 	}
 
 	@Override

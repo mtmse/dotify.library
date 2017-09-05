@@ -96,7 +96,7 @@ public abstract class EnablingTechnologiesEmbosser extends AbstractEmbosser {
 
 	public EnablingTechnologiesEmbosser(TableCatalogService service, EmbosserType props) {
 
-		super(service, props.getDisplayName(), props.getDescription(), props.getIdentifier());
+		super(service, props);
 
 		type = props;
 

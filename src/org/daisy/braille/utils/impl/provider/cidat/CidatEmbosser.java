@@ -58,7 +58,7 @@ public abstract class CidatEmbosser extends AbstractEmbosser {
 
 	public CidatEmbosser(TableCatalogService service, EmbosserType props) {
 
-		super(service, props.getDisplayName(), props.getDescription(), props.getIdentifier());
+		super(service, props);
 
 		type = props;
 

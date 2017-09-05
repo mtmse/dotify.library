@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import org.daisy.braille.utils.api.embosser.Device;
+import org.daisy.braille.utils.api.embosser.EmbosserFactoryProperties;
 import org.daisy.braille.utils.api.embosser.EmbosserWriter;
 import org.daisy.braille.utils.api.embosser.PrintPage;
 import org.daisy.braille.utils.api.factory.FactoryProperties;
@@ -55,8 +56,8 @@ public class GenericEmbosser extends AbstractEmbosser {
 		};
 	}
 
-	public GenericEmbosser(TableCatalogService service, FactoryProperties props) {
-		super(service, props.getDisplayName(), props.getDescription(), props.getIdentifier());
+	public GenericEmbosser(TableCatalogService service, EmbosserFactoryProperties props) {
+		super(service, props);
 	}
 
 	@Override
