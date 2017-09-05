@@ -72,16 +72,16 @@ public class PEFHandler extends DefaultHandler {
 		 * Abort processing if paper is wider than the contents of the file
 		 */
 		ABORT
-		};
-	
+	};
+
 	private final EmbosserWriter embosser;
 	private final Range range;
 	private final AlignmentFallback alignFallback;
 	private final boolean mirrorAlign;
 	private final int offset;
-//**** Added by Bert Frees *****************************************
+	//**** Added by Bert Frees *****************************************
 	private final int topOffset;
-//****************************************************************** 
+	//****************************************************************** 
 
 	private Stack<Element> elements;
 	private Element currentPage;
@@ -108,9 +108,9 @@ public class PEFHandler extends DefaultHandler {
 		private AlignmentFallback alignFallback = AlignmentFallback.LEFT;
 		private boolean mirrorAlign = false;
 		private int offset = 0;
-//**** Added by Bert Frees *****************************************
+		//**** Added by Bert Frees *****************************************
 		private int topOffset = 0;
-//****************************************************************** 
+		//****************************************************************** 
 
 		/**
 		 * Create a new PEFHandler builder
@@ -119,7 +119,7 @@ public class PEFHandler extends DefaultHandler {
 		public Builder(EmbosserWriter embosser) {
 			this.embosser = embosser;
 		}
-		
+
 		//init optional params here
 		/**
 		 * Sets the range of pages to output
@@ -137,36 +137,36 @@ public class PEFHandler extends DefaultHandler {
 		 */
 		public Builder align(Alignment value) {
 			switch (value) {
-				case LEFT:
-			        mirrorAlign = false;
-			        alignFallback = AlignmentFallback.LEFT;
-			        break;
-				case RIGHT:
-			        mirrorAlign = false;
-			        alignFallback = AlignmentFallback.RIGHT;
-			        break;
-				case INNER:
-			        mirrorAlign = true;
-			        alignFallback = AlignmentFallback.LEFT;
-					break;
-				case OUTER:
-			        mirrorAlign = true;
-			        alignFallback = AlignmentFallback.RIGHT;
-					break;
-				case CENTER_INNER:
-					mirrorAlign = true;
-					alignFallback = AlignmentFallback.CENTER_LEFT;
-					break;
-				case CENTER_OUTER:
-					mirrorAlign = true;
-					alignFallback = AlignmentFallback.CENTER_RIGHT;
-					break;
-				case ABORT:
-					alignFallback = AlignmentFallback.ABORT;
-					break;
-				default:
-					throw new RuntimeException("Unexpected value: " + value);
-				
+			case LEFT:
+				mirrorAlign = false;
+				alignFallback = AlignmentFallback.LEFT;
+				break;
+			case RIGHT:
+				mirrorAlign = false;
+				alignFallback = AlignmentFallback.RIGHT;
+				break;
+			case INNER:
+				mirrorAlign = true;
+				alignFallback = AlignmentFallback.LEFT;
+				break;
+			case OUTER:
+				mirrorAlign = true;
+				alignFallback = AlignmentFallback.RIGHT;
+				break;
+			case CENTER_INNER:
+				mirrorAlign = true;
+				alignFallback = AlignmentFallback.CENTER_LEFT;
+				break;
+			case CENTER_OUTER:
+				mirrorAlign = true;
+				alignFallback = AlignmentFallback.CENTER_RIGHT;
+				break;
+			case ABORT:
+				alignFallback = AlignmentFallback.ABORT;
+				break;
+			default:
+				throw new RuntimeException("Unexpected value: " + value);
+
 			}
 			return this;
 		}
@@ -181,7 +181,7 @@ public class PEFHandler extends DefaultHandler {
 			offset = value;
 			return this;
 		}
-//**** Added by Bert Frees *****************************************
+		//**** Added by Bert Frees *****************************************
 		/**
 		 * Sets the top offset.
 		 */
@@ -189,7 +189,7 @@ public class PEFHandler extends DefaultHandler {
 			topOffset = value;
 			return this;
 		}
-//****************************************************************** 
+		//****************************************************************** 
 		/**
 		 * Builds a PEFHandler from this builder's current configuration.
 		 * @return returns a new PEFHandler 
@@ -198,34 +198,34 @@ public class PEFHandler extends DefaultHandler {
 			return new PEFHandler(this);
 		}
 	}
-	
+
 	private PEFHandler(Builder builder) throws IOException {
 		this.range = builder.range;
 		this.embosser = builder.embosser;
 		this.alignFallback = builder.alignFallback;
 		this.mirrorAlign = builder.mirrorAlign;
 		this.offset = builder.offset;
-//**** Added by Bert Frees *****************************************
+		//**** Added by Bert Frees *****************************************
 		this.topOffset = builder.topOffset;
-//****************************************************************** 
-        this.elements = new Stack<Element>();
-        this.currentPage = null;
-        this.currentSection = null;
-        this.currentVolume = null;
-        //this.inputPages = 0;
-        this.pageCount = 0;
-        this.alignmentPadding = 0;
-        this.versoAlignmentPadding = 0;
-        this.widthError = false;
-        this.newVolume = false;
+		//****************************************************************** 
+		this.elements = new Stack<Element>();
+		this.currentPage = null;
+		this.currentSection = null;
+		this.currentVolume = null;
+		//this.inputPages = 0;
+		this.pageCount = 0;
+		this.alignmentPadding = 0;
+		this.versoAlignmentPadding = 0;
+		this.widthError = false;
+		this.newVolume = false;
 	}
 
-	
+
 	// Pages, XPath 2:
 	// sum(//section/(if (ancestor-or-self::*[@duplex][1]/@duplex=false()) then (count(descendant::page) * 2) else (count(descendant::page) + count(descendant::page) mod 2)))
 	// Pages, XPath 1:
 	// count(//section[ancestor-or-self::*[@duplex][1][@duplex='false']]/descendant::page)*2 + count(//section[ancestor-or-self::*[@duplex][1][@duplex='true']]/descendant::page) + count(//section[count(descendant::page) mod 2 = 1][ancestor-or-self::*[@duplex][1][@duplex='true']])
-        @Override
+	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 		HashMap<String, String> atts = new HashMap<String, String>();
 		if (PEF_NS.equals(uri)) {
@@ -246,11 +246,11 @@ public class PEFHandler extends DefaultHandler {
 						if (currentPage==elements.peek()) { // same page 
 							embosser.newLine();
 						}
-//**** Added by Bert Frees *****************************************
+						//**** Added by Bert Frees *****************************************
 						else if (embosser.supportsAligning()) { // first row of new page
 							addVerticalAlignPadding(topOffset);
 						}
-//******************************************************************
+						//******************************************************************
 						if (mirrorAlign && verso && isDuplex) {
 							addAlignPadding(versoAlignmentPadding);
 						} else {
@@ -298,9 +298,9 @@ public class PEFHandler extends DefaultHandler {
 			} else if ("section".equals(localName)) {
 				int currentWidth = Integer.parseInt(getKey(atts, "", "cols"));
 				isDuplex = "true".equals(getKey(atts, "", "duplex"));
-				
+
 				if (currentVolume==elements.peek()) { // same volume
-					
+
 				} else if (currentVolume!=null) { // not the same volume as the previous section
 					if (range.inRange(pageCount)) {
 						try {
@@ -311,7 +311,7 @@ public class PEFHandler extends DefaultHandler {
 						}
 					}
 				} else {
-					
+
 				}
 				verso = true;
 				if (pageCount % 2 == 1) {
@@ -322,22 +322,22 @@ public class PEFHandler extends DefaultHandler {
 					versoAlignmentPadding = 0;
 				} else {
 					switch (alignFallback) {
-						case LEFT:
-							alignmentPadding = 0 + offset;
-							break;
-						case CENTER_LEFT:
-							alignmentPadding = (embosser.getMaxWidth()-currentWidth) / 2  + offset;
-							break;
-						case CENTER_RIGHT:
-							alignmentPadding = (int)Math.ceil((embosser.getMaxWidth()-currentWidth) / 2d) - offset;
-							break;
-						case RIGHT:
-							alignmentPadding = embosser.getMaxWidth()-currentWidth - offset;
-							break;
-						case ABORT:
-							throw new SAXException("Section width does not match paper width");
-						default:
-							throw new SAXException("Unexpected value: " + alignFallback);
+					case LEFT:
+						alignmentPadding = 0 + offset;
+						break;
+					case CENTER_LEFT:
+						alignmentPadding = (embosser.getMaxWidth()-currentWidth) / 2  + offset;
+						break;
+					case CENTER_RIGHT:
+						alignmentPadding = (int)Math.ceil((embosser.getMaxWidth()-currentWidth) / 2d) - offset;
+						break;
+					case RIGHT:
+						alignmentPadding = embosser.getMaxWidth()-currentWidth - offset;
+						break;
+					case ABORT:
+						throw new SAXException("Section width does not match paper width");
+					default:
+						throw new SAXException("Unexpected value: " + alignFallback);
 					}
 					versoAlignmentPadding = embosser.getMaxWidth() - currentWidth - alignmentPadding;
 					if (alignmentPadding<0 || versoAlignmentPadding<0) {
@@ -348,7 +348,7 @@ public class PEFHandler extends DefaultHandler {
 							throw new SAXException("Cannot fit page on paper with offset " + offset);
 						}
 					}
-					
+
 				}
 			}
 		} 
@@ -365,13 +365,13 @@ public class PEFHandler extends DefaultHandler {
 		}
 		embosser.write(new String(c));
 	}
-//**** Added by Bert Frees *****************************************
+	//**** Added by Bert Frees *****************************************
 	private void addVerticalAlignPadding(int align) throws IOException {
 		for (int i=0;i<align;i++) {
 			embosser.newLine();
 		}
 	}
-//******************************************************************
+	//******************************************************************
 	private String toKey(String uri, String localName) {
 		return uri+">"+localName;
 	}
@@ -384,16 +384,16 @@ public class PEFHandler extends DefaultHandler {
 			}
 		}
 	}
-	
+
 	private void addKey(HashMap<String, String> map, String uri, String localName, String value) {
 		map.put(toKey(uri, localName), value);
 	}
-	
+
 	private String getKey(HashMap<String, String> map, String uri, String localName) {
 		return map.get(toKey(uri, localName));
 	}
-	
-        @Override
+
+	@Override
 	public void endElement(String uri, String localName, String qName) throws SAXException {
 		elements.pop();
 		if (PEF_NS.equals(uri)) {
@@ -406,8 +406,8 @@ public class PEFHandler extends DefaultHandler {
 			}
 		}
 	}
-	
-        @Override
+
+	@Override
 	public void characters(char[] ch, int start, int length) throws SAXException {
 		Element context = elements.peek();
 		if (PEF_NS.equals(context.getUri()) 
@@ -422,7 +422,7 @@ public class PEFHandler extends DefaultHandler {
 		}
 	}
 
-        @Override
+	@Override
 	public void endDocument() throws SAXException {
 		try {
 			embosser.newPage();

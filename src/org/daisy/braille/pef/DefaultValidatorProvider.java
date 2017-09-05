@@ -15,7 +15,7 @@ public class DefaultValidatorProvider implements ValidatorProvider {
 	private static final String PEF_MIME = "application/x-pef+xml"; 
 	//Legacy value for PEF Validator value provider
 	private static final String PEF_LEGACY = PEFValidator.class.getCanonicalName();
-	
+
 	private static class PEFValidatorProperties implements FactoryProperties {
 		private final String identifier;
 		private PEFValidatorProperties(String identifier) {
@@ -35,9 +35,9 @@ public class DefaultValidatorProvider implements ValidatorProvider {
 			return "Validates PEF 1.0 files";
 		}
 	}
-	
+
 	private final Collection<FactoryProperties> list;
-	
+
 	public DefaultValidatorProvider() {
 		ArrayList<FactoryProperties> tmp = new ArrayList<FactoryProperties>();
 		tmp.add(new PEFValidatorProperties(PEF_MIME));

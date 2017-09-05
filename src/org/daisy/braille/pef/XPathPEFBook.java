@@ -23,7 +23,7 @@ import org.xml.sax.SAXException;
 
 class XPathPEFBook {
 	private static final Pattern eightDotPattern = Pattern.compile("[\u2840-\u28ff]");
-	
+
 	static PEFBook load(URI uri) throws ParserConfigurationException, SAXException, XPathExpressionException, IOException {
 		return load(uri, false);
 	}
@@ -43,7 +43,7 @@ class XPathPEFBook {
 		Document d = null;
 		String encoding = null;
 		metadata = new HashMap<String, List<String>>();
-		
+
 		try {
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			dbf.setNamespaceAware(true);
@@ -86,7 +86,7 @@ class XPathPEFBook {
 				throw e;
 			}
 		}
-		
+
 		inputEncoding = encoding;
 
 		XPath xp = XPathFactory.newInstance().newXPath();
@@ -100,7 +100,7 @@ class XPathPEFBook {
 			tmp = 0;
 		}
 		volumes = tmp;
-		
+
 		// Count page tags
 		tmp = 0;
 		try {
@@ -118,7 +118,7 @@ class XPathPEFBook {
 		tmp = 0;
 		try {
 			tmp = ((Double)xp.evaluate(
-				"count(//pef:section[ancestor-or-self::pef:*[@duplex][1][@duplex='false']]/descendant::pef:page)*2 + count(//pef:section[ancestor-or-self::pef:*[@duplex][1][@duplex='true']]/descendant::pef:page) + count(//pef:section[count(descendant::pef:page) mod 2 = 1][ancestor-or-self::pef:*[@duplex][1][@duplex='true']])-count(((//pef:section)[last()])[count(descendant::pef:page) mod 2 = 1][ancestor-or-self::pef:*[@duplex][1][@duplex='true']])", d, XPathConstants.NUMBER)).intValue();
+					"count(//pef:section[ancestor-or-self::pef:*[@duplex][1][@duplex='false']]/descendant::pef:page)*2 + count(//pef:section[ancestor-or-self::pef:*[@duplex][1][@duplex='true']]/descendant::pef:page) + count(//pef:section[count(descendant::pef:page) mod 2 = 1][ancestor-or-self::pef:*[@duplex][1][@duplex='true']])-count(((//pef:section)[last()])[count(descendant::pef:page) mod 2 = 1][ancestor-or-self::pef:*[@duplex][1][@duplex='true']])", d, XPathConstants.NUMBER)).intValue();
 		} catch (XPathExpressionException e) {
 			if (continueOnError) {
 				tmp = 0;
@@ -127,7 +127,7 @@ class XPathPEFBook {
 			}
 		}
 		pages = tmp;
-		
+
 		// Get max width
 		tmp = 0;
 		try {
@@ -145,7 +145,7 @@ class XPathPEFBook {
 			}
 		}
 		maxWidth = tmp;
-		
+
 		// Get max height
 		tmp = 0;
 		try {
@@ -163,7 +163,7 @@ class XPathPEFBook {
 			}
 		}
 		maxHeight = tmp;
-		
+
 		// Contains eight dot?
 		boolean bTmp = false;
 		try {
@@ -180,7 +180,7 @@ class XPathPEFBook {
 			}
 		}
 		containsEightDot = bTmp;
-		
+
 		// get start pages
 		startPages = new int[volumes];
 		for (int i = 1; i <= volumes; i++) {

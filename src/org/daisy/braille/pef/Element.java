@@ -28,7 +28,7 @@ public class Element {
 	private String uri;
 	private String localName;
 	private Map<String, String> atts;
-	
+
 	/**
 	 * Creates a new Element
 	 * @param uri the namespace uri for the element
@@ -40,7 +40,7 @@ public class Element {
 		this.localName = localName;
 		this.atts = attributes;
 	}
-	
+
 	/**
 	 * Gets this element's namespace uri
 	 * @return returns this element's namespace uri
@@ -56,7 +56,7 @@ public class Element {
 	public String getLocalName() {
 		return localName;
 	}
-	
+
 	/**
 	 * Gets this element's attributes
 	 * @return returns this element's attributes

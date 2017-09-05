@@ -46,7 +46,7 @@ public class PrinterDevice implements Device {
 	//private static final DocFlavor FLAVOR = DocFlavor.BYTE_ARRAY.AUTOSENSE;
 	private static final DocFlavor FLAVOR = DocFlavor.INPUT_STREAM.AUTOSENSE;
 	private PrintService service;
-	
+
 	/**
 	 * Create a device with the provided name.
 	 * @param deviceName the name of the device
@@ -81,7 +81,7 @@ public class PrinterDevice implements Device {
 		}
 		throw new IllegalArgumentException("Could not find embosser.");
 	}
-	
+
 	/**
 	 * List available devices
 	 * @return returns a list of available devices that accepts DocFlavor.INPUT_STREAM.AUTOSENSE 
@@ -103,7 +103,7 @@ public class PrinterDevice implements Device {
 			throw new PrintException(e);
 		}
 	}
-	
+
 	private void transmit(InputStream is) throws PrintException {
 		InputStreamDoc doc = new InputStreamDoc(is);
 		DocPrintJob dpj = service.createPrintJob();
@@ -112,7 +112,7 @@ public class PrinterDevice implements Device {
 
 	private class InputStreamDoc implements Doc {
 		private InputStream stream;
-		
+
 		/**
 		 * Default constructor
 		 * @param file
@@ -122,27 +122,27 @@ public class PrinterDevice implements Device {
 			this.stream = stream;
 		}
 
-                @Override
+		@Override
 		public DocAttributeSet getAttributes() {
 			return null;
 		}
 
-                @Override
+		@Override
 		public DocFlavor getDocFlavor() {
 			return FLAVOR;
 		}
 
-                @Override
+		@Override
 		public Object getPrintData() throws IOException {
 			return getStreamForBytes();
 		}
 
-                @Override
+		@Override
 		public Reader getReaderForText() throws IOException {
 			return null;
 		}
 
-                @Override
+		@Override
 		public InputStream getStreamForBytes() throws IOException {
 			return stream;
 		}

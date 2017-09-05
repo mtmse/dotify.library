@@ -40,7 +40,7 @@ import org.daisy.braille.api.table.TableCatalogService;
  */
 public class TextInputDetector {
 	private final TableCatalogService factory;
-	
+
 	/**
 	 * Creates a new TextInputDetector
 	 */
@@ -57,12 +57,12 @@ public class TextInputDetector {
 		is.close();
 		return set;
 	}
-	
+
 	private BitSet getTableThumbprint(BrailleConverter c) throws IOException {
 		ByteArrayInputStream bis = new ByteArrayInputStream(c.toText(BrailleConstants.BRAILLE_PATTERNS_256).getBytes(c.getPreferredCharset().name()));
 		return analyze(bis);
 	}
-	
+
 	/**
 	 * 
 	 * @param input
@@ -82,7 +82,7 @@ public class TextInputDetector {
 		}
 		return inputThumbprint;
 	}
-	
+
 	private HashMap<BitSet, HashMap<String, Table>> analyzeTableCatalog(boolean eightDot) {
 		Logger logger = Logger.getLogger(TextHandler.class.getCanonicalName());
 		HashMap<BitSet, HashMap<String, Table>> tables = new HashMap<BitSet, HashMap<String, Table>>();
@@ -116,7 +116,7 @@ public class TextInputDetector {
 		}
 		return tables;
 	}
-	
+
 	/**
 	 * Detects tables matching the supplied text input. Only tables that create
 	 * non-identical output are included. Therefore, more than one match
@@ -132,7 +132,7 @@ public class TextInputDetector {
 		//BitSet tableThumbprint;
 		int size = 0;
 		for (int i = inputThumbprint.nextSetBit(0); i >= 0; i = inputThumbprint.nextSetBit(i+1)) {
-		    size++;
+			size++;
 		}
 		Logger logger = Logger.getLogger(TextHandler.class.getCanonicalName());
 		HashMap<BitSet, HashMap<String, Table>> tables = analyzeTableCatalog(size>(64-4)); // 6-dot minus cleared codes

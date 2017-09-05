@@ -83,7 +83,7 @@ public class PEFValidator extends AbstractFactory implements org.daisy.braille.a
 	private static final Logger logger = Logger.getLogger(PEFValidator.class.getCanonicalName());
 	private ByteArrayOutputStream report;
 	private Mode mode;
-	
+
 	/**
 	 * Creates a new PEFValidator
 	 */
@@ -100,10 +100,10 @@ public class PEFValidator extends AbstractFactory implements org.daisy.braille.a
 	public boolean validate(URL input) {
 		return validate(input, mode);
 	}
-	
+
 	private boolean validate(URL input, Mode modeLocal) {
 		report = new ByteArrayOutputStream();
-		
+
 		try (PrintStream ps = new PrintStream(report, false, "utf-8")) {
 			TestError errorHandler = new TestError(ps);
 			boolean ok;
@@ -124,14 +124,14 @@ public class PEFValidator extends AbstractFactory implements org.daisy.braille.a
 			return false;
 		}
 	}
-	
+
 	private boolean runValidation(URL url, URL schema, TestError errorHandler) {
 		PropertyMapBuilder propertyBuilder = new PropertyMapBuilder();
 
 		propertyBuilder.put(ValidateProperty.ERROR_HANDLER, errorHandler);
 		PropertyMap map = propertyBuilder.toPropertyMap();
-        ValidationDriver vd = new ValidationDriver(map);
-        try {
+		ValidationDriver vd = new ValidationDriver(map);
+		try {
 			vd.loadSchema(new InputSource(schema.openStream()));
 			return vd.validate(new InputSource(url.openStream()));
 		} catch (SAXException | IOException e) {
@@ -139,39 +139,39 @@ public class PEFValidator extends AbstractFactory implements org.daisy.braille.a
 		}
 		return false;
 	}
-	
+
 	private File transformSchematron(URL schema) throws IOException, SAXException, TransformerException {
 
-        InputSource schSource;
-        File schematronSchema = File.createTempFile("schematron", ".tmp");
-        schematronSchema.deleteOnExit();
+		InputSource schSource;
+		File schematronSchema = File.createTempFile("schematron", ".tmp");
+		schematronSchema.deleteOnExit();
 
-        // Use XSLT to strip out Schematron rules
-        Source xml = new StreamSource(schema.toString());
-        
-        Source xslt = new StreamSource(this.getClass().getResourceAsStream("resource-files/RNG2Schtrn.xsl"));
-        TransformerFactory factory = TransformerFactory.newInstance();
-        if (logger.isLoggable(Level.FINE)) {
-        	logger.fine(this.getClass() + " is using transformer factory: " + factory.getClass().getName());
-        }
+		// Use XSLT to strip out Schematron rules
+		Source xml = new StreamSource(schema.toString());
+
+		Source xslt = new StreamSource(this.getClass().getResourceAsStream("resource-files/RNG2Schtrn.xsl"));
+		TransformerFactory factory = TransformerFactory.newInstance();
+		if (logger.isLoggable(Level.FINE)) {
+			logger.fine(this.getClass() + " is using transformer factory: " + factory.getClass().getName());
+		}
 		try {
 			factory.setAttribute("http://saxon.sf.net/feature/version-warning", Boolean.FALSE);
 		} catch (IllegalArgumentException iae) {
 			logger.log(Level.FINE, "Failed to set saxon feature warning flag.", iae);
 		}
-        Transformer transformer = factory.newTransformer(xslt);
+		Transformer transformer = factory.newTransformer(xslt);
 
-        transformer.transform(xml, new StreamResult(schematronSchema.toURI().toString()));
-        schSource = new InputSource(schematronSchema.toURI().toString());
-        schSource.setSystemId(schematronSchema.toURI().toString());
+		transformer.transform(xml, new StreamResult(schematronSchema.toURI().toString()));
+		schSource = new InputSource(schematronSchema.toURI().toString());
+		schSource.setSystemId(schematronSchema.toURI().toString());
 
-        return schematronSchema;
+		return schematronSchema;
 	}
-	
+
 	static class TestError implements ErrorHandler {
 		private boolean hasErrors = false;
 		private final PrintStream printStream;
-		
+
 		TestError(PrintStream writer) {
 			this.printStream = writer;
 		}
@@ -192,7 +192,7 @@ public class PEFValidator extends AbstractFactory implements org.daisy.braille.a
 			hasErrors = true;
 			buildErrorMessage("Fatal error", exception);
 		}
-		
+
 		public boolean hasErrors() {
 			return hasErrors;
 		}
@@ -246,7 +246,7 @@ public class PEFValidator extends AbstractFactory implements org.daisy.braille.a
 		} else {
 			throw new IllegalArgumentException("Unknown feature: '" + key +"'");
 		}
-		
+
 	}
 
 }

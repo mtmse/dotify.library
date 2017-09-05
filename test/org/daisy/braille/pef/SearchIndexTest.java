@@ -18,7 +18,7 @@ public class SearchIndexTest {
 		assertEquals(0, si.containsAll("boat food").size());
 		assertEquals(2, si.containsAll("house").size());
 	}
-	
+
 	@Test
 	public void testSubstringSearch() {
 		SearchIndex<String> si = new SearchIndex<String>();
@@ -32,7 +32,7 @@ public class SearchIndexTest {
 		assertEquals(0, si.containsAll("boa foo").size());
 		assertEquals(2, si.containsAll("hous").size());
 	}
-	
+
 	@Test
 	public void testStrictTerms() {
 		SearchIndex<String> si = new SearchIndex<String>();
@@ -45,7 +45,7 @@ public class SearchIndexTest {
 		assertEquals(0, si.containsAll("hous boa").size());
 		assertEquals(0, si.containsAll("hous").size());
 	}
-	
+
 	@Test
 	public void testRedundantAdditions() {
 		SearchIndex<String> si = new SearchIndex<String>();

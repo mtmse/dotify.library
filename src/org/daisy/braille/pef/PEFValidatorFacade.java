@@ -31,11 +31,11 @@ import org.daisy.braille.api.validator.ValidatorFactoryService;
  */
 public class PEFValidatorFacade {
 	private final ValidatorFactoryService factory;
-	
+
 	public PEFValidatorFacade(ValidatorFactoryService factory) {
 		this.factory = factory;
 	}
-	
+
 	/**
 	 * Validates the supplied PEF-file
 	 * @param in the PEF-file to validate
@@ -45,7 +45,7 @@ public class PEFValidatorFacade {
 	public boolean validate(File in) throws IOException {
 		return validate(in, null);
 	}
-	
+
 	/**
 	 * Validates the supplied PEF-file and sends the validator messages to the supplied PrintStream
 	 * @param in the PEF-file to validate

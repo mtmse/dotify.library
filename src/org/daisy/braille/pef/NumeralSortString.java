@@ -29,7 +29,7 @@ import java.util.ArrayList;
 public class NumeralSortString implements Comparable<NumeralSortString> {
 	private ArrayList<Part> parts;
 	private String str;
-	
+
 	private static class Part implements Comparable<Part> {
 		enum Type {STRING, NUMBER}
 		Type type;
@@ -47,11 +47,11 @@ public class NumeralSortString implements Comparable<NumeralSortString> {
 				type = Type.STRING;
 			}
 		}
-		
+
 		public Type getType() {
 			return type;
 		}
-		
+
 		public Integer asNumber() {
 			return intValue;
 		}
@@ -60,17 +60,17 @@ public class NumeralSortString implements Comparable<NumeralSortString> {
 			return strValue;
 		}
 
-                @Override
+		@Override
 		public int compareTo(Part otherObj) {
 			if (otherObj==null) {
 				throw new NullPointerException();
 			}
 			if (this.getType()==otherObj.getType()) {
 				switch (this.getType()) {
-					case NUMBER:
-						return this.asNumber().compareTo(otherObj.asNumber());
-					case STRING:
-						return this.asString().compareTo(otherObj.asString());
+				case NUMBER:
+					return this.asNumber().compareTo(otherObj.asNumber());
+				case STRING:
+					return this.asString().compareTo(otherObj.asString());
 				}
 				return 0;
 			} else if (this.getType()==Type.NUMBER) {
@@ -136,7 +136,7 @@ public class NumeralSortString implements Comparable<NumeralSortString> {
 			parts.add(new Part(part));
 		}
 	}
-	
+
 	/**
 	 * Gets the part of the string with the specified index.
 	 * @param index index of the part to return
@@ -145,7 +145,7 @@ public class NumeralSortString implements Comparable<NumeralSortString> {
 	public Part getPart(int index) {
 		return parts.get(index);
 	}
-	
+
 	/**
 	 * Gets the number of parts
 	 * @return returns the number of parts
@@ -153,7 +153,7 @@ public class NumeralSortString implements Comparable<NumeralSortString> {
 	public int getPartCount() {
 		return parts.size();
 	}
-	
+
 	/**
 	 * Gets the value for this object.
 	 * @return returns the value
@@ -162,7 +162,7 @@ public class NumeralSortString implements Comparable<NumeralSortString> {
 		return str;
 	}
 
-        @Override
+	@Override
 	public int compareTo(NumeralSortString otherObj) {
 		if (otherObj==null) {
 			throw new NullPointerException();

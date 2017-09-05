@@ -34,7 +34,7 @@ public class PEFFileCompare {
 	public PEFFileCompare(URL nr) {
 		this(new URLNormalizationResource(nr));
 	}
-	
+
 	public boolean compare(File f1, File f2) throws PEFFileCompareException {
 		return compare(new StreamSource(f1), new StreamSource(f2));
 	}
@@ -102,7 +102,7 @@ public class PEFFileCompare {
 		}
 
 
-                @Override
+		@Override
 		public InputStream getNormalizationResourceAsStream() {
 			try {
 				return url.openStream();
@@ -120,7 +120,7 @@ public class PEFFileCompare {
 		}
 
 
-                @Override
+		@Override
 		public InputStream getNormalizationResourceAsStream() {
 			return this.getClass().getResourceAsStream(path);
 		}

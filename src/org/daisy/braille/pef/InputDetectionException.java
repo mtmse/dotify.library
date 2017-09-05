@@ -41,7 +41,7 @@ public class InputDetectionException extends IOException {
 	public InputDetectionException(String message) {
 		super(message);
 	}
-	
+
 	public InputDetectionException(Throwable cause) {
 		super(cause);
 	}

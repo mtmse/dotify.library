@@ -22,7 +22,7 @@ public class PEFGeneratorTest {
 		defaults.put(PEFGenerator.KEY_COLS, "32");
 		defaults.put(PEFGenerator.KEY_DUPLEX, "true");
 		PEFGenerator pg = new PEFGenerator(defaults);
-		
+
 		for (int i=0; i<30; i++) {
 			List<Integer> sections = pg.getSectionDivisors();
 			for (Integer x : sections) {
@@ -39,7 +39,7 @@ public class PEFGeneratorTest {
 
 		}
 	}
-	
+
 	@Test
 	public void testSectionDivisor_02() {
 		Map<String, String> defaults = new HashMap<String, String>();
@@ -69,7 +69,7 @@ public class PEFGeneratorTest {
 		List<Integer> sections = pg.getSectionDivisors();
 		assertEquals(1, sections.size());
 	}
-	
+
 	@Test
 	public void testSectionDivisor_04() {
 		Map<String, String> defaults = new HashMap<String, String>();

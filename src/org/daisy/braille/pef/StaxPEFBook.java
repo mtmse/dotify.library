@@ -22,7 +22,7 @@ import javax.xml.stream.events.XMLEvent;
 
 class StaxPEFBook {
 	private static final Pattern EIGHT_DOT_PATTERN = Pattern.compile("[\u2840-\u28ff]");
-	
+
 	private static final String PEF_NS = "http://www.daisy.org/ns/2008/pef";
 	private static final String DC_NS = "http://purl.org/dc/elements/1.1/";
 	private static final QName META_TAG = new QName(PEF_NS, "meta");
@@ -30,11 +30,11 @@ class StaxPEFBook {
 	private static final QName SECTION_TAG = new QName(PEF_NS, "section");
 	private static final QName PAGE_TAG = new QName(PEF_NS, "page");
 	private static final QName ROW_TAG = new QName(PEF_NS, "row");
-	
+
 	private static final QName ROWS_ATTR = new QName("rows");
 	private static final QName COLS_ATTR = new QName("cols");
 	private static final QName DUPLEX_ATTR = new QName("duplex");
-	
+
 	private final XMLInputFactory inFactory;
 	private XMLEventReader reader;
 
@@ -49,16 +49,16 @@ class StaxPEFBook {
 	private int maxHeight;
 	private boolean containsEightDot;
 	private boolean compatibilityMode;
-	
+
 	private XMLEvent event;
 	boolean evenLast = false;
-	
+
 	private StaxPEFBook() {
 		inFactory = XMLInputFactory.newInstance();
 		inFactory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);        
-	    inFactory.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, Boolean.TRUE);
-	    inFactory.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.TRUE);
-	    inFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.TRUE);
+		inFactory.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, Boolean.TRUE);
+		inFactory.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.TRUE);
+		inFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.TRUE);
 	}
 
 	static PEFBook loadStax(URI uri) {
@@ -89,7 +89,7 @@ class StaxPEFBook {
 		containsEightDot = false;
 		try (InputStream is = uri.toURL().openStream()) {
 			reader = inFactory.createXMLEventReader(is);
-			
+
 			while (reader.hasNext()) {
 				event = reader.nextEvent();
 				if (event.getEventType()==XMLStreamConstants.START_ELEMENT) {
@@ -100,9 +100,9 @@ class StaxPEFBook {
 					}
 				} else if (event.getEventType()==XMLStreamConstants.START_DOCUMENT) {
 					StartDocument sd = (StartDocument)event;
-	            	if (sd.encodingSet()) {
-	            	    encoding = sd.getCharacterEncodingScheme();
-	            	}
+					if (sd.encodingSet()) {
+						encoding = sd.getCharacterEncodingScheme();
+					}
 				}
 			}
 		}
@@ -118,7 +118,7 @@ class StaxPEFBook {
 
 		return new PEFBook(uri, metadata, volumes, pages, pageTags, maxWidth, maxHeight, encoding, containsEightDot, started, sectionsInVolumeArray);
 	}
-	
+
 	private void scanMeta() throws XMLStreamException {
 		if (!(event.getEventType()==XMLStreamConstants.START_ELEMENT && META_TAG.equals(event.asStartElement().getName()))) {
 			throw new XMLStreamException("Parse error.");
@@ -161,7 +161,7 @@ class StaxPEFBook {
 			}
 		}
 	}
-	
+
 	private void scanVolume() throws XMLStreamException {
 		if (!eventIsStartElement(VOLUME_TAG)) {
 			throw new XMLStreamException("Parse error.");
@@ -169,8 +169,8 @@ class StaxPEFBook {
 		volumes++;
 		sectionNumber = 0;
 		SectionAttributes v = new SectionAttributes(parseIntAttribute(event.asStartElement(), ROWS_ATTR, 0), 
-								parseIntAttribute(event.asStartElement(), COLS_ATTR, 0),
-								parseBooleanAttribute(event.asStartElement(), DUPLEX_ATTR, false));
+				parseIntAttribute(event.asStartElement(), COLS_ATTR, 0),
+				parseBooleanAttribute(event.asStartElement(), DUPLEX_ATTR, false));
 		while (reader.hasNext()) {
 			event = reader.nextEvent();
 			if (event.getEventType()==XMLStreamConstants.START_ELEMENT) {
@@ -183,7 +183,7 @@ class StaxPEFBook {
 		}
 		sectionsInVolume.add(compatibilityMode?1:sectionNumber);
 	}
-	
+
 	private void scanSection(SectionAttributes v) throws XMLStreamException {
 		if (!eventIsStartElement(SECTION_TAG)) {
 			throw new XMLStreamException("Parse error.");
@@ -217,7 +217,7 @@ class StaxPEFBook {
 			}
 		}
 	}
-	
+
 	private void scanPage() throws XMLStreamException {
 		if (!eventIsStartElement(PAGE_TAG)) {
 			throw new XMLStreamException("Parse error.");
@@ -249,15 +249,15 @@ class StaxPEFBook {
 			}
 		}
 	}
-	
+
 	private boolean eventIsStartElement(QName name) {
 		return event.getEventType()==XMLStreamConstants.START_ELEMENT && name.equals(event.asStartElement().getName());
 	}
-	
+
 	private boolean eventIsEndElement(QName name) {
 		return  event.getEventType()==XMLStreamConstants.END_ELEMENT && name.equals(event.asEndElement().getName());
 	}
-	
+
 	private int parseIntAttribute(StartElement element, QName att, int def) {
 		Attribute a = element.getAttributeByName(att);
 		if (a!=null) {
@@ -267,7 +267,7 @@ class StaxPEFBook {
 		}
 		return def;
 	}
-	
+
 	private boolean parseBooleanAttribute(StartElement element, QName att, boolean def) {
 		Attribute a = element.getAttributeByName(att);
 		if (a!=null) {
@@ -282,7 +282,7 @@ class StaxPEFBook {
 		private final int rows;
 		private final int cols;
 		private final boolean duplex;
-		
+
 		public SectionAttributes(int rows, int cols, boolean duplex) {
 			this.rows = rows;
 			this.cols = cols;

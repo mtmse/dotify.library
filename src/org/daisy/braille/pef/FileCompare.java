@@ -38,7 +38,7 @@ public class FileCompare {
 	public FileCompare() {
 		this(false);
 	}
-	
+
 	/**
 	 * Creates a new FileCompare object
 	 * @param keepTempFiles

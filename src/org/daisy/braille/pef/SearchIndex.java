@@ -12,8 +12,8 @@ import java.util.Set;
 public class SearchIndex<E> {
 	private static final boolean debug = false;
 	private final Map<String, Set<E>> index;
-    private static final String REGEX = "[\\s\\.,:/-]";
-    private final int exclude;
+	private static final String REGEX = "[\\s\\.,:/-]";
+	private final int exclude;
 
 	/**
 	 * Creates a new search index with the default sub-word limit (3).
@@ -21,7 +21,7 @@ public class SearchIndex<E> {
 	public SearchIndex() {
 		this(3);
 	}
-	
+
 	/**
 	 * Creates a new search index with the specified sub-word limit.
 	 * @param subwordLimit the smallest part of a word longer than limit
@@ -37,11 +37,11 @@ public class SearchIndex<E> {
 		}
 		this.exclude = subwordLimit;
 	}
-	
+
 	public void add(String val, E obj) {
 		add(val, obj, false);
 	}
-	
+
 	public void add(String val, E obj, boolean strict) {
 		for (String ind : val.toLowerCase().split(REGEX)) {
 			if (ind!=null && ind.length()>0) {
@@ -56,7 +56,7 @@ public class SearchIndex<E> {
 			}
 		}
 	}
-	
+
 	void addToIndex(String indx, E obj) {
 		if (debug)  System.err.println("Adding index: " + indx);
 		Set<E> c = index.get(indx);
@@ -66,60 +66,60 @@ public class SearchIndex<E> {
 		}
 		c.add(obj);
 	}
-	
+
 	/**
 	 * Gets all objects with an entry for the specified string.
 	 * @param str
 	 * @return the objects
 	 */
-    private Set<E> matches(String str) {
-    	str = str.toLowerCase().replaceAll(REGEX, "");
-    	if (debug)  System.err.println("Search for: " + str);
-    	Set<E> books = index.get(str);
-    	
-    	if (books==null) {
-    		return new HashSet<E>();
-    	}
-    	return books;
-    }
-        
-    public Set<E> containsAll(Iterable<String> strs) {
-    	Set<E> result = new HashSet<E>();
-    	boolean first = true;
-    	for (String s : strs) {
-    		if (first) {
-    			result.addAll(matches(s));
-    			first = false;
-    		} else {
-    			Set<E> r = matches(s);
-    			Iterator<E> i = result.iterator();
-    			while (i.hasNext()) {
-    				E f = i.next();
-    				if (!r.contains(f)) {
-    					i.remove();
-    				}
-    			}
-    		}
-    	}
-    	return result;
-    }
-    
-    private List<String> normalizeString(String str) {
-    	String[] t = str.replaceAll(REGEX, " ").split("\\s");
-    	ArrayList<String> ret = new ArrayList<String>();
-    	for (String s : t) {
-    		if (!"".equals(s) && s!=null) {
-    			ret.add(s);
-    		}
-    	}
-    	return ret;
-    }
-    
-    public Set<E> containsAll(String str) {
-    	return containsAll(normalizeString(str));
-    }
-    
-    public Set<E> containsAll(String ... strs) {
-    	return containsAll(Arrays.asList(strs));
-    }
+	private Set<E> matches(String str) {
+		str = str.toLowerCase().replaceAll(REGEX, "");
+		if (debug)  System.err.println("Search for: " + str);
+		Set<E> books = index.get(str);
+
+		if (books==null) {
+			return new HashSet<E>();
+		}
+		return books;
+	}
+
+	public Set<E> containsAll(Iterable<String> strs) {
+		Set<E> result = new HashSet<E>();
+		boolean first = true;
+		for (String s : strs) {
+			if (first) {
+				result.addAll(matches(s));
+				first = false;
+			} else {
+				Set<E> r = matches(s);
+				Iterator<E> i = result.iterator();
+				while (i.hasNext()) {
+					E f = i.next();
+					if (!r.contains(f)) {
+						i.remove();
+					}
+				}
+			}
+		}
+		return result;
+	}
+
+	private List<String> normalizeString(String str) {
+		String[] t = str.replaceAll(REGEX, " ").split("\\s");
+		ArrayList<String> ret = new ArrayList<String>();
+		for (String s : t) {
+			if (!"".equals(s) && s!=null) {
+				ret.add(s);
+			}
+		}
+		return ret;
+	}
+
+	public Set<E> containsAll(String str) {
+		return containsAll(normalizeString(str));
+	}
+
+	public Set<E> containsAll(String ... strs) {
+		return containsAll(Arrays.asList(strs));
+	}
 }

@@ -37,7 +37,7 @@ import javax.xml.namespace.NamespaceContext;
 public class PEFNamespaceContext implements NamespaceContext {
 	private HashMap<String, String> namespaces;
 	private HashMap<String, String> prefixes;
-	
+
 	/**
 	 * Creates a new PEFNamespaceContext using the prefixes
 	 * <strong>pef</strong> for <tt>http://www.daisy.org/ns/2008/pef</tt> and <strong>dc</strong> for
@@ -46,7 +46,7 @@ public class PEFNamespaceContext implements NamespaceContext {
 	public PEFNamespaceContext() {
 		this("pef", "dc");
 	}
-	
+
 	/**
 	 * Creates a new PEFNamespaceContext using the supplied prefixes
 	 * @param pefPrefix the prefix to use for <tt>http://www.daisy.org/ns/2008/pef</tt>
@@ -62,17 +62,17 @@ public class PEFNamespaceContext implements NamespaceContext {
 		}
 	}
 
-        @Override
+	@Override
 	public String getNamespaceURI(String prefix) {
 		return namespaces.get(prefix);
 	}
 
-        @Override
+	@Override
 	public String getPrefix(String namespaceURI) {
 		return prefixes.get(namespaceURI);
 	}
 
-        @Override
+	@Override
 	public Iterator<Entry<String, String>> getPrefixes(String namespaceURI) {
 		return prefixes.entrySet().iterator();
 	}

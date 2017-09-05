@@ -66,14 +66,14 @@ public class PEFBookTest {
 		assertEquals(20, p1.getMaxHeight());
 		assertEquals(3, p1.getFirstPage(2));
 	}
-	
+
 	@Test
 	public void testSections() throws XPathExpressionException, ParserConfigurationException, SAXException, IOException, URISyntaxException {
 		PEFBook p1 = PEFBook.load(this.getClass().getResource("resource-files/several-sections.pef").toURI());
 
 		assertEquals(2, p1.getSectionsInVolume(1));
 		assertEquals(1, p1.getSectionsInVolume(2));
-		
+
 		assertEquals(2, p1.getSheets(1));
 		assertEquals(1, p1.getSheets(1, 1));
 		assertEquals(1, p1.getSheets(1, 2));

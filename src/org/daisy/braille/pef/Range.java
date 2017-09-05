@@ -26,7 +26,7 @@ package org.daisy.braille.pef;
 public class Range {
 	private final int from;
 	private final int to;
-	
+
 	/**
 	 * Create a new range.
 	 * @param from first page, inclusive
@@ -39,7 +39,7 @@ public class Range {
 		this.from = from;
 		this.to = to;
 	}
-	
+
 	/**
 	 * Create a new range.
 	 * @param from first page, inclusive
@@ -47,7 +47,7 @@ public class Range {
 	public Range(int from) {
 		this(from, Integer.MAX_VALUE);
 	}
-	
+
 	/**
 	 * Parses the string as a range
 	 * @param range
@@ -70,7 +70,7 @@ public class Range {
 			}
 		}
 	}
-	
+
 	/**
 	 * Test if a value is in range
 	 * @param value
@@ -79,7 +79,7 @@ public class Range {
 	public boolean inRange(int value) {
 		return value>=from && value<=to;
 	}
-	
+
 	/**
 	 * Gets the from value, inclusive.
 	 * @return returns the from value
@@ -87,7 +87,7 @@ public class Range {
 	public int getFrom() {
 		return from;
 	}
-	
+
 	/**
 	 * Gets the to value, inclusive.
 	 * @return returns the to value

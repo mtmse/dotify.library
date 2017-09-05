@@ -28,7 +28,7 @@ public class XMLFileCompare extends FileCompare {
 	public XMLFileCompare(TransformerFactory factory) {
 		this(factory, false);
 	}
-	
+
 	/**
 	 * Creates a new FileCompare object
 	 * @param factory
@@ -38,7 +38,7 @@ public class XMLFileCompare extends FileCompare {
 		super(keepTempFiles);
 		this.factory = factory;
 	}
-	
+
 	/**
 	 * Compare the input streams as XML. THe files are considered equal if they are binary equal once
 	 * transformed through the same transparent XSLT (whitespace is normalized on text nodes)
@@ -57,38 +57,38 @@ public class XMLFileCompare extends FileCompare {
 		} catch (IllegalArgumentException iae) { 
 			iae.printStackTrace();
 		}
-        t1 = File.createTempFile("FileCompare", ".tmp");
-        t2 = File.createTempFile("FileCompare", ".tmp");
-        try {
-	        StreamSource xml1 = new StreamSource(f1);
-	        StreamSource xml2 = new StreamSource(f2);
-	        Source xslt;
-	        Transformer transformer;
-	        
-	        xslt = new StreamSource(this.getClass().getResourceAsStream("resource-files/normalize.xsl"));
-	        transformer = factory.newTransformer(xslt);
-	        transformer.transform(xml1, new StreamResult(t1));
-	        
-	        xslt = new StreamSource(this.getClass().getResourceAsStream("resource-files/normalize.xsl"));
-	        transformer = factory.newTransformer(xslt);
-	        transformer.transform(xml2, new StreamResult(t2));
-	
-	        return compareBinary(new FileInputStream(t1), new FileInputStream(t2));
-        } finally {
-        	if (!keepTempFiles) {
-	        	if (!t1.delete()) {
-	        		t1.deleteOnExit();
-	        	}
-	        	if (!t2.delete()) {
-	        		t2.deleteOnExit();
-	        	}
-        	}
-        	/*
+		t1 = File.createTempFile("FileCompare", ".tmp");
+		t2 = File.createTempFile("FileCompare", ".tmp");
+		try {
+			StreamSource xml1 = new StreamSource(f1);
+			StreamSource xml2 = new StreamSource(f2);
+			Source xslt;
+			Transformer transformer;
+
+			xslt = new StreamSource(this.getClass().getResourceAsStream("resource-files/normalize.xsl"));
+			transformer = factory.newTransformer(xslt);
+			transformer.transform(xml1, new StreamResult(t1));
+
+			xslt = new StreamSource(this.getClass().getResourceAsStream("resource-files/normalize.xsl"));
+			transformer = factory.newTransformer(xslt);
+			transformer.transform(xml2, new StreamResult(t2));
+
+			return compareBinary(new FileInputStream(t1), new FileInputStream(t2));
+		} finally {
+			if (!keepTempFiles) {
+				if (!t1.delete()) {
+					t1.deleteOnExit();
+				}
+				if (!t2.delete()) {
+					t2.deleteOnExit();
+				}
+			}
+			/*
         	if (originalTransformer!=null) {
         		System.setProperty(TRANSFORMER_FACTORY_KEY, originalTransformer);
         	} else {
         		System.clearProperty(TRANSFORMER_FACTORY_KEY);
         	}*/
-        }
+		}
 	}
 }

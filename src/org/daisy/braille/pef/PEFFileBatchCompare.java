@@ -32,7 +32,7 @@ public class PEFFileBatchCompare {
 	private final List<String> oks;
 	private int checked;
 	private String unbraillerTable;
-	
+
 	public static class Diff {
 		private final String key;
 		private final int pos;
@@ -63,7 +63,7 @@ public class PEFFileBatchCompare {
 		checked = 0;
 		this.unbraillerTable = null;
 	}
-	
+
 	public PEFFileBatchCompare(FileFilter filter) {
 		this(filter, null);
 	}
@@ -92,7 +92,7 @@ public class PEFFileBatchCompare {
 		if (!dir2.isDirectory()) {
 			throw new IllegalArgumentException("Path is not a directory: " +path2);
 		}
-		
+
 		final HashMap<String, Integer> x = new HashMap<String, Integer>();
 		final HashMap<String, File> files1 = new HashMap<String, File>();
 		final HashMap<String, File> files2 = new HashMap<String, File>();
@@ -112,35 +112,35 @@ public class PEFFileBatchCompare {
 			}
 			x.put(f.getName(), val);
 		}
-		
+
 		for (File f : dir1Matches.getOtherFiles()) {
 			warning(f + " will not be examined.");
 		}
-		
+
 		for (File f : dir2Matches.getOtherFiles()) {
 			warning(f + " will not be examined.");
 		}
 
 		checked += Math.min(files1.size(), files2.size());
-		
+
 		ExecutorService e = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 		int i2 = 1;
 		for (final String key : x.keySet()) {
 			final int i = i2;
 			i2++;
 			e.execute(new Runnable() {
-                        @Override
-		        public void run() {
+				@Override
+				public void run() {
 
 					System.out.println("Comparing file " + key + " in " + dir1 + " and " + dir2 + " (" + i + "/" + x.size() + ")");
-					
+
 					int v = x.get(key);
 					if (v!=0) {
 						notice("Unmatched file '" + key + "' in " + (v==1?dir1:dir2));
 					} else {
 						File f1 = files1.get(key);
 						File f2 = files2.get(key);
-		
+
 						try {
 							PEFFileCompare fcc;
 							if (nr == null) {
@@ -159,8 +159,8 @@ public class PEFFileBatchCompare {
 							e.printStackTrace();
 						}
 					}
-		        }
-		    });
+				}
+			});
 
 		}
 		e.shutdown();
@@ -170,7 +170,7 @@ public class PEFFileBatchCompare {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
+
 	}
 
 	private void notice(String msg) {
@@ -180,31 +180,31 @@ public class PEFFileBatchCompare {
 	private void warning(String msg) {
 		warnings.add(msg);
 	}
-	
+
 	private void diff(String filename, int pos) {
 		diffs.add(new Diff(filename, pos));
 	}
-	
+
 	private void ok(String filename) {
 		oks.add(filename);
 	}
-	
+
 	public List<String> getNotices() {
 		return notices;
 	}
-	
+
 	public List<String> getWarnings() {
 		return warnings;
 	}
-	
+
 	public List<Diff> getDiffs() {
 		return diffs;
 	}
-	
+
 	public List<String> getOk() {
 		return oks;
 	}
-	
+
 	public int checkedCount() {
 		return checked;
 	}
@@ -216,21 +216,21 @@ public class PEFFileBatchCompare {
 		}
 		return ret;
 	}
-	
+
 	private class PefFileFilter implements FileFilter {
 		private final FileFilter filter;
 		private ArrayList<File> noMatch;
-		
+
 		public PefFileFilter(FileFilter filter) {
 			this.filter = filter;
 			noMatch = new ArrayList<File>();
 		}
-		
+
 		public List<File> getOtherFiles() {
 			return noMatch;
 		}
 
-                @Override
+		@Override
 		public boolean accept(File pathname) {
 			boolean isMatch = filter.accept(pathname);
 			if (!isMatch) {
@@ -238,7 +238,7 @@ public class PEFFileBatchCompare {
 			}
 			return isMatch;
 		}
-		
+
 	}
 
 }

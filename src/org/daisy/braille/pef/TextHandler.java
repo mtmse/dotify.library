@@ -49,7 +49,7 @@ public class TextHandler {
 	private final BrailleConverter converter;
 	private final boolean duplex;
 	private Date date;
-	
+
 	private int maxRows;
 	private int maxCols;
 
@@ -203,7 +203,7 @@ public class TextHandler {
 		duplex = builder.duplex;
 		date = builder.date;
 	}
-	
+
 	/**
 	 * Parse using current settings
 	 * @throws IOException
@@ -218,7 +218,7 @@ public class TextHandler {
 		// determine max rows/page and chars/row
 
 		read(lr, null);
-		
+
 		// reset input
 		is = new FileInputStream(input);
 		lr = new LineNumberReader(new InputStreamReader(is, converter.getPreferredCharset()));
@@ -246,7 +246,7 @@ public class TextHandler {
 		pw.println("	<body>");
 		pw.println("		<volume cols=\""+maxCols+"\" rows=\""+maxRows+"\" rowgap=\"0\" duplex=\""+duplex+"\">");
 		pw.println("			<section>");
-		
+
 		read(lr, pw);
 		pw.println("			</section>");
 		pw.println("		</volume>");
@@ -255,7 +255,7 @@ public class TextHandler {
 		pw.flush();
 		pw.close();
 	}
-	
+
 	private void read(LineNumberReader lr, PrintWriter pw) throws IOException {
 		maxRows=0;
 		maxCols=0;

@@ -99,7 +99,7 @@ public class PEFConverterFacade {
 	 * corresponding settings value should be a number, in millimeters 
 	 */
 	public static final String KEY_CELL_HEIGHT = "cellHeight";
-	
+
 	private final EmbosserCatalogService ef;
 	public PEFConverterFacade(EmbosserCatalogService embosserFactory) {
 		this.ef = embosserFactory;
@@ -162,10 +162,10 @@ public class PEFConverterFacade {
 				throw new IllegalArgumentException("Unknown option \"" + key + "\"");
 			}
 		}
-		
+
 		EmbosserWriter embosser = emb.newEmbosserWriter(os);
 		PEFHandler.Builder builder = 
-			new PEFHandler.Builder(embosser).
+				new PEFHandler.Builder(embosser).
 				range(range).
 				align(align).
 				offset(offset);
@@ -189,7 +189,7 @@ public class PEFConverterFacade {
 		FileInputStream is = new FileInputStream(input);
 		parsePefFile(is, ph);
 	}
-	
+
 	/**
 	 * Parses the given input stream using the supplied PEFHandler.
 	 * @param is the input stream

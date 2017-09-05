@@ -35,7 +35,7 @@ import java.util.logging.Logger;
  */
 public class FileTools {
 	private static final Logger logger = Logger.getLogger(FileTools.class.getCanonicalName());
-	
+
 	/**
 	 * Copies an input stream to an output stream
 	 * @param is the input stream
@@ -51,7 +51,7 @@ public class FileTools {
 			}
 		}
 	}
-	
+
 	/**
 	 * Lists files in a directory with a given extension.
 	 * @param dir the directory to list files in
@@ -65,7 +65,7 @@ public class FileTools {
 				return name.endsWith(ext);
 			}});
 	}
-	
+
 	/**
 	 * Converts an array of File objects into URL's
 	 * @param files the files to convert

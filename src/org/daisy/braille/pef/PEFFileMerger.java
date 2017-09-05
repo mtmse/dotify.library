@@ -66,7 +66,7 @@ public class PEFFileMerger {
 		 * Sort alphabetically
 		 */
 		STANDARD
-		};
+	};
 
 	private Logger logger;
 	private final ValidatorFactoryService validatorFactory;
@@ -93,53 +93,53 @@ public class PEFFileMerger {
 			throw new IllegalArgumentException("Input must be an existing directory " + input);
 		}
 		File[] files = input.listFiles(new FileFilter(){
-                        @Override
+			@Override
 			public boolean accept(File pathname) {
 				return pathname.isFile();
 			}});
-        switch (sort) {
-	    	case NUMERAL_GROUPING:
-		        Arrays.sort(files, new Comparator<File>() {
-                                        @Override
-					public int compare(File o1, File o2) {
-						NumeralSortString s1 = new NumeralSortString(o1.getName().toLowerCase());
-						NumeralSortString s2 = new NumeralSortString(o2.getName().toLowerCase());
-						return s1.compareTo(s2);
-					}});
-	    		break;
-	    	case STANDARD:
-	    		Arrays.sort(files);
-	    		break;
-        }
+		switch (sort) {
+		case NUMERAL_GROUPING:
+			Arrays.sort(files, new Comparator<File>() {
+				@Override
+				public int compare(File o1, File o2) {
+					NumeralSortString s1 = new NumeralSortString(o1.getName().toLowerCase());
+					NumeralSortString s2 = new NumeralSortString(o2.getName().toLowerCase());
+					return s1.compareTo(s2);
+				}});
+			break;
+		case STANDARD:
+			Arrays.sort(files);
+			break;
+		}
 
 		try {
 			Validator v = validatorFactory.newValidator(PEFValidator.class.getName());
 			if (v!=null) {
 				v.setFeature(PEFValidator.FEATURE_MODE, PEFValidator.Mode.FULL_MODE);
 				sendMessage("Checking input files");
-		        for (File f : files) {
-		        	sendMessage("Examining " + f.getName(), Level.INFO);
-		        	if (!v.validate(f.toURI().toURL())) {
-		        		sendMessage("Validation of input file \"" + f.getName() + "\" failed.", Level.SEVERE);
-		        		return false;
-		        	}
-		        	sendMessage(f.getName() + " ok!", Level.FINE);
-		        }
-		        sendMessage("Input files ok");
-	        } else {
-	        	sendMessage("Cannot find validator", Level.WARNING);
-	        	return false;
-	        }
+				for (File f : files) {
+					sendMessage("Examining " + f.getName(), Level.INFO);
+					if (!v.validate(f.toURI().toURL())) {
+						sendMessage("Validation of input file \"" + f.getName() + "\" failed.", Level.SEVERE);
+						return false;
+					}
+					sendMessage(f.getName() + " ok!", Level.FINE);
+				}
+				sendMessage("Input files ok");
+			} else {
+				sendMessage("Cannot find validator", Level.WARNING);
+				return false;
+			}
 
-	        sendMessage("Assembling files");
-	        //progress(1);
-	        if (!writeFile(files, os, identifier)) {
-	        	sendMessage("Assemby failed");
-	        	return false;
-	        } else {
-	        	sendMessage("Done!");
-	        	return true;
-	        }
+			sendMessage("Assembling files");
+			//progress(1);
+			if (!writeFile(files, os, identifier)) {
+				sendMessage("Assemby failed");
+				return false;
+			} else {
+				sendMessage("Done!");
+				return true;
+			}
 		} catch (MalformedURLException e) {
 			//throw new TransformerRunException("MalformedURLException", e);
 			return false;
@@ -151,13 +151,13 @@ public class PEFFileMerger {
 			return false;
 		}
 	}
-	
+
 	private boolean writeFile(File[] volumes, OutputStream os, String identifier) throws XMLStreamException, IOException {
-        XMLInputFactory inFactory = XMLInputFactory.newInstance();
+		XMLInputFactory inFactory = XMLInputFactory.newInstance();
 		inFactory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);        
-        inFactory.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, Boolean.TRUE);
-        inFactory.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.TRUE);
-        inFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.TRUE);
+		inFactory.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, Boolean.TRUE);
+		inFactory.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.TRUE);
+		inFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.TRUE);
 
 		FileInputStream is = new FileInputStream(volumes[0]);
 		XMLEventReader reader = inFactory.createXMLEventReader(is);
@@ -223,7 +223,7 @@ public class PEFFileMerger {
 	private void sendMessage(String msg) {
 		sendMessage(msg, Level.INFO);
 	}
-	
+
 	private void sendMessage(String msg, Level level) {
 		logger.log(level, msg);
 	}

@@ -24,18 +24,18 @@ import org.xml.sax.SAXException;
 public class PEFBookLoader {
 	private static final Logger logger = Logger.getLogger(PEFBookLoader.class.getCanonicalName());
 	private final File dir;
-	
+
 	public PEFBookLoader() {
-		 this(new File(System.getProperty("java.io.tmpdir")));
+		this(new File(System.getProperty("java.io.tmpdir")));
 	}
-	
+
 	public PEFBookLoader(File dir) {
 		if (logger.isLoggable(Level.FINE)) {
 			logger.fine("Storing loaded PEF-files in " + dir);
 		}
 		this.dir = dir;
 	}
-	
+
 	public PEFBook load(File f) throws XPathExpressionException, ParserConfigurationException, SAXException, IOException {
 		File serial = new File(dir, f.getName()+"-"+f.hashCode()+".v3meta");
 		PEFBook book;

@@ -70,7 +70,7 @@ public class PEFFileSplitter implements ErrorHandler  {
 		logger = Logger.getLogger(PEFFileSplitter.class.getCanonicalName());
 		this.validatorFactory = validatorFactory;
 	}
-	
+
 	/**
 	 * Splits a PEF-file into several single volume PEF-files.
 	 * @param input input PEF-file
@@ -90,7 +90,7 @@ public class PEFFileSplitter implements ErrorHandler  {
 				inputExt = inputName.substring(index);
 			}
 			inputName = inputName.substring(0, index);
-			
+
 		}
 		try {
 			return split(new FileInputStream(input), directory, inputName + "-", inputExt);
@@ -123,12 +123,12 @@ public class PEFFileSplitter implements ErrorHandler  {
 		//progress(0);
 
 		directory.mkdirs();
-        XMLInputFactory inFactory = XMLInputFactory.newInstance();
+		XMLInputFactory inFactory = XMLInputFactory.newInstance();
 		inFactory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);        
-        inFactory.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, Boolean.TRUE);
-        inFactory.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.TRUE);
-        inFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.TRUE);
-        /*
+		inFactory.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, Boolean.TRUE);
+		inFactory.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.TRUE);
+		inFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.TRUE);
+		/*
     	try {
 			inFactory.setXMLResolver(new StaxEntityResolver(CatalogEntityResolver.getInstance()));
 		} catch (CatalogExceptionNotRecoverable e1) {
@@ -136,7 +136,7 @@ public class PEFFileSplitter implements ErrorHandler  {
 		}*/
 		sendMessage("Splitting");
 		try {
-		    XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
+			XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
 			XMLEventReader reader = inFactory.createXMLEventReader(is);
 			XMLEventFactory eventFactory = XMLEventFactory.newInstance();
 			ArrayList<XMLEvent> header = new ArrayList<XMLEvent>();
@@ -147,79 +147,79 @@ public class PEFFileSplitter implements ErrorHandler  {
 			QName body = new QName("http://www.daisy.org/ns/2008/pef", "body");
 			int i = 0;
 			State state = State.HEADER;
-	        while (reader.hasNext()) {
-	            XMLEvent event = reader.nextEvent();
-	            if (event.getEventType()==XMLStreamConstants.START_ELEMENT
-	            		&& volume.equals(event.asStartElement().getName())) {
-	            	state = State.BODY;
-	        		i++;
-	        		files.push(new File(directory, prefix + i + postfix));
-	    			os.push(new FileOutputStream(files.peek()));
-	    			writers.push(outputFactory.createXMLEventWriter(os.peek(), "UTF-8"));
-	    			// output header information
-	    			boolean ident = false;
-	    			QName dcIdentifier = new QName("http://purl.org/dc/elements/1.1/", "identifier");
-	    			for (XMLEvent e : header) {
-	    				if (e.getEventType()==XMLStreamConstants.START_ELEMENT &&
-	    						dcIdentifier.equals(e.asStartElement().getName())) {
-	    					ident = true;
-	    					writers.peek().add(e);
-	    				} else if (ident==true && e.getEventType()==XMLStreamConstants.CHARACTERS) {
-	    					ident = false;
-	    					XMLEvent e2 = eventFactory.createCharacters(e.asCharacters().getData()+"-"+i);
-	    					writers.peek().add(e2);
-	    				} else {
-	    					writers.peek().add(e);
-	    				}
-	    			}
-		        } else if (event.getEventType()==XMLStreamConstants.END_ELEMENT &&
-		            	body.equals(event.asEndElement().getName())) {
-            		state = State.FOOTER;
-            	}
-	            switch (state) {
-	            	case HEADER:
-	            		//push header event
-	            		header.add(event);
-	            		break;
-	            	case BODY:
-	            		writers.peek().add(event);
-	            		break;
-	            	case FOOTER:
-	            		// write footer to all files
-	              		for (XMLEventWriter w : writers) {
-	            			w.add(event);
-	            		}
-	            		break;
-	            }
-	        }
-	        for (XMLEventWriter w : writers) {
-	        	w.close();
-	        }
-	        for (FileOutputStream s : os) {
-	        	s.close();
-	        }
-	        is.close();
-	        sendMessage("Checking result for errors");
-	        //progress(0.5);
-	        Validator v = validatorFactory.newValidator(PEFValidator.class.getName());
-	        if (v!=null) {
-		        v.setFeature(PEFValidator.FEATURE_MODE, PEFValidator.Mode.FULL_MODE);
-		        for (File f : files) {
-		        	sendMessage("Examining " + f.getName(), Level.FINE);
-		        	if (!v.validate(f.toURI().toURL())) {
-		        		sendMessage("Validation of result file failed: " + f.getName(), Level.SEVERE);
-		        		return false;
-		        	}
-		        	sendMessage(f.getName() + " ok!", Level.FINE);
-		        }
-		        sendMessage("All ok!");
-	        } else {
-	        	sendMessage("Cannot find validator", Level.WARNING);
-	        	return false;
-	        }
-	        sendMessage("Done!");
-	        //progress(1);
-	        return true;
+			while (reader.hasNext()) {
+				XMLEvent event = reader.nextEvent();
+				if (event.getEventType()==XMLStreamConstants.START_ELEMENT
+						&& volume.equals(event.asStartElement().getName())) {
+					state = State.BODY;
+					i++;
+					files.push(new File(directory, prefix + i + postfix));
+					os.push(new FileOutputStream(files.peek()));
+					writers.push(outputFactory.createXMLEventWriter(os.peek(), "UTF-8"));
+					// output header information
+					boolean ident = false;
+					QName dcIdentifier = new QName("http://purl.org/dc/elements/1.1/", "identifier");
+					for (XMLEvent e : header) {
+						if (e.getEventType()==XMLStreamConstants.START_ELEMENT &&
+								dcIdentifier.equals(e.asStartElement().getName())) {
+							ident = true;
+							writers.peek().add(e);
+						} else if (ident==true && e.getEventType()==XMLStreamConstants.CHARACTERS) {
+							ident = false;
+							XMLEvent e2 = eventFactory.createCharacters(e.asCharacters().getData()+"-"+i);
+							writers.peek().add(e2);
+						} else {
+							writers.peek().add(e);
+						}
+					}
+				} else if (event.getEventType()==XMLStreamConstants.END_ELEMENT &&
+						body.equals(event.asEndElement().getName())) {
+					state = State.FOOTER;
+				}
+				switch (state) {
+				case HEADER:
+					//push header event
+					header.add(event);
+					break;
+				case BODY:
+					writers.peek().add(event);
+					break;
+				case FOOTER:
+					// write footer to all files
+					for (XMLEventWriter w : writers) {
+						w.add(event);
+					}
+					break;
+				}
+			}
+			for (XMLEventWriter w : writers) {
+				w.close();
+			}
+			for (FileOutputStream s : os) {
+				s.close();
+			}
+			is.close();
+			sendMessage("Checking result for errors");
+			//progress(0.5);
+			Validator v = validatorFactory.newValidator(PEFValidator.class.getName());
+			if (v!=null) {
+				v.setFeature(PEFValidator.FEATURE_MODE, PEFValidator.Mode.FULL_MODE);
+				for (File f : files) {
+					sendMessage("Examining " + f.getName(), Level.FINE);
+					if (!v.validate(f.toURI().toURL())) {
+						sendMessage("Validation of result file failed: " + f.getName(), Level.SEVERE);
+						return false;
+					}
+					sendMessage(f.getName() + " ok!", Level.FINE);
+				}
+				sendMessage("All ok!");
+			} else {
+				sendMessage("Cannot find validator", Level.WARNING);
+				return false;
+			}
+			sendMessage("Done!");
+			//progress(1);
+			return true;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			//throw new TransformerRunException("FileNotFoundException: ", e);
@@ -237,25 +237,25 @@ public class PEFFileSplitter implements ErrorHandler  {
 		}*/
 	}
 
-        @Override
+	@Override
 	public void error(SAXParseException exception) throws SAXException {
 		throw new SAXException(exception);
 	}
 
-        @Override
+	@Override
 	public void fatalError(SAXParseException exception) throws SAXException {
 		throw new SAXException(exception);
 	}
 
-        @Override
+	@Override
 	public void warning(SAXParseException exception) throws SAXException {
 		sendMessage(exception.toString());
 	}
-	
+
 	private void sendMessage(String msg) {
 		sendMessage(msg, Level.INFO);
 	}
-	
+
 	private void sendMessage(String msg, Level level) {
 		logger.log(level, msg);
 	}

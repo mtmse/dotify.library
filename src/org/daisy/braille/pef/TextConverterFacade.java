@@ -45,9 +45,9 @@ public class TextConverterFacade {
 	 * corresponding settings value should be a string containing a valid date on the form yyyy-MM-dd
 	 */
 	public static final String KEY_DATE = "date";
-	
+
 	private final TableCatalogService factory;
-	
+
 	public TextConverterFacade(TableCatalogService factory) {
 		this.factory = factory;
 	}

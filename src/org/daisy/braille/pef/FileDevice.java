@@ -37,7 +37,7 @@ public class FileDevice implements Device {
 	private final String prefix;
 	private final String suffix;
 	private int i;
-	
+
 	/**
 	 * Creates a new FileDevice, using the supplied settings.
 	 * @param parent the parent folder
@@ -54,7 +54,7 @@ public class FileDevice implements Device {
 		this.suffix = suffix;
 		this.i = 1;
 	}
-	
+
 	/**
 	 * Creates a new FileDevice, using the supplied settings. File extension
 	 * will be ".prn"
@@ -65,7 +65,7 @@ public class FileDevice implements Device {
 	public FileDevice(File parent, String prefix) {
 		this(parent, prefix, ".prn");
 	}
-	
+
 	/**
 	 * Creates a new FileDevice, using the supplied settings. File extension
 	 * will be ".prn" and file prefix will be "job_"
