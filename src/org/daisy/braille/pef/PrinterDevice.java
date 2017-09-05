@@ -96,6 +96,7 @@ public class PrinterDevice implements Device {
 	 * @param file the file to transmit
 	 * @throws PrintException
 	 */
+	@Override
 	public void transmit(File file) throws PrintException {
 		try {
 			transmit(new FileInputStream(file));

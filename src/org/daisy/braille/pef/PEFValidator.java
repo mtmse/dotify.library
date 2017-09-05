@@ -97,6 +97,7 @@ public class PEFValidator extends AbstractFactory implements org.daisy.braille.a
 		this.mode = Mode.FULL_MODE;
 	}
 
+	@Override
 	public boolean validate(URL input) {
 		return validate(input, mode);
 	}
@@ -217,6 +218,7 @@ public class PEFValidator extends AbstractFactory implements org.daisy.braille.a
 		}
 	}
 
+	@Override
 	public InputStream getReportStream() {
 		if (report==null) {
 			return null;
@@ -224,6 +226,7 @@ public class PEFValidator extends AbstractFactory implements org.daisy.braille.a
 		return new ByteArrayInputStream(report.toByteArray());	
 	}
 
+	@Override
 	public Object getFeature(String key) {
 		if (FEATURE_MODE.equals(key)) {
 			return mode;
@@ -232,10 +235,12 @@ public class PEFValidator extends AbstractFactory implements org.daisy.braille.a
 		}
 	}
 
+	@Override
 	public Object getProperty(String key) {
 		return null;
 	}
 
+	@Override
 	public void setFeature(String key, Object value) {
 		if (FEATURE_MODE.equals(key)) {
 			try {
