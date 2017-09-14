@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -37,10 +38,12 @@ public class PEFFileMergerTest {
 			PEFFileMerger merger = new PEFFileMerger(ValidatorFactory.newInstance());
 			merger.merge(dir, new FileOutputStream(output), "Merged file", SortType.STANDARD);
 			XMLFileCompare fc = new XMLFileCompare(TransformerFactory.newInstance());
-			assertTrue("Assert that the contents of the file is as expected.", fc.compareXML(
-					this.getClass().getResourceAsStream("resource-files/PEFFileMergerTestExpected.pef"), 
-					new FileInputStream(output))
-					);
+			try (InputStream resultStream = new FileInputStream(output)) {
+				assertTrue("Assert that the contents of the file is as expected.", fc.compareXML(
+						this.getClass().getResourceAsStream("resource-files/PEFFileMergerTestExpected.pef"), 
+						resultStream)
+						);
+			}
 		} finally {
 			if (!f1.delete()) { f1.deleteOnExit(); }
 			if (!f2.delete()) { f2.deleteOnExit(); }
