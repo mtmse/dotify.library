@@ -23,7 +23,7 @@ public class XMLFileCompare extends FileCompare {
 
 	/**
 	 * Creates a new FileCompare object
-	 * @param factory
+	 * @param factory the transformer factory
 	 */
 	public XMLFileCompare(TransformerFactory factory) {
 		this(factory, false);
@@ -31,8 +31,8 @@ public class XMLFileCompare extends FileCompare {
 
 	/**
 	 * Creates a new FileCompare object
-	 * @param factory
-	 * @param keepTempFiles
+	 * @param factory the transformer factory
+	 * @param keepTempFiles true if temporary files should be kept, false otherwise
 	 */
 	public XMLFileCompare(TransformerFactory factory, boolean keepTempFiles) {
 		super(keepTempFiles);

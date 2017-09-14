@@ -14,6 +14,7 @@ import org.daisy.braille.consumer.validator.ValidatorFactory;
 import org.daisy.braille.pef.PEFFileMerger.SortType;
 import org.junit.Test;
 
+@SuppressWarnings("javadoc")
 public class PEFFileMergerTest {
 
 	@Test

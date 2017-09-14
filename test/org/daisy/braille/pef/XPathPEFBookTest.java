@@ -11,6 +11,7 @@ import javax.xml.xpath.XPathExpressionException;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
+@SuppressWarnings("javadoc")
 public class XPathPEFBookTest {
 
 	@Test

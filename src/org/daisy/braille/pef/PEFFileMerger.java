@@ -73,6 +73,7 @@ public class PEFFileMerger {
 
 	/**
 	 * Creates a new PEFFileMerger
+	 * @param validatorFactory the validator factory
 	 */
 	public PEFFileMerger(ValidatorFactoryService validatorFactory) {
 		logger = Logger.getLogger(this.getClass().getCanonicalName());

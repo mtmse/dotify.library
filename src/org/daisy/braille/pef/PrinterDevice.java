@@ -94,7 +94,7 @@ public class PrinterDevice implements Device {
 	/**
 	 * Transmit a file to the device
 	 * @param file the file to transmit
-	 * @throws PrintException
+	 * @throws PrintException if a print exception occurs
 	 */
 	@Override
 	public void transmit(File file) throws PrintException {
@@ -115,9 +115,8 @@ public class PrinterDevice implements Device {
 		private InputStream stream;
 
 		/**
-		 * Default constructor
-		 * @param file
-		 * @throws FileNotFoundException
+		 * Creates a new input stream document.
+		 * @param stream the input stream
 		 */
 		public InputStreamDoc(InputStream stream) {
 			this.stream = stream;

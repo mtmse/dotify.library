@@ -14,31 +14,65 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+/**
+ * Provides a file comparator for PEF.
+ * @author Joel Håkansson
+ *
+ */
 public class PEFFileCompare {
 	private static final NormalizationResource def = new PackageNormalizationResource("resource-files/strip-meta.xsl");
 	private final NormalizationResource nr;
 	private int pos = -1;
 
+	/**
+	 * Creates a new pef file comparator.
+	 */
 	public PEFFileCompare() {
 		this(def);
 	}
 
+	/**
+	 * Creates a new comparator with the specified normalization resource.
+	 * @param nr the normalization resource
+	 */
 	public PEFFileCompare(NormalizationResource nr) {
 		this.nr = nr;
 	}
 
+	/**
+	 * Creates a new comparator with the specified normalization path.
+	 * @param path the path to the normalization resource
+	 */
 	public PEFFileCompare(String path) {
 		this(new PackageNormalizationResource(path));
 	}
 
+	/**
+	 * Creates a new comparator with the specified normalization url.
+	 * @param nr the url to the normalization resource
+	 */
 	public PEFFileCompare(URL nr) {
 		this(new URLNormalizationResource(nr));
 	}
 
+	/**
+	 * Compares the two files.
+	 * @param f1 the first file
+	 * @param f2 the second file
+	 * @return returns true if the files are equal, false otherwise
+	 * @throws PEFFileCompareException if comparison fails
+	 */
 	public boolean compare(File f1, File f2) throws PEFFileCompareException {
 		return compare(new StreamSource(f1), new StreamSource(f2));
 	}
 
+	/**
+	 * Compares two stream sources.
+	 * @param xml1 the first source
+	 * @param xml2 the second source
+	 * @return returns true if the files are equal, false otherwise
+	 * @throws PEFFileCompareException if comarison fails
+	 */
 	public boolean compare(StreamSource xml1, StreamSource xml2) throws PEFFileCompareException {
 		pos = -1;
 
@@ -90,6 +124,10 @@ public class PEFFileCompare {
 		}
 	}
 
+	/**
+	 * Gets the byte position of the first difference.
+	 * @return returns the position of the first failure
+	 */
 	public int getPos() {
 		return pos;
 	}

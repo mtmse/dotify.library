@@ -53,6 +53,11 @@ public class PEFFileBatchCompare {
 
 	}
 
+	/**
+	 * Creates a new batch comparator with the specified file filter and normalization.
+	 * @param filter the filter
+	 * @param nr the normalization resource, an xslt
+	 */
 	public PEFFileBatchCompare(FileFilter filter, NormalizationResource nr) {
 		this.filter = filter;
 		this.nr = nr;
@@ -64,6 +69,11 @@ public class PEFFileBatchCompare {
 		this.unbraillerTable = null;
 	}
 
+	/**
+	 * Creates a new batch comparator with the specified file filter. No normalization
+	 * will be applied. To apply a normalization, use {@link #PEFFileBatchCompare(FileFilter, NormalizationResource)} 
+	 * @param filter the filter
+	 */
 	public PEFFileBatchCompare(FileFilter filter) {
 		this(filter, null);
 	}
@@ -80,7 +90,7 @@ public class PEFFileBatchCompare {
 	 * 
 	 * @param path1 a folder
 	 * @param path2 another folder
-	 * @throws FileNotFoundException
+	 * @throws FileNotFoundException if a path cannot be found
 	 * @throws IllegalArgumentException if path is not a directory
 	 */
 	public void run(String path1, String path2) throws FileNotFoundException {

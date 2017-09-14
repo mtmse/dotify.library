@@ -9,6 +9,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Provides a search index.
+ * @author Joel Håkansson
+ *
+ * @param <E> the type of index
+ */
 public class SearchIndex<E> {
 	private static final boolean debug = false;
 	private final Map<String, Set<E>> index;
@@ -38,10 +44,25 @@ public class SearchIndex<E> {
 		this.exclude = subwordLimit;
 	}
 
+	/**
+	 * Associates a string and (if the string length exceeds the sub word limit) its 
+	 * substrings with an object.
+	 * @param val the string
+	 * @param obj the object
+	 */
 	public void add(String val, E obj) {
 		add(val, obj, false);
 	}
 
+	/**
+	 * Associates a string with an object.
+	 * @param val the string
+	 * @param obj the object
+	 * @param strict when true, only the specified string will match the
+	 * 		  object. When false and the string length exceeds the sub word
+	 * 		  limit, substrings of the specified string will also
+	 * 		  match this object. 
+	 */
 	public void add(String val, E obj, boolean strict) {
 		for (String ind : val.toLowerCase().split(REGEX)) {
 			if (ind!=null && ind.length()>0) {
@@ -83,6 +104,11 @@ public class SearchIndex<E> {
 		return books;
 	}
 
+	/**
+	 * Returns the set of objects that matches all the specified strings.
+	 * @param strs the strings
+	 * @return returns a set of matching objects
+	 */
 	public Set<E> containsAll(Iterable<String> strs) {
 		Set<E> result = new HashSet<>();
 		boolean first = true;
@@ -115,10 +141,21 @@ public class SearchIndex<E> {
 		return ret;
 	}
 
+	/**
+	 * Returns the set of objects that matches all the character units found
+	 * in the input string.
+	 * @param str the string
+	 * @return returns a set of matching objects
+	 */
 	public Set<E> containsAll(String str) {
 		return containsAll(normalizeString(str));
 	}
 
+	/**
+	 * Returns the set of objects that matches all the specified strings.
+	 * @param strs the strings
+	 * @return returns a set of matching objects
+	 */
 	public Set<E> containsAll(String ... strs) {
 		return containsAll(Arrays.asList(strs));
 	}

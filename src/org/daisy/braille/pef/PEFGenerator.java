@@ -252,6 +252,7 @@ public class PEFGenerator {
 	 * @throws FileNotFoundException If the given file object does not denote an existing,
 	 * writable regular file and a new regular file of that name cannot be created, or if
 	 * some other error occurs while opening or creating the file
+	 * @throws Exception if an error occurs
 	 */
 	public void generateTestPages(File output) throws FileNotFoundException,
 	Exception {

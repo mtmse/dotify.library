@@ -32,6 +32,10 @@ import org.daisy.braille.api.validator.ValidatorFactoryService;
 public class PEFValidatorFacade {
 	private final ValidatorFactoryService factory;
 
+	/**
+	 * Creates a new pef validator facade.
+	 * @param factory the validator factory
+	 */
 	public PEFValidatorFacade(ValidatorFactoryService factory) {
 		this.factory = factory;
 	}

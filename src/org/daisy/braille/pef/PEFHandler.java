@@ -123,6 +123,8 @@ public class PEFHandler extends DefaultHandler {
 		//init optional params here
 		/**
 		 * Sets the range of pages to output
+		 * @param value the range
+		 * @return returns this object
 		 */
 		public Builder range(Range value) {
 			if (value!=null && !"".equals(value)) {
@@ -184,6 +186,8 @@ public class PEFHandler extends DefaultHandler {
 		//**** Added by Bert Frees *****************************************
 		/**
 		 * Sets the top offset.
+		 * @param value the offset
+		 * @return returns this object
 		 */
 		public Builder topOffset(int value) {
 			topOffset = value;
@@ -193,6 +197,7 @@ public class PEFHandler extends DefaultHandler {
 		/**
 		 * Builds a PEFHandler from this builder's current configuration.
 		 * @return returns a new PEFHandler 
+		 * @throws IOException if an I/O error occurs
 		 */
 		public PEFHandler build() throws IOException {
 			return new PEFHandler(this);
@@ -354,6 +359,10 @@ public class PEFHandler extends DefaultHandler {
 		} 
 		elements.push(new Element(uri, localName, atts));
 	}
+	/**
+	 * Returns true if there is a width error, false otherwise.
+	 * @return returns true if there is a width error, false otherwise
+	 */
 	public boolean hasWidthError() {
 		return widthError;
 	}

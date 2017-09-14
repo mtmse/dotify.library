@@ -25,10 +25,17 @@ public class PEFBookLoader {
 	private static final Logger logger = Logger.getLogger(PEFBookLoader.class.getCanonicalName());
 	private final File dir;
 
+	/**
+	 * Creates a new {@link PEFBookLoader} with the default cache folder. 
+	 */
 	public PEFBookLoader() {
 		this(new File(System.getProperty("java.io.tmpdir")));
 	}
 
+	/**
+	 * Creates a new {@link PEFBookLoader} with the specified cache folder.
+	 * @param dir the cache folder
+	 */
 	public PEFBookLoader(File dir) {
 		if (logger.isLoggable(Level.FINE)) {
 			logger.fine("Storing loaded PEF-files in " + dir);
@@ -36,6 +43,15 @@ public class PEFBookLoader {
 		this.dir = dir;
 	}
 
+	/**
+	 * Loads the specified file.
+	 * @param f the file to load
+	 * @return returns a {@link PEFBook} for the file
+	 * @throws XPathExpressionException if an exception occurs
+	 * @throws ParserConfigurationException if an exception occurs
+	 * @throws SAXException if an exception occurs
+	 * @throws IOException if an exception occurs
+	 */
 	public PEFBook load(File f) throws XPathExpressionException, ParserConfigurationException, SAXException, IOException {
 		File serial = new File(dir, f.getName()+"-"+f.hashCode()+".v3meta");
 		PEFBook book;

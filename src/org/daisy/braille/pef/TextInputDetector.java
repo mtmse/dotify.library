@@ -43,6 +43,7 @@ public class TextInputDetector {
 
 	/**
 	 * Creates a new TextInputDetector
+	 * @param factory the table catalog
 	 */
 	public TextInputDetector(TableCatalogService factory) {
 		this.factory = factory;

@@ -7,6 +7,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * Provides a library for pef files.
+ * @author Joel Håkansson
+ *
+ */
 public class PEFLibrary {
 	private static final FileFilter ff;
 	private static final Logger logger;
@@ -29,6 +34,12 @@ public class PEFLibrary {
 		return listFiles(dir, true);
 	}
 
+	/**
+	 * Lists files in the specified folder.
+	 * @param dir the folder
+	 * @param recursive true if the search should be recursive, false otherwise
+	 * @return returns a list of pef files
+	 */
 	public static Collection<File> listFiles(File dir, boolean recursive) {
 		ArrayList<File> files = new ArrayList<>();
 		listFiles(files, dir, recursive);

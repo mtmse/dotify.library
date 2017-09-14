@@ -37,6 +37,9 @@ import org.daisy.braille.api.table.TableCatalogService;
  * @author Joel Håkansson
  */
 public class TextHandler {
+	/**
+	 * Defines a date format (yyyy-MM-dd).
+	 */
 	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
 	private final File input;
@@ -77,8 +80,9 @@ public class TextHandler {
 
 		/**
 		 * Create a new TextParser builder
-		 * @param input
-		 * @param output
+		 * @param input the input
+		 * @param output the output
+		 * @param factory the table catalog
 		 */
 		public Builder(File input, File output, TableCatalogService factory) {
 			this.input = input;
@@ -159,7 +163,9 @@ public class TextHandler {
 		/**
 		 * Builds a TextParser using the settings of this Builder
 		 * @return returns a new TextParser
-		 * @throws UnsupportedEncodingException
+		 * @throws IOException if an error occurs
+		 * @throws InputDetectionException if an error occurs 
+		 * @throws UnsupportedEncodingException if an error occurs
 		 */
 		public TextHandler build() throws IOException, InputDetectionException {
 			return new TextHandler(this);
@@ -206,7 +212,7 @@ public class TextHandler {
 
 	/**
 	 * Parse using current settings
-	 * @throws IOException
+	 * @throws IOException if an I/O error occurs
 	 */
 	public void parse() throws IOException {
 		if (date==null) {

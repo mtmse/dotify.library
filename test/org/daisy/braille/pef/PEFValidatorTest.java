@@ -10,6 +10,7 @@ import java.net.URL;
 
 import org.junit.Test;
 
+@SuppressWarnings("javadoc")
 public class PEFValidatorTest {
 
 	@Test

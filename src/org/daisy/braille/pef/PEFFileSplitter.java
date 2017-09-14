@@ -65,6 +65,7 @@ public class PEFFileSplitter implements ErrorHandler  {
 
 	/**
 	 * Creates a new PEFFileSplitter object.
+	 * @param validatorFactory the validator factory
 	 */
 	public PEFFileSplitter(ValidatorFactoryService validatorFactory) {
 		logger = Logger.getLogger(PEFFileSplitter.class.getCanonicalName());

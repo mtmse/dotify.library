@@ -50,7 +50,7 @@ public class Range {
 
 	/**
 	 * Parses the string as a range
-	 * @param range
+	 * @param range the range to parse
 	 * @return returns a Range object
 	 * @throws NumberFormatException if the range cannot be parsed
 	 */
@@ -73,7 +73,7 @@ public class Range {
 
 	/**
 	 * Test if a value is in range
-	 * @param value
+	 * @param value the value
 	 * @return returns true if value is in range, false otherwise
 	 */
 	public boolean inRange(int value) {

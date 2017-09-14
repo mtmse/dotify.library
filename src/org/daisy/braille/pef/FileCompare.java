@@ -41,7 +41,7 @@ public class FileCompare {
 
 	/**
 	 * Creates a new FileCompare object
-	 * @param keepTempFiles
+	 * @param keepTempFiles true if temporary files should be kept, false otherwise
 	 */
 	public FileCompare(boolean keepTempFiles) {
 		this.keepTempFiles = keepTempFiles;

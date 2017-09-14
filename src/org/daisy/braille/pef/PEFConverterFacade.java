@@ -101,21 +101,27 @@ public class PEFConverterFacade {
 	public static final String KEY_CELL_HEIGHT = "cellHeight";
 
 	private final EmbosserCatalogService ef;
+
+	/**
+	 * Creates a new {@link PEFConverterFacade} with the specified embosser factory.
+	 * @param embosserFactory the embosser factory
+	 */
 	public PEFConverterFacade(EmbosserCatalogService embosserFactory) {
 		this.ef = embosserFactory;
 	}
 
 	/**
 	 * Parses the given PEF-file input using the supplied output stream and settings.
-	 * @param input
-	 * @param os
-	 * @param settings
-	 * @throws NumberFormatException
-	 * @throws ParserConfigurationException
-	 * @throws SAXException
-	 * @throws IOException
-	 * @throws EmbosserFactoryException
-	 * @throws UnsupportedWidthException
+	 * @param input the input
+	 * @param os the output stream
+	 * @param pf the page format
+	 * @param settings the settings
+	 * @throws NumberFormatException if an exception occurs
+	 * @throws ParserConfigurationException if an exception occurs
+	 * @throws SAXException if an exception occurs
+	 * @throws IOException if an exception occurs
+	 * @throws EmbosserFactoryException if an exception occurs
+	 * @throws UnsupportedWidthException if an exception occurs
 	 */
 	public void parsePefFile(File input, OutputStream os, PageFormat pf, Map<String, String> settings) throws NumberFormatException, ParserConfigurationException, SAXException, IOException, EmbosserFactoryException, UnsupportedWidthException {
 		Range range = null;
@@ -177,10 +183,10 @@ public class PEFConverterFacade {
 	 * Parses the given input using the supplied PEFHandler.
 	 * @param input the input PEF file
 	 * @param ph the PEFHandler to use
-	 * @throws ParserConfigurationException
-	 * @throws SAXException
-	 * @throws IOException
-	 * @throws UnsupportedWidthException
+	 * @throws ParserConfigurationException if an exception occurs
+	 * @throws SAXException if an exception occurs
+	 * @throws IOException if an exception occurs
+	 * @throws UnsupportedWidthException if an exception occurs
 	 */
 	public void parsePefFile(File input, PEFHandler ph) throws ParserConfigurationException, SAXException, IOException, UnsupportedWidthException {
 		if (!input.exists()) {
@@ -194,10 +200,10 @@ public class PEFConverterFacade {
 	 * Parses the given input stream using the supplied PEFHandler.
 	 * @param is the input stream
 	 * @param ph the PEFHandler
-	 * @throws ParserConfigurationException
-	 * @throws SAXException
-	 * @throws IOException
-	 * @throws UnsupportedWidthException
+	 * @throws ParserConfigurationException if an exception occurs
+	 * @throws SAXException if an exception occurs
+	 * @throws IOException if an exception occurs
+	 * @throws UnsupportedWidthException if an exception occurs
 	 */
 	public void parsePefFile(InputStream is, PEFHandler ph) throws ParserConfigurationException, SAXException, IOException, UnsupportedWidthException {
 		SAXParserFactory spf = SAXParserFactory.newInstance();

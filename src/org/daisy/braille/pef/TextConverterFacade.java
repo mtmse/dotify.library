@@ -8,7 +8,15 @@ import java.util.Map;
 
 import org.daisy.braille.api.table.TableCatalogService;
 
+/**
+ * Provides a facade for text converter.
+ * @author Joel Håkansson
+ *
+ */
 public class TextConverterFacade {
+	/**
+	 * Defines a date format (yyyy-MM-dd)
+	 */
 	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 	/**
 	 * Key for parseTextFile setting,
@@ -48,6 +56,11 @@ public class TextConverterFacade {
 
 	private final TableCatalogService factory;
 
+	/**
+	 * Creates a new text converter facade with the specified
+	 * table catalog.
+	 * @param factory the table catalog
+	 */
 	public TextConverterFacade(TableCatalogService factory) {
 		this.factory = factory;
 	}

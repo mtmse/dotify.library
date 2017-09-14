@@ -13,7 +13,7 @@ import javax.xml.transform.TransformerFactory;
 import org.daisy.braille.consumer.validator.ValidatorFactory;
 import org.junit.Test;
 
-
+@SuppressWarnings("javadoc")
 public class PEFFileSplitterTest {
 
 	@Test
