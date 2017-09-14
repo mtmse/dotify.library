@@ -53,8 +53,8 @@ public class PEFNamespaceContext implements NamespaceContext {
 	 * @param dcPrefix the prefix to use for <tt>http://purl.org/dc/elements/1.1/</tt>
 	 */
 	public PEFNamespaceContext(String pefPrefix, String dcPrefix) {
-		namespaces = new HashMap<String, String>();
-		prefixes = new HashMap<String, String>();
+		namespaces = new HashMap<>();
+		prefixes = new HashMap<>();
 		namespaces.put(pefPrefix, "http://www.daisy.org/ns/2008/pef");
 		namespaces.put(dcPrefix, "http://purl.org/dc/elements/1.1/");
 		for (String s : namespaces.keySet()) {

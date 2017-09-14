@@ -42,7 +42,7 @@ class XPathPEFBook {
 		int tmp = 0;
 		Document d = null;
 		String encoding = null;
-		metadata = new HashMap<String, List<String>>();
+		metadata = new HashMap<>();
 
 		try {
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -60,7 +60,7 @@ class XPathPEFBook {
 						if (metadata.containsKey(name)) {
 							al = metadata.remove(name);
 						} else {
-							al = new ArrayList<String>();
+							al = new ArrayList<>();
 						}
 						al.add(n.getTextContent());
 						metadata.put(name, al);

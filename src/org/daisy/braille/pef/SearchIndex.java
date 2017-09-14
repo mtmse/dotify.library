@@ -31,7 +31,7 @@ public class SearchIndex<E> {
 	 * @throws IllegalArgumentException if subwordLimit is &lt; 1
 	 */
 	public SearchIndex(int subwordLimit) {
-		index = new Hashtable<String, Set<E>>();
+		index = new Hashtable<>();
 		if (subwordLimit<1) {
 			throw new IllegalArgumentException("Value must be 1 or greater.");
 		}
@@ -61,7 +61,7 @@ public class SearchIndex<E> {
 		if (debug)  System.err.println("Adding index: " + indx);
 		Set<E> c = index.get(indx);
 		if (c==null) {
-			c = new HashSet<E>();
+			c = new HashSet<>();
 			index.put(indx, c);
 		}
 		c.add(obj);
@@ -78,13 +78,13 @@ public class SearchIndex<E> {
 		Set<E> books = index.get(str);
 
 		if (books==null) {
-			return new HashSet<E>();
+			return new HashSet<>();
 		}
 		return books;
 	}
 
 	public Set<E> containsAll(Iterable<String> strs) {
-		Set<E> result = new HashSet<E>();
+		Set<E> result = new HashSet<>();
 		boolean first = true;
 		for (String s : strs) {
 			if (first) {
@@ -106,7 +106,7 @@ public class SearchIndex<E> {
 
 	private List<String> normalizeString(String str) {
 		String[] t = str.replaceAll(REGEX, " ").split("\\s");
-		ArrayList<String> ret = new ArrayList<String>();
+		ArrayList<String> ret = new ArrayList<>();
 		for (String s : t) {
 			if (!"".equals(s) && s!=null) {
 				ret.add(s);

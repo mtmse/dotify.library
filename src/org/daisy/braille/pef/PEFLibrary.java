@@ -30,7 +30,7 @@ public class PEFLibrary {
 	}
 
 	public static Collection<File> listFiles(File dir, boolean recursive) {
-		ArrayList<File> files = new ArrayList<File>();
+		ArrayList<File> files = new ArrayList<>();
 		listFiles(files, dir, recursive);
 		return files;
 	}

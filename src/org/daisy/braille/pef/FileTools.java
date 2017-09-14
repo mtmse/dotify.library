@@ -72,7 +72,7 @@ public class FileTools {
 	 * @return returns an array of URL's
 	 */
 	public static URL[] toURL(File[] files) {
-		ArrayList<URL> urls = new ArrayList<URL>();
+		ArrayList<URL> urls = new ArrayList<>();
 		if (files!=null && files.length>0) {
 			for (File f : files) {
 				try {

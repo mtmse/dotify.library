@@ -208,7 +208,7 @@ public class PEFHandler extends DefaultHandler {
 		//**** Added by Bert Frees *****************************************
 		this.topOffset = builder.topOffset;
 		//****************************************************************** 
-		this.elements = new Stack<Element>();
+		this.elements = new Stack<>();
 		this.currentPage = null;
 		this.currentSection = null;
 		this.currentVolume = null;
@@ -227,7 +227,7 @@ public class PEFHandler extends DefaultHandler {
 	// count(//section[ancestor-or-self::*[@duplex][1][@duplex='false']]/descendant::page)*2 + count(//section[ancestor-or-self::*[@duplex][1][@duplex='true']]/descendant::page) + count(//section[count(descendant::page) mod 2 = 1][ancestor-or-self::*[@duplex][1][@duplex='true']])
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-		HashMap<String, String> atts = new HashMap<String, String>();
+		HashMap<String, String> atts = new HashMap<>();
 		if (PEF_NS.equals(uri)) {
 			if (!elements.isEmpty()) {
 				for (int i=0; i<attributes.getLength(); i++) {

@@ -129,7 +129,7 @@ public class NumeralSortString implements Comparable<NumeralSortString> {
 	 * @param str the string to apply numeral sorting on
 	 */
 	public NumeralSortString(String str) {
-		parts = new ArrayList<Part>();
+		parts = new ArrayList<>();
 		this.str = str;
 		String[] partStr = str.split("(?<=\\d)(?=\\D)|(?<=\\D)(?=\\d)");
 		for (String part : partStr) {

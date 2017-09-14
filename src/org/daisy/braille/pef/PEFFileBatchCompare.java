@@ -56,10 +56,10 @@ public class PEFFileBatchCompare {
 	public PEFFileBatchCompare(FileFilter filter, NormalizationResource nr) {
 		this.filter = filter;
 		this.nr = nr;
-		notices = new ArrayList<String>();
-		warnings = new ArrayList<String>();
-		diffs = new ArrayList<Diff>();
-		oks = new ArrayList<String>();
+		notices = new ArrayList<>();
+		warnings = new ArrayList<>();
+		diffs = new ArrayList<>();
+		oks = new ArrayList<>();
 		checked = 0;
 		this.unbraillerTable = null;
 	}
@@ -93,9 +93,9 @@ public class PEFFileBatchCompare {
 			throw new IllegalArgumentException("Path is not a directory: " +path2);
 		}
 
-		final HashMap<String, Integer> x = new HashMap<String, Integer>();
-		final HashMap<String, File> files1 = new HashMap<String, File>();
-		final HashMap<String, File> files2 = new HashMap<String, File>();
+		final HashMap<String, Integer> x = new HashMap<>();
+		final HashMap<String, File> files1 = new HashMap<>();
+		final HashMap<String, File> files2 = new HashMap<>();
 		PefFileFilter dir1Matches = new PefFileFilter(filter);
 		PefFileFilter dir2Matches = new PefFileFilter(filter);
 		for (File f : dir1.listFiles(dir1Matches)) {
@@ -223,7 +223,7 @@ public class PEFFileBatchCompare {
 
 		public PefFileFilter(FileFilter filter) {
 			this.filter = filter;
-			noMatch = new ArrayList<File>();
+			noMatch = new ArrayList<>();
 		}
 
 		public List<File> getOtherFiles() {

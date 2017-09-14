@@ -139,10 +139,10 @@ public class PEFFileSplitter implements ErrorHandler  {
 			XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
 			XMLEventReader reader = inFactory.createXMLEventReader(is);
 			XMLEventFactory eventFactory = XMLEventFactory.newInstance();
-			ArrayList<XMLEvent> header = new ArrayList<XMLEvent>();
-			Stack<File> files = new Stack<File>();
-			Stack<XMLEventWriter> writers = new Stack<XMLEventWriter>();
-			Stack<FileOutputStream> os = new Stack<FileOutputStream>();
+			ArrayList<XMLEvent> header = new ArrayList<>();
+			Stack<File> files = new Stack<>();
+			Stack<XMLEventWriter> writers = new Stack<>();
+			Stack<FileOutputStream> os = new Stack<>();
 			QName volume = new QName("http://www.daisy.org/ns/2008/pef", "volume");
 			QName body = new QName("http://www.daisy.org/ns/2008/pef", "body");
 			int i = 0;

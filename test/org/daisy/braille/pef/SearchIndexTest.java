@@ -7,7 +7,7 @@ public class SearchIndexTest {
 
 	@Test
 	public void testSearch_01() {
-		SearchIndex<String> si = new SearchIndex<String>();
+		SearchIndex<String> si = new SearchIndex<>();
 		String obj1 = "1";
 		String obj2 = "2";
 		si.add("house", obj1);
@@ -21,7 +21,7 @@ public class SearchIndexTest {
 
 	@Test
 	public void testSubstringSearch() {
-		SearchIndex<String> si = new SearchIndex<String>();
+		SearchIndex<String> si = new SearchIndex<>();
 		String obj1 = "1";
 		String obj2 = "2";
 		si.add("house", obj1);
@@ -35,7 +35,7 @@ public class SearchIndexTest {
 
 	@Test
 	public void testStrictTerms() {
-		SearchIndex<String> si = new SearchIndex<String>();
+		SearchIndex<String> si = new SearchIndex<>();
 		String obj1 = "1";
 		String obj2 = "2";
 		si.add("house", obj1, true);
@@ -48,7 +48,7 @@ public class SearchIndexTest {
 
 	@Test
 	public void testRedundantAdditions() {
-		SearchIndex<String> si = new SearchIndex<String>();
+		SearchIndex<String> si = new SearchIndex<>();
 		String obj1 = "1";
 		String obj2 = "2";
 		si.add("house", obj1);

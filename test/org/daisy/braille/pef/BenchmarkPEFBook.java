@@ -19,7 +19,7 @@ class BenchmarkPEFBook {
 		final int x = 100;
 		try {
 			for (int i=0; i<x; i++) {
-				Map<String, String> defaults = new HashMap<String, String>();
+				Map<String, String> defaults = new HashMap<>();
 				defaults.put(PEFGenerator.KEY_VOLUMES, ""+(3+(int)(Math.random()*10)));
 				defaults.put(PEFGenerator.KEY_SPV, ""+(1+(int)(Math.random()*5)));
 				defaults.put(PEFGenerator.KEY_PPV, ""+(20+(int)(Math.random()*20)));

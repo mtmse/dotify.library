@@ -85,7 +85,7 @@ public class PEFGenerator {
 
 	private static final Map<String, String> defaults;
 	static {
-		defaults = new HashMap<String, String>();
+		defaults = new HashMap<>();
 		defaults.put(KEY_VOLUMES, "3");
 		defaults.put(KEY_SPV, "1");
 		defaults.put(KEY_PPV, "20");
@@ -235,7 +235,7 @@ public class PEFGenerator {
 	 * @return returns a list of page numbers where sections should be inserted
 	 */
 	List<Integer> getSectionDivisors() {
-		List<Integer> sections = new ArrayList<Integer>();
+		List<Integer> sections = new ArrayList<>();
 		if (sectionsPerVolume>1) {
 			int pps = (pagesPerVolume-1)/(sectionsPerVolume-1);
 			for (int i=0; i<sectionsPerVolume-1; i++) {
@@ -279,7 +279,7 @@ public class PEFGenerator {
 		pw.println("\t\t<volume cols=\""+cols+"\" rows=\""+(rows + (int)Math.ceil((rows*rowgap)/4d))+"\" rowgap=\""+rowgap+"\" duplex=\""+duplex+"\">");
 		pw.println("\t\t\t<section>");
 
-		List<String> chart = new ArrayList<String>();
+		List<String> chart = new ArrayList<>();
 		char c = (char)0x2800;
 		for (int i=0; i<8; i++) {
 			StringBuffer sb = new StringBuffer();
@@ -299,7 +299,7 @@ public class PEFGenerator {
 		}
 		pw.println("\t\t\t\t</page>");
 
-		List<String> butterfly = new ArrayList<String>();
+		List<String> butterfly = new ArrayList<>();
 		butterfly.add("\u280F\u2809\u2809\u2809\u2809\u2809\u2809\u2829\u2809\u283F\u2809\u280D\u2809\u2809\u2809\u2809\u2809\u2809\u2839");
 		butterfly.add("\u2807\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2821\u2800\u280C\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2838");
 		butterfly.add("\u2807\u2800\u2800\u2816\u280A\u2831\u2800\u2800\u2830\u2836\u2806\u2800\u2800\u280E\u2811\u2832\u2800\u2800\u2838");
@@ -348,7 +348,7 @@ public class PEFGenerator {
 		char cornerBottomRight = '\u283C';
 		char cornerBottomLeft = '\u2827';
 
-		List<String> page = new ArrayList<String>();
+		List<String> page = new ArrayList<>();
 		StringBuilder sb = new StringBuilder();
 
 		sb.append(cornerTopLeft);
