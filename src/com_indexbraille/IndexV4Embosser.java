@@ -42,30 +42,29 @@ public class IndexV4Embosser extends IndexEmbosser {
 	 */
 	private static final long serialVersionUID = -3888325825465502071L;
 	private static final TableFilter tableFilter;
-	private static final String table6dot = "org.daisy.braille.impl.table.DefaultTableProvider.TableType.EN_US";
-	//private static final String table8dot = "com_indexbraille.IndexTableProvider.TableType.INDEX_TRANSPARENT_8DOT";
-
+	private static final String TABLE6DOT = "org.daisy.braille.impl.table.DefaultTableProvider.TableType.EN_US";
 	private int bindingMargin = 0;
-	private static final int maxBindingMargin = 10;
 
 	static {
 		tableFilter = new TableFilter() {
 			@Override
 			public boolean accept(FactoryProperties object) {
-				if (object == null) { return false; }
+				if (object == null) {
+					return false;
+				}
 				String tableID = object.getIdentifier();
-				if (tableID.equals(table6dot)) { return true; }
-				//if (tableID.equals(table8dot)) { return true; }
+				if (tableID.equals(TABLE6DOT)) {
+					return true;
+				}
 				return false;
 			}
 		};
 	}
 
 	public IndexV4Embosser(TableCatalogService service, EmbosserType props) {
-
 		super(service, props);
 
-		setTable = service.newTable(table6dot);
+		setTable = service.newTable(TABLE6DOT);
 		duplexEnabled = true;
 
 		switch (type) {
@@ -73,8 +72,8 @@ public class IndexV4Embosser extends IndexEmbosser {
 			maxCellsInWidth = 49;
 			break;
 		case INDEX_EVEREST_D_V4:
-		case INDEX_BRAILLE_BOX_V4:          
-			maxCellsInWidth = 48;                
+		case INDEX_BRAILLE_BOX_V4:
+			maxCellsInWidth = 48;
 			break;
 		default:
 			throw new IllegalArgumentException("Unsupported embosser type");
@@ -93,8 +92,9 @@ public class IndexV4Embosser extends IndexEmbosser {
 
 	@Override
 	public boolean supportsPrintPage(PrintPage dim) {
-
-		if (dim==null) { return false; }
+		if (dim==null) {
+			return false;
+		}
 		if (type == EmbosserType.INDEX_BRAILLE_BOX_V4) {
 			Length across = dim.getLengthAcrossFeed();
 			Length along = dim.getLengthAlongFeed();
@@ -155,8 +155,7 @@ public class IndexV4Embosser extends IndexEmbosser {
 	}
 
 	private byte[] getIndexV4Header() {
-
-		StringBuffer header = new StringBuffer();
+		StringBuilder header = new StringBuilder();
 
 		header.append((char)0x1b);
 		header.append("D");                                           // Activate temporary formatting properties of a document
@@ -165,17 +164,26 @@ public class IndexV4Embosser extends IndexEmbosser {
 		header.append(",LS50");                                       // Line spacing = 5 mm
 		header.append(",DP");
 
-		if (saddleStitchEnabled
-				&& !duplexEnabled)   { header.append('8'); } else
-					//      if (swZFoldingEnabled
-					//              && !duplexEnabled)   { header.append('7'); } else
-					//      if (swZFoldingEnabled)       { header.append('6'); } else
-					if (zFoldingEnabled
-							&& !duplexEnabled)   { header.append('5'); } else
-								if (saddleStitchEnabled)     { header.append('4'); } else
-									if (zFoldingEnabled)         { header.append('3'); } else
-										if (duplexEnabled)           { header.append('2'); } else
-										{ header.append('1'); }          // Page mode
+		// Page mode
+		if (saddleStitchEnabled && !duplexEnabled) {
+			header.append('8');
+		/*
+		} else if (swZFoldingEnabled && !duplexEnabled) {
+			header.append('7'); 
+		} else if (swZFoldingEnabled) {
+			header.append('6');
+		*/
+		} else if (zFoldingEnabled && !duplexEnabled) {
+			header.append('5'); 
+		} else if (saddleStitchEnabled) {
+			header.append('4');
+		} else if (zFoldingEnabled) {
+			header.append('3');
+		} else if (duplexEnabled) {
+			header.append('2');
+		} else {
+			header.append('1');
+		}
 		if (numberOfCopies > 1) {
 			header.append(",MC");
 			header.append(String.valueOf(numberOfCopies));            // Multiple copies
@@ -194,6 +202,5 @@ public class IndexV4Embosser extends IndexEmbosser {
 		header.append(";");
 
 		return header.toString().getBytes();
-
 	}
 }
