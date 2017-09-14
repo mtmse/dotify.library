@@ -21,9 +21,8 @@ package org.daisy.braille.pef;
  * Provides a range data object.
  * @author  Joel Håkansson
  */
-//TODO: make class final in next major release
 //May be value based in the future: https://docs.oracle.com/javase/8/docs/api/java/lang/doc-files/ValueBased.html
-public class Range {
+public final class Range {
 	private final int from;
 	private final int to;
 
