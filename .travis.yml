@@ -1,7 +1,5 @@
 language: java
-sudo: false 
-dist: precise
-jdk: oraclejdk7
+jdk: oraclejdk8
 after_success:
 - ./upload.sh
 before_install:
