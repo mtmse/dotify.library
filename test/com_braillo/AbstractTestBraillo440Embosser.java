@@ -11,21 +11,21 @@ import java.util.Arrays;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
-import org.daisy.braille.api.embosser.Embosser;
-import org.daisy.braille.api.embosser.EmbosserFeatures;
-import org.daisy.braille.api.embosser.EmbosserWriter;
-import org.daisy.braille.api.paper.Length;
-import org.daisy.braille.api.paper.PageFormat;
-import org.daisy.braille.api.paper.RollPaperFormat;
-import org.daisy.braille.consumer.embosser.EmbosserCatalog;
-import org.daisy.braille.consumer.paper.PaperCatalog;
-import org.daisy.braille.consumer.table.TableCatalog;
-import org.daisy.braille.pef.FileCompare;
-import org.daisy.braille.pef.FileDevice;
-import org.daisy.braille.pef.PEFConverterFacade;
-import org.daisy.braille.pef.PEFHandler;
-import org.daisy.braille.pef.PEFHandler.Alignment;
-import org.daisy.braille.pef.UnsupportedWidthException;
+import org.daisy.braille.utils.api.embosser.Embosser;
+import org.daisy.braille.utils.api.embosser.EmbosserFeatures;
+import org.daisy.braille.utils.api.embosser.EmbosserWriter;
+import org.daisy.braille.utils.api.paper.Length;
+import org.daisy.braille.utils.api.paper.PageFormat;
+import org.daisy.braille.utils.api.paper.RollPaperFormat;
+import org.daisy.braille.utils.api.embosser.EmbosserCatalog;
+import org.daisy.braille.utils.api.paper.PaperCatalog;
+import org.daisy.braille.utils.api.table.TableCatalog;
+import org.daisy.braille.utils.pef.FileCompare;
+import org.daisy.braille.utils.pef.FileDevice;
+import org.daisy.braille.utils.pef.PEFConverterFacade;
+import org.daisy.braille.utils.pef.PEFHandler;
+import org.daisy.braille.utils.pef.PEFHandler.Alignment;
+import org.daisy.braille.utils.pef.UnsupportedWidthException;
 import org.xml.sax.SAXException;
 
 @SuppressWarnings("javadoc")

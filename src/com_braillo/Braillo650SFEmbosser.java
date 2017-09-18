@@ -1,11 +1,11 @@
 package com_braillo;
 
-import org.daisy.braille.api.embosser.EmbosserFeatures;
-import org.daisy.braille.api.factory.FactoryProperties;
-import org.daisy.braille.api.paper.PageFormat;
-import org.daisy.braille.api.paper.Paper;
-import org.daisy.braille.api.paper.Paper.Type;
-import org.daisy.braille.api.table.TableCatalogService;
+import org.daisy.braille.utils.api.embosser.EmbosserFeatures;
+import org.daisy.braille.utils.api.factory.FactoryProperties;
+import org.daisy.braille.utils.api.paper.PageFormat;
+import org.daisy.braille.utils.api.paper.Paper;
+import org.daisy.braille.utils.api.paper.Paper.Type;
+import org.daisy.braille.utils.api.table.TableCatalogService;
 
 /**
  * Provides an Embosser for Braillo 600SF. This printer

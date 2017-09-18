@@ -21,8 +21,8 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.daisy.braille.api.embosser.EightDotFallbackMethod;
-import org.daisy.braille.api.table.BrailleConverter;
+import org.daisy.braille.utils.api.embosser.EightDotFallbackMethod;
+import org.daisy.braille.utils.api.table.BrailleConverter;
 
 /**
  * Provides a simple TableConverter implementation. It 

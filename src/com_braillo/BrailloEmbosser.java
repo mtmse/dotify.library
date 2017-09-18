@@ -17,10 +17,10 @@
  */
 package com_braillo;
 
-import org.daisy.braille.api.embosser.EmbosserFeatures;
-import org.daisy.braille.api.factory.FactoryProperties;
-import org.daisy.braille.api.table.TableCatalogService;
-import org.daisy.braille.api.table.TableFilter;
+import org.daisy.braille.utils.api.embosser.EmbosserFeatures;
+import org.daisy.braille.utils.api.factory.FactoryProperties;
+import org.daisy.braille.utils.api.table.TableCatalogService;
+import org.daisy.braille.utils.api.table.TableFilter;
 import org.daisy.braille.impl.embosser.AbstractEmbosser;
 import org.daisy.braille.impl.table.DefaultTableProvider;
 

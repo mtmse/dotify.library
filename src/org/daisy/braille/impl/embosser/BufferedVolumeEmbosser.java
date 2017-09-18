@@ -24,11 +24,11 @@ import java.util.Stack;
 
 import javax.print.PrintException;
 
-import org.daisy.braille.api.embosser.Device;
-import org.daisy.braille.api.embosser.EmbosserWriterProperties;
-import org.daisy.braille.api.embosser.LineBreaks;
-import org.daisy.braille.api.embosser.StandardLineBreaks;
-import org.daisy.braille.api.table.BrailleConverter;
+import org.daisy.braille.utils.api.embosser.Device;
+import org.daisy.braille.utils.api.embosser.EmbosserWriterProperties;
+import org.daisy.braille.utils.api.embosser.LineBreaks;
+import org.daisy.braille.utils.api.embosser.StandardLineBreaks;
+import org.daisy.braille.utils.api.table.BrailleConverter;
 
 /**
  * Provides a buffered volume embossers. This is similar to {@link ConfigurableEmbosser},

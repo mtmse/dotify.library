@@ -10,21 +10,21 @@ import java.io.IOException;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.daisy.braille.api.embosser.EmbosserFeatures;
-import org.daisy.braille.api.embosser.EmbosserWriter;
-import org.daisy.braille.api.paper.PageFormat;
-import org.daisy.braille.api.paper.SheetPaper;
-import org.daisy.braille.api.paper.SheetPaperFormat;
-import org.daisy.braille.api.paper.TractorPaper;
-import org.daisy.braille.api.paper.TractorPaperFormat;
-import org.daisy.braille.consumer.embosser.EmbosserCatalog;
-import org.daisy.braille.consumer.paper.PaperCatalog;
-import org.daisy.braille.consumer.table.TableCatalog;
-import org.daisy.braille.pef.FileCompare;
-import org.daisy.braille.pef.FileTools;
-import org.daisy.braille.pef.PEFConverterFacade;
-import org.daisy.braille.pef.PEFHandler;
-import org.daisy.braille.pef.UnsupportedWidthException;
+import org.daisy.braille.utils.api.embosser.EmbosserFeatures;
+import org.daisy.braille.utils.api.embosser.EmbosserWriter;
+import org.daisy.braille.utils.api.paper.PageFormat;
+import org.daisy.braille.utils.api.paper.SheetPaper;
+import org.daisy.braille.utils.api.paper.SheetPaperFormat;
+import org.daisy.braille.utils.api.paper.TractorPaper;
+import org.daisy.braille.utils.api.paper.TractorPaperFormat;
+import org.daisy.braille.utils.api.embosser.EmbosserCatalog;
+import org.daisy.braille.utils.api.paper.PaperCatalog;
+import org.daisy.braille.utils.api.table.TableCatalog;
+import org.daisy.braille.utils.pef.FileCompare;
+import org.daisy.braille.utils.pef.FileTools;
+import org.daisy.braille.utils.pef.PEFConverterFacade;
+import org.daisy.braille.utils.pef.PEFHandler;
+import org.daisy.braille.utils.pef.UnsupportedWidthException;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
@@ -153,7 +153,7 @@ public class IndexV2EmbosserTest {
 		w = basic_s.newEmbosserWriter(new FileOutputStream(prn1));
 		builder = new PEFHandler.Builder(w)
 				.range(null)
-				.align(org.daisy.braille.pef.PEFHandler.Alignment.INNER)
+				.align(org.daisy.braille.utils.pef.PEFHandler.Alignment.INNER)
 				.offset(0)
 				.topOffset(0);
 
@@ -170,7 +170,7 @@ public class IndexV2EmbosserTest {
 		w = basic_d.newEmbosserWriter(new FileOutputStream(prn1));
 		builder = new PEFHandler.Builder(w)
 				.range(null)
-				.align(org.daisy.braille.pef.PEFHandler.Alignment.INNER)
+				.align(org.daisy.braille.utils.pef.PEFHandler.Alignment.INNER)
 				.offset(0)
 				.topOffset(0);
 
@@ -185,7 +185,7 @@ public class IndexV2EmbosserTest {
 		w = basic_d.newEmbosserWriter(new FileOutputStream(prn1));
 		builder = new PEFHandler.Builder(w)
 				.range(null)
-				.align(org.daisy.braille.pef.PEFHandler.Alignment.INNER)
+				.align(org.daisy.braille.utils.pef.PEFHandler.Alignment.INNER)
 				.offset(0)
 				.topOffset(0);
 
@@ -202,7 +202,7 @@ public class IndexV2EmbosserTest {
 		w = basic_d.newEmbosserWriter(new FileOutputStream(prn1));
 		builder = new PEFHandler.Builder(w)
 				.range(null)
-				.align(org.daisy.braille.pef.PEFHandler.Alignment.INNER)
+				.align(org.daisy.braille.utils.pef.PEFHandler.Alignment.INNER)
 				.offset(0)
 				.topOffset(0);
 
@@ -217,7 +217,7 @@ public class IndexV2EmbosserTest {
 		w = everest.newEmbosserWriter(new FileOutputStream(prn1));
 		builder = new PEFHandler.Builder(w)
 				.range(null)
-				.align(org.daisy.braille.pef.PEFHandler.Alignment.INNER)
+				.align(org.daisy.braille.utils.pef.PEFHandler.Alignment.INNER)
 				.offset(0)
 				.topOffset(0);
 
@@ -233,7 +233,7 @@ public class IndexV2EmbosserTest {
 		w = _4x4pro.newEmbosserWriter(new FileOutputStream(prn1));
 		builder = new PEFHandler.Builder(w)
 				.range(null)
-				.align(org.daisy.braille.pef.PEFHandler.Alignment.INNER)
+				.align(org.daisy.braille.utils.pef.PEFHandler.Alignment.INNER)
 				.offset(0)
 				.topOffset(0);
 
@@ -249,7 +249,7 @@ public class IndexV2EmbosserTest {
 		w = _4x4pro.newEmbosserWriter(new FileOutputStream(prn1));
 		builder = new PEFHandler.Builder(w)
 				.range(null)
-				.align(org.daisy.braille.pef.PEFHandler.Alignment.INNER)
+				.align(org.daisy.braille.utils.pef.PEFHandler.Alignment.INNER)
 				.offset(0)
 				.topOffset(0);
 
@@ -279,7 +279,7 @@ public class IndexV2EmbosserTest {
 		w = everest.newEmbosserWriter(new FileOutputStream(prn1));
 		builder = new PEFHandler.Builder(w)
 				.range(null)
-				.align(org.daisy.braille.pef.PEFHandler.Alignment.CENTER_INNER)
+				.align(org.daisy.braille.utils.pef.PEFHandler.Alignment.CENTER_INNER)
 				.offset(0)
 				.topOffset(0);
 
@@ -296,7 +296,7 @@ public class IndexV2EmbosserTest {
 
 		builder = new PEFHandler.Builder(w)
 				.range(null)
-				.align(org.daisy.braille.pef.PEFHandler.Alignment.CENTER_INNER)
+				.align(org.daisy.braille.utils.pef.PEFHandler.Alignment.CENTER_INNER)
 				.offset(0)
 				.topOffset(0);
 

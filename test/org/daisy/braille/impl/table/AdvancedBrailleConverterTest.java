@@ -5,8 +5,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.nio.charset.Charset;
 
-import org.daisy.braille.api.embosser.EightDotFallbackMethod;
-import org.daisy.braille.api.table.BrailleConstants;
+import org.daisy.braille.utils.api.embosser.EightDotFallbackMethod;
+import org.daisy.braille.utils.api.table.BrailleConstants;
 import org.daisy.braille.impl.table.StringTranslator.MatchMode;
 import org.junit.Test;
 @SuppressWarnings("javadoc")

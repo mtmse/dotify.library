@@ -17,7 +17,7 @@
  */
 package org.daisy.braille.impl.embosser;
 
-import org.daisy.braille.api.embosser.EmbosserWriterProperties;
+import org.daisy.braille.utils.api.embosser.EmbosserWriterProperties;
 
 /**
  * Provides a simple way to implement EmbosserProperties

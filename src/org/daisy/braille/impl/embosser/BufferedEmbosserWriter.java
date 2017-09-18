@@ -20,9 +20,9 @@ package org.daisy.braille.impl.embosser;
 import java.io.IOException;
 import java.util.List;
 
-import org.daisy.braille.api.embosser.Contract;
-import org.daisy.braille.api.embosser.ContractNotSupportedException;
-import org.daisy.braille.api.embosser.EmbosserWriter;
+import org.daisy.braille.utils.api.embosser.Contract;
+import org.daisy.braille.utils.api.embosser.ContractNotSupportedException;
+import org.daisy.braille.utils.api.embosser.EmbosserWriter;
 import org.daisy.braille.impl.embosser.EmbosserWriterEvent.CloseEvent;
 import org.daisy.braille.impl.embosser.EmbosserWriterEvent.NewLineEvent;
 import org.daisy.braille.impl.embosser.EmbosserWriterEvent.NewPageEvent;

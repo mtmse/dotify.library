@@ -22,10 +22,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.daisy.braille.api.embosser.FileFormat;
-import org.daisy.braille.api.embosser.FileFormatProvider;
-import org.daisy.braille.api.factory.FactoryProperties;
-import org.daisy.braille.api.table.TableCatalogService;
+import org.daisy.braille.utils.api.embosser.FileFormat;
+import org.daisy.braille.utils.api.embosser.FileFormatProvider;
+import org.daisy.braille.utils.api.factory.FactoryProperties;
+import org.daisy.braille.utils.api.table.TableCatalogService;
 import org.daisy.braille.impl.spi.SPIHelper;
 
 import aQute.bnd.annotation.component.Component;

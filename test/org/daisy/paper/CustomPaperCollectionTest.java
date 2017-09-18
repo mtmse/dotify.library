@@ -4,10 +4,10 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
-import org.daisy.braille.api.paper.CustomPaperCollection;
-import org.daisy.braille.api.paper.Length;
-import org.daisy.braille.api.paper.Paper;
-import org.daisy.braille.consumer.paper.PaperCatalog;
+import org.daisy.braille.utils.api.paper.CustomPaperCollection;
+import org.daisy.braille.utils.api.paper.Length;
+import org.daisy.braille.utils.api.paper.Paper;
+import org.daisy.braille.utils.api.paper.PaperCatalog;
 import org.junit.Test;
 @SuppressWarnings("javadoc")
 public class CustomPaperCollectionTest {

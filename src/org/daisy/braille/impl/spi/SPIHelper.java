@@ -2,7 +2,7 @@ package org.daisy.braille.impl.spi;
 
 import java.lang.reflect.Method;
 
-import org.daisy.braille.api.table.TableCatalogService;
+import org.daisy.braille.utils.api.table.TableCatalogService;
 
 /**
  * Provides methods to access services in an SPI context without
@@ -24,7 +24,7 @@ public class SPIHelper {
 	public static TableCatalogService getTableCatalog() {
 		if (tableCatalog==null) {
 			try {
-				Class<?> cls = Class.forName("org.daisy.braille.consumer.table.TableCatalog");
+				Class<?> cls = Class.forName("org.daisy.braille.utils.api.table.TableCatalog");
 				Method m = cls.getMethod("newInstance");
 				tableCatalog = (TableCatalogService)m.invoke(null);
 			} catch (Exception e) {

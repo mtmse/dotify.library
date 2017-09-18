@@ -20,10 +20,10 @@ package org.daisy.braille.impl.embosser;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.daisy.braille.api.embosser.EmbosserWriterProperties;
-import org.daisy.braille.api.embosser.LineBreaks;
-import org.daisy.braille.api.embosser.StandardLineBreaks;
-import org.daisy.braille.api.table.BrailleConverter;
+import org.daisy.braille.utils.api.embosser.EmbosserWriterProperties;
+import org.daisy.braille.utils.api.embosser.LineBreaks;
+import org.daisy.braille.utils.api.embosser.StandardLineBreaks;
+import org.daisy.braille.utils.api.table.BrailleConverter;
 
 /**
  * Provides a configurable embosser. Outputs to a single OutputStream. 

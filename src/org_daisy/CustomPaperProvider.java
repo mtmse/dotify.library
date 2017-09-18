@@ -20,9 +20,9 @@ package org_daisy;
 import java.util.Collection;
 import java.util.Collections;
 
-import org.daisy.braille.api.paper.CustomPaperCollection;
-import org.daisy.braille.api.paper.Paper;
-import org.daisy.braille.api.paper.PaperProvider;
+import org.daisy.braille.utils.api.paper.CustomPaperCollection;
+import org.daisy.braille.utils.api.paper.Paper;
+import org.daisy.braille.utils.api.paper.PaperProvider;
 
 import aQute.bnd.annotation.component.Component;
 

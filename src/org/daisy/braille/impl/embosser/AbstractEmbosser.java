@@ -19,14 +19,14 @@ package org.daisy.braille.impl.embosser;
 
 import java.util.HashMap;
 
-import org.daisy.braille.api.embosser.Embosser;
-import org.daisy.braille.api.embosser.EmbosserFeatures;
-import org.daisy.braille.api.embosser.PrintPage;
-import org.daisy.braille.api.factory.AbstractFactory;
-import org.daisy.braille.api.paper.Area;
-import org.daisy.braille.api.paper.PageFormat;
-import org.daisy.braille.api.table.Table;
-import org.daisy.braille.api.table.TableCatalogService;
+import org.daisy.braille.utils.api.embosser.Embosser;
+import org.daisy.braille.utils.api.embosser.EmbosserFeatures;
+import org.daisy.braille.utils.api.embosser.PrintPage;
+import org.daisy.braille.utils.api.factory.AbstractFactory;
+import org.daisy.braille.utils.api.paper.Area;
+import org.daisy.braille.utils.api.paper.PageFormat;
+import org.daisy.braille.utils.api.table.Table;
+import org.daisy.braille.utils.api.table.TableCatalogService;
 import org.daisy.braille.impl.table.DefaultTableProvider;
 
 /**

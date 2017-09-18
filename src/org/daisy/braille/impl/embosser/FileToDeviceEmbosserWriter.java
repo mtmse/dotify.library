@@ -22,10 +22,10 @@ import java.io.IOException;
 
 import javax.print.PrintException;
 
-import org.daisy.braille.api.embosser.Contract;
-import org.daisy.braille.api.embosser.ContractNotSupportedException;
-import org.daisy.braille.api.embosser.Device;
-import org.daisy.braille.api.embosser.EmbosserWriter;
+import org.daisy.braille.utils.api.embosser.Contract;
+import org.daisy.braille.utils.api.embosser.ContractNotSupportedException;
+import org.daisy.braille.utils.api.embosser.Device;
+import org.daisy.braille.utils.api.embosser.EmbosserWriter;
 
 /**
  * Provides a bridge between a Device and file based EmbosserWriter

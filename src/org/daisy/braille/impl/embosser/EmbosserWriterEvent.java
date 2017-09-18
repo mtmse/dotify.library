@@ -17,7 +17,7 @@
  */
 package org.daisy.braille.impl.embosser;
 
-import org.daisy.braille.api.embosser.Contract;
+import org.daisy.braille.utils.api.embosser.Contract;
 
 /**
  * Provides an object representation for each event in the EmbosserWriter interface.

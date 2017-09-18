@@ -20,9 +20,9 @@ package org_daisy;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.daisy.braille.api.embosser.LineBreaks;
-import org.daisy.braille.api.embosser.StandardLineBreaks;
-import org.daisy.braille.api.table.BrailleConverter;
+import org.daisy.braille.utils.api.embosser.LineBreaks;
+import org.daisy.braille.utils.api.embosser.StandardLineBreaks;
+import org.daisy.braille.utils.api.table.BrailleConverter;
 import org.daisy.braille.impl.embosser.AbstractEmbosserWriter;
 import org.daisy.braille.impl.embosser.SimpleEmbosserProperties;
 import org_daisy.BrailleEditorsTableProvider.TableType;

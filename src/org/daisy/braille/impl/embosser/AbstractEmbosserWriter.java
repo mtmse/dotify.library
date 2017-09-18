@@ -19,12 +19,12 @@ package org.daisy.braille.impl.embosser;
 
 import java.io.IOException;
 
-import org.daisy.braille.api.embosser.Contract;
-import org.daisy.braille.api.embosser.ContractNotSupportedException;
-import org.daisy.braille.api.embosser.EmbosserWriter;
-import org.daisy.braille.api.embosser.EmbosserWriterProperties;
-import org.daisy.braille.api.embosser.LineBreaks;
-import org.daisy.braille.api.table.BrailleConverter;
+import org.daisy.braille.utils.api.embosser.Contract;
+import org.daisy.braille.utils.api.embosser.ContractNotSupportedException;
+import org.daisy.braille.utils.api.embosser.EmbosserWriter;
+import org.daisy.braille.utils.api.embosser.EmbosserWriterProperties;
+import org.daisy.braille.utils.api.embosser.LineBreaks;
+import org.daisy.braille.utils.api.table.BrailleConverter;
 
 /**
  * Provides an abstract base for embossers.
