@@ -25,10 +25,11 @@ import java.io.IOException;
  *
  */
 public class InputDetectionException extends IOException {
+
 	/**
-	 *
+	 * 
 	 */
-	private static final long serialVersionUID = -6390717033560942932L;
+	private static final long serialVersionUID = -3021561730679367063L;
 
 	/**
 	 * Constructs an {@code InputDetectionException} with {@code null}

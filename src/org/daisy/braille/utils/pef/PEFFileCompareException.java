@@ -7,9 +7,9 @@ package org.daisy.braille.utils.pef;
 public class PEFFileCompareException extends Exception {
 
 	/**
-	 *
+	 * 
 	 */
-	private static final long serialVersionUID = 2642737963990124520L;
+	private static final long serialVersionUID = -6292131973893569770L;
 
 	/**
 	 * Constructs a new exception with {@code null} as its detail message.

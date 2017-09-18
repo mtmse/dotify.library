@@ -8,10 +8,11 @@ import java.io.Serializable;
  * @author Joel Håkansson
  */
 public final class SectionIdentifier implements Serializable {
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 3213882015553073590L;
+	private static final long serialVersionUID = -4123255922859073531L;
 	private final int volume;
 	private final int section;
 

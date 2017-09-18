@@ -24,9 +24,9 @@ package org.daisy.braille.utils.pef;
 public class UnsupportedWidthException extends Exception {
 
 	/**
-	 *
+	 * 
 	 */
-	private static final long serialVersionUID = 7844557562677834169L;
+	private static final long serialVersionUID = 329267839989175842L;
 
 	/**
 	 * Constructs a new exception with {@code null} as its detail message.

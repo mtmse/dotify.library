@@ -41,7 +41,7 @@ public class PEFBook implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -5029208070283293989L;
+	private static final long serialVersionUID = -4374354333984669371L;
 
 	private static final String VALUE_OUT_OF_RANGE = "Value out of range: {0}";
 
