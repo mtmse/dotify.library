@@ -34,20 +34,33 @@ import org.xml.sax.SAXException;
  */
 public class IndexV2EmbosserTest {
 
-	private static EmbosserCatalog ec = EmbosserCatalog.newInstance();
-	private static IndexV2Embosser basic_s = (IndexV2Embosser)ec.get("com_indexbraille.IndexEmbosserProvider.EmbosserType.INDEX_BASIC_S_V2");
-	private static IndexV2Embosser basic_d = (IndexV2Embosser)ec.get("com_indexbraille.IndexEmbosserProvider.EmbosserType.INDEX_BASIC_D_V2");
-	private static IndexV2Embosser everest = (IndexV2Embosser)ec.get("com_indexbraille.IndexEmbosserProvider.EmbosserType.INDEX_EVEREST_D_V2");
-	private static IndexV2Embosser _4x4pro = (IndexV2Embosser)ec.get("com_indexbraille.IndexEmbosserProvider.EmbosserType.INDEX_4X4_PRO_V2");
-
-	private static PaperCatalog pc = PaperCatalog.newInstance();
-	private static PageFormat a3 = new SheetPaperFormat((SheetPaper)pc.get("org_daisy.ISO216PaperProvider.PaperSize.A3"), SheetPaperFormat.Orientation.REVERSED);
-	private static PageFormat a4 = new SheetPaperFormat((SheetPaper)pc.get("org_daisy.ISO216PaperProvider.PaperSize.A4"), SheetPaperFormat.Orientation.DEFAULT);
-	private static PageFormat _210mm_12inch = new TractorPaperFormat((TractorPaper)pc.get("org_daisy.TractorPaperProvider.PaperSize.W210MM_X_H12INCH"));
-	private static PageFormat _280mm_12inch = new TractorPaperFormat((TractorPaper)pc.get("org_daisy.TractorPaperProvider.PaperSize.W280MM_X_H12INCH"));
+	private static final EmbosserCatalog ec = EmbosserCatalog.newInstance();
+	private static final PaperCatalog pc = PaperCatalog.newInstance();
+	private static final PageFormat a3 = new SheetPaperFormat((SheetPaper)pc.get("org_daisy.ISO216PaperProvider.PaperSize.A3"), SheetPaperFormat.Orientation.REVERSED);
+	private static final PageFormat a4 = new SheetPaperFormat((SheetPaper)pc.get("org_daisy.ISO216PaperProvider.PaperSize.A4"), SheetPaperFormat.Orientation.DEFAULT);
+	private static final PageFormat _210mm_12inch = new TractorPaperFormat((TractorPaper)pc.get("org_daisy.TractorPaperProvider.PaperSize.W210MM_X_H12INCH"));
+	private static final PageFormat _280mm_12inch = new TractorPaperFormat((TractorPaper)pc.get("org_daisy.TractorPaperProvider.PaperSize.W280MM_X_H12INCH"));
+	
+	private static IndexV2Embosser getBasicS() {
+		return (IndexV2Embosser)ec.get("com_indexbraille.IndexEmbosserProvider.EmbosserType.INDEX_BASIC_S_V2");
+	}
+	
+	private static IndexV2Embosser getBasicD() {
+		return (IndexV2Embosser)ec.get("com_indexbraille.IndexEmbosserProvider.EmbosserType.INDEX_BASIC_D_V2");
+	}
+	
+	private static IndexV2Embosser getEverest() {
+		return (IndexV2Embosser)ec.get("com_indexbraille.IndexEmbosserProvider.EmbosserType.INDEX_EVEREST_D_V2");
+	}
+	
+	private static IndexV2Embosser get4x4Pro() {
+		return (IndexV2Embosser)ec.get("com_indexbraille.IndexEmbosserProvider.EmbosserType.INDEX_4X4_PRO_V2");
+	}
 
 	@Test
 	public void testPrintableArea() {
+		IndexV2Embosser basic_s = getBasicS();
+		IndexV2Embosser _4x4pro = get4x4Pro();
 
 		assertEquals("Assert that max width for a 210mm by 12 inch paper is 35 cells (Basic-S)",  35, basic_s.getMaxWidth(_210mm_12inch));
 		assertEquals("Assert that max height for a 210mm by 12 inch paper is 30 lines (Basic-S)", 30, basic_s.getMaxHeight(_210mm_12inch));
@@ -66,6 +79,7 @@ public class IndexV2EmbosserTest {
 
 	@Test
 	public void testTableFilter() {
+		IndexV2Embosser basic_s = getBasicS();
 
 		TableCatalog tc = TableCatalog.newInstance();
 		assertTrue("Assert that encoding cannot be modified", tc.list(basic_s.getTableFilter()).size() <= 1);
@@ -73,6 +87,10 @@ public class IndexV2EmbosserTest {
 
 	@Test
 	public void testDuplex() {
+		IndexV2Embosser basic_s = getBasicS();
+		IndexV2Embosser basic_d = getBasicD();
+		IndexV2Embosser everest = getEverest();
+		IndexV2Embosser _4x4pro = get4x4Pro();
 
 		assertTrue("Assert that duplex is not supported for " + basic_s.getDisplayName(), !basic_s.supportsDuplex());
 		assertTrue("Assert that duplex is supported for " + basic_d.getDisplayName(), basic_d.supportsDuplex());
@@ -82,6 +100,10 @@ public class IndexV2EmbosserTest {
 
 	@Test
 	public void test8dot() {
+		IndexV2Embosser basic_s = getBasicS();
+		IndexV2Embosser basic_d = getBasicD();
+		IndexV2Embosser everest = getEverest();
+		IndexV2Embosser _4x4pro = get4x4Pro();
 
 		assertTrue("Assert that 8-dot is not supported", !basic_s.supports8dot());
 		assertTrue("Assert that 8-dot is not supported", !basic_d.supports8dot());
@@ -91,6 +113,10 @@ public class IndexV2EmbosserTest {
 
 	@Test
 	public void testAligning() {
+		IndexV2Embosser basic_s = getBasicS();
+		IndexV2Embosser basic_d = getBasicD();
+		IndexV2Embosser everest = getEverest();
+		IndexV2Embosser _4x4pro = get4x4Pro();
 
 		assertTrue("Assert that aligning is supported", basic_s.supportsAligning());
 		assertTrue("Assert that aligning is supported", basic_d.supportsAligning());
@@ -103,6 +129,10 @@ public class IndexV2EmbosserTest {
 	ParserConfigurationException,
 	SAXException,
 	UnsupportedWidthException {
+		IndexV2Embosser basic_s = getBasicS();
+		IndexV2Embosser basic_d = getBasicD();
+		IndexV2Embosser everest = getEverest();
+		IndexV2Embosser _4x4pro = get4x4Pro();
 
 		File prn1 = File.createTempFile("test_indexv2_", ".prn");
 		File prn2 = File.createTempFile("test_indexv2_", ".prn");
@@ -235,12 +265,16 @@ public class IndexV2EmbosserTest {
 
 	@Test
 	public void testAgainstRelease110() throws IOException, ParserConfigurationException, SAXException, UnsupportedWidthException {
+		IndexV2Embosser basic_d = getBasicD();
+		IndexV2Embosser everest = getEverest();
+
 		File prn1 = File.createTempFile("test_indexv2_", ".prn");
 		FileCompare fc = new FileCompare();
 		PEFHandler.Builder builder;
 		EmbosserWriter w;
 
 		// Everest V2 (against release 1.1.0, with minor improvements to the file header)
+		everest.setFeature(EmbosserFeatures.PAGE_FORMAT, a4);
 		w = everest.newEmbosserWriter(new FileOutputStream(prn1));
 		builder = new PEFHandler.Builder(w)
 				.range(null)
