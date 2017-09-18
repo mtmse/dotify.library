@@ -51,9 +51,9 @@ public class Braillo300Embosser extends BrailloEmbosser {
 
 
 	/**
-	 * 
-	 * @param service
-	 * @param props
+	 * Creates a new Braillo 300 embosser.
+	 * @param service the table catalog
+	 * @param props the embosser properties
 	 */
 	public Braillo300Embosser(TableCatalogService service, FactoryProperties props) {
 		super(service, props);

@@ -53,6 +53,7 @@ public class EmbosserTools {
 
 	/**
 	 * Get width, in units
+	 * @param dim the dimensions
 	 * @param unit unit in mm
 	 * @return returns width in units
 	 */
@@ -62,6 +63,7 @@ public class EmbosserTools {
 
 	/**
 	 * Get height, in units
+	 * @param dim the dimensions
 	 * @param unit unit in mm
 	 * @return returns width in units
 	 */

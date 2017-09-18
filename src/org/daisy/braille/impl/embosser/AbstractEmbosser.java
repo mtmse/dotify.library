@@ -50,6 +50,7 @@ public abstract class AbstractEmbosser extends AbstractFactory implements Emboss
 
 	/**
 	 * Creates a new AbstractEmbosser with the supplied name, description and identifier
+	 * @param service the table catalog
 	 * @param name the embosser name
 	 * @param desc the embosser description
 	 * @param identifier an identifier

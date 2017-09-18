@@ -32,7 +32,7 @@ public interface VolumeWriter {
 	 * @param pages the pages to write
 	 * @param f the file to write to
 	 * @return returns true if writing was successful, false otherwise
-	 * @throws IOException
+	 * @throws IOException if an I/O error occurs
 	 */
 	public boolean write(List<? extends List<Byte>> pages, File f) throws IOException;
 

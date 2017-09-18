@@ -33,6 +33,10 @@ public class EmbosserWriterEvent {
 		this.t = t;
 	}
 
+	/**
+	 * Gets the event type
+	 * @return returns the event
+	 */
 	public EventType getEventType() {
 		return t;
 	}
@@ -57,11 +61,19 @@ public class EmbosserWriterEvent {
 	public static class WriteEvent extends EmbosserWriterEvent {
 		private final String braille;
 
+		/**
+		 * Creates a new write event.
+		 * @param braille the braille characters
+		 */
 		public WriteEvent(String braille) {
 			super(EventType.WRITE_EVENT);
 			this.braille = braille;
 		}
 
+		/**
+		 * Gets the braille characters.
+		 * @return returns the braille characters
+		 */
 		public String getBraille() {
 			return braille;
 		}
@@ -77,7 +89,7 @@ public class EmbosserWriterEvent {
 
 		/**
 		 * Creates a new OpenEvent with no contract
-		 * @param duplex
+		 * @param duplex true if using both sides of a sheet, false otherwise
 		 */
 		public OpenEvent(boolean duplex) {
 			this(duplex, null);
@@ -85,8 +97,8 @@ public class EmbosserWriterEvent {
 
 		/**
 		 * Creates a new OpenEvent
-		 * @param duplex
-		 * @param contract
+		 * @param duplex true if using both sides of a sheet, false otherwise
+		 * @param contract the contract
 		 */
 		public OpenEvent(boolean duplex, Contract contract) {
 			super(EventType.OPEN_EVENT, duplex);
@@ -116,6 +128,9 @@ public class EmbosserWriterEvent {
 	 *
 	 */
 	public static class CloseEvent extends EmbosserWriterEvent {
+		/**
+		 * Creates a new close event.
+		 */
 		public CloseEvent() {
 			super(EventType.CLOSE_EVENT);
 		}
@@ -127,6 +142,10 @@ public class EmbosserWriterEvent {
 	 *
 	 */
 	public static class NewSectionAndPageEvent extends DuplexEvent {
+		/**
+		 * Creates a new section and page event.
+		 * @param duplex true if using both sides of a sheet, false otherwise
+		 */
 		public NewSectionAndPageEvent(boolean duplex) {
 			super(EventType.NEW_SECTION_AND_PAGE_EVENT, duplex);
 		}
@@ -138,6 +157,10 @@ public class EmbosserWriterEvent {
 	 *
 	 */
 	public static class NewVolumeSectionAndPageEvent extends DuplexEvent {
+		/**
+		 * Creates a new volume, section and page event.
+		 * @param duplex true if using both sides of a sheet, false otherwise
+		 */
 		public NewVolumeSectionAndPageEvent(boolean duplex) {
 			super(EventType.NEW_VOLUME_SECTION_AND_PAGE_EVENT, duplex);
 		}
@@ -149,6 +172,9 @@ public class EmbosserWriterEvent {
 	 *
 	 */
 	public static class NewLineEvent extends EmbosserWriterEvent {
+		/**
+		 * Creates a new new line event.
+		 */
 		public NewLineEvent() {
 			super(EventType.NEW_LINE_EVENT);
 		}
@@ -160,6 +186,9 @@ public class EmbosserWriterEvent {
 	 *
 	 */
 	public static class NewPageEvent extends EmbosserWriterEvent {
+		/**
+		 * Creates a new page event.
+		 */
 		public NewPageEvent() {
 			super(EventType.NEW_PAGE_EVENT);
 		}
@@ -172,11 +201,19 @@ public class EmbosserWriterEvent {
 	 */
 	public static class SetRowGapEvent extends EmbosserWriterEvent {
 		private final int val;
+		/**
+		 * Creates a new set row gap event.
+		 * @param val the rowgap
+		 */
 		public SetRowGapEvent(int val) {
 			super(EventType.SET_ROWGAP_EVENT);
 			this.val = val;
 		}
 
+		/**
+		 * Gets the row gap.
+		 * @return returns the row gap
+		 */
 		public int getRowGap() {
 			return val;
 		}

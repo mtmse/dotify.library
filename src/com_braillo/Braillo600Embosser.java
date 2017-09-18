@@ -20,9 +20,9 @@ public class Braillo600Embosser extends AbstractBraillo200Embosser {
 	private static final long serialVersionUID = 1849647807065499461L;
 
 	/**
-	 * 
-	 * @param service
-	 * @param props
+	 * Creates a new Braillo 600 embosser.
+	 * @param service the table catalog
+	 * @param props the embosser properties
 	 */
 	public Braillo600Embosser(TableCatalogService service, FactoryProperties props) {
 		super(service, props);
