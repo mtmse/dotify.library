@@ -28,6 +28,7 @@ import org.daisy.braille.pef.PEFHandler.Alignment;
 import org.daisy.braille.pef.UnsupportedWidthException;
 import org.xml.sax.SAXException;
 
+@SuppressWarnings("javadoc")
 public abstract class AbstractTestBraillo440Embosser {
 	final TableCatalog tc;
 	final PaperCatalog pc;

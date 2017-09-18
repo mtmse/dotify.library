@@ -31,6 +31,7 @@ import org.xml.sax.SAXException;
  *
  * @author Bert Frees
  */
+@SuppressWarnings("javadoc")
 public class PortathielBlueEmbosserTest {
 
 	private static EmbosserCatalog ec = EmbosserCatalog.newInstance();

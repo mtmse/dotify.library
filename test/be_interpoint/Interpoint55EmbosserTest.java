@@ -34,6 +34,7 @@ import be_interpoint.InterpointEmbosserProvider.EmbosserType;
  *
  * @author Bert Frees
  */
+@SuppressWarnings("javadoc")
 public class Interpoint55EmbosserTest {
 
 	private static Interpoint55Embosser e = new Interpoint55Embosser(TableCatalog.newInstance(), EmbosserType.INTERPOINT_55);

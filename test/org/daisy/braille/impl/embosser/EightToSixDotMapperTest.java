@@ -3,6 +3,7 @@ package org.daisy.braille.impl.embosser;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+@SuppressWarnings("javadoc")
 public class EightToSixDotMapperTest {
 
 	@Test

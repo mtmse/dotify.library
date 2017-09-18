@@ -30,6 +30,7 @@ import org.xml.sax.SAXException;
  *
  * @author Bert Frees
  */
+@SuppressWarnings("javadoc")
 public class BlueBarEmbosserTest {
 
 	private static EmbosserCatalog ec = EmbosserCatalog.newInstance();

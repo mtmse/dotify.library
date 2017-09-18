@@ -9,6 +9,7 @@ import org.daisy.braille.api.table.BrailleConstants;
 import org.daisy.braille.api.table.BrailleConverter;
 import org.junit.Test;
 
+@SuppressWarnings("javadoc")
 public class EmbosserTableProviderTest {
 
 	/*

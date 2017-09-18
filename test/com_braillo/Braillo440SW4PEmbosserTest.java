@@ -13,6 +13,7 @@ import org.xml.sax.SAXException;
 
 import com_braillo.BrailloEmbosserProvider.EmbosserType;
 
+@SuppressWarnings("javadoc")
 public class Braillo440SW4PEmbosserTest extends AbstractTestBraillo440Embosser {
 
 	public Braillo440SW4PEmbosserTest() {

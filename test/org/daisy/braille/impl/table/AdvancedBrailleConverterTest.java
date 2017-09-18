@@ -9,6 +9,7 @@ import org.daisy.braille.api.embosser.EightDotFallbackMethod;
 import org.daisy.braille.api.table.BrailleConstants;
 import org.daisy.braille.impl.table.StringTranslator.MatchMode;
 import org.junit.Test;
+@SuppressWarnings("javadoc")
 public class AdvancedBrailleConverterTest {
 	private static final String[] glyphs = new String[]{
 			"a", "ab", "aba", "c", "d", "e", "f", "g", "h", "i", 

@@ -5,6 +5,7 @@ import org.daisy.braille.api.embosser.EightDotFallbackMethod;
 import org.daisy.braille.api.table.BrailleConstants;
 import org.junit.Test;
 
+@SuppressWarnings("javadoc")
 public class EmbosserBrailleConverterTest {
 
 

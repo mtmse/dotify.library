@@ -32,6 +32,7 @@ import org.xml.sax.SAXException;
  *
  * @author Bert Frees
  */
+@SuppressWarnings("javadoc")
 public class IndexV2EmbosserTest {
 
 	private static final EmbosserCatalog ec = EmbosserCatalog.newInstance();

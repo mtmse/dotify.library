@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import org.daisy.braille.impl.table.StringTranslator.MatchMode;
 import org.junit.Test;
 
+@SuppressWarnings("javadoc")
 public class StringTranslatorTest {
 
 	public StringTranslator getTranslator() {
