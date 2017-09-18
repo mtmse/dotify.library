@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 
-import org.daisy.braille.api.validator.ValidatorFactoryService;
+import org.daisy.braille.utils.api.validator.ValidatorFactoryService;
 
 /**
  * Provides a facade for PEFValidator
@@ -61,7 +61,7 @@ public class PEFValidatorFacade {
 		if (!in.exists()) {
 			throw new FileNotFoundException("File does not exist: " + in);
 		}
-		org.daisy.braille.api.validator.Validator pv = factory.newValidator(PEFValidator.class.getCanonicalName());
+		org.daisy.braille.utils.api.validator.Validator pv = factory.newValidator(PEFValidator.class.getCanonicalName());
 		if (pv == null) {
 			throw new IOException("Could not find validator.");
 		}

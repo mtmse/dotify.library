@@ -35,7 +35,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import org.daisy.braille.api.factory.AbstractFactory;
+import org.daisy.braille.utils.api.factory.AbstractFactory;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -51,7 +51,7 @@ import com.thaiopensource.validate.ValidationDriver;
  * checks, see the different modes. 
  * @author Joel Håkansson
  */
-public class PEFValidator extends AbstractFactory implements org.daisy.braille.api.validator.Validator {
+public class PEFValidator extends AbstractFactory implements org.daisy.braille.utils.api.validator.Validator {
 	/**
 	 * 
 	 */

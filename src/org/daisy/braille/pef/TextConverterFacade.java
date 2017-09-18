@@ -6,7 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Map;
 
-import org.daisy.braille.api.table.TableCatalogService;
+import org.daisy.braille.utils.api.table.TableCatalogService;
 
 /**
  * Provides a facade for text converter.

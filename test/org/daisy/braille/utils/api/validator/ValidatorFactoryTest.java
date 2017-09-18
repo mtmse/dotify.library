@@ -1,4 +1,4 @@
-package org.daisy.braille.consumer.validator;
+package org.daisy.braille.utils.api.validator;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

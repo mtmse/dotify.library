@@ -10,7 +10,7 @@ import java.util.Arrays;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 
-import org.daisy.braille.consumer.validator.ValidatorFactory;
+import org.daisy.braille.utils.api.validator.ValidatorFactory;
 import org.junit.Test;
 
 @SuppressWarnings("javadoc")
