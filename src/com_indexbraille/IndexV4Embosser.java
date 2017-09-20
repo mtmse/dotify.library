@@ -19,19 +19,18 @@ package com_indexbraille;
 
 import java.io.OutputStream;
 
+import org.daisy.braille.impl.embosser.ConfigurableEmbosser;
+import org.daisy.braille.impl.embosser.SimpleEmbosserProperties;
 import org.daisy.braille.utils.api.embosser.EmbosserFactoryException;
 import org.daisy.braille.utils.api.embosser.EmbosserWriter;
 import org.daisy.braille.utils.api.embosser.EmbosserWriterProperties;
 import org.daisy.braille.utils.api.embosser.PrintPage;
 import org.daisy.braille.utils.api.embosser.StandardLineBreaks;
 import org.daisy.braille.utils.api.embosser.UnsupportedPaperException;
-import org.daisy.braille.utils.api.factory.FactoryProperties;
 import org.daisy.braille.utils.api.paper.Length;
 import org.daisy.braille.utils.api.paper.PageFormat;
 import org.daisy.braille.utils.api.table.TableCatalogService;
 import org.daisy.braille.utils.api.table.TableFilter;
-import org.daisy.braille.impl.embosser.ConfigurableEmbosser;
-import org.daisy.braille.impl.embosser.SimpleEmbosserProperties;
 
 import com_indexbraille.IndexEmbosserProvider.EmbosserType;
 
@@ -41,25 +40,11 @@ public class IndexV4Embosser extends IndexEmbosser {
 	 * 
 	 */
 	private static final long serialVersionUID = -3888325825465502071L;
-	private static final TableFilter tableFilter;
-	private static final String TABLE6DOT = "org.daisy.braille.impl.table.DefaultTableProvider.TableType.EN_US";
+	static final String TABLE6DOT = "org.daisy.braille.impl.table.DefaultTableProvider.TableType.EN_US";
+	static final TableFilter tableFilter = (object) -> {
+		return object == null?false:object.getIdentifier().equals(TABLE6DOT);
+	};
 	private int bindingMargin = 0;
-
-	static {
-		tableFilter = new TableFilter() {
-			@Override
-			public boolean accept(FactoryProperties object) {
-				if (object == null) {
-					return false;
-				}
-				String tableID = object.getIdentifier();
-				if (tableID.equals(TABLE6DOT)) {
-					return true;
-				}
-				return false;
-			}
-		};
-	}
 
 	public IndexV4Embosser(TableCatalogService service, EmbosserType props) {
 		super(service, props);
