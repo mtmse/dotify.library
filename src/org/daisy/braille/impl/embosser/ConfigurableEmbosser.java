@@ -190,13 +190,9 @@ public class ConfigurableEmbosser extends AbstractEmbosserWriter {
 		os.write(bytes);
 	}
 
-	public BrailleConverter getTable() {
-		return bf;
-	}
-	
 	@Override
 	public byte[] getBytes(String braille) throws UnsupportedEncodingException {
-		return String.valueOf(getTable().toText(braille)).getBytes(getTable().getPreferredCharset().name());
+		return String.valueOf(bf.toText(braille)).getBytes(bf.getPreferredCharset().name());
 	}
 
 

@@ -71,13 +71,9 @@ public class MicroBrailleFileFormatWriter extends AbstractEmbosserWriter {
 		return padding;
 	}
 
-	public BrailleConverter getTable() {
-		return table;
-	}
-	
 	@Override
 	public byte[] getBytes(String braille) throws UnsupportedEncodingException {
-		return String.valueOf(getTable().toText(braille)).getBytes(getTable().getPreferredCharset().name());
+		return String.valueOf(table.toText(braille)).getBytes(table.getPreferredCharset().name());
 	}
 
 	@Override

@@ -68,13 +68,9 @@ public class IndexTransparentEmbosserWriter extends AbstractEmbosserWriter {
 		return Padding.NONE;
 	}
 
-	public BrailleConverter getTable() {
-		return bc;
-	}
-	
 	@Override
 	public byte[] getBytes(String braille) throws UnsupportedEncodingException {
-		return String.valueOf(getTable().toText(braille)).getBytes(getTable().getPreferredCharset().name());
+		return String.valueOf(bc.toText(braille)).getBytes(bc.getPreferredCharset().name());
 	}
 
 	@Override
