@@ -19,6 +19,7 @@ package org_daisy;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 
 import org.daisy.braille.utils.api.embosser.LineBreaks;
 import org.daisy.braille.utils.api.embosser.StandardLineBreaks;
@@ -70,9 +71,13 @@ public class MicroBrailleFileFormatWriter extends AbstractEmbosserWriter {
 		return padding;
 	}
 
-	@Override
 	public BrailleConverter getTable() {
 		return table;
+	}
+	
+	@Override
+	public byte[] getBytes(String braille) throws UnsupportedEncodingException {
+		return String.valueOf(getTable().toText(braille)).getBytes(getTable().getPreferredCharset().name());
 	}
 
 	@Override

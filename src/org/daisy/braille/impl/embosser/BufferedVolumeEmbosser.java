@@ -19,6 +19,7 @@ package org.daisy.braille.impl.embosser;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -149,10 +150,15 @@ public class BufferedVolumeEmbosser extends AbstractEmbosserWriter {
 		pages.add(new ArrayList<Byte>());
 	}
 
-	@Override
 	public BrailleConverter getTable() {
 		return bf;
 	}
+
+	@Override
+	public byte[] getBytes(String braille) throws UnsupportedEncodingException {
+		return String.valueOf(getTable().toText(braille)).getBytes(getTable().getPreferredCharset().name());
+	}
+
 
 	@Override
 	public LineBreaks getLinebreakStyle() {

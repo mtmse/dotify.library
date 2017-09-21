@@ -18,6 +18,7 @@
 package org.daisy.braille.impl.embosser;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 import org.daisy.braille.utils.api.embosser.Contract;
 import org.daisy.braille.utils.api.embosser.ContractNotSupportedException;
@@ -74,11 +75,7 @@ public abstract class AbstractEmbosserWriter implements EmbosserWriter {
 	 * @return returns the padding style for the EmbosserWriter
 	 */
 	public abstract Padding getPaddingStyle();
-	/**
-	 * Gets the table for the EmbosserWriter
-	 * @return returns the table for the EmbosserWriter
-	 */
-	public abstract BrailleConverter getTable();
+
 	/**
 	 * Adds a byte to the EmbosserWriter output.
 	 * @param b the byte to add
@@ -171,8 +168,10 @@ public abstract class AbstractEmbosserWriter implements EmbosserWriter {
 		if (charsOnRow>props.getMaxWidth()) {
 			throw new IOException("The maximum number of characters on a row was exceeded (page is too narrow).");
 		}
-		addAll(String.valueOf(getTable().toText(braille)).getBytes(getTable().getPreferredCharset().name()));
+		addAll(getBytes(braille));
 	}
+	
+	public abstract byte[] getBytes(String braille) throws UnsupportedEncodingException;
 
 	/**
 	 * Performs a line feed on the EmbosserWriter

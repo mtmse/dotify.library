@@ -19,6 +19,7 @@ package com_indexbraille;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,9 +68,13 @@ public class IndexTransparentEmbosserWriter extends AbstractEmbosserWriter {
 		return Padding.NONE;
 	}
 
-	@Override
 	public BrailleConverter getTable() {
 		return bc;
+	}
+	
+	@Override
+	public byte[] getBytes(String braille) throws UnsupportedEncodingException {
+		return String.valueOf(getTable().toText(braille)).getBytes(getTable().getPreferredCharset().name());
 	}
 
 	@Override
