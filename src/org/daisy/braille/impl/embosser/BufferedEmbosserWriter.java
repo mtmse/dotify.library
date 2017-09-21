@@ -18,11 +18,9 @@
 package org.daisy.braille.impl.embosser;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-import org.daisy.braille.utils.api.embosser.Contract;
-import org.daisy.braille.utils.api.embosser.ContractNotSupportedException;
-import org.daisy.braille.utils.api.embosser.EmbosserWriter;
 import org.daisy.braille.impl.embosser.EmbosserWriterEvent.CloseEvent;
 import org.daisy.braille.impl.embosser.EmbosserWriterEvent.NewLineEvent;
 import org.daisy.braille.impl.embosser.EmbosserWriterEvent.NewPageEvent;
@@ -31,6 +29,9 @@ import org.daisy.braille.impl.embosser.EmbosserWriterEvent.NewVolumeSectionAndPa
 import org.daisy.braille.impl.embosser.EmbosserWriterEvent.OpenEvent;
 import org.daisy.braille.impl.embosser.EmbosserWriterEvent.SetRowGapEvent;
 import org.daisy.braille.impl.embosser.EmbosserWriterEvent.WriteEvent;
+import org.daisy.braille.utils.api.embosser.Contract;
+import org.daisy.braille.utils.api.embosser.ContractNotSupportedException;
+import org.daisy.braille.utils.api.embosser.EmbosserWriter;
 
 /**
  * Provides an easy way to add a communications contract to an EmbosserWriter.
@@ -55,6 +56,7 @@ public class BufferedEmbosserWriter implements EmbosserWriter {
 		this.isOpen = false;
 		this.isClosed = false;
 		this.contractBuilder = new Contract.Builder();
+		this.events = new ArrayList<>();
 	}
 
 	@Override
