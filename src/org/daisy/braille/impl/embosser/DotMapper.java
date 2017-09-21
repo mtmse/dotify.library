@@ -29,72 +29,24 @@ import java.util.BitSet;
  * @author Joel Håkansson
  *
  */
-public class EightToSixDotMapper {
+public class DotMapper {
 	static final int[] UNICODE_BIT_MAP = {0x01, 0x08, 0x02, 0x10, 0x04, 0x20, 0x40, 0x80};
-	private final int[] bitMap;
 	private final int width;
-	private final int cellHeight;
-	private final int cellWidth;
-	private final char baseCharacter;
+	private final DotMapperConfiguration config;
 	private ArrayList<BitSet> bs;
 	private StringBuilder sb;
 	
-	public static class Builder {
-		private int width;
-		private int cellHeight=3;
-		private int cellWidth=2;
-		private char baseCharacter=0x2800;
-		private int[] bitMap = UNICODE_BIT_MAP;
-
-		public Builder(int width) {
-			this.width = width;
-		}
-		
-		public Builder cellHeight(int value) {
-			if (value<1 || value>4) {
-				throw new IllegalArgumentException("Value out of range [1, 4]");
-			}
-			this.cellHeight = value;
-			return this;
-		}
-		
-		public Builder cellWidth(int value) {
-			if (value<1 || value>2) {
-				throw new IllegalArgumentException("Value out of range [1, 2]");
-			}
-			this.cellWidth = value;
-			return this;
-		}
-		
-		public Builder baseCharacter(char value) {
-			this.baseCharacter = value;
-			return this;
-		}
-		
-		public Builder bitMap(int[] value) {
-			this.bitMap = checkBitMap(value);
-			return this;
-		}
-		
-		public EightToSixDotMapper build() {
-			return new EightToSixDotMapper(this);
-		}
-	}
-
 	/**
 	 * Creates a new SixDotMapper with the specified line length
 	 * @param width the length of the lines, in characters
 	 */
-	public EightToSixDotMapper(int width) {
-		this(new Builder(width));
+	public DotMapper(int width) {
+		this(width, DotMapperConfiguration.builder().build());
 	}
 	
-	private EightToSixDotMapper(Builder builder) {
-		this.width = builder.width;
-		this.bitMap = builder.bitMap;
-		this.cellHeight = builder.cellHeight;
-		this.cellWidth = builder.cellWidth;
-		this.baseCharacter = builder.baseCharacter;
+	public DotMapper(int width, DotMapperConfiguration config) {
+		this.width = width;
+		this.config = config;
 		this.bs = new ArrayList<>();
 		sb = new StringBuilder();		
 	}
@@ -146,7 +98,7 @@ public class EightToSixDotMapper {
 	}
 
 	public boolean hasMoreFullLines() {
-		return bs.size()>=cellHeight;
+		return bs.size()>=config.getCellHeight();
 	}
 
 	public boolean hasMoreLines() {
@@ -175,14 +127,14 @@ public class EightToSixDotMapper {
 		StringBuilder res = new StringBuilder();
 		BitSet s;
 		// make a row
-		for (int j=0; j<width*(3-cellWidth); j++) {
-			char c = baseCharacter;
-			for (int i=0; i<cellHeight; i++) {
+		for (int j=0; j<width*(3-config.getCellWidth()); j++) {
+			char c = config.getBaseCharacter();
+			for (int i=0; i<config.getCellHeight(); i++) {
 				if (bs.size()>i) {
 					s = bs.get(i);
-					for (int k=0; k<cellWidth; k++) {
-						if (s.get(j*cellWidth+k)) {
-							c |= bitMap[i*cellWidth+k];
+					for (int k=0; k<config.getCellWidth(); k++) {
+						if (s.get(j*config.getCellWidth()+k)) {
+							c |= config.getBitMap()[i*config.getCellWidth()+k];
 						}
 					}
 				}
@@ -193,35 +145,11 @@ public class EightToSixDotMapper {
 	}
 
 	void removeRemoveRow() {
-		for (int i=0; i<cellHeight; i++) {
+		for (int i=0; i<config.getCellHeight(); i++) {
 			if (bs.size()>0) {
 				bs.remove(0);
 			}
 		}		
-	}
-
-	static int[] checkBitMap(int[] value) {
-		int a = 0;
-		for (int v : value) {
-			if (!isPowerOfTwo(v)) {
-				throw new IllegalArgumentException("Value " + v + " is not a power of two.");
-			}
-			int ax = a;
-			a |= v;
-			if (ax==a) {
-				throw new IllegalArgumentException("A value in the bit map isn't unique.");
-			}
-		}
-		return value;
-	}
-
-	/**
-	 * Checks that a value is a power of two.
-	 * @param x the value to test
-	 * @return returns true if the value is a power of two, false otherwise
-	 */
-	static boolean isPowerOfTwo(int x) {
-		return (x & (x - 1)) == 0;
 	}
 
 }
