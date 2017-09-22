@@ -54,6 +54,16 @@ public class DotMapperConfiguration {
 		this.baseCharacter = builder.baseCharacter;
 	}
 	
+	/**
+	 * Creates a new builder with the default configuration.
+	 * The default configuration maps 8-dot unicode patterns to 
+	 * 6-dot unicode patterns: Dots 7 and 8 of the first cell
+	 * are shifted to dots 1 and 4 of the first cell of the
+	 * following line. Dots 1 and 4 of the first cell of the
+	 * second line are subsequently shifted to dots 2 and 5 of
+	 * the first cell of the second line and so on.
+	 * @return returns a new builder
+	 */
 	public static DotMapperConfiguration.Builder builder() {
 		return new DotMapperConfiguration.Builder();
 	}

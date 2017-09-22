@@ -21,13 +21,19 @@ import java.util.ArrayList;
 import java.util.BitSet;
 
 /**
- * Provides a utility to map eight dot patterns to six dot patterns. If the resulting
- * patterns are aligned without any row spacing, the patterns will appear the same as the 
- * original 8-dot patterns. This can be useful when printing 8-dot files to an embosser 
- * using a 6-dot table.
+ * <p>Provides a utility to map eight dot unicode braille patterns to a braille 
+ * graphics mode. This can be useful when embossing 8-dot files on an embosser using
+ * a 6-dot table.</p>
+ * 
+ * <p>Data is added via {@link #write(String)}, {@link #newLine(int)} and {@link #flush()}.
+ * The patterns are then mapped internally using a mapping configuration. The result
+ * is extracted using {@link #readLine()} and {@link #readLine(boolean)}. To check if
+ * there is more data use {@link #hasMoreFullLines()} and {@link #hasMoreLines()}.
+ * 
+ * <p>Note that in order to create the same appearance as the the original patterns,
+ * the resulting patterns should be embossed without any row spacing.</p> 
  * 
  * @author Joel Håkansson
- *
  */
 public class DotMapper {
 	static final int[] UNICODE_BIT_MAP = {0x01, 0x08, 0x02, 0x10, 0x04, 0x20, 0x40, 0x80};
@@ -37,13 +43,26 @@ public class DotMapper {
 	private StringBuilder sb;
 	
 	/**
-	 * Creates a new SixDotMapper with the specified line length
+	 * Creates a new dot mapper with the specified line length and
+	 * default configuration. 
+	 * The default configuration maps 8-dot unicode patterns to 
+	 * 6-dot unicode patterns: Dots 7 and 8 of the first cell
+	 * are shifted to dots 1 and 4 of the first cell of the
+	 * following line. Dots 1 and 4 of the first cell of the
+	 * second line are subsequently shifted to dots 2 and 5 of
+	 * the first cell of the second line and so on.
 	 * @param width the length of the lines, in characters
 	 */
 	public DotMapper(int width) {
 		this(width, DotMapperConfiguration.builder().build());
 	}
 	
+	/**
+	 * Creates a new dot mapper with the specified line length and
+	 * configuration.
+	 * @param width the width
+	 * @param config the configuration
+	 */
 	public DotMapper(int width, DotMapperConfiguration config) {
 		this.width = width;
 		this.config = config;
@@ -64,7 +83,7 @@ public class DotMapper {
 	}
 
 	/**
-	 * Starts a new line
+	 * Starts a new line.
 	 * @param rowgap the row gap following the line currently in the buffer
 	 */
 	public void newLine(int rowgap) {
@@ -75,7 +94,9 @@ public class DotMapper {
 	}
 
 	/**
-	 * Flushes the last line of characters. This will empty the buffer.
+	 * Flushes the last line of characters. This will empty the input buffer
+	 * and add them to the output buffer that can be read with {@link #readLine()}
+	 * or {@link #readLine(boolean)}. This is equal to calling newLine(0).
 	 */
 	public void flush() {
 		flushToBitSet();
@@ -97,10 +118,20 @@ public class DotMapper {
 		sb = new StringBuilder();
 	}
 
+	/**
+	 * Returns true if there are at least one full height line to extract 
+	 * with {@link #readLine()} or {@link #readLine(boolean)}.
+	 * @return true if there are at least one full height line, false otherwise
+	 */
 	public boolean hasMoreFullLines() {
 		return bs.size()>=config.getCellHeight();
 	}
 
+	/**
+	 * Returns true if there is more data to extract with {@link #readLine()}
+	 * or {@link #readLine(boolean)}.
+	 * @return returns true if there is more data, false otherwise
+	 */
 	public boolean hasMoreLines() {
 		return bs.size()>0;
 	}
@@ -111,12 +142,35 @@ public class DotMapper {
 	 * @return returns the line or null if the buffer is empty
 	 */
 	public String readLine() {
+		return readLine(false);
+	}
+	
+	/**
+	 * Reads a line from the output buffer. When the last line is read, the grid alignment resets (the
+	 * characters are padded to their full cell height).
+	 * @param trimTrailing when true, trailing base characters are trimmed
+	 * @return returns the line or null if the buffer is empty
+	 */
+	public String readLine(boolean trimTrailing) {
 		if (bs.size()==0) {
 			return null;
 		}
 		String res = getFirstRow();
 		removeRemoveRow();
-		return res;
+		return trimTrailing?trimTrailing(res):res;
+	}
+	
+	String trimTrailing(String s) {
+		int i=s.length();
+		for (; i>0; i--) {
+			if (s.charAt(i-1)!=config.getBaseCharacter()) {
+				break;
+			}
+		}
+		if (config.getCellWidth()==1 && i%2==1) {
+			i++;
+		}
+		return i>=s.length()?s:s.substring(0, i);
 	}
 	
 	/**
