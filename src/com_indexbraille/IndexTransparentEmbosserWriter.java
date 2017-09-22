@@ -74,14 +74,9 @@ public class IndexTransparentEmbosserWriter extends AbstractEmbosserWriter {
 	}
 
 	@Override
-	protected void add(byte b) throws IOException {
-		buf.add(b);
-	}
-
-	@Override
 	protected void addAll(byte[] b) throws IOException {
 		for (byte bi : b) {
-			add(bi);
+			buf.add(bi);
 		}
 	}
 

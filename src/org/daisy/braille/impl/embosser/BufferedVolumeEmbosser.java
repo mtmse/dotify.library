@@ -166,11 +166,6 @@ public class BufferedVolumeEmbosser extends AbstractEmbosserWriter {
 	}
 
 	@Override
-	protected void add(byte b) {
-		pages.peek().add(b);
-	}
-
-	@Override
 	protected void addAll(byte[] bytes) {
 		ArrayList<Byte> page = pages.peek();
 		for (byte b : bytes) {

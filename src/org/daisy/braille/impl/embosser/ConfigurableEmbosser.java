@@ -183,11 +183,6 @@ public class ConfigurableEmbosser extends AbstractEmbosserWriter {
 	}
 
 	@Override
-	protected void add(byte b) throws IOException {
-		os.write(b);
-	}
-
-	@Override
 	protected void addAll(byte[] bytes)  throws IOException {
 		os.write(bytes);
 	}

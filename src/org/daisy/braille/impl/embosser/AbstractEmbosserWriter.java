@@ -76,12 +76,6 @@ public abstract class AbstractEmbosserWriter implements EmbosserWriter {
 	public abstract Padding getPaddingStyle();
 
 	/**
-	 * Adds a byte to the EmbosserWriter output.
-	 * @param b the byte to add
-	 * @throws IOException if IO fails.
-	 */
-	protected abstract void add(byte b) throws IOException;
-	/**
 	 * Adds bytes to the EmbosserWriter output.
 	 * @param b the bytes to add
 	 * @throws IOException if IO fails
