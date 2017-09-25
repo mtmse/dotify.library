@@ -125,6 +125,7 @@ public class IndexV3Embosser extends IndexEmbosser {
 		if (eightDotsEnabled) {
 			return new IndexTransparentEmbosserWriter(os,
 					setTable.newBrailleConverter(),
+					true,
 					header,
 					footer,
 					props);

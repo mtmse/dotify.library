@@ -30,23 +30,40 @@ import org.daisy.braille.utils.api.table.BrailleConverter;
 import org.daisy.braille.impl.embosser.AbstractEmbosserWriter;
 
 /**
+ * Provides an embosser writer that uses the transparent mode of index embossers. 
  * @author Bert Frees
  * @author Joel Håkansson
  */
 public class IndexTransparentEmbosserWriter extends AbstractEmbosserWriter {
-
 	private final OutputStream os;
 	private final BrailleConverter bc;
+	private final boolean eightDot;
 	private final List<Byte> buf;
 	private int charsOnRow;
 	private final byte[] header;
 	private final byte[] footer;
 
-	public IndexTransparentEmbosserWriter(OutputStream os,
-			BrailleConverter bc,
-			byte[] header,
-			byte[] footer,
-			EmbosserWriterProperties props) {
+	/**
+	 * Creates a new transparent embosser writer using V4/5 transparent mode mapping.
+	 * @param os the output stream
+	 * @param header the header
+	 * @param footer the footer
+	 * @param props the properties
+	 */
+	public IndexTransparentEmbosserWriter(OutputStream os, byte[] header, byte[] footer, EmbosserWriterProperties props) {
+		this(os, null, true, header, footer, props);
+	}
+
+	/**
+	 * Creates a new transparent embosser writer using the specified braille table.
+	 * @param os the output stream
+	 * @param bc the braille converter
+	 * @param eightDot true for eight dot transparent mode, false for six dot transparent mode
+	 * @param header the header
+	 * @param footer the footer
+	 * @param props the properties
+	 */
+	public IndexTransparentEmbosserWriter(OutputStream os, BrailleConverter bc, boolean eightDot, byte[] header, byte[] footer, EmbosserWriterProperties props) {
 		init(props);
 		if (header != null) { this.header = header; }
 		else { this.header = new byte[0]; }
@@ -54,6 +71,7 @@ public class IndexTransparentEmbosserWriter extends AbstractEmbosserWriter {
 		else { this.footer = new byte[0]; }
 		this.os = os;
 		this.bc = bc;
+		this.eightDot = eightDot;
 		this.buf = new ArrayList<>();
 		charsOnRow = 0;
 	}
@@ -70,7 +88,32 @@ public class IndexTransparentEmbosserWriter extends AbstractEmbosserWriter {
 
 	@Override
 	public byte[] getBytes(String braille) throws UnsupportedEncodingException {
-		return String.valueOf(bc.toText(braille)).getBytes(bc.getPreferredCharset().name());
+		if (bc!=null) {
+			// Joel: 	I'll leave the old behavior intact, although the name "transparent mode" 
+			//			seems to indicate that this is incorrect.
+			return String.valueOf(bc.toText(braille)).getBytes(bc.getPreferredCharset().name());
+		} else {
+			char[] chars = braille.toCharArray();
+			byte[] ret = new byte[chars.length];
+			for (int i=0; i<chars.length; i++) {
+				ret[i] = mapUnicode2Transparent(chars[i]);
+			}
+			return ret;
+		}
+	}
+	
+	/**
+	 * Maps unicode braille pattern bit order to index transparent bit order.
+	 * @param c the unicode braille pattern
+	 * @return returns the corresponding transparent byte
+	 */
+	static byte mapUnicode2Transparent(char c) {
+		int v = 0xff&c;
+		int b1238 = v & 0b1000_0111; // bits 1-3 and 8 are unchanged
+		int b456 = 	v & 0b0011_1000; // bits 4-6
+		int b7 = 	v & 0b0100_0000; // bit 7
+		int ret = b1238 | b456<<1 | b7>>3;
+		return (byte)ret;
 	}
 
 	@Override
@@ -82,7 +125,10 @@ public class IndexTransparentEmbosserWriter extends AbstractEmbosserWriter {
 
 	private void flush() throws IOException {
 		if (charsOnRow>0) {
-			byte[] preamble = new byte[]{0x1b, 0x5c, (byte)charsOnRow, 0x00};
+			// The number of characters = y * 256 + x
+			int y = charsOnRow / 256;
+			int x = charsOnRow - y * 256;
+			byte[] preamble = new byte[]{0x1b, 0x5c, (byte)x, (byte)y};
 			os.write(preamble);
 		}
 		for (byte b : buf) {
@@ -90,6 +136,18 @@ public class IndexTransparentEmbosserWriter extends AbstractEmbosserWriter {
 		}
 		charsOnRow = 0;
 		buf.clear();
+	}
+
+	@Override
+	public void newLine() throws IOException {
+		if (eightDot) {
+			// whole lines are 1, 6, 11 etc in 8-dot mode
+			for (int i=0; i<((Math.max(getRowGap()-1, 0) / 5)+1); i++) {
+				lineFeed();
+			}
+		} else {
+			super.newLine();
+		}
 	}
 
 	@Override

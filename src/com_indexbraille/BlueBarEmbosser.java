@@ -78,6 +78,7 @@ public class BlueBarEmbosser extends IndexEmbosser {
 
 		return new IndexTransparentEmbosserWriter(os,
 				setTable.newBrailleConverter(),
+				false,
 				null,
 				null,
 				props);
