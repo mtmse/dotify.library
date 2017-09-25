@@ -19,13 +19,10 @@ package com_indexbraille;
 
 import java.io.OutputStream;
 
-import org.daisy.braille.impl.embosser.ConfigurableEmbosser;
-import org.daisy.braille.impl.embosser.SimpleEmbosserProperties;
+import org.daisy.braille.impl.embosser.BufferedEmbosserWriter;
 import org.daisy.braille.utils.api.embosser.EmbosserFactoryException;
 import org.daisy.braille.utils.api.embosser.EmbosserWriter;
-import org.daisy.braille.utils.api.embosser.EmbosserWriterProperties;
 import org.daisy.braille.utils.api.embosser.PrintPage;
-import org.daisy.braille.utils.api.embosser.StandardLineBreaks;
 import org.daisy.braille.utils.api.embosser.UnsupportedPaperException;
 import org.daisy.braille.utils.api.paper.Length;
 import org.daisy.braille.utils.api.paper.PageFormat;
@@ -47,7 +44,6 @@ public class IndexV4Embosser extends IndexEmbosser {
 	static final TableFilter tableFilter = (object) -> {
 		return object == null?false:object.getIdentifier().equals(TABLE6DOT);
 	};
-	private int bindingMargin = 0;
 
 	public IndexV4Embosser(TableCatalogService service, EmbosserType props) {
 		super(service, props);
@@ -79,6 +75,11 @@ public class IndexV4Embosser extends IndexEmbosser {
 	
 	@Override
 	public boolean supportsDuplex() {
+		return true;
+	}
+
+	@Override
+	public boolean supports8dot() {
 		return true;
 	}
 
@@ -125,71 +126,16 @@ public class IndexV4Embosser extends IndexEmbosser {
 			throw new IllegalArgumentException(new EmbosserFactoryException("Invalid number of copies: " + numberOfCopies + " is not in [1, 10000]"));
 		}
 
-		byte[] header = getIndexV4Header();
-		byte[] footer = new byte[0];
-
-		SimpleEmbosserProperties props =
-				SimpleEmbosserProperties.with(getMaxWidth(page), getMaxHeight(page))
-				.supportsDuplex(duplexEnabled)
-				.supportsAligning(supportsAligning())
-				.build();
-
-		return new ConfigurableEmbosser.Builder(os, setTable.newBrailleConverter())
-				.breaks(new StandardLineBreaks(StandardLineBreaks.Type.DOS))
-				.padNewline(ConfigurableEmbosser.Padding.NONE)
-				.footer(footer)
-				.embosserProperties(props)
-				.header(header)
-				.build();
+		return new BufferedEmbosserWriter(new IndexContractEmbosserWriter(os,
+					setTable.newBrailleConverter(),
+					new IndexV4Header.Builder(getPrintableArea(page))
+						.cellWidth(getCellWidth())
+						.cellHeight(getCellHeight())
+						.marginTop(marginTop)
+						.duplex(duplexEnabled)
+						.zFolding(zFoldingEnabled)
+						.numberOfCopies(numberOfCopies)
+						.saddleStitch(saddleStitchEnabled)));
 	}
 
-	private byte[] getIndexV4Header() {
-		StringBuilder header = new StringBuilder();
-
-		header.append((char)0x1b);
-		header.append("D");                                           // Activate temporary formatting properties of a document
-		header.append("BT0");                                         // Default braille table
-		header.append(",TD0");                                        // Text dot distance = 2.5 mm
-		header.append(",LS50");                                       // Line spacing = 5 mm
-		header.append(",DP");
-
-		// Page mode
-		if (saddleStitchEnabled && !duplexEnabled) {
-			header.append('8');
-		/*
-		} else if (swZFoldingEnabled && !duplexEnabled) {
-			header.append('7'); 
-		} else if (swZFoldingEnabled) {
-			header.append('6');
-		*/
-		} else if (zFoldingEnabled && !duplexEnabled) {
-			header.append('5'); 
-		} else if (saddleStitchEnabled) {
-			header.append('4');
-		} else if (zFoldingEnabled) {
-			header.append('3');
-		} else if (duplexEnabled) {
-			header.append('2');
-		} else {
-			header.append('1');
-		}
-		if (numberOfCopies > 1) {
-			header.append(",MC");
-			header.append(String.valueOf(numberOfCopies));            // Multiple copies
-		}
-		//header.append(",MI1");                                      // Multiple impact = 1
-		header.append(",PN0");                                        // No page number
-		header.append(",CH");
-		header.append(String.valueOf(getMaxWidth(getPageFormat())));  // Characters per line
-		header.append(",LP");
-		header.append(String.valueOf(getMaxHeight(getPageFormat()))); // Lines per page
-		header.append(",BI");
-		header.append(String.valueOf(bindingMargin));                 // Binding margin
-		header.append(",TM");
-		header.append(String.valueOf(marginTop));                     // Top margin
-
-		header.append(";");
-
-		return header.toString().getBytes();
-	}
 }

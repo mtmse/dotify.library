@@ -1,5 +1,17 @@
 package com_indexbraille;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
+
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.daisy.braille.utils.api.embosser.EmbosserCatalog;
 import org.daisy.braille.utils.api.embosser.EmbosserFeatures;
 import org.daisy.braille.utils.api.embosser.EmbosserWriter;
@@ -17,15 +29,6 @@ import org.daisy.braille.utils.pef.PEFHandler;
 import org.daisy.braille.utils.pef.UnsupportedWidthException;
 import org.junit.Test;
 import org.xml.sax.SAXException;
-
-import static org.junit.Assert.*;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
-import javax.xml.parsers.ParserConfigurationException;
 
 @SuppressWarnings("javadoc")
 public class IndexV4EmbosserTest {
@@ -46,8 +49,8 @@ public class IndexV4EmbosserTest {
 
 	@Test
 	public void test8dot() {
-		assertTrue("Assert that 8-dot is not supported", !basic_d.supports8dot());
-		assertTrue("Assert that 8-dot is not supported", !everest.supports8dot());
+		assertTrue("Assert that 8-dot is supported", basic_d.supports8dot());
+		assertTrue("Assert that 8-dot is supported", everest.supports8dot());
 	}
 
 	@Test
@@ -157,6 +160,53 @@ public class IndexV4EmbosserTest {
 		prn1.deleteOnExit();
 		prn2.deleteOnExit();
 		pef.deleteOnExit();
+	}
+
+	@Test
+	public void testEmbosserWriterBasic8Dot() throws IOException, ParserConfigurationException, SAXException, UnsupportedWidthException, URISyntaxException {
+		File pef = new File(this.getClass().getResource("resource-files/8-dot-chart.pef").toURI());
+		String refPath = "resource-files/basic_d_v5_8-dot-chart.prn";
+		File prn1 = File.createTempFile(this.getClass().getCanonicalName(), ".prn");
+		prn1.deleteOnExit();
+
+		FileCompare fc = new FileCompare();
+		PEFHandler.Builder builder;
+		EmbosserWriter w;
+		basic_d.setFeature(EmbosserFeatures.PAGE_FORMAT, _280mm_12inch);
+		basic_d.setFeature(EmbosserFeatures.Z_FOLDING, false);
+		w = basic_d.newEmbosserWriter(new FileOutputStream(prn1));
+		builder = new PEFHandler.Builder(w)
+				.range(null)
+				.align(PEFHandler.Alignment.INNER)
+				.offset(0)
+				.topOffset(0);
+		new PEFConverterFacade(EmbosserCatalog.newInstance()).parsePefFile(pef, builder.build());
+		try (InputStream ref = this.getClass().getResourceAsStream(refPath)) {
+			assertTrue("Assert that the contents of the file is as expected.", fc.compareBinary(new FileInputStream(prn1), ref));
+		}
+	}
+	
+	@Test
+	public void testEmbosserWriterEverest8Dot() throws IOException, ParserConfigurationException, SAXException, UnsupportedWidthException, URISyntaxException {
+		File pef = new File(this.getClass().getResource("resource-files/8-dot-chart.pef").toURI());
+		String refPath = "resource-files/everest_v5_8-dot-chart.prn";
+		File prn1 = File.createTempFile(this.getClass().getCanonicalName(), ".prn");
+		prn1.deleteOnExit();
+
+		FileCompare fc = new FileCompare();
+		PEFHandler.Builder builder;
+		EmbosserWriter w;
+		everest.setFeature(EmbosserFeatures.PAGE_FORMAT, a3);
+		w = everest.newEmbosserWriter(new FileOutputStream(prn1));
+		builder = new PEFHandler.Builder(w)
+				.range(null)
+				.align(PEFHandler.Alignment.INNER)
+				.offset(0)
+				.topOffset(0);
+		new PEFConverterFacade(EmbosserCatalog.newInstance()).parsePefFile(pef, builder.build());
+		try (InputStream ref = this.getClass().getResourceAsStream(refPath)) {
+			assertTrue("Assert that the contents of the file is as expected.", fc.compareBinary(new FileInputStream(prn1), ref));
+		}
 	}
 
 	@Test
