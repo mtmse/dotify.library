@@ -20,6 +20,7 @@ package org.daisy.braille.impl.embosser;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.daisy.braille.impl.embosser.EmbosserWriterEvent.CloseEvent;
 import org.daisy.braille.impl.embosser.EmbosserWriterEvent.NewLineEvent;
@@ -29,6 +30,7 @@ import org.daisy.braille.impl.embosser.EmbosserWriterEvent.NewVolumeSectionAndPa
 import org.daisy.braille.impl.embosser.EmbosserWriterEvent.OpenEvent;
 import org.daisy.braille.impl.embosser.EmbosserWriterEvent.SetRowGapEvent;
 import org.daisy.braille.impl.embosser.EmbosserWriterEvent.WriteEvent;
+import org.daisy.braille.impl.embosser.InternalContract.BrailleRange;
 import org.daisy.braille.utils.api.embosser.Contract;
 import org.daisy.braille.utils.api.embosser.ContractNotSupportedException;
 import org.daisy.braille.utils.api.embosser.EmbosserWriter;
@@ -44,19 +46,22 @@ import org.daisy.braille.utils.api.embosser.EmbosserWriter;
  *
  */
 public class BufferedEmbosserWriter implements EmbosserWriter {
-	private final EmbosserWriter writer;
+	private static final Pattern EIGHT_DOT_PATTERN = Pattern.compile("[\u2840-\u28FF]");
+	private final ContractEmbosserWriter writer;
 	private List<EmbosserWriterEvent> events;
 	private int rowgap;
 	private boolean isOpen;
 	private boolean isClosed;
-	private Contract.Builder contractBuilder;
+	private InternalContract.Builder contractBuilder;
+	private boolean hasEightDot;
 
-	public BufferedEmbosserWriter(EmbosserWriter writer) {
+	public BufferedEmbosserWriter(ContractEmbosserWriter writer) {
 		this.writer = writer;
 		this.isOpen = false;
 		this.isClosed = false;
-		this.contractBuilder = new Contract.Builder();
+		this.contractBuilder = new InternalContract.Builder();
 		this.events = new ArrayList<>();
+		this.hasEightDot = false;
 	}
 
 	@Override
@@ -110,12 +115,15 @@ public class BufferedEmbosserWriter implements EmbosserWriter {
 	@Override
 	public void write(String braille) throws IOException {
 		events.add(new WriteEvent(braille));
+		if (!hasEightDot && EIGHT_DOT_PATTERN.matcher(braille).find()) {
+			contractBuilder.setBrailleRange(BrailleRange.EIGHT_DOT);
+			hasEightDot = true;
+		}
 	}
 
 	@Override
 	public void newLine() throws IOException {
 		events.add(new NewLineEvent());
-
 	}
 
 	@Override
@@ -135,20 +143,15 @@ public class BufferedEmbosserWriter implements EmbosserWriter {
 
 	@Override
 	public void open(boolean duplex) throws IOException {
-		try {
-			open(duplex, new Contract.Builder().build());
-		} catch (ContractNotSupportedException e) {
-			// cannot happen
-			throw new RuntimeException("Coding error");
-		}
+		rowgap = 0;
+		isOpen = true;
+		events.add(new OpenEvent(duplex));
+		contractBuilder = new InternalContract.Builder().setBrailleRange(BrailleRange.SIX_DOT);
 	}
 
 	@Override
 	public void open(boolean duplex, Contract contract) throws IOException, ContractNotSupportedException {
-		rowgap = 0;
-		isOpen = true;
-		events.add(new OpenEvent(duplex));
-		contractBuilder = new Contract.Builder(contract);
+		throw new ContractNotSupportedException("Contracts not supported");
 	}
 
 	@Override
@@ -168,12 +171,17 @@ public class BufferedEmbosserWriter implements EmbosserWriter {
 		} else {
 			rowgap = value;
 		}
+		contractBuilder.addRowGap(value);
 		events.add(new SetRowGapEvent(value));
 	}
 
 	@Override
 	public int getRowGap() {
 		return rowgap;
+	}
+	
+	InternalContract getContract() {
+		return contractBuilder.build();
 	}
 
 	private void flush() throws IOException {
@@ -182,7 +190,7 @@ public class BufferedEmbosserWriter implements EmbosserWriter {
 			case OPEN_EVENT:
 				try {
 					writer.open(((OpenEvent)event).getDuplex(), contractBuilder.build());
-				} catch (ContractNotSupportedException e) {
+				} catch (InternalContractNotSupportedException e) {
 					IOException ex =new IOException("Contract not supported.");
 					ex.initCause(e);
 					throw ex;
