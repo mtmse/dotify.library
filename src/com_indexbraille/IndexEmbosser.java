@@ -244,32 +244,6 @@ public abstract class IndexEmbosser extends AbstractEmbosser {
 	}
 
 	@Override
-	public boolean supportsDuplex() {
-		switch (type) {
-		case INDEX_BASIC_D_V2:
-		case INDEX_EVEREST_D_V2:
-		case INDEX_4X4_PRO_V2:
-		case INDEX_BASIC_D_V3:
-		case INDEX_EVEREST_D_V3:
-		case INDEX_4X4_PRO_V3:
-		case INDEX_4WAVES_PRO_V3:
-		case INDEX_BASIC_D_V4:
-		case INDEX_EVEREST_D_V4:
-		case INDEX_BRAILLE_BOX_V4:
-		case INDEX_BASIC_D_V5:
-		case INDEX_FANFOLD_V5:
-		case INDEX_EVEREST_D_V5:
-		case INDEX_BRAILLE_BOX_V5:
-			return true;
-		case INDEX_BASIC_BLUE_BAR:
-		case INDEX_BASIC_S_V2:
-		case INDEX_BASIC_S_V3:
-		default:
-			return false;
-		}
-	}
-
-	@Override
 	public boolean supportsZFolding() {
 		switch (type) {
 		case INDEX_BASIC_S_V3:

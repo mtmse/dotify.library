@@ -76,6 +76,11 @@ public class IndexV4Embosser extends IndexEmbosser {
 		maxMarginOuter = 10;
 		maxMarginTop = 10;
 	}
+	
+	@Override
+	public boolean supportsDuplex() {
+		return true;
+	}
 
 	@Override
 	public TableFilter getTableFilter() {

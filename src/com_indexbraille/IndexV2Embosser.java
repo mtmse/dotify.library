@@ -42,6 +42,7 @@ public class IndexV2Embosser extends IndexEmbosser {
 	private static final TableFilter tableFilter;
 	private static final String table6dot = "org.daisy.braille.impl.table.DefaultTableProvider.TableType.EN_US";
 	//private static final String table8dot = "com_indexbraille.IndexTableProvider.TableType.INDEX_TRANSPARENT_8DOT";
+	private final boolean supportsDuplex;
 
 	static {
 		tableFilter = new TableFilter() {
@@ -65,11 +66,13 @@ public class IndexV2Embosser extends IndexEmbosser {
 		switch (type) {
 		case INDEX_BASIC_S_V2:
 			duplexEnabled = false;
+			supportsDuplex = false;
 			break;
 		case INDEX_BASIC_D_V2:
 		case INDEX_EVEREST_D_V2:
 		case INDEX_4X4_PRO_V2:
 			duplexEnabled = true;
+			supportsDuplex = true;
 			break;
 		default:
 			throw new IllegalArgumentException("Unsupported embosser type");
@@ -78,6 +81,11 @@ public class IndexV2Embosser extends IndexEmbosser {
 		maxNumberOfCopies = 999;
 		minCellsInWidth = 23;
 		maxCellsInWidth = 42;
+	}
+	
+	@Override
+	public boolean supportsDuplex() {
+		return supportsDuplex;
 	}
 
 	@Override

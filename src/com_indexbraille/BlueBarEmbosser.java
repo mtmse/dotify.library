@@ -55,6 +55,11 @@ public class BlueBarEmbosser extends IndexEmbosser {
 		super(service, props);
 		setTable = service.newTable(table6dot);
 	}
+	
+	@Override
+	public boolean supportsDuplex() {
+		return false;
+	}
 
 	@Override
 	public TableFilter getTableFilter() {
