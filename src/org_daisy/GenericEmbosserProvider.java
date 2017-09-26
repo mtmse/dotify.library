@@ -25,8 +25,8 @@ import java.util.Map;
 import org.daisy.braille.utils.api.embosser.Embosser;
 import org.daisy.braille.utils.api.embosser.EmbosserProvider;
 import org.daisy.braille.utils.api.factory.FactoryProperties;
+import org.daisy.braille.utils.api.table.TableCatalog;
 import org.daisy.braille.utils.api.table.TableCatalogService;
-import org.daisy.braille.impl.spi.SPIHelper;
 
 import aQute.bnd.annotation.component.Component;
 import aQute.bnd.annotation.component.Reference;
@@ -97,7 +97,7 @@ public class GenericEmbosserProvider implements EmbosserProvider {
 	@Override
 	public void setCreatedWithSPI() {
 		if (tableCatalogService==null) {
-			tableCatalogService = SPIHelper.getTableCatalog();
+			tableCatalogService = TableCatalog.newInstance();
 		}
 	}
 

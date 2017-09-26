@@ -23,10 +23,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
 
-import org.daisy.braille.impl.spi.SPIHelper;
 import org.daisy.braille.utils.api.embosser.Embosser;
 import org.daisy.braille.utils.api.embosser.EmbosserProvider;
 import org.daisy.braille.utils.api.factory.FactoryProperties;
+import org.daisy.braille.utils.api.table.TableCatalog;
 import org.daisy.braille.utils.api.table.TableCatalogService;
 
 import aQute.bnd.annotation.component.Component;
@@ -120,7 +120,7 @@ public class IndexEmbosserProvider implements EmbosserProvider {
 	@Override
 	public void setCreatedWithSPI() {
 		if (tableCatalogService==null) {
-			tableCatalogService = SPIHelper.getTableCatalog();
+			tableCatalogService = TableCatalog.newInstance();
 		}
 	}
 
