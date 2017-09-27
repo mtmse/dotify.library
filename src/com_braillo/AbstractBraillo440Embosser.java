@@ -99,9 +99,10 @@ public abstract class AbstractBraillo440Embosser extends BrailloEmbosser {
 	public int getMaxHeight() {return height; }
 		public int getMaxWidth() {	return width;}
 		 */
-		SimpleEmbosserProperties ep = new SimpleEmbosserProperties(width, height)
+		SimpleEmbosserProperties ep = SimpleEmbosserProperties.with(width, height)
 				.supportsAligning(true)
-				.supportsDuplex(true);
+				.supportsDuplex(true)
+				.build();
 		BufferedVolumeEmbosser.Builder b = new BufferedVolumeEmbosser.Builder(device, tc.newBrailleConverter(), bvw, ep)
 				.breaks(new StandardLineBreaks(StandardLineBreaks.Type.DOS))
 				.padNewline(BufferedVolumeEmbosser.Padding.NONE) // JH100408: changed from BEFORE

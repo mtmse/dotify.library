@@ -95,9 +95,10 @@ public class PortathielBlueEmbosser extends CidatEmbosser {
 			ConfigurableEmbosser.Builder b = new ConfigurableEmbosser.Builder(os, setTable.newBrailleConverter())
 					.padNewline(ConfigurableEmbosser.Padding.NONE)
 					.embosserProperties(
-							new SimpleEmbosserProperties(getMaxWidth(page), getMaxHeight(page))
+							SimpleEmbosserProperties.with(getMaxWidth(page), getMaxHeight(page))
 							.supportsDuplex(duplexEnabled)
 							.supportsAligning(true)
+							.build()
 							)
 					.header(header);
 

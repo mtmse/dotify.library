@@ -244,9 +244,10 @@ public abstract class EnablingTechnologiesEmbosser extends AbstractEmbosser {
 				.padNewline(ConfigurableEmbosser.Padding.NONE)
 				.footer(footer)
 				.embosserProperties(
-						new SimpleEmbosserProperties(getMaxWidth(page), getMaxHeight(page))
+						SimpleEmbosserProperties.with(getMaxWidth(page), getMaxHeight(page))
 						.supportsDuplex(duplexEnabled)
 						.supportsAligning(supportsAligning())
+						.build()
 						)
 				.header(header);
 		return b.build();

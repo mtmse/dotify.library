@@ -93,22 +93,22 @@ public class GenericEmbosser extends AbstractEmbosser {
 		b.breaks((String)getFeature("breaks"));
 		// b.padNewline(Padding.NONE);
 		b.padNewline((String)getFeature("padNewline"));
-		SimpleEmbosserProperties sep;
+		SimpleEmbosserProperties.Builder sep;
 		if (getPageFormat()!=null) {
-			sep = new SimpleEmbosserProperties(
+			sep = SimpleEmbosserProperties.with(
 					EmbosserTools.getWidth(pp, getCellWidth()), 
 					EmbosserTools.getHeight(pp, getCellHeight())
 					).supportsAligning(supportsAligning());
 		} else {
 			//using Integer.MAX_VALUE because SimpleEmbosserProperties/EmbosserWriterProperties
 			//does not support null width/height
-			sep = new SimpleEmbosserProperties(
+			sep =SimpleEmbosserProperties.with(
 					Integer.MAX_VALUE, 
 					Integer.MAX_VALUE
 					//cannot support aligning for an unspecified page format
 					).supportsAligning(false);
 		}
-		b.embosserProperties(sep.supportsDuplex(supportsDuplex()));
+		b.embosserProperties(sep.supportsDuplex(supportsDuplex()).build());
 		return b.build();
 	}
 

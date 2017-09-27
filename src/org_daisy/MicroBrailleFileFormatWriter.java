@@ -53,9 +53,10 @@ public class MicroBrailleFileFormatWriter extends AbstractEmbosserWriter {
 		padding = Padding.AFTER;
 		table = new BrailleEditorsTableProvider().newTable(TableType.MICROBRAILLE);
 
-		SimpleEmbosserProperties props = new SimpleEmbosserProperties(cols, rows)
+		SimpleEmbosserProperties props = SimpleEmbosserProperties.with(cols, rows)
 				.supportsDuplex(false)
-				.supportsAligning(false);
+				.supportsAligning(false)
+				.build();
 		init(props);
 	}
 

@@ -160,9 +160,10 @@ public class MountbattenEmbosser extends AbstractEmbosser {
 		byte[] footer = getMountbattenFooter();
 
 		SimpleEmbosserProperties props =
-				new SimpleEmbosserProperties(getMaxWidth(page), getMaxHeight(page))
+				SimpleEmbosserProperties.with(getMaxWidth(page), getMaxHeight(page))
 				.supportsDuplex(supportsDuplex())
-				.supportsAligning(supportsAligning());
+				.supportsAligning(supportsAligning())
+				.build();
 
 		return new ConfigurableEmbosser.Builder(os, setTable.newBrailleConverter())
 				.breaks(new MountbattenLineBreaks())

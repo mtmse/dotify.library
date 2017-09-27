@@ -99,8 +99,8 @@ public class Braillo300Embosser extends BrailloEmbosser {
 			tc.setFeature(EMBOSSER_FEATURE_REPLACEMENT, getFeature(EMBOSSER_FEATURE_REPLACEMENT));
 			PrintPage printPage = getPrintPage(getPageFormat());
 
-			SimpleEmbosserProperties ep = new SimpleEmbosserProperties(Math.min(EmbosserTools.getWidth(printPage, getCellWidth()), 42), 
-					EmbosserTools.getHeight(printPage, getCellHeight())).supportsDuplex(true).supportsAligning(true);
+			SimpleEmbosserProperties ep = SimpleEmbosserProperties.with(Math.min(EmbosserTools.getWidth(printPage, getCellWidth()), 42), 
+					EmbosserTools.getHeight(printPage, getCellHeight())).supportsDuplex(true).supportsAligning(true).build();
 
 			ConfigurableEmbosser.Builder b = new ConfigurableEmbosser.Builder(os, tc.newBrailleConverter())
 					.breaks(new StandardLineBreaks(StandardLineBreaks.Type.DOS))

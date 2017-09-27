@@ -127,9 +127,10 @@ public class BrailleEditorsFileFormat extends AbstractFactory implements FileFor
 		int maxRows = 1000;
 
 		SimpleEmbosserProperties props =
-				new SimpleEmbosserProperties(maxCols, maxRows)
+				SimpleEmbosserProperties.with(maxCols, maxRows)
 				.supportsDuplex(duplexEnabled)
-				.supportsAligning(false);
+				.supportsAligning(false)
+				.build();
 
 		switch (type) {
 		case BRF:

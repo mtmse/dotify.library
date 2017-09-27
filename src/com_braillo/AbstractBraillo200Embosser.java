@@ -80,11 +80,12 @@ public abstract class AbstractBraillo200Embosser extends BrailloEmbosser {
 			tc.setFeature("fallback", getFeature("fallback"));
 			tc.setFeature("replacement", getFeature("replacement"));
 			PrintPage printPage = getPrintPage(getPageFormat());
-			SimpleEmbosserProperties ep = new SimpleEmbosserProperties(
+			SimpleEmbosserProperties ep = SimpleEmbosserProperties.with(
 					Math.min(EmbosserTools.getWidth(printPage, getCellWidth()), 42),
 					EmbosserTools.getHeight(printPage, getCellHeight()))
 					.supportsDuplex(true)
-					.supportsAligning(true);
+					.supportsAligning(true)
+					.build();
 			ConfigurableEmbosser.Builder b = new ConfigurableEmbosser.Builder(os, tc.newBrailleConverter())
 					.breaks(new StandardLineBreaks(StandardLineBreaks.Type.DOS))
 					.padNewline(ConfigurableEmbosser.Padding.NONE) // JH100408: changed from BEFORE

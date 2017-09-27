@@ -20,56 +20,103 @@ package org.daisy.braille.impl.embosser;
 import org.daisy.braille.utils.api.embosser.EmbosserWriterProperties;
 
 /**
- * Provides a simple way to implement EmbosserProperties
+ * Provides an immutable implementation of {@link EmbosserWriterProperties}.
  * @author Joel Håkansson
  */
-public class SimpleEmbosserProperties implements EmbosserWriterProperties {
-	private double cellWidth = 6;
-	private double cellHeight = 10;
-	private boolean supportsDuplex=false;
-	private boolean supportsAligning=false;
+public final class SimpleEmbosserProperties implements EmbosserWriterProperties {
+	private final double cellWidth;
+	private final double cellHeight;
+	private final boolean supportsDuplex;
+	private final boolean supportsAligning;
 	private final int maxHeight;
 	private final int maxWidth;
 
 	/**
-	 * Creates a new SimpleEmbosserProperties with all "supports" properties set to false and cell width = 6
+	 * Provides a builder for simple embosser properties.
+	 */
+	public static class Builder {
+		private final int maxWidth;
+		private final int maxHeight;
+		
+		private double cellWidth = 6;
+		private double cellHeight = 10;
+		private boolean supportsDuplex=false;
+		private boolean supportsAligning=false;
+		
+		private Builder(int maxWidth, int maxHeight) {
+			this.maxWidth = maxWidth;
+			this.maxHeight = maxHeight;
+		}
+
+		/**
+		 * Sets the value of duplex support
+		 * @param val the new value
+		 * @return returns this object
+		 */
+		public Builder supportsDuplex(boolean val) {
+			supportsDuplex = val;
+			return this;
+		}
+
+		/**
+		 * Sets the value of aligning support
+		 * @param val the new value
+		 * @return returns this object
+		 */
+		public Builder supportsAligning(boolean val) {
+			supportsAligning = val;
+			return this;
+		}
+
+		/**
+		 * Sets the value of cell width
+		 * @param val the new value
+		 * @return returns this object
+		 */
+		public Builder cellWidth(double val) {
+			cellWidth = val;
+			return this;
+		}
+
+		/**
+		 * Sets the value of cell height
+		 * @param val the new value
+		 * @return returns this object
+		 */
+		public Builder cellHeight(double val) {
+			cellHeight = val;
+			return this;
+		}
+
+		/**
+		 * Creates a new instance of {@link SimpleEmbosserProperties} based on the
+		 * current state of the builder.
+		 * @return returns a new {@link SimpleEmbosserProperties} instance
+		 */
+		public SimpleEmbosserProperties build() {
+			return new SimpleEmbosserProperties(this);
+		}
+	}
+
+	private SimpleEmbosserProperties(Builder builder) {
+		this.maxWidth = builder.maxWidth;
+		this.maxHeight = builder.maxHeight;
+		this.cellWidth = builder.cellWidth;
+		this.cellHeight = builder.cellHeight;
+		this.supportsAligning = builder.supportsAligning;
+		this.supportsDuplex = builder.supportsDuplex;
+	}
+
+	/**
+	 * Creates a new SimpleEmbosserProperties builder with all "supports" properties set to false and cell width = 6
 	 * and cell height = 10
 	 * @param maxWidth the maximum width, in characters
 	 * @param maxHeight the maximum height, in rows
+	 * @return returns a new builder
 	 */
-	public SimpleEmbosserProperties(int maxWidth, int maxHeight) {
-		this.maxWidth = maxWidth;
-		this.maxHeight = maxHeight;
+	public static SimpleEmbosserProperties.Builder with(int maxWidth, int maxHeight) {
+		return new Builder(maxWidth, maxHeight);
 	}
-
-
-	/**
-	 * Sets the value of duplex support
-	 * @param val the new value
-	 * @return returns this object
-	 */
-	public SimpleEmbosserProperties supportsDuplex(boolean val) { supportsDuplex = val; return this; }
-
-	/**
-	 * Sets the value of aligning support
-	 * @param val the new value
-	 * @return returns this object
-	 */
-	public SimpleEmbosserProperties supportsAligning(boolean val) { supportsAligning = val; return this; }
-
-	/**
-	 * Sets the value of cell width
-	 * @param val the new value
-	 * @return returns this object
-	 */
-	public SimpleEmbosserProperties cellWidth(double val) { cellWidth = val; return this; }
-
-	/**
-	 * Sets the value of cell height
-	 * @param val the new value
-	 * @return returns this object
-	 */
-	public SimpleEmbosserProperties cellHeight(double val) { cellHeight = val; return this; }
 
 	@Override
 	public int getMaxHeight() {

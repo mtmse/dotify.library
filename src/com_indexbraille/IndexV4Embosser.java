@@ -129,9 +129,10 @@ public class IndexV4Embosser extends IndexEmbosser {
 		byte[] footer = new byte[0];
 
 		SimpleEmbosserProperties props =
-				new SimpleEmbosserProperties(getMaxWidth(page), getMaxHeight(page))
+				SimpleEmbosserProperties.with(getMaxWidth(page), getMaxHeight(page))
 				.supportsDuplex(duplexEnabled)
-				.supportsAligning(supportsAligning());
+				.supportsAligning(supportsAligning())
+				.build();
 
 		if (eightDotsEnabled) {
 			return new IndexTransparentEmbosserWriter(os,

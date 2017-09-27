@@ -76,9 +76,10 @@ public class BlueBarEmbosser extends IndexEmbosser {
 		}
 
 		SimpleEmbosserProperties props =
-				new SimpleEmbosserProperties(getMaxWidth(page), getMaxHeight(page))
+				SimpleEmbosserProperties.with(getMaxWidth(page), getMaxHeight(page))
 				.supportsDuplex(duplexEnabled)
-				.supportsAligning(supportsAligning());
+				.supportsAligning(supportsAligning())
+				.build();
 
 		return new IndexTransparentEmbosserWriter(os,
 				setTable.newBrailleConverter(),

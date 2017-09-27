@@ -179,9 +179,10 @@ public class Interpoint55Embosser extends AbstractEmbosser {
 		}
 
 		SimpleEmbosserProperties props =
-				new SimpleEmbosserProperties(getMaxWidth(page), getMaxHeight(page))
+				SimpleEmbosserProperties.with(getMaxWidth(page), getMaxHeight(page))
 				.supportsDuplex(duplexEnabled)
-				.supportsAligning(supportsAligning());
+				.supportsAligning(supportsAligning())
+				.build();
 
 		return new ConfigurableEmbosser.Builder(os, setTable.newBrailleConverter())
 				.breaks(new StandardLineBreaks(StandardLineBreaks.Type.DOS))
