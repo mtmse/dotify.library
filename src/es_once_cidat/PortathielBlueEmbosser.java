@@ -98,7 +98,6 @@ public class PortathielBlueEmbosser extends CidatEmbosser {
 							new SimpleEmbosserProperties(getMaxWidth(page), getMaxHeight(page))
 							.supportsDuplex(duplexEnabled)
 							.supportsAligning(true)
-							.supports8dot(eightDotsEnabled)
 							)
 					.header(header);
 

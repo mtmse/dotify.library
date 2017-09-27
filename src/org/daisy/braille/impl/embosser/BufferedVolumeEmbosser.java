@@ -25,6 +25,7 @@ import java.util.Stack;
 
 import javax.print.PrintException;
 
+import org.daisy.braille.impl.embosser.ConfigurableEmbosser.Builder;
 import org.daisy.braille.utils.api.embosser.Device;
 import org.daisy.braille.utils.api.embosser.EmbosserWriterProperties;
 import org.daisy.braille.utils.api.embosser.LineBreaks;
@@ -57,7 +58,7 @@ public class BufferedVolumeEmbosser extends AbstractEmbosserWriter {
 		private final Device pd;
 		private final BrailleConverter bt;
 		private final VolumeWriter vw;
-		private final EmbosserWriterProperties ep;
+		private final SimpleEmbosserProperties ep;
 
 		// optional params
 		private LineBreaks breaks = new StandardLineBreaks();
@@ -71,7 +72,7 @@ public class BufferedVolumeEmbosser extends AbstractEmbosserWriter {
 		 * @param vw the VolumeWriter to use
 		 * @param ep the EmbosserWriterProperties to use
 		 */
-		public Builder(Device pd, BrailleConverter bt, VolumeWriter vw, EmbosserWriterProperties ep) {
+		public Builder(Device pd, BrailleConverter bt, VolumeWriter vw, SimpleEmbosserProperties ep) {
 			this.pd = pd;
 			this.bt = bt;
 			this.vw = vw;

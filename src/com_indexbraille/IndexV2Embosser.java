@@ -119,9 +119,8 @@ public class IndexV2Embosser extends IndexEmbosser {
 		byte[] header = getIndexV2Header(cellsInWidth);
 		byte[] footer = new byte[]{0x1a};
 
-		EmbosserWriterProperties props =
+		SimpleEmbosserProperties props =
 				new SimpleEmbosserProperties(getMaxWidth(page), getMaxHeight(page))
-				.supports8dot(eightDotsEnabled)
 				.supportsDuplex(duplexEnabled)
 				.supportsAligning(supportsAligning());
 

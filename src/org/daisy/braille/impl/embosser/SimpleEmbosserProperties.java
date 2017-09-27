@@ -26,12 +26,8 @@ import org.daisy.braille.utils.api.embosser.EmbosserWriterProperties;
 public class SimpleEmbosserProperties implements EmbosserWriterProperties {
 	private double cellWidth = 6;
 	private double cellHeight = 10;
-	private boolean supports8dot=false;
 	private boolean supportsDuplex=false;
 	private boolean supportsAligning=false;
-	private boolean supportsVolumes=false;
-	private boolean supportsZFolding=false;
-	private boolean supportsMagazineLayout=false;
 	private final int maxHeight;
 	private final int maxWidth;
 
@@ -46,12 +42,6 @@ public class SimpleEmbosserProperties implements EmbosserWriterProperties {
 		this.maxHeight = maxHeight;
 	}
 
-	/**
-	 * Sets the value of eight dot support
-	 * @param val the new value
-	 * @return returns this object
-	 */
-	public SimpleEmbosserProperties supports8dot(boolean val) { supports8dot = val; return this; }
 
 	/**
 	 * Sets the value of duplex support
@@ -66,27 +56,6 @@ public class SimpleEmbosserProperties implements EmbosserWriterProperties {
 	 * @return returns this object
 	 */
 	public SimpleEmbosserProperties supportsAligning(boolean val) { supportsAligning = val; return this; }
-
-	/**
-	 * Sets the value of volumes support
-	 * @param val the new value
-	 * @return returns this object
-	 */
-	public SimpleEmbosserProperties supportsVolumes(boolean val) { supportsVolumes = val; return this; }
-
-	/**
-	 * Sets the value of z-folding support
-	 * @param val the new value
-	 * @return returns this object
-	 */
-	public SimpleEmbosserProperties supportsZFolding(boolean val) { supportsZFolding = val; return this; }
-
-	/**
-	 * Sets the value of magazine layout support
-	 * @param val the new value
-	 * @return returns this object
-	 */
-	public SimpleEmbosserProperties supportsMagazineLayout(boolean val) { supportsMagazineLayout = val; return this; }
 
 	/**
 	 * Sets the value of cell width
@@ -113,8 +82,9 @@ public class SimpleEmbosserProperties implements EmbosserWriterProperties {
 	}
 
 	@Override
+	@Deprecated
 	public boolean supports8dot() {
-		return supports8dot;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -122,24 +92,26 @@ public class SimpleEmbosserProperties implements EmbosserWriterProperties {
 		return supportsAligning;
 	}
 
-	@Override
 	public boolean supportsDuplex() {
 		return supportsDuplex;
 	}
 
 	@Override
+	@Deprecated
 	public boolean supportsVolumes() {
-		return supportsVolumes;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
+	@Deprecated
 	public boolean supportsZFolding() {
-		return supportsZFolding;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
+	@Deprecated
 	public boolean supportsPrintMode(PrintMode mode) {
-		return supportsMagazineLayout || PrintMode.REGULAR == mode;
+		throw new UnsupportedOperationException();
 	}
 
 	/**

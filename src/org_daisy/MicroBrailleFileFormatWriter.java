@@ -55,8 +55,6 @@ public class MicroBrailleFileFormatWriter extends AbstractEmbosserWriter {
 
 		SimpleEmbosserProperties props = new SimpleEmbosserProperties(cols, rows)
 				.supportsDuplex(false)
-				.supports8dot(false)
-				.supportsVolumes(false)
 				.supportsAligning(false);
 		init(props);
 	}
@@ -109,14 +107,4 @@ public class MicroBrailleFileFormatWriter extends AbstractEmbosserWriter {
 		super.close();
 	}
 
-	@Override
-	public boolean supportsZFolding() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean supportsPrintMode(PrintMode mode) {
-		return mode == PrintMode.REGULAR;
-	}
 }

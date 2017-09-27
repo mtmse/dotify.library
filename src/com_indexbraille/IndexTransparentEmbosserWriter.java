@@ -23,11 +23,12 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.daisy.braille.impl.embosser.AbstractEmbosserWriter;
+import org.daisy.braille.impl.embosser.SimpleEmbosserProperties;
 import org.daisy.braille.utils.api.embosser.EmbosserWriterProperties;
 import org.daisy.braille.utils.api.embosser.LineBreaks;
 import org.daisy.braille.utils.api.embosser.StandardLineBreaks;
 import org.daisy.braille.utils.api.table.BrailleConverter;
-import org.daisy.braille.impl.embosser.AbstractEmbosserWriter;
 
 /**
  * Provides an embosser writer that uses the transparent mode of index embossers. 
@@ -50,7 +51,7 @@ public class IndexTransparentEmbosserWriter extends AbstractEmbosserWriter {
 	 * @param footer the footer
 	 * @param props the properties
 	 */
-	public IndexTransparentEmbosserWriter(OutputStream os, byte[] header, byte[] footer, EmbosserWriterProperties props) {
+	public IndexTransparentEmbosserWriter(OutputStream os, byte[] header, byte[] footer, SimpleEmbosserProperties props) {
 		this(os, null, true, header, footer, props);
 	}
 
@@ -63,7 +64,7 @@ public class IndexTransparentEmbosserWriter extends AbstractEmbosserWriter {
 	 * @param footer the footer
 	 * @param props the properties
 	 */
-	public IndexTransparentEmbosserWriter(OutputStream os, BrailleConverter bc, boolean eightDot, byte[] header, byte[] footer, EmbosserWriterProperties props) {
+	public IndexTransparentEmbosserWriter(OutputStream os, BrailleConverter bc, boolean eightDot, byte[] header, byte[] footer, SimpleEmbosserProperties props) {
 		init(props);
 		if (header != null) { this.header = header; }
 		else { this.header = new byte[0]; }

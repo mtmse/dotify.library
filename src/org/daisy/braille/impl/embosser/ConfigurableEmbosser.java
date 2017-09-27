@@ -62,7 +62,7 @@ public class ConfigurableEmbosser extends AbstractEmbosserWriter {
 		private byte[] footer = new byte[0];
 		private boolean fillSheet = false;
 		private boolean lineFeedOnEmptySheet = false;
-		EmbosserWriterProperties props = new SimpleEmbosserProperties(Integer.MAX_VALUE, Integer.MAX_VALUE);
+		SimpleEmbosserProperties props = new SimpleEmbosserProperties(Integer.MAX_VALUE, Integer.MAX_VALUE);
 
 		/**
 		 * Creates a new builder with the suppled output stream and braille converter.
@@ -79,7 +79,7 @@ public class ConfigurableEmbosser extends AbstractEmbosserWriter {
 		 * @param props the embosser properties to use
 		 * @return returns this object
 		 */
-		public Builder embosserProperties(EmbosserWriterProperties props) {
+		public Builder embosserProperties(SimpleEmbosserProperties props) {
 			this.props = props;
 			return this;
 		}
@@ -217,7 +217,7 @@ public class ConfigurableEmbosser extends AbstractEmbosserWriter {
 
 	@Override
 	public void close() throws IOException {
-		if (fillSheet && supportsDuplex() && currentPage() % 2 == 0) {
+		if (fillSheet && props.supportsDuplex() && currentPage() % 2 == 0) {
 			formFeed();
 		}
 		os.write(footer);

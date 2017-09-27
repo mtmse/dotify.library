@@ -108,8 +108,7 @@ public class GenericEmbosser extends AbstractEmbosser {
 					//cannot support aligning for an unspecified page format
 					).supportsAligning(false);
 		}
-		b.embosserProperties(sep.supports8dot(supports8dot())
-				.supportsDuplex(supportsDuplex()));
+		b.embosserProperties(sep.supportsDuplex(supportsDuplex()));
 		return b.build();
 	}
 

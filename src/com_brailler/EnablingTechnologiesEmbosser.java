@@ -247,7 +247,6 @@ public abstract class EnablingTechnologiesEmbosser extends AbstractEmbosser {
 						new SimpleEmbosserProperties(getMaxWidth(page), getMaxHeight(page))
 						.supportsDuplex(duplexEnabled)
 						.supportsAligning(supportsAligning())
-						.supports8dot(eightDots)
 						)
 				.header(header);
 		return b.build();

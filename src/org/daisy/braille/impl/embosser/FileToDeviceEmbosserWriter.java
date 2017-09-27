@@ -99,8 +99,9 @@ public class FileToDeviceEmbosserWriter implements EmbosserWriter {
 	}
 
 	@Override
+	@Deprecated
 	public int getMaxHeight() {
-		return w.getMaxHeight();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -109,8 +110,9 @@ public class FileToDeviceEmbosserWriter implements EmbosserWriter {
 	}
 
 	@Override
+	@Deprecated
 	public boolean supports8dot() {
-		return w.supports8dot();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -119,23 +121,27 @@ public class FileToDeviceEmbosserWriter implements EmbosserWriter {
 	}
 
 	@Override
+	@Deprecated
 	public boolean supportsDuplex() {
-		return w.supportsDuplex();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
+	@Deprecated
 	public boolean supportsVolumes() {
-		return w.supportsVolumes();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
+	@Deprecated
 	public boolean supportsZFolding() {
-		return w.supportsZFolding();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
+	@Deprecated
 	public boolean supportsPrintMode(PrintMode mode) {
-		return w.supportsPrintMode(mode);
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -151,6 +157,7 @@ public class FileToDeviceEmbosserWriter implements EmbosserWriter {
 	}
 
 	@Override
+	@Deprecated
 	public void open(boolean duplex, Contract contract) throws IOException, ContractNotSupportedException {
 		w.open(duplex, contract);
 	}

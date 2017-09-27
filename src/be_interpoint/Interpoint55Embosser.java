@@ -178,9 +178,8 @@ public class Interpoint55Embosser extends AbstractEmbosser {
 			throw new IllegalArgumentException("Unsupported paper");
 		}
 
-		EmbosserWriterProperties props =
+		SimpleEmbosserProperties props =
 				new SimpleEmbosserProperties(getMaxWidth(page), getMaxHeight(page))
-				.supports8dot(eightDotsEnabled)
 				.supportsDuplex(duplexEnabled)
 				.supportsAligning(supportsAligning());
 

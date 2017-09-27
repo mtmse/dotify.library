@@ -244,7 +244,6 @@ public class TigerEmbosser extends AbstractEmbosser {
 							new SimpleEmbosserProperties(getMaxWidth(page), getMaxHeight(page))
 							.supportsDuplex(duplexEnabled)
 							.supportsAligning(supportsAligning())
-							.supports8dot(eightDotsEnabled)
 							)
 					.header(header);
 			return b.build();

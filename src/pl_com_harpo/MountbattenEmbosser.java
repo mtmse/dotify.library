@@ -159,9 +159,8 @@ public class MountbattenEmbosser extends AbstractEmbosser {
 		byte[] header = getMountbattenHeader();
 		byte[] footer = getMountbattenFooter();
 
-		EmbosserWriterProperties props =
+		SimpleEmbosserProperties props =
 				new SimpleEmbosserProperties(getMaxWidth(page), getMaxHeight(page))
-				.supports8dot(supports8dot())
 				.supportsDuplex(supportsDuplex())
 				.supportsAligning(supportsAligning());
 

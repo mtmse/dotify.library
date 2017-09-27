@@ -124,9 +124,8 @@ public class IndexV3Embosser extends IndexEmbosser {
 		byte[] header = getIndexV3Header();
 		byte[] footer = new byte[0];
 
-		EmbosserWriterProperties props =
+		SimpleEmbosserProperties props =
 				new SimpleEmbosserProperties(getMaxWidth(page), getMaxHeight(page))
-				.supports8dot(eightDotsEnabled)
 				.supportsDuplex(duplexEnabled)
 				.supportsAligning(supportsAligning());
 

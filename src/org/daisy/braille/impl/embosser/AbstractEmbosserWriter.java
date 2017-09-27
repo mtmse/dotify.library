@@ -23,7 +23,6 @@ import java.io.UnsupportedEncodingException;
 import org.daisy.braille.utils.api.embosser.Contract;
 import org.daisy.braille.utils.api.embosser.ContractNotSupportedException;
 import org.daisy.braille.utils.api.embosser.EmbosserWriter;
-import org.daisy.braille.utils.api.embosser.EmbosserWriterProperties;
 import org.daisy.braille.utils.api.embosser.LineBreaks;
 
 /**
@@ -61,7 +60,7 @@ public abstract class AbstractEmbosserWriter implements EmbosserWriter {
 	private int currentPage;
 	private int charsOnRow;
 	private int rowsOnPage;
-	private EmbosserWriterProperties props;
+	protected SimpleEmbosserProperties props;
 	protected PageBreaks pagebreaks = new StandardPageBreaks();
 
 	/**
@@ -82,7 +81,7 @@ public abstract class AbstractEmbosserWriter implements EmbosserWriter {
 	 */
 	protected abstract void addAll(byte[] b) throws IOException;
 
-	protected void init(EmbosserWriterProperties props) {
+	protected void init(SimpleEmbosserProperties props) {
 		this.props = props;
 		isOpen = false;
 		isClosed = false;
@@ -240,8 +239,9 @@ public abstract class AbstractEmbosserWriter implements EmbosserWriter {
 	}
 
 	@Override
+	@Deprecated
 	public int getMaxHeight() {
-		return props.getMaxHeight();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -250,8 +250,9 @@ public abstract class AbstractEmbosserWriter implements EmbosserWriter {
 	}
 
 	@Override
+	@Deprecated
 	public boolean supports8dot() {
-		return props.supports8dot();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -260,25 +261,27 @@ public abstract class AbstractEmbosserWriter implements EmbosserWriter {
 	}
 
 	@Override
+	@Deprecated
 	public boolean supportsDuplex() {
-		return props.supportsDuplex();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
+	@Deprecated
 	public boolean supportsVolumes() {
-		return props.supportsVolumes();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
+	@Deprecated
 	public boolean supportsZFolding() {
-		return props.supportsZFolding();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
+	@Deprecated
 	public boolean supportsPrintMode(PrintMode mode) {
-		return props.supportsPrintMode(mode);
+		throw new UnsupportedOperationException();
 	}
-
-
 
 }

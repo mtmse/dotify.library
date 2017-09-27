@@ -75,9 +75,8 @@ public class BlueBarEmbosser extends IndexEmbosser {
 			throw new IllegalArgumentException("Unsupported paper for embosser " + getDisplayName());
 		}
 
-		EmbosserWriterProperties props =
+		SimpleEmbosserProperties props =
 				new SimpleEmbosserProperties(getMaxWidth(page), getMaxHeight(page))
-				.supports8dot(eightDotsEnabled)
 				.supportsDuplex(duplexEnabled)
 				.supportsAligning(supportsAligning());
 

@@ -70,23 +70,27 @@ public class BufferedEmbosserWriter implements EmbosserWriter {
 	}
 
 	@Override
+	@Deprecated
 	public int getMaxHeight() {
-		return writer.getMaxHeight();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
+	@Deprecated
 	public boolean supportsVolumes() {
-		return writer.supportsVolumes();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
+	@Deprecated
 	public boolean supports8dot() {
-		return writer.supports8dot();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
+	@Deprecated
 	public boolean supportsDuplex() {
-		return writer.supportsDuplex();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -95,13 +99,15 @@ public class BufferedEmbosserWriter implements EmbosserWriter {
 	}
 
 	@Override
+	@Deprecated
 	public boolean supportsZFolding() {
-		return writer.supportsZFolding();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
+	@Deprecated
 	public boolean supportsPrintMode(PrintMode mode) {
-		return writer.supportsPrintMode(mode);
+		throw new UnsupportedOperationException();
 	}
 
 	@Override

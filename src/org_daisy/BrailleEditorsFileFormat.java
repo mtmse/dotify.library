@@ -126,9 +126,8 @@ public class BrailleEditorsFileFormat extends AbstractFactory implements FileFor
 		int maxCols = 1000;
 		int maxRows = 1000;
 
-		EmbosserWriterProperties props =
+		SimpleEmbosserProperties props =
 				new SimpleEmbosserProperties(maxCols, maxRows)
-				.supports8dot(eightDotsEnabled)
 				.supportsDuplex(duplexEnabled)
 				.supportsAligning(false);
 

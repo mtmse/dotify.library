@@ -101,7 +101,6 @@ public class ImpactoEmbosser extends CidatEmbosser {
 							new SimpleEmbosserProperties(getMaxWidth(page), getMaxHeight(page))
 							.supportsDuplex(duplexEnabled)
 							.supportsAligning(supportsAligning())
-							.supports8dot(eightDotsEnabled)
 							)
 					.header(header);
 			return b.build();

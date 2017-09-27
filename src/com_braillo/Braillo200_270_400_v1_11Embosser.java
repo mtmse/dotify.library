@@ -79,7 +79,7 @@ public class Braillo200_270_400_v1_11Embosser extends BrailloEmbosser {
 			tc.setFeature("fallback", getFeature("fallback"));
 			tc.setFeature("replacement", getFeature("replacement"));
 			PrintPage printPage = getPrintPage(getPageFormat());
-			EmbosserWriterProperties ep = new SimpleEmbosserProperties(
+			SimpleEmbosserProperties ep = new SimpleEmbosserProperties(
 					Math.min(EmbosserTools.getWidth(printPage, getCellWidth()), 42),
 					EmbosserTools.getHeight(printPage, getCellHeight()))
 					.supportsDuplex(true)
