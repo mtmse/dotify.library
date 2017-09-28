@@ -78,9 +78,16 @@ public class MountbattenEmbosser extends AbstractEmbosser {
 		super(service, props.getDisplayName(), props.getDescription(), props.getIdentifier());
 
 		setTable = service.newTable(table6dot);
+	}
 
-		setCellWidth(5.9d);
-		setCellHeight(10.1d);
+	@Override
+	protected double getCellWidth() {
+		return 5.9d;
+	}
+
+	@Override
+	protected double getCellHeight() {
+		return 10.1d;
 	}
 
 	@Override

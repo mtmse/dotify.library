@@ -22,6 +22,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import org.daisy.braille.impl.embosser.AbstractEmbosser;
+import org.daisy.braille.impl.embosser.ConfigurableEmbosser;
+import org.daisy.braille.impl.embosser.EmbosserTools;
+import org.daisy.braille.impl.embosser.FileToDeviceEmbosserWriter;
+import org.daisy.braille.impl.embosser.SimpleEmbosserProperties;
 import org.daisy.braille.utils.api.embosser.Device;
 import org.daisy.braille.utils.api.embosser.EmbosserFeatures;
 import org.daisy.braille.utils.api.embosser.EmbosserWriter;
@@ -32,11 +37,6 @@ import org.daisy.braille.utils.api.paper.Paper;
 import org.daisy.braille.utils.api.table.Table;
 import org.daisy.braille.utils.api.table.TableCatalogService;
 import org.daisy.braille.utils.api.table.TableFilter;
-import org.daisy.braille.impl.embosser.AbstractEmbosser;
-import org.daisy.braille.impl.embosser.ConfigurableEmbosser;
-import org.daisy.braille.impl.embosser.EmbosserTools;
-import org.daisy.braille.impl.embosser.FileToDeviceEmbosserWriter;
-import org.daisy.braille.impl.embosser.SimpleEmbosserProperties;
 
 public class GenericEmbosser extends AbstractEmbosser {
 	/**
@@ -58,8 +58,6 @@ public class GenericEmbosser extends AbstractEmbosser {
 
 	public GenericEmbosser(TableCatalogService service, FactoryProperties props) {
 		super(service, props.getDisplayName(), props.getDescription(), props.getIdentifier());
-		setFeature(EmbosserFeatures.CELL_WIDTH, 6);
-		setFeature(EmbosserFeatures.CELL_HEIGHT, 10);
 	}
 
 	@Override
@@ -158,6 +156,16 @@ public class GenericEmbosser extends AbstractEmbosser {
 	@Override
 	public PrintPage getPrintPage(PageFormat pageFormat) {
 		return new PrintPage(pageFormat);
+	}
+
+	@Override
+	protected double getCellWidth() {
+		return 6;
+	}
+
+	@Override
+	protected double getCellHeight() {
+		return 10;
 	}
 
 }

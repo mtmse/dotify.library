@@ -22,6 +22,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import org.daisy.braille.impl.embosser.AbstractEmbosser;
+import org.daisy.braille.impl.embosser.ConfigurableEmbosser;
+import org.daisy.braille.impl.embosser.EmbosserTools;
+import org.daisy.braille.impl.embosser.FileToDeviceEmbosserWriter;
+import org.daisy.braille.impl.embosser.SimpleEmbosserProperties;
 import org.daisy.braille.utils.api.embosser.Device;
 import org.daisy.braille.utils.api.embosser.EmbosserFactoryException;
 import org.daisy.braille.utils.api.embosser.EmbosserFeatures;
@@ -38,11 +43,6 @@ import org.daisy.braille.utils.api.paper.SheetPaperFormat;
 import org.daisy.braille.utils.api.paper.SheetPaperFormat.Orientation;
 import org.daisy.braille.utils.api.table.TableCatalogService;
 import org.daisy.braille.utils.api.table.TableFilter;
-import org.daisy.braille.impl.embosser.AbstractEmbosser;
-import org.daisy.braille.impl.embosser.ConfigurableEmbosser;
-import org.daisy.braille.impl.embosser.EmbosserTools;
-import org.daisy.braille.impl.embosser.FileToDeviceEmbosserWriter;
-import org.daisy.braille.impl.embosser.SimpleEmbosserProperties;
 
 import com_viewplus.ViewPlusEmbosserProvider.EmbosserType;
 
@@ -95,10 +95,6 @@ public class TigerEmbosser extends AbstractEmbosser {
 
 		setTable = service.newTable(table6dot);
 
-		setCellWidth(0.25*EmbosserTools.INCH_IN_MM);
-		setCellHeight(0.4*EmbosserTools.INCH_IN_MM);
-		//setCellHeight((eightDotsEnabled?0.x:0.4)*EmbosserTools.INCH_IN_MM);
-
 		minPageWidth = 176d;  // B5
 		minPageHeight = 250d;
 
@@ -132,6 +128,17 @@ public class TigerEmbosser extends AbstractEmbosser {
 			throw new IllegalArgumentException("Unsupported embosser type");
 
 		}
+	}
+	
+	@Override
+	protected double getCellWidth() {
+		return 0.25*EmbosserTools.INCH_IN_MM;
+	}
+
+	@Override
+	protected double getCellHeight() {
+		//setCellHeight((eightDotsEnabled?0.x:0.4)*EmbosserTools.INCH_IN_MM);
+		return 0.4*EmbosserTools.INCH_IN_MM;
 	}
 
 	@Override

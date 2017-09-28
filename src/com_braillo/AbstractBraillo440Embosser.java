@@ -42,8 +42,6 @@ public abstract class AbstractBraillo440Embosser extends BrailloEmbosser {
 	 * 
 	 */
 	private static final long serialVersionUID = 3735464395595074473L;
-	private static final double cellWidth = 19*EmbosserTools.INCH_IN_MM/80d; //6;
-	private static final double cellHeight = 10;
 	private static final double constant = 11*EmbosserTools.INCH_IN_MM/80d;
 
 	protected boolean saddleStitchEnabled;
@@ -51,12 +49,15 @@ public abstract class AbstractBraillo440Embosser extends BrailloEmbosser {
 	public AbstractBraillo440Embosser(TableCatalogService service, FactoryProperties props) {
 		super(service, props);
 		saddleStitchEnabled = false;
-		setCellWidth(cellWidth);
+	}
+	
+	protected double getCellWidth() {
+		return 19*EmbosserTools.INCH_IN_MM/80d;
 	}
 
 	@Override
 	public boolean supportsPrintPage(PrintPage dim) {
-		int width = (int)Math.floor((dim.getWidth()+constant-EmbosserTools.INCH_IN_MM) / cellWidth);
+		int width = (int)Math.floor((dim.getWidth()+constant-EmbosserTools.INCH_IN_MM) / getCellWidth());
 		int inchHeight = (int)Math.ceil(dim.getHeight()/EmbosserTools.INCH_IN_MM);
 		if (width > 44 || inchHeight > 13 || width < 10) { 
 			return false; 
@@ -77,9 +78,9 @@ public abstract class AbstractBraillo440Embosser extends BrailloEmbosser {
 		Braillo440VolumeWriter bvw;
 		EmbosserType t = EmbosserType.valueOf(getIdentifier().substring(1+getIdentifier().lastIndexOf('.')));
 		PrintPage printPage = getPrintPage(getPageFormat());
-		int width = (int)Math.floor((printPage.getWidth()+constant-EmbosserTools.INCH_IN_MM) / cellWidth);
-		int height = EmbosserTools.getHeight(printPage, cellHeight);
-		double columnWidthMM = width * cellWidth - constant;
+		int width = (int)Math.floor((printPage.getWidth()+constant-EmbosserTools.INCH_IN_MM) / getCellWidth());
+		int height = EmbosserTools.getHeight(printPage, getCellHeight());
+		double columnWidthMM = width * getCellWidth() - constant;
 		if (t==EmbosserType.BRAILLO_440_SW && saddleStitchEnabled) {
 			bvw = new Braillo440VolumeWriter(printPage, Mode.SW_FOUR_PAGE, width, height, columnWidthMM);
 		} else if (t==EmbosserType.BRAILLO_440_SW) {

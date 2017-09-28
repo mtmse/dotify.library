@@ -98,9 +98,16 @@ public class Interpoint55Embosser extends AbstractEmbosser {
 		super(service, props.getDisplayName(), props.getDescription(), props.getIdentifier());
 
 		setTable = service.newTable(table_US1);
+	}
 
-		setCellWidth(6d);
-		setCellHeight(eightDotsEnabled?12.5d:10d);
+	@Override
+	protected double getCellWidth() {
+		return 6d;
+	}
+
+	@Override
+	protected double getCellHeight() {
+		return eightDotsEnabled?12.5d:10d;
 	}
 
 	@Override
@@ -284,7 +291,6 @@ public class Interpoint55Embosser extends AbstractEmbosser {
 		if (EmbosserFeatures.TABLE.equals(key)) {
 			super.setFeature(key, value);
 			eightDotsEnabled = supports8dot() && setTable.newBrailleConverter().supportsEightDot();
-			setCellHeight(eightDotsEnabled?12.5d:10d);
 		} else if (EmbosserFeatures.SADDLE_STITCH.equals(key)) {
 			try {
 				saddleStitchEnabled = (Boolean)value;

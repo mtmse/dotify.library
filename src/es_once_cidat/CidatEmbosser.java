@@ -64,9 +64,6 @@ public abstract class CidatEmbosser extends AbstractEmbosser {
 
 		type = props;
 
-		setCellWidth(0.25*EmbosserTools.INCH_IN_MM);
-		setCellHeight((eightDotsEnabled?0.5:0.4)*EmbosserTools.INCH_IN_MM);
-
 		switch (type) {
 		case IMPACTO_600:
 		case IMPACTO_TEXTO:
@@ -84,6 +81,22 @@ public abstract class CidatEmbosser extends AbstractEmbosser {
 		default:
 			throw new IllegalArgumentException("Unsupported embosser type");
 		}
+	}
+	
+	/**
+	 * Gets cell width, in millimeters
+	 * @return returns cell width, in millimeters
+	 */
+	protected double getCellWidth() {
+		return 0.25*EmbosserTools.INCH_IN_MM;
+	}
+
+	/**
+	 * Gets cell height, in millimeters
+	 * @return returns cell height, in millimeters
+	 */
+	protected double getCellHeight() {
+		return (eightDotsEnabled?0.5:0.4)*EmbosserTools.INCH_IN_MM;
 	}
 
 	@Override

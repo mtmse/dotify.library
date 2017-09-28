@@ -41,8 +41,6 @@ public abstract class AbstractEmbosser extends AbstractFactory implements Emboss
 	private static final long serialVersionUID = 374888389077716688L;
 	private final HashMap<String, Object> props;
 	private final HashMap<String, String> settings;
-	private double cellHeight = 10;
-	private double cellWidth = 6;
 	protected final TableCatalogService tableCatalogService;
 	protected final Table defaultTable;
 	private PageFormat pageFormat;
@@ -65,22 +63,6 @@ public abstract class AbstractEmbosser extends AbstractFactory implements Emboss
 	}
 
 	/**
-	 * Set cell width, in millimeters
-	 * @param val the width, in millimeters
-	 */
-	protected void setCellWidth(double val) {
-		cellWidth = val;
-	}
-
-	/**
-	 * Set cell height, in millimeters
-	 * @param val the height, in millimeters
-	 */
-	protected void setCellHeight(double val) {
-		cellHeight = val;
-	}
-
-	/**
 	 * Gets the page format
 	 * @return returns the page format
 	 */
@@ -92,26 +74,22 @@ public abstract class AbstractEmbosser extends AbstractFactory implements Emboss
 	 * Gets cell width, in millimeters
 	 * @return returns cell width, in millimeters
 	 */
-	public double getCellWidth() {
-		return cellWidth;
-	}
+	protected abstract double getCellWidth();
 
 	/**
 	 * Gets cell height, in millimeters
 	 * @return returns cell height, in millimeters
 	 */
-	public double getCellHeight() {
-		return cellHeight;
-	}
+	protected abstract double getCellHeight();
 
 	@Override
 	public int getMaxHeight(PageFormat pageFormat) {
-		return EmbosserTools.getHeight(getPrintableArea(pageFormat), cellHeight);
+		return EmbosserTools.getHeight(getPrintableArea(pageFormat), getCellHeight());
 	}
 
 	@Override
 	public int getMaxWidth(PageFormat pageFormat) {
-		return EmbosserTools.getWidth(getPrintableArea(pageFormat), cellWidth);
+		return EmbosserTools.getWidth(getPrintableArea(pageFormat), getCellWidth());
 	}
 
 	@Override
@@ -200,7 +178,6 @@ public abstract class AbstractEmbosser extends AbstractFactory implements Emboss
 	@Override
 	public String toString() {
 		return "AbstractEmbosser [props=" + props + ", settings=" + settings
-				+ ", cellHeight=" + cellHeight + ", cellWidth=" + cellWidth
 				+ ", defaultTable=" + defaultTable + ", pageFormat="
 				+ pageFormat + ", setTable=" + setTable + ", toString()="
 				+ super.toString() + "]";

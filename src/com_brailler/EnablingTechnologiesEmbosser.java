@@ -105,9 +105,6 @@ public abstract class EnablingTechnologiesEmbosser extends AbstractEmbosser {
 
 		setTable = service.newTable(table6dot);
 
-		setCellWidth(0.24*EmbosserTools.INCH_IN_MM);
-		setCellHeight((eightDotsEnabled?0.6:0.4)*EmbosserTools.INCH_IN_MM);
-
 		minPageWidth = 1.5*EmbosserTools.INCH_IN_MM;
 		minPageHeight = 3*EmbosserTools.INCH_IN_MM;
 		maxPageHeight = 14*EmbosserTools.INCH_IN_MM;
@@ -160,6 +157,16 @@ public abstract class EnablingTechnologiesEmbosser extends AbstractEmbosser {
 		marginTop =    Math.min(maxMarginTop,    Math.max(minMarginTop,    marginTop));
 		marginBottom = Math.min(maxMarginBottom, Math.max(minMarginBottom, marginBottom));
 
+	}
+
+	@Override
+	protected double getCellWidth() {
+		return 0.24*EmbosserTools.INCH_IN_MM;
+	}
+
+	@Override
+	protected double getCellHeight() {
+		return (eightDotsEnabled?0.6:0.4)*EmbosserTools.INCH_IN_MM;
 	}
 
 	@Override

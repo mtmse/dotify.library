@@ -22,6 +22,7 @@ import org.daisy.braille.utils.api.factory.FactoryProperties;
 import org.daisy.braille.utils.api.table.TableCatalogService;
 import org.daisy.braille.utils.api.table.TableFilter;
 import org.daisy.braille.impl.embosser.AbstractEmbosser;
+import org.daisy.braille.impl.embosser.EmbosserTools;
 import org.daisy.braille.impl.table.DefaultTableProvider;
 
 public abstract class BrailloEmbosser extends AbstractEmbosser {
@@ -43,9 +44,17 @@ public abstract class BrailloEmbosser extends AbstractEmbosser {
 
 	public BrailloEmbosser(TableCatalogService service, FactoryProperties props) {
 		super(service, props.getDisplayName(), props.getDescription(), props.getIdentifier());
+	}
+
+	@Override
+	protected double getCellWidth() {
 		//TODO: fix this, width is 6.0325
-		setFeature(EmbosserFeatures.CELL_WIDTH, 6);
-		setFeature(EmbosserFeatures.CELL_HEIGHT, 10);
+		return 6;
+	}
+
+	@Override
+	protected double getCellHeight() {
+		return 10;
 	}
 
 	@Override

@@ -92,9 +92,6 @@ public abstract class IndexEmbosser extends AbstractEmbosser {
 
 		type = props;
 
-		setCellWidth(6d);
-		setCellHeight(eightDotsEnabled?12.5d:10d);
-
 		switch (type) {
 		case INDEX_BASIC_BLUE_BAR:
 			maxPrintPageWidth = 280d;
@@ -170,6 +167,16 @@ public abstract class IndexEmbosser extends AbstractEmbosser {
 		default:
 			throw new IllegalArgumentException("Unsupported embosser type");
 		}
+	}
+
+	@Override
+	protected double getCellWidth() {
+		return 6d;
+	}
+
+	@Override
+	protected double getCellHeight() {
+		return eightDotsEnabled?12.5d:10d;
 	}
 
 	@Override
