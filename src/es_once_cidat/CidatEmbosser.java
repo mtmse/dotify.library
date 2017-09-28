@@ -56,7 +56,6 @@ public abstract class CidatEmbosser extends AbstractEmbosser {
 	private double minPageHeight = 50d;
 
 	protected boolean duplexEnabled = true;
-	protected boolean eightDotsEnabled = false;
 
 	public CidatEmbosser(TableCatalogService service, EmbosserType props) {
 
@@ -96,7 +95,7 @@ public abstract class CidatEmbosser extends AbstractEmbosser {
 	 * @return returns cell height, in millimeters
 	 */
 	protected double getCellHeight() {
-		return (eightDotsEnabled?0.5:0.4)*EmbosserTools.INCH_IN_MM;
+		return 0.4*EmbosserTools.INCH_IN_MM;
 	}
 
 	@Override
@@ -166,11 +165,7 @@ public abstract class CidatEmbosser extends AbstractEmbosser {
 	@Override
 	public void setFeature(String key, Object value) {
 
-		if (EmbosserFeatures.TABLE.equals(key)) {
-			super.setFeature(key, value);
-			//eightDotsEnabled = supports8dot() && setTable.newBrailleConverter().supportsEightDot();
-			//setCellHeight((eightDotsEnabled?0.5:0.4)*EmbosserTools.INCH_IN_MM);
-		} else if (EmbosserFeatures.DUPLEX.equals(key) && supportsDuplex()) {
+		if (EmbosserFeatures.DUPLEX.equals(key) && supportsDuplex()) {
 			try {
 				duplexEnabled = (Boolean)value;
 			} catch (ClassCastException e) {

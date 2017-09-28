@@ -71,13 +71,14 @@ public abstract class AbstractEmbosser extends AbstractFactory implements Emboss
 	}
 
 	/**
-	 * Gets cell width, in millimeters
+	 * Gets cell width (2 x the horizontal dot-to-dot distance), in millimeters.
 	 * @return returns cell width, in millimeters
 	 */
 	protected abstract double getCellWidth();
 
 	/**
-	 * Gets cell height, in millimeters
+	 * Gets cell height (4 x the vertical dot-to-dot distance), in millimeters.
+	 * This value should not include any line spacing.
 	 * @return returns cell height, in millimeters
 	 */
 	protected abstract double getCellHeight();

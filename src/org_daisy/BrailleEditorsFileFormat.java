@@ -54,7 +54,6 @@ public class BrailleEditorsFileFormat extends AbstractFactory implements FileFor
 	private final Collection<String> supportedTableIds = new ArrayList<>();
 
 	private final boolean duplexEnabled = false;
-	private final boolean eightDotsEnabled = false;
 
 	public BrailleEditorsFileFormat(FileType type, TableCatalogService tableCatalog) {
 		super(type.getDisplayName(), type.getDescription(), type.getIdentifier());

@@ -170,7 +170,7 @@ public final class SimpleEmbosserProperties implements EmbosserWriterProperties 
 	}
 
 	/**
-	 * Gets the cell height, in millimeters
+	 * Gets the cell height (4 x the vertical dot-to-dot distance), in millimeters
 	 * @return returns the cell height, in millimeters
 	 */
 	public double getCellHeight() {

@@ -89,7 +89,7 @@ public class ImpactoEmbosser extends CidatEmbosser {
 
 		try {
 
-			byte[] header = getImpactoHeader(duplexEnabled, eightDotsEnabled);
+			byte[] header = getImpactoHeader(duplexEnabled, false);
 			byte[] footer = new byte[]{0x1b,0x54};
 
 			ConfigurableEmbosser.Builder b = new ConfigurableEmbosser.Builder(os, setTable.newBrailleConverter())

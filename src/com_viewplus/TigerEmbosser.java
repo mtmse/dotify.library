@@ -61,7 +61,6 @@ public class TigerEmbosser extends AbstractEmbosser {
 	private double minPageHeight = 50d;
 
 	private boolean duplexEnabled = false;
-	private boolean eightDotsEnabled = false;
 
 	private static final TableFilter tableFilter;
 	private static final String table6dot = "org.daisy.braille.impl.table.DefaultTableProvider.TableType.EN_US";
@@ -137,7 +136,6 @@ public class TigerEmbosser extends AbstractEmbosser {
 
 	@Override
 	protected double getCellHeight() {
-		//setCellHeight((eightDotsEnabled?0.x:0.4)*EmbosserTools.INCH_IN_MM);
 		return 0.4*EmbosserTools.INCH_IN_MM;
 	}
 
@@ -240,7 +238,7 @@ public class TigerEmbosser extends AbstractEmbosser {
 
 		try {
 
-			byte[] header = getHeader(duplexEnabled, eightDotsEnabled);
+			byte[] header = getHeader(duplexEnabled, false);
 			byte[] footer = new byte[0];
 
 			ConfigurableEmbosser.Builder b = new ConfigurableEmbosser.Builder(os, setTable.newBrailleConverter())
@@ -306,15 +304,6 @@ public class TigerEmbosser extends AbstractEmbosser {
 		//      header.append((char)0x1b); header.append("H@");                             // Standard Ink text quality
 
 		return header.toString().getBytes();
-	}
-
-	@Override
-	public void setFeature(String key, Object value) {
-		super.setFeature(key, value);        
-		if (EmbosserFeatures.TABLE.equals(key)) {
-			//eightDotsEnabled = supports8dot() && setTable.newBrailleConverter().supportsEightDot();
-			//setCellHeight((eightDotsEnabled?0.x:0.4)*EmbosserTools.INCH_IN_MM);
-		}
 	}
 
 	@Override

@@ -62,7 +62,6 @@ public abstract class IndexEmbosser extends AbstractEmbosser {
 	protected boolean zFoldingEnabled = false;
 	protected boolean saddleStitchEnabled = false;
 	protected boolean duplexEnabled = false;
-	protected boolean eightDotsEnabled = false;
 
 	protected int maxNumberOfCopies = 1;
 
@@ -176,7 +175,7 @@ public abstract class IndexEmbosser extends AbstractEmbosser {
 
 	@Override
 	protected double getCellHeight() {
-		return eightDotsEnabled?12.5d:10d;
+		return 10d;
 	}
 
 	@Override
@@ -363,11 +362,7 @@ public abstract class IndexEmbosser extends AbstractEmbosser {
 	@Override
 	public void setFeature(String key, Object value) {
 
-		if (EmbosserFeatures.TABLE.equals(key)) {
-			super.setFeature(key, value);
-			//eightDotsEnabled = supports8dot() && setTable.newBrailleConverter().supportsEightDot();
-			//setCellHeight(eightDotsEnabled?12.5d:10d);
-		} else if (EmbosserFeatures.NUMBER_OF_COPIES.equals(key) && maxNumberOfCopies > 1) {
+		if (EmbosserFeatures.NUMBER_OF_COPIES.equals(key) && maxNumberOfCopies > 1) {
 			try {
 				int copies = (Integer)value;
 				if (copies < 1 || copies > maxNumberOfCopies) {

@@ -116,7 +116,7 @@ public class IndexV2Embosser extends IndexEmbosser {
 		//    throw new IllegalArgumentException(new UnsupportedPaperException("Number of pages = " + pageCount +  "; cannot exceed 200 when in magazine style mode"));
 		//}
 
-		byte[] header = getIndexV2Header(cellsInWidth);
+		byte[] header = getIndexV2Header(cellsInWidth, false);
 		byte[] footer = new byte[]{0x1a};
 
 		SimpleEmbosserProperties props =
@@ -125,25 +125,16 @@ public class IndexV2Embosser extends IndexEmbosser {
 				.supportsAligning(supportsAligning())
 				.build();
 
-		if (eightDotsEnabled) {
-			return new IndexTransparentEmbosserWriter(os,
-					setTable.newBrailleConverter(),
-					true,
-					header,
-					footer,
-					props);
-		} else {
-			return new ConfigurableEmbosser.Builder(os, setTable.newBrailleConverter())
-					.breaks(new StandardLineBreaks(StandardLineBreaks.Type.DOS))
-					.padNewline(ConfigurableEmbosser.Padding.NONE)
-					.footer(footer)
-					.embosserProperties(props)
-					.header(header)
-					.build();
-		}
+		return new ConfigurableEmbosser.Builder(os, setTable.newBrailleConverter())
+				.breaks(new StandardLineBreaks(StandardLineBreaks.Type.DOS))
+				.padNewline(ConfigurableEmbosser.Padding.NONE)
+				.footer(footer)
+				.embosserProperties(props)
+				.header(header)
+				.build();
 	}
 
-	private byte[] getIndexV2Header(int cellsInWidth) {
+	private byte[] getIndexV2Header(int cellsInWidth, boolean eightDots) {
 
 		StringBuffer header = new StringBuffer();
 
@@ -152,7 +143,7 @@ public class IndexV2Embosser extends IndexEmbosser {
 		header.append((char)0x02);
 		header.append("0,");                                    // 0: US table
 		header.append("0,");                                    // 1: Type of braille code    = Computer
-		header.append(eightDotsEnabled?'1':'0');                // 2: 6/8 dot braille
+		header.append(eightDots?'1':'0');                       // 2: 6/8 dot braille
 		header.append(",0,");                                   // 3: Capital prefix          = off
 		header.append("x,");                                    // 4: Baud rate
 		header.append("x,");                                    // 5: Number of data bits

@@ -89,7 +89,6 @@ public class Interpoint55Embosser extends AbstractEmbosser {
 
 	private boolean saddleStitchEnabled = false;
 	private boolean duplexEnabled = true;
-	private boolean eightDotsEnabled = false;
 	private int maxPagesInQuire = 0;                  // 0 == no quires
 	private int numberOfCopies = 1;
 
@@ -107,7 +106,7 @@ public class Interpoint55Embosser extends AbstractEmbosser {
 
 	@Override
 	protected double getCellHeight() {
-		return eightDotsEnabled?12.5d:10d;
+		return 10d;
 	}
 
 	@Override
@@ -288,10 +287,7 @@ public class Interpoint55Embosser extends AbstractEmbosser {
 	@Override
 	public void setFeature(String key, Object value) {
 
-		if (EmbosserFeatures.TABLE.equals(key)) {
-			super.setFeature(key, value);
-			eightDotsEnabled = supports8dot() && setTable.newBrailleConverter().supportsEightDot();
-		} else if (EmbosserFeatures.SADDLE_STITCH.equals(key)) {
+		if (EmbosserFeatures.SADDLE_STITCH.equals(key)) {
 			try {
 				saddleStitchEnabled = (Boolean)value;
 				duplexEnabled = duplexEnabled || saddleStitchEnabled;

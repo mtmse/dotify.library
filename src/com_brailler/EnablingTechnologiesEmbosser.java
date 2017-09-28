@@ -78,7 +78,6 @@ public abstract class EnablingTechnologiesEmbosser extends AbstractEmbosser {
 	private int maxMarginBottom = 0;
 
 	protected boolean duplexEnabled = false;
-	protected boolean eightDotsEnabled = false;
 
 	private static final TableFilter tableFilter;
 	private static final String table6dot = "org.daisy.braille.impl.table.DefaultTableProvider.TableType.EN_US";
@@ -166,7 +165,7 @@ public abstract class EnablingTechnologiesEmbosser extends AbstractEmbosser {
 
 	@Override
 	protected double getCellHeight() {
-		return (eightDotsEnabled?0.6:0.4)*EmbosserTools.INCH_IN_MM;
+		return 0.4*EmbosserTools.INCH_IN_MM;
 	}
 
 	@Override
@@ -289,15 +288,6 @@ public abstract class EnablingTechnologiesEmbosser extends AbstractEmbosser {
 		header.append(new char[]{0x1b,0x34}); header.append((char)topOffFormOffset);            // Top of form offset
 
 		return header.toString().getBytes();
-	}
-
-	@Override
-	public void setFeature(String key, Object value) {
-		super.setFeature(key, value);            
-		if (EmbosserFeatures.TABLE.equals(key)) {
-			//eightDotsEnabled = supports8dot() && setTable.newBrailleConverter().supportsEightDot();
-			//setCellHeight((eightDotsEnabled?0.6:0.4)*EmbosserTools.INCH_IN_MM);
-		}
 	}
 
 	@Override

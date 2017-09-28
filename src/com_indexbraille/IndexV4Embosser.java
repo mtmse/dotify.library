@@ -134,22 +134,13 @@ public class IndexV4Embosser extends IndexEmbosser {
 				.supportsAligning(supportsAligning())
 				.build();
 
-		if (eightDotsEnabled) {
-			return new IndexTransparentEmbosserWriter(os,
-					setTable.newBrailleConverter(),
-					true,
-					header,
-					footer,
-					props);
-		} else {
-			return new ConfigurableEmbosser.Builder(os, setTable.newBrailleConverter())
-					.breaks(new StandardLineBreaks(StandardLineBreaks.Type.DOS))
-					.padNewline(ConfigurableEmbosser.Padding.NONE)
-					.footer(footer)
-					.embosserProperties(props)
-					.header(header)
-					.build();
-		}
+		return new ConfigurableEmbosser.Builder(os, setTable.newBrailleConverter())
+				.breaks(new StandardLineBreaks(StandardLineBreaks.Type.DOS))
+				.padNewline(ConfigurableEmbosser.Padding.NONE)
+				.footer(footer)
+				.embosserProperties(props)
+				.header(header)
+				.build();
 	}
 
 	private byte[] getIndexV4Header() {

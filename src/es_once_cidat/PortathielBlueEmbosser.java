@@ -90,7 +90,7 @@ public class PortathielBlueEmbosser extends CidatEmbosser {
 		try {
 
 			boolean transparentMode = (setTable.getIdentifier().equals(transparentTable));
-			byte[] header = getPortathielHeader(duplexEnabled, eightDotsEnabled, transparentMode);
+			byte[] header = getPortathielHeader(duplexEnabled, false, transparentMode);
 
 			ConfigurableEmbosser.Builder b = new ConfigurableEmbosser.Builder(os, setTable.newBrailleConverter())
 					.padNewline(ConfigurableEmbosser.Padding.NONE)
