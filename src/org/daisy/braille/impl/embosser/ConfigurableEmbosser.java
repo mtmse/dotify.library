@@ -62,7 +62,7 @@ public class ConfigurableEmbosser extends AbstractEmbosserWriter {
 		private byte[] footer = new byte[0];
 		private boolean fillSheet = false;
 		private boolean lineFeedOnEmptySheet = false;
-		SimpleEmbosserProperties props = SimpleEmbosserProperties.with(Integer.MAX_VALUE, Integer.MAX_VALUE).build();
+		InternalEmbosserWriterProperties props = SimpleEmbosserProperties.with(Integer.MAX_VALUE, Integer.MAX_VALUE).build();
 
 		/**
 		 * Creates a new builder with the suppled output stream and braille converter.
@@ -79,7 +79,7 @@ public class ConfigurableEmbosser extends AbstractEmbosserWriter {
 		 * @param props the embosser properties to use
 		 * @return returns this object
 		 */
-		public Builder embosserProperties(SimpleEmbosserProperties props) {
+		public Builder embosserProperties(InternalEmbosserWriterProperties props) {
 			this.props = props;
 			return this;
 		}

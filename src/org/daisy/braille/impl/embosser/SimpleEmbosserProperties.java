@@ -23,7 +23,7 @@ import org.daisy.braille.utils.api.embosser.EmbosserWriterProperties;
  * Provides an immutable implementation of {@link EmbosserWriterProperties}.
  * @author Joel Håkansson
  */
-public final class SimpleEmbosserProperties implements EmbosserWriterProperties {
+public final class SimpleEmbosserProperties implements InternalEmbosserWriterProperties {
 	private final double cellWidth;
 	private final double cellHeight;
 	private final boolean supportsDuplex;
@@ -128,6 +128,7 @@ public final class SimpleEmbosserProperties implements EmbosserWriterProperties 
 		return supportsAligning;
 	}
 
+	@Override
 	public boolean supportsDuplex() {
 		return supportsDuplex;
 	}
@@ -146,5 +147,10 @@ public final class SimpleEmbosserProperties implements EmbosserWriterProperties 
 	 */
 	public double getCellHeight() {
 		return cellHeight;
+	}
+
+	@Override
+	public int getMaxRowCount() {
+		return maxHeight;
 	}
 }

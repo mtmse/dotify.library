@@ -58,7 +58,7 @@ public class BufferedVolumeEmbosser extends AbstractEmbosserWriter {
 		private final Device pd;
 		private final BrailleConverter bt;
 		private final VolumeWriter vw;
-		private final SimpleEmbosserProperties ep;
+		private final InternalEmbosserWriterProperties ep;
 
 		// optional params
 		private LineBreaks breaks = new StandardLineBreaks();
@@ -72,7 +72,7 @@ public class BufferedVolumeEmbosser extends AbstractEmbosserWriter {
 		 * @param vw the VolumeWriter to use
 		 * @param ep the EmbosserWriterProperties to use
 		 */
-		public Builder(Device pd, BrailleConverter bt, VolumeWriter vw, SimpleEmbosserProperties ep) {
+		public Builder(Device pd, BrailleConverter bt, VolumeWriter vw, InternalEmbosserWriterProperties ep) {
 			this.pd = pd;
 			this.bt = bt;
 			this.vw = vw;

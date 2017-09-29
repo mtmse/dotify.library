@@ -28,7 +28,6 @@ import org.daisy.braille.impl.embosser.EmbosserTools;
 import org.daisy.braille.impl.embosser.FileToDeviceEmbosserWriter;
 import org.daisy.braille.impl.embosser.SimpleEmbosserProperties;
 import org.daisy.braille.utils.api.embosser.Device;
-import org.daisy.braille.utils.api.embosser.EmbosserFeatures;
 import org.daisy.braille.utils.api.embosser.EmbosserWriter;
 import org.daisy.braille.utils.api.embosser.PrintPage;
 import org.daisy.braille.utils.api.factory.FactoryProperties;

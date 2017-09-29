@@ -23,6 +23,7 @@ import java.io.UnsupportedEncodingException;
 import org.daisy.braille.utils.api.embosser.Contract;
 import org.daisy.braille.utils.api.embosser.ContractNotSupportedException;
 import org.daisy.braille.utils.api.embosser.EmbosserWriter;
+import org.daisy.braille.utils.api.embosser.EmbosserWriterProperties;
 import org.daisy.braille.utils.api.embosser.LineBreaks;
 
 /**
@@ -60,7 +61,7 @@ public abstract class AbstractEmbosserWriter implements EmbosserWriter {
 	private int currentPage;
 	private int charsOnRow;
 	private int rowsOnPage;
-	protected SimpleEmbosserProperties props;
+	protected InternalEmbosserWriterProperties props;
 	protected PageBreaks pagebreaks = new StandardPageBreaks();
 
 	/**
@@ -81,7 +82,7 @@ public abstract class AbstractEmbosserWriter implements EmbosserWriter {
 	 */
 	protected abstract void addAll(byte[] b) throws IOException;
 
-	protected void init(SimpleEmbosserProperties props) {
+	protected void init(InternalEmbosserWriterProperties props) {
 		this.props = props;
 		isOpen = false;
 		isClosed = false;
@@ -178,7 +179,7 @@ public abstract class AbstractEmbosserWriter implements EmbosserWriter {
 	 */
 	protected void formFeed() throws IOException {
 		rowsOnPage++;
-		if (rowsOnPage>props.getMaxHeight()) {
+		if (rowsOnPage>props.getMaxRowCount()) {
 			throw new IOException("The maximum number of rows on a page was exceeded (page is too short)");
 		}
 		switch (getPaddingStyle()) {

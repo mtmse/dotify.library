@@ -24,8 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.daisy.braille.impl.embosser.AbstractEmbosserWriter;
-import org.daisy.braille.impl.embosser.SimpleEmbosserProperties;
-import org.daisy.braille.utils.api.embosser.EmbosserWriterProperties;
+import org.daisy.braille.impl.embosser.InternalEmbosserWriterProperties;
 import org.daisy.braille.utils.api.embosser.LineBreaks;
 import org.daisy.braille.utils.api.embosser.StandardLineBreaks;
 import org.daisy.braille.utils.api.table.BrailleConverter;
@@ -51,7 +50,7 @@ public class IndexTransparentEmbosserWriter extends AbstractEmbosserWriter {
 	 * @param footer the footer
 	 * @param props the properties
 	 */
-	public IndexTransparentEmbosserWriter(OutputStream os, byte[] header, byte[] footer, SimpleEmbosserProperties props) {
+	public IndexTransparentEmbosserWriter(OutputStream os, byte[] header, byte[] footer, InternalEmbosserWriterProperties props) {
 		this(os, null, true, header, footer, props);
 	}
 
@@ -64,7 +63,7 @@ public class IndexTransparentEmbosserWriter extends AbstractEmbosserWriter {
 	 * @param footer the footer
 	 * @param props the properties
 	 */
-	public IndexTransparentEmbosserWriter(OutputStream os, BrailleConverter bc, boolean eightDot, byte[] header, byte[] footer, SimpleEmbosserProperties props) {
+	public IndexTransparentEmbosserWriter(OutputStream os, BrailleConverter bc, boolean eightDot, byte[] header, byte[] footer, InternalEmbosserWriterProperties props) {
 		init(props);
 		if (header != null) { this.header = header; }
 		else { this.header = new byte[0]; }
