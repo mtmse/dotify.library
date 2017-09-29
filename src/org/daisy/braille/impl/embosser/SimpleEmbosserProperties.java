@@ -119,19 +119,8 @@ public final class SimpleEmbosserProperties implements EmbosserWriterProperties 
 	}
 
 	@Override
-	public int getMaxHeight() {
-		return maxHeight;
-	}
-
-	@Override
 	public int getMaxWidth() {
 		return maxWidth;
-	}
-
-	@Override
-	@Deprecated
-	public boolean supports8dot() {
-		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -141,24 +130,6 @@ public final class SimpleEmbosserProperties implements EmbosserWriterProperties 
 
 	public boolean supportsDuplex() {
 		return supportsDuplex;
-	}
-
-	@Override
-	@Deprecated
-	public boolean supportsVolumes() {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	@Deprecated
-	public boolean supportsZFolding() {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	@Deprecated
-	public boolean supportsPrintMode(PrintMode mode) {
-		throw new UnsupportedOperationException();
 	}
 
 	/**

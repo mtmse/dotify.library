@@ -239,49 +239,13 @@ public abstract class AbstractEmbosserWriter implements EmbosserWriter {
 	}
 
 	@Override
-	@Deprecated
-	public int getMaxHeight() {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
 	public int getMaxWidth() {
 		return props.getMaxWidth();
 	}
 
 	@Override
-	@Deprecated
-	public boolean supports8dot() {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
 	public boolean supportsAligning() {
 		return props.supportsAligning();
-	}
-
-	@Override
-	@Deprecated
-	public boolean supportsDuplex() {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	@Deprecated
-	public boolean supportsVolumes() {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	@Deprecated
-	public boolean supportsZFolding() {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	@Deprecated
-	public boolean supportsPrintMode(PrintMode mode) {
-		throw new UnsupportedOperationException();
 	}
 
 }
