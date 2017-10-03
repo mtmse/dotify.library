@@ -66,14 +66,14 @@ public abstract class IndexEmbosser extends AbstractEmbosser {
 	protected int maxNumberOfCopies = 1;
 
 	protected int marginInner = 0;
-	protected int marginOuter = 0;
-	protected int marginTop = 0;
-	protected int marginBottom = 0;
+	protected final int marginOuter = 0;
+	protected final int marginTop = 0;
+	protected final int marginBottom = 0;
 
 	protected int minMarginInner = 0;
-	protected int minMarginOuter = 0;
-	protected int minMarginTop = 0;
-	protected int minMarginBottom = 0;
+	protected final int minMarginOuter = 0;
+	protected final int minMarginTop = 0;
+	protected final int minMarginBottom = 0;
 
 	protected int maxMarginInner = 0;
 	protected int maxMarginOuter = 0;
@@ -440,11 +440,6 @@ public abstract class IndexEmbosser extends AbstractEmbosser {
 		double cellWidth = getCellWidth();
 		double cellHeight = getCellHeight();
 
-		/* marginInner =  Math.min(maxMarginInner,  Math.max(minMarginInner,  marginInner));
-        marginOuter =  Math.min(maxMarginOuter,  Math.max(minMarginOuter,  marginOuter));
-        marginTop =    Math.min(maxMarginTop,    Math.max(minMarginTop,    marginTop));
-        marginBottom = Math.min(maxMarginBottom, Math.max(minMarginBottom, marginBottom)); */
-
 		return new Area(maxArea.getWidth() - (marginInner + marginOuter) * cellWidth,
 				maxArea.getHeight() - (marginTop + marginBottom) * cellHeight,
 				maxArea.getOffsetX() + marginInner * cellWidth,
@@ -458,9 +453,13 @@ public abstract class IndexEmbosser extends AbstractEmbosser {
 		double cellWidth = getCellWidth();
 		double cellHeight = getCellHeight();
 		double lengthAcrossFeed = printPage.getLengthAcrossFeed().asMillimeter();
-
-		double printablePageWidth = printPage.getWidth();
-		double printablePageHeight = printPage.getHeight();
+ 
+		double printablePageWidth = printPage.getWidth() 
+				- type.getUnprintable().getLeft().asMillimeter()
+				- type.getUnprintable().getRight().asMillimeter();
+		double printablePageHeight = printPage.getHeight() 
+				- type.getUnprintable().getTop().asMillimeter()
+				- type.getUnprintable().getBottom().asMillimeter();
 
 		switch (type) {
 		case INDEX_4X4_PRO_V2:
@@ -487,8 +486,8 @@ public abstract class IndexEmbosser extends AbstractEmbosser {
 		printablePageWidth  = Math.min(printablePageWidth,  maxCellsInWidth  * cellWidth);
 		printablePageHeight = Math.min(printablePageHeight, maxLinesInHeight * cellHeight);
 
-		double unprintableInner = 0;
-		double unprintableTop = 0;
+		double unprintableInner = type.getUnprintable().getLeft().asMillimeter();
+		double unprintableTop = type.getUnprintable().getTop().asMillimeter();
 
 		switch (type) {
 		case INDEX_BASIC_S_V3:
