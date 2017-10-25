@@ -14,4 +14,13 @@ public interface Supplements<T> {
 	 * @return returns the unit, if it exists, null otherwise
 	 */
 	public T get(String id);
+	
+	/**
+	 * Gets the overhead associated with adding at least one supplement to the result.
+	 * 
+	 * @return returns the overhead associated with adding at least one supplement.
+	 */
+	public default double getOverhead() {
+		return 0;
+	}
 }

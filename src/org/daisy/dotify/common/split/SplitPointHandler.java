@@ -454,6 +454,7 @@ public class SplitPointHandler<T extends SplitPointUnit> {
 		float ret = 0;
 		Set<String> ids = new HashSet<>();
 		Supplements<T> map = data.getSupplements();
+		boolean hasSupplements = false;
 		// we check up to the limit and beyond by one element, to make sure that we check enough units
 		for (int i=0; data.hasElementAt(i) && ret<=limit; i++) {
 			T unit = data.get(i);
@@ -463,6 +464,10 @@ public class SplitPointHandler<T extends SplitPointUnit> {
 					if (ids.add(id)) { //id didn't already exist in the list
 						T item = map.get(id);
 						if (item!=null) {
+							if (!hasSupplements) {
+								hasSupplements = true;
+								ret += map.getOverhead();
+							}
 							ret += item.getUnitSize();
 						}
 					}

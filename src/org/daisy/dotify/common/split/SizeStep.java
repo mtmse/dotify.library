@@ -10,11 +10,13 @@ class SizeStep<T extends SplitPointUnit> implements StepForward<T> {
 	private final Set<String> ids;
 	private final float breakPoint;
 	private T lastUnit;
+	private boolean hasSupplements;
 	
 	SizeStep(float breakPoint, Supplements<T> map) {
 		this.breakPoint = breakPoint;
 		this.map = map;
 		this.ids = new HashSet<>();
+		this.hasSupplements = false;
 	}
 
 	@Override
@@ -29,6 +31,10 @@ class SizeStep<T extends SplitPointUnit> implements StepForward<T> {
 				if (ids.add(id)) { //id didn't already exist in the list
 					T item = map.get(id);
 					if (item!=null) {
+						if (!hasSupplements) {
+							hasSupplements = true;
+							size+=map.getOverhead();
+						}
 						size+=item.getUnitSize();
 					}
 				}
@@ -50,10 +56,15 @@ class SizeStep<T extends SplitPointUnit> implements StepForward<T> {
 		float ret = 0;
 		List<String> idList = b.getSupplementaryIDs();
 		if (idList!=null) {
+			boolean hasAddedOverhead = hasSupplements; 
 			for (String id : idList) {
 				if (!ids.contains(id)) { //id didn't already exist in the list
 					T item = map.get(id);
 					if (item!=null) {
+						if (!hasAddedOverhead) {
+							hasAddedOverhead = true;
+							ret+=map.getOverhead();
+						}
 						ret+=item.getUnitSize();
 					}
 				}

@@ -275,6 +275,85 @@ public class SplitPointHandlerTest {
 	}
 	
 	@Test
+	public void testSupplementary_02() {
+		final DummySplitPoint s1 = new DummySplitPoint.Builder().breakable(true).skippable(false).size(1).build();
+		final DummySplitPoint s2 = new DummySplitPoint.Builder().breakable(true).skippable(false).size(1).build();
+		final DummySplitPoint s3 = new DummySplitPoint.Builder().breakable(true).skippable(false).size(1).build();
+		Supplements<DummySplitPoint> supps = new Supplements<DummySplitPoint>(){
+
+			@Override
+			public DummySplitPoint get(String id) {
+				switch (id) {
+					case "s1": return s1;
+					case "s2": return s2;
+					case "s3": return s3;
+					default: return null;
+				}
+			}
+
+			@Override
+			public double getOverhead() {
+				return 1;
+			}
+
+		};
+		
+		DummySplitPoint c1 = new DummySplitPoint.Builder().breakable(true).skippable(false).size(1).supplementID("s1").build();
+		DummySplitPoint c2 = new DummySplitPoint.Builder().breakable(true).skippable(false).size(1).build();
+		DummySplitPoint c3 = new DummySplitPoint.Builder().breakable(true).skippable(false).size(1).supplementID("s1").supplementID("s2").build();
+		DummySplitPoint c4 = new DummySplitPoint.Builder().breakable(true).skippable(false).size(1).build();
+		DummySplitPoint c5 = new DummySplitPoint.Builder().breakable(true).skippable(false).size(1).build();
+		SplitPointHandler<DummySplitPoint> bph = new SplitPointHandler<>();
+
+		SplitPointDataSource<DummySplitPoint> spd = new SplitPointDataList<>(Arrays.asList(c1, c2, c3, c4, c5), supps);
+		SplitPoint<DummySplitPoint> bp = bph.split(6, spd);
+		assertEquals(Arrays.asList(c1, c2, c3), bp.getHead());
+		assertEquals(Arrays.asList(c4, c5), bp.getTail().getRemaining());
+		assertEquals(Arrays.asList(s1, s2), bp.getSupplements());
+	}
+	
+	@Test
+	public void testSupplementary_03() {
+		final DummySplitPoint s1 = new DummySplitPoint.Builder().breakable(true).skippable(false).size(1).build();
+		final DummySplitPoint s2 = new DummySplitPoint.Builder().breakable(true).skippable(false).size(1).build();
+		final DummySplitPoint s3 = new DummySplitPoint.Builder().breakable(true).skippable(false).size(1).build();
+		Supplements<DummySplitPoint> supps = new Supplements<DummySplitPoint>(){
+
+			@Override
+			public DummySplitPoint get(String id) {
+				switch (id) {
+					case "s1": return s1;
+					case "s2": return s2;
+					case "s3": return s3;
+					default: return null;
+				}
+			}
+
+			@Override
+			public double getOverhead() {
+				return 1;
+			}
+
+		};
+		
+		DummySplitPoint c1 = new DummySplitPoint.Builder().breakable(true).skippable(false).size(1).build();
+		DummySplitPoint c2 = new DummySplitPoint.Builder().breakable(true).skippable(false).size(1).build();
+		DummySplitPoint c3 = new DummySplitPoint.Builder().breakable(true).skippable(false).size(1).build();
+		DummySplitPoint c4 = new DummySplitPoint.Builder().breakable(true).skippable(false).size(1).build();
+		DummySplitPoint c5 = new DummySplitPoint.Builder().breakable(true).skippable(false).size(1).build();
+		DummySplitPoint c6 = new DummySplitPoint.Builder().breakable(true).skippable(false).size(1).build();
+		DummySplitPoint c7 = new DummySplitPoint.Builder().breakable(true).skippable(false).size(1).supplementID("s1").supplementID("s2").build();
+		SplitPointHandler<DummySplitPoint> bph = new SplitPointHandler<>();
+
+		SplitPointDataSource<DummySplitPoint> spd = new SplitPointDataList<>(Arrays.asList(c1, c2, c3, c4, c5, c6, c7), supps);
+		SplitPoint<DummySplitPoint> bp = bph.split(6, spd);
+		assertEquals(Arrays.asList(c1, c2, c3, c4, c5, c6), bp.getHead());
+		assertEquals(Arrays.asList(c7), bp.getTail().getRemaining());
+		assertEquals(Collections.emptyList(), bp.getSupplements());
+	}
+
+	
+	@Test
 	public void testTotalSize_01() {
 		final DummySplitPoint s1 = new DummySplitPoint.Builder().breakable(true).skippable(false).size(1).minSize(0.5f).build();
 		final DummySplitPoint s2 = new DummySplitPoint.Builder().breakable(true).skippable(false).size(1).minSize(0.5f).build();
