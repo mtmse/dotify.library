@@ -50,13 +50,14 @@ public class CidatTableProvider implements TableProvider {
 		PORTATHIEL_TRANSPARENT_6DOT("Transparent mode", "Portathiel 6-dot in transparent mode"),
 		//PORTATHIEL_TRANSPARENT_8DOT
 		;
+		static final String IDENTIFIER_PREFIX = "es_once_cidat.CidatTableProvider.TableType.";
 		private final String name;
 		private final String desc;
 		private final String identifier;
 		TableType(String name, String desc) {
 			this.name = name;
 			this.desc = desc;
-			this.identifier = this.getClass().getCanonicalName() + "." + this.toString();
+			this.identifier = IDENTIFIER_PREFIX + this.toString();
 		}
 		@Override
 		public String getIdentifier() {

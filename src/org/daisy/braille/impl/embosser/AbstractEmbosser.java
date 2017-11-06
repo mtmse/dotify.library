@@ -58,7 +58,7 @@ public abstract class AbstractEmbosser extends AbstractFactory implements Emboss
 		this.props = new HashMap<>();
 		this.settings = new HashMap<>();
 		this.tableCatalogService = service;
-		defaultTable = service.newTable(DefaultTableProvider.class.getCanonicalName() + ".TableType.EN_US");
+		defaultTable = service.newTable(DefaultTableProvider.TableType.EN_US.getIdentifier());
 		setTable = defaultTable;
 	}
 

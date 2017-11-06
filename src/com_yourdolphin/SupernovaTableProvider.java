@@ -43,7 +43,7 @@ public class SupernovaTableProvider implements TableProvider {
 		TableType(String name, String desc) {
 			this.name = name;
 			this.desc = desc;
-			this.identifier = this.getClass().getCanonicalName() + "." + this.toString();
+			this.identifier = "com_yourdolphin.SupernovaTableProvider.TableType." + this.toString();
 		}
 		@Override
 		public String getIdentifier() {

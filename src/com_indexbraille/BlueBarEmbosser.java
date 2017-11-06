@@ -19,13 +19,12 @@ package com_indexbraille;
 
 import java.io.OutputStream;
 
+import org.daisy.braille.impl.embosser.SimpleEmbosserProperties;
 import org.daisy.braille.utils.api.embosser.EmbosserWriter;
-import org.daisy.braille.utils.api.embosser.EmbosserWriterProperties;
 import org.daisy.braille.utils.api.factory.FactoryProperties;
 import org.daisy.braille.utils.api.paper.PageFormat;
 import org.daisy.braille.utils.api.table.TableCatalogService;
 import org.daisy.braille.utils.api.table.TableFilter;
-import org.daisy.braille.impl.embosser.SimpleEmbosserProperties;
 
 import com_indexbraille.IndexEmbosserProvider.EmbosserType;
 
@@ -36,7 +35,7 @@ public class BlueBarEmbosser extends IndexEmbosser {
 	 */
 	private static final long serialVersionUID = -2619451994009139923L;
 	private static final TableFilter tableFilter;
-	private static final String table6dot = IndexTableProvider.class.getCanonicalName() + ".TableType.INDEX_TRANSPARENT_6DOT";
+	private static final String table6dot = IndexTableProvider.TableType.IDENTIFIER_PREFIX + "INDEX_TRANSPARENT_6DOT";
 
 	static {
 		tableFilter = new TableFilter() {

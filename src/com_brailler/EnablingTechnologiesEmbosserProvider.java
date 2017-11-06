@@ -62,7 +62,7 @@ public class EnablingTechnologiesEmbosserProvider implements EmbosserProvider {
 		EmbosserType (String name, String desc) {
 			this.name = name;
 			this.desc = desc;
-			this.identifier = this.getClass().getCanonicalName() + "." + this.toString();
+			this.identifier = "com_brailler.EnablingTechnologiesEmbosserProvider.EmbosserType." + this.toString();
 		}
 		@Override
 		public String getIdentifier() {

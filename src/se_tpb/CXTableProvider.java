@@ -46,7 +46,7 @@ public class CXTableProvider implements TableProvider {
 		TableType(String name, String desc) {
 			this.name = name;
 			this.desc = desc;
-			this.identifier = this.getClass().getCanonicalName() + "." + this.toString();
+			this.identifier = "se_tpb.CXTableProvider.TableType." + this.toString();
 		}
 		@Override
 		public String getIdentifier() {

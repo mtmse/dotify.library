@@ -53,13 +53,14 @@ public class BrailloTableProvider implements TableProvider {
 		BRAILLO_6DOT_047_01("Braillo NORWAY 6 DOT 047.01", "Compatible with Braillo NORWAY 6 DOT 047.01")
 		// compatible with "Braillo NORWAY 6 DOT 047.01"
 		;
+		static final String IDENTIFIER_PREFIX = "com_braillo.BrailloTableProvider.TableType.";
 		private final String name;
 		private final String desc;
 		private final String identifier;
 		TableType(String name, String desc) {
 			this.name = name;
 			this.desc = desc;
-			this.identifier = this.getClass().getCanonicalName() + "." + this.toString();
+			this.identifier = IDENTIFIER_PREFIX + this.toString();
 		}
 		@Override
 		public String getIdentifier() {

@@ -17,13 +17,11 @@
  */
 package com_braillo;
 
-import org.daisy.braille.utils.api.embosser.EmbosserFeatures;
+import org.daisy.braille.impl.embosser.AbstractEmbosser;
+import org.daisy.braille.impl.table.DefaultTableProvider;
 import org.daisy.braille.utils.api.factory.FactoryProperties;
 import org.daisy.braille.utils.api.table.TableCatalogService;
 import org.daisy.braille.utils.api.table.TableFilter;
-import org.daisy.braille.impl.embosser.AbstractEmbosser;
-import org.daisy.braille.impl.embosser.EmbosserTools;
-import org.daisy.braille.impl.table.DefaultTableProvider;
 
 public abstract class BrailloEmbosser extends AbstractEmbosser {
 	/**
@@ -35,8 +33,8 @@ public abstract class BrailloEmbosser extends AbstractEmbosser {
 		tableFilter = new TableFilter() {
 			@Override
 			public boolean accept(FactoryProperties object) {
-				if (object.getIdentifier().equals(DefaultTableProvider.class.getCanonicalName() + ".TableType.EN_US")) { return true; }
-				if (object.getIdentifier().startsWith(BrailloTableProvider.class.getCanonicalName() + ".TableType.")) { return true; }
+				if (object.getIdentifier().equals(DefaultTableProvider.TableType.EN_US.getIdentifier())) { return true; }
+				if (object.getIdentifier().startsWith(BrailloTableProvider.TableType.IDENTIFIER_PREFIX)) { return true; }
 				return false;
 			}
 		};

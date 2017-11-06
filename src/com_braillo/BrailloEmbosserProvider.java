@@ -56,7 +56,7 @@ public class BrailloEmbosserProvider implements EmbosserProvider {
 		EmbosserType (String name, String desc) {
 			this.name = name;
 			this.desc = desc;
-			this.identifier = this.getClass().getCanonicalName() + "." + this.toString();
+			this.identifier = "com_braillo.BrailloEmbosserProvider.EmbosserType." + this.toString();
 		}
 
 		@Override

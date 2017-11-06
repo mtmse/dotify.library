@@ -48,7 +48,7 @@ public class BrailleEditorsFileFormatProvider implements FileFormatProvider {
 		FileType (String name, String desc) {
 			this.name = name;
 			this.desc = desc;
-			this.identifier = this.getClass().getCanonicalName() + "." + this.toString();
+			this.identifier = "org_daisy.BrailleEditorsFileFormatProvider.FileType." + this.toString();
 		}
 		@Override
 		public String getIdentifier() {

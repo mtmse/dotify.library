@@ -38,7 +38,7 @@ import aQute.bnd.annotation.component.Component;
 @Component
 public class DefaultTableProvider implements TableProvider {
 
-	enum TableType implements FactoryProperties {
+	public enum TableType implements FactoryProperties {
 		EN_US("US", "Commonly used embosser table"), // US computer braille, compatible with
 		// "Braillo USA 6 DOT 001.00"
 		;
@@ -48,7 +48,7 @@ public class DefaultTableProvider implements TableProvider {
 		TableType(String name, String desc) {
 			this.name = name;
 			this.desc = desc;
-			this.identifier = this.getClass().getCanonicalName() + "." + this.toString();
+			this.identifier = "org.daisy.braille.impl.table.DefaultTableProvider.TableType." + this.toString();
 		}
 		@Override
 		public String getIdentifier() {

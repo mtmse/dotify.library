@@ -76,7 +76,7 @@ public class IndexEmbosserProvider implements EmbosserProvider {
 		EmbosserType (String name, String desc, BiFunction<TableCatalogService, EmbosserType, Embosser> instanceCreator, Margin unprintable) {
 			this.name = name;
 			this.desc = desc;
-			this.identifier = this.getClass().getCanonicalName() + "." + this.toString();
+			this.identifier = "com_indexbraille.IndexEmbosserProvider.EmbosserType." + this.toString();
 			this.instanceCreator = instanceCreator;
 			this.unprintable = unprintable;
 		}

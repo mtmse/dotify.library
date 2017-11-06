@@ -48,7 +48,7 @@ public class BrailleEditorsTableProvider implements TableProvider {
 		TableType(String name, String desc) {
 			this.name = name;
 			this.desc = desc;
-			this.identifier = this.getClass().getCanonicalName() + "." + this.toString();
+			this.identifier = "org_daisy.BrailleEditorsTableProvider.TableType." + this.toString();
 		}
 		@Override
 		public String getIdentifier() {

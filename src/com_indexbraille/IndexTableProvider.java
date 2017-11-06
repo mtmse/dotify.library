@@ -44,13 +44,14 @@ public class IndexTableProvider implements TableProvider {
 	enum TableType implements FactoryProperties {
 		INDEX_TRANSPARENT_6DOT("Index transparent 6 dot", "Table for transparent mode, 6 dot"),
 		INDEX_TRANSPARENT_8DOT("Index transparent 8 dot", "Table for transparent mode, 8 dot");
+		static final String IDENTIFIER_PREFIX = "com_indexbraille.IndexTableProvider.TableType.";
 		private final String name;
 		private final String desc;
 		private final String identifier;
 		TableType(String name, String desc) {
 			this.name = name;
 			this.desc = desc;
-			this.identifier = this.getClass().getCanonicalName() + "." + this.toString();
+			this.identifier = IDENTIFIER_PREFIX + this.toString();
 		}
 		@Override
 		public String getIdentifier() {
