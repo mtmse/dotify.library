@@ -5,10 +5,10 @@ Service-Component: *
 	junit.osgi,\
 	dotify.common;version=latest,\
 	dotify.api;version=latest
-Private-Package: org.daisy.dotify.impl.translator,\
+Private-Package: org.daisy.dotify.translator.impl,\
 	org.daisy.dotify.translator,\
-	org.daisy.dotify.impl.translator.sv_SE,\
-	org.daisy.dotify.impl.translator.liblouis
+	org.daisy.dotify.translator.impl.sv_SE,\
+	org.daisy.dotify.translator.impl.liblouis
 Include-Resource: / = src/
 -sources: false
 Import-Package: \
