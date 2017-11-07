@@ -1,4 +1,4 @@
-package com_yourdolphin;
+package org.daisy.braille.utils.impl.provider.yourdolphin;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -7,6 +7,7 @@ import java.nio.charset.Charset;
 
 import org.daisy.braille.utils.api.table.BrailleConstants;
 import org.daisy.braille.utils.api.table.BrailleConverter;
+import org.daisy.braille.utils.impl.provider.yourdolphin.SupernovaTableProvider;
 import org.junit.Test;
 
 @SuppressWarnings("javadoc")
