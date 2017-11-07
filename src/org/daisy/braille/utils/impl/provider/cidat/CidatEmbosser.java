@@ -15,7 +15,7 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-package es_once_cidat;
+package org.daisy.braille.utils.impl.provider.cidat;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -31,11 +31,10 @@ import org.daisy.braille.utils.api.paper.SheetPaper;
 import org.daisy.braille.utils.api.paper.SheetPaperFormat;
 import org.daisy.braille.utils.api.paper.SheetPaperFormat.Orientation;
 import org.daisy.braille.utils.api.table.TableCatalogService;
+import org.daisy.braille.utils.impl.provider.cidat.CidatEmbosserProvider.EmbosserType;
 import org.daisy.braille.utils.impl.tools.embosser.AbstractEmbosser;
 import org.daisy.braille.utils.impl.tools.embosser.EmbosserTools;
 import org.daisy.braille.utils.impl.tools.embosser.FileToDeviceEmbosserWriter;
-
-import es_once_cidat.CidatEmbosserProvider.EmbosserType;
 
 /**
  *

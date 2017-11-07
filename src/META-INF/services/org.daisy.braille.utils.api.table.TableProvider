@@ -2,7 +2,7 @@ org.daisy.braille.utils.impl.tools.table.DefaultTableProvider
 org.daisy.braille.utils.impl.provider.braillo.BrailloTableProvider
 org.daisy.braille.utils.impl.provider.indexbraille.IndexTableProvider
 org.daisy.braille.utils.impl.provider.yourdolphin.SupernovaTableProvider
-es_once_cidat.CidatTableProvider
+org.daisy.braille.utils.impl.provider.cidat.CidatTableProvider
 org_daisy.EmbosserTableProvider
 org_daisy.BrailleEditorsTableProvider
 se_tpb.CXTableProvider

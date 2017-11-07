@@ -15,38 +15,38 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-package es_once_cidat;
+package org.daisy.braille.utils.impl.provider.cidat;
 
-import org.daisy.braille.utils.api.embosser.LineBreaks;
-
+import org.daisy.braille.utils.impl.tools.embosser.PageBreaks;
 
 /**
  *
  * @author Bert Frees
  */
-public class CidatLineBreaks implements LineBreaks {
+public class CidatPageBreaks implements PageBreaks {
 
 	public static enum Type { IMPACTO_TRANSPARENT,
 		PORTATHIEL_TRANSPARENT
 	};
-	private final String newline;
+	private final String newpage;
 
-	public CidatLineBreaks(Type type) {
+	public CidatPageBreaks(Type type) {
 
 		switch (type) {
-		case IMPACTO_TRANSPARENT:
-			newline = "\u001b\n";
-			break;
 		case PORTATHIEL_TRANSPARENT:
-			newline = "\u00cd\u00da";
+			newpage = "\u00c7";
+			break;
+		case IMPACTO_TRANSPARENT:
+			newpage = "\u001b\u000c";
 			break;
 		default:
-			newline = "";
+			newpage = "";
+			break;
 		}
 	}
 
 	@Override
 	public String getString() {
-		return newline;
+		return newpage;
 	}
 }
