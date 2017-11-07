@@ -15,7 +15,7 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-package org_daisy;
+package org.daisy.braille.utils.impl.provider;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,23 +24,22 @@ import java.util.Collections;
 import org.daisy.braille.utils.api.paper.Length;
 import org.daisy.braille.utils.api.paper.Paper;
 import org.daisy.braille.utils.api.paper.PaperProvider;
-import org.daisy.braille.utils.api.paper.SheetPaper;
+import org.daisy.braille.utils.api.paper.TractorPaper;
 
 import aQute.bnd.annotation.component.Component;
 
 @Component
-public class NorthAmericaPaperProvider implements PaperProvider {
+public class TractorPaperProvider implements PaperProvider {
 	public static final double INCH_IN_MM = 25.4;
 	enum PaperSize {
-		LETTER,
-		LEGAL,
-		JUNIOR_LEGAL,
-		LEDGER,
-		TABLOID,
-		W11500THOU_X_H11INCH;
+		W210MM_X_H10INCH, 
+		W210MM_X_H11INCH, 
+		W210MM_X_H12INCH,
+		W240MM_X_H12INCH,
+		W280MM_X_H12INCH;
 		private final String identifier;
 		PaperSize() {
-			this.identifier = "org_daisy.NorthAmericaPaperProvider.PaperSize." + this.toString();
+			this.identifier = "org_daisy.TractorPaperProvider.PaperSize." + this.toString();
 		}
 		String getIdentifier() {
 			return identifier;
@@ -49,26 +48,23 @@ public class NorthAmericaPaperProvider implements PaperProvider {
 
 	private final Collection<Paper> papers;
 
-	public NorthAmericaPaperProvider() {
+	public TractorPaperProvider() {
 		ArrayList<Paper> tmp = new ArrayList<Paper>();
-		tmp.add(new SheetPaper("Letter", "8.5 inch x 11 inch", PaperSize.LETTER.getIdentifier(),
-				Length.newInchValue(8.5), 
+		tmp.add(new TractorPaper("210 mm x 10 inch", "Tractor paper: 210 mm wide (excluding paper guides)", PaperSize.W210MM_X_H10INCH.getIdentifier(), 
+				Length.newMillimeterValue(210d), 
+				Length.newInchValue(10)));
+		tmp.add(new TractorPaper("210 mm x 11 inch", "Tractor paper: 210 mm wide (excluding paper guides)", PaperSize.W210MM_X_H11INCH.getIdentifier(), 
+				Length.newMillimeterValue(210d), 
 				Length.newInchValue(11)));
-		tmp.add(new SheetPaper("Legal", " 8.5 inch x 14 inch", PaperSize.LEGAL.getIdentifier(), 
-				Length.newInchValue(8.5), 
-				Length.newInchValue(14)));
-		tmp.add(new SheetPaper("Junior Legal", "8 inch x 5 inch", PaperSize.JUNIOR_LEGAL.getIdentifier(), 
-				Length.newInchValue(8), 
-				Length.newInchValue(5)));
-		tmp.add(new SheetPaper("Ledger", "17 inch x 11 inch", PaperSize.LEDGER.getIdentifier(), 
-				Length.newInchValue(17),
-				Length.newInchValue(11)));
-		tmp.add(new SheetPaper("Tabloid", "11 inch x 17 inch", PaperSize.TABLOID.getIdentifier(),
-				Length.newInchValue(11), 
-				Length.newInchValue(17)));
-		tmp.add(new SheetPaper("11.5 inch x 11 inch", "11.5 inch wide, 11 inch high", PaperSize.W11500THOU_X_H11INCH.getIdentifier(), 
-				Length.newInchValue(11.5),
-				Length.newInchValue(11)));
+		tmp.add(new TractorPaper("210 mm x 12 inch", "Tractor paper: 210 mm wide (excluding paper guides)", PaperSize.W210MM_X_H12INCH.getIdentifier(), 
+				Length.newMillimeterValue(210d), 
+				Length.newInchValue(12)));
+		tmp.add(new TractorPaper("240 mm x 12 inch", "Tractor paper: 240 mm wide (excluding paper guides)", PaperSize.W240MM_X_H12INCH.getIdentifier(), 
+				Length.newMillimeterValue(240d), 
+				Length.newInchValue(12)));
+		tmp.add(new TractorPaper("280 mm x 12 inch", "Tractor paper: 280 mm wide (excluding paper guides)", PaperSize.W280MM_X_H12INCH.getIdentifier(), 
+				Length.newMillimeterValue(280d), 
+				Length.newInchValue(12)));
 		this.papers = Collections.unmodifiableCollection(tmp);
 	}
 
@@ -76,4 +72,5 @@ public class NorthAmericaPaperProvider implements PaperProvider {
 	public Collection<Paper> list() {
 		return papers;
 	}
+
 }

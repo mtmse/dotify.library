@@ -3,8 +3,8 @@ org.daisy.braille.utils.impl.provider.braillo.BrailloTableProvider
 org.daisy.braille.utils.impl.provider.indexbraille.IndexTableProvider
 org.daisy.braille.utils.impl.provider.yourdolphin.SupernovaTableProvider
 org.daisy.braille.utils.impl.provider.cidat.CidatTableProvider
-org_daisy.EmbosserTableProvider
-org_daisy.BrailleEditorsTableProvider
+org.daisy.braille.utils.impl.provider.EmbosserTableProvider
+org.daisy.braille.utils.impl.provider.BrailleEditorsTableProvider
 se_tpb.CXTableProvider
 org.daisy.braille.utils.impl.provider.viewplus.ViewPlusTableProvider
 org.daisy.braille.utils.impl.provider.interpoint.InterpointTableProvider

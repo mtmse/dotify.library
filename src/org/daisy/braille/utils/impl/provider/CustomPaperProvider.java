@@ -15,24 +15,26 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-package org_daisy;
+package org.daisy.braille.utils.impl.provider;
 
-import org.daisy.braille.utils.impl.tools.embosser.PageBreaks;
+import java.util.Collection;
+import java.util.Collections;
 
-/**
- * Provides standard page break definitions
- * @author Bert Frees
- */
-public class NoPageBreaks implements PageBreaks {
+import org.daisy.braille.utils.api.paper.CustomPaperCollection;
+import org.daisy.braille.utils.api.paper.Paper;
+import org.daisy.braille.utils.api.paper.PaperProvider;
 
-	/**
-	 * Creates a new object with the system's default page break style.
-	 */
-	public NoPageBreaks() {
+import aQute.bnd.annotation.component.Component;
+
+@Component
+public class CustomPaperProvider implements PaperProvider {
+
+	public CustomPaperProvider() {
 	}
 
 	@Override
-	public String getString() {
-		return "";
+	public Collection<Paper> list() {
+		return Collections.unmodifiableCollection(CustomPaperCollection.getInstance().list());
 	}
+
 }

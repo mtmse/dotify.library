@@ -15,7 +15,7 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-package org_daisy;
+package org.daisy.braille.utils.impl.provider;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,35 +24,51 @@ import java.util.Collections;
 import org.daisy.braille.utils.api.paper.Length;
 import org.daisy.braille.utils.api.paper.Paper;
 import org.daisy.braille.utils.api.paper.PaperProvider;
-import org.daisy.braille.utils.api.paper.RollPaper;
+import org.daisy.braille.utils.api.paper.SheetPaper;
 
 import aQute.bnd.annotation.component.Component;
 
 @Component
-public class RollPaperProvider implements PaperProvider {
+public class NorthAmericaPaperProvider implements PaperProvider {
+	public static final double INCH_IN_MM = 25.4;
 	enum PaperSize {
-		W21CM,
-		W24CM,
-		W28CM,
-		W33CM;
-		
+		LETTER,
+		LEGAL,
+		JUNIOR_LEGAL,
+		LEDGER,
+		TABLOID,
+		W11500THOU_X_H11INCH;
 		private final String identifier;
 		PaperSize() {
-			this.identifier = "org_daisy.RollPaperProvider.PaperSize." + this.toString();
+			this.identifier = "org_daisy.NorthAmericaPaperProvider.PaperSize." + this.toString();
 		}
 		String getIdentifier() {
 			return identifier;
 		}
-	}
+	};
 
 	private final Collection<Paper> papers;
 
-	public RollPaperProvider() {
+	public NorthAmericaPaperProvider() {
 		ArrayList<Paper> tmp = new ArrayList<Paper>();
-		tmp.add(new RollPaper("21 cm wide", "", PaperSize.W21CM.getIdentifier(), Length.newCentimeterValue(21)));
-		tmp.add(new RollPaper("24 cm wide", "", PaperSize.W24CM.getIdentifier(), Length.newCentimeterValue(24)));
-		tmp.add(new RollPaper("28 cm wide", "", PaperSize.W28CM.getIdentifier(), Length.newCentimeterValue(28)));
-		tmp.add(new RollPaper("33 cm wide", "", PaperSize.W33CM.getIdentifier(), Length.newCentimeterValue(33)));
+		tmp.add(new SheetPaper("Letter", "8.5 inch x 11 inch", PaperSize.LETTER.getIdentifier(),
+				Length.newInchValue(8.5), 
+				Length.newInchValue(11)));
+		tmp.add(new SheetPaper("Legal", " 8.5 inch x 14 inch", PaperSize.LEGAL.getIdentifier(), 
+				Length.newInchValue(8.5), 
+				Length.newInchValue(14)));
+		tmp.add(new SheetPaper("Junior Legal", "8 inch x 5 inch", PaperSize.JUNIOR_LEGAL.getIdentifier(), 
+				Length.newInchValue(8), 
+				Length.newInchValue(5)));
+		tmp.add(new SheetPaper("Ledger", "17 inch x 11 inch", PaperSize.LEDGER.getIdentifier(), 
+				Length.newInchValue(17),
+				Length.newInchValue(11)));
+		tmp.add(new SheetPaper("Tabloid", "11 inch x 17 inch", PaperSize.TABLOID.getIdentifier(),
+				Length.newInchValue(11), 
+				Length.newInchValue(17)));
+		tmp.add(new SheetPaper("11.5 inch x 11 inch", "11.5 inch wide, 11 inch high", PaperSize.W11500THOU_X_H11INCH.getIdentifier(), 
+				Length.newInchValue(11.5),
+				Length.newInchValue(11)));
 		this.papers = Collections.unmodifiableCollection(tmp);
 	}
 
@@ -60,5 +76,4 @@ public class RollPaperProvider implements PaperProvider {
 	public Collection<Paper> list() {
 		return papers;
 	}
-
 }

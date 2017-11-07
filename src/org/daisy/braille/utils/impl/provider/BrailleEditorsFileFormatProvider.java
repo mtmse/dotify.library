@@ -15,15 +15,15 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-package org_daisy;
+package org.daisy.braille.utils.impl.provider;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.daisy.braille.utils.api.embosser.Embosser;
-import org.daisy.braille.utils.api.embosser.EmbosserProvider;
+import org.daisy.braille.utils.api.embosser.FileFormat;
+import org.daisy.braille.utils.api.embosser.FileFormatProvider;
 import org.daisy.braille.utils.api.factory.FactoryProperties;
 import org.daisy.braille.utils.api.table.TableCatalog;
 import org.daisy.braille.utils.api.table.TableCatalogService;
@@ -31,17 +31,24 @@ import org.daisy.braille.utils.api.table.TableCatalogService;
 import aQute.bnd.annotation.component.Component;
 import aQute.bnd.annotation.component.Reference;
 
+/**
+ *
+ * @author Bert Frees
+ */
 @Component
-public class GenericEmbosserProvider implements EmbosserProvider {
-	public static enum EmbosserType implements FactoryProperties {
-		NONE("Unspecified", "Limited support for unknown embossers");
+public class BrailleEditorsFileFormatProvider implements FileFormatProvider {
+
+	public static enum FileType implements FactoryProperties {
+		BRF("BRF (Braille Formatted)", "Duxbury Braille file"),
+		BRA("BRA", "Spanish Braille file"),
+		BRL("BRL", "MicroBraille Braille file");
 		private final String name;
 		private final String desc;
 		private final String identifier;
-		EmbosserType (String name, String desc) {
+		FileType (String name, String desc) {
 			this.name = name;
 			this.desc = desc;
-			this.identifier = "org_daisy.GenericEmbosserProvider.EmbosserType." + this.toString();
+			this.identifier = "org_daisy.BrailleEditorsFileFormatProvider.FileType." + this.toString();
 		}
 		@Override
 		public String getIdentifier() {
@@ -57,33 +64,29 @@ public class GenericEmbosserProvider implements EmbosserProvider {
 		}
 	};
 
-	private final Map<String, FactoryProperties> embossers;
-	private TableCatalogService tableCatalogService = null;
+	private final Map<String,FactoryProperties> formats;
 
-	public GenericEmbosserProvider() {
-		embossers = new HashMap<String, FactoryProperties>();
-		addEmbosser(EmbosserType.NONE);
-	}
-
-	private void addEmbosser(FactoryProperties e) {
-		embossers.put(e.getIdentifier(), e);
-	}
-
-	@Override
-	public Embosser newFactory(String identifier) {
-		FactoryProperties fp = embossers.get(identifier);
-		switch ((EmbosserType)fp) {
-		case NONE:
-			return new GenericEmbosser(tableCatalogService, EmbosserType.NONE);
-		default:
-			return null;
-		}
+	public BrailleEditorsFileFormatProvider() {
+		formats = new HashMap<String,FactoryProperties>();
+		formats.put(FileType.BRF.getIdentifier(), FileType.BRF);
+		formats.put(FileType.BRA.getIdentifier(), FileType.BRA);
 	}
 
 	@Override
 	public Collection<FactoryProperties> list() {
-		return Collections.unmodifiableCollection(embossers.values());
+		return Collections.unmodifiableCollection(formats.values());
 	}
+
+	@Override
+	public FileFormat newFactory(String identifier) {
+		FileType type = (FileType)formats.get(identifier);
+		if (type != null)
+			return new BrailleEditorsFileFormat(type, tableCatalogService);
+		else
+			return null;
+	}
+
+	private TableCatalogService tableCatalogService = null;
 
 	@Reference
 	public void setTableCatalog(TableCatalogService service) {
@@ -100,6 +103,4 @@ public class GenericEmbosserProvider implements EmbosserProvider {
 			tableCatalogService = TableCatalog.newInstance();
 		}
 	}
-
 }
-

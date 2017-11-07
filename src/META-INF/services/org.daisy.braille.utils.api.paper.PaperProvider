@@ -1,6 +1,6 @@
-org_daisy.CustomPaperProvider
-org_daisy.ISO216PaperProvider
-org_daisy.NorthAmericaPaperProvider
-org_daisy.TractorPaperProvider
-org_daisy.RollPaperProvider
+org.daisy.braille.utils.impl.provider.CustomPaperProvider
+org.daisy.braille.utils.impl.provider.ISO216PaperProvider
+org.daisy.braille.utils.impl.provider.NorthAmericaPaperProvider
+org.daisy.braille.utils.impl.provider.TractorPaperProvider
+org.daisy.braille.utils.impl.provider.RollPaperProvider
 se_tpb.FA44PaperProvider

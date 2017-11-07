@@ -15,7 +15,7 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-package org_daisy;
+package org.daisy.braille.utils.impl.provider;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -31,11 +31,10 @@ import org.daisy.braille.utils.api.factory.FactoryProperties;
 import org.daisy.braille.utils.api.table.Table;
 import org.daisy.braille.utils.api.table.TableCatalogService;
 import org.daisy.braille.utils.api.table.TableFilter;
+import org.daisy.braille.utils.impl.provider.BrailleEditorsFileFormatProvider.FileType;
 import org.daisy.braille.utils.impl.tools.embosser.ConfigurableEmbosser;
 import org.daisy.braille.utils.impl.tools.embosser.SimpleEmbosserProperties;
 import org.daisy.braille.utils.impl.tools.embosser.AbstractEmbosserWriter.Padding;
-
-import org_daisy.BrailleEditorsFileFormatProvider.FileType;
 
 
 /**
