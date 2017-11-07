@@ -15,74 +15,49 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-package com_brailler;
+package org.daisy.braille.utils.impl.provider.brailler;
 
-import org.daisy.braille.utils.api.embosser.EmbosserFeatures;
 import org.daisy.braille.utils.api.embosser.PrintPage;
 import org.daisy.braille.utils.api.paper.PageFormat;
 import org.daisy.braille.utils.api.table.TableCatalogService;
-
-import com_brailler.EnablingTechnologiesEmbosserProvider.EmbosserType;
+import org.daisy.braille.utils.impl.provider.brailler.EnablingTechnologiesEmbosserProvider.EmbosserType;
 
 /**
  *
  * @author Bert Frees
  */
-public class EnablingTechnologiesDoubleSidedEmbosser extends EnablingTechnologiesEmbosser {
+public class EnablingTechnologiesSingleSidedEmbosser extends EnablingTechnologiesEmbosser {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 160751373667707902L;
+	private static final long serialVersionUID = -3602582375923051565L;
 
-	public EnablingTechnologiesDoubleSidedEmbosser(TableCatalogService service, EmbosserType props) {
+	public EnablingTechnologiesSingleSidedEmbosser(TableCatalogService service, EmbosserType props) {
 
 		super(service, props);
 
 		switch (type) {
-		case ET:
-		case JULIET_PRO:
-		case JULIET_PRO_60:
-		case JULIET_CLASSIC:
-		case BOOKMAKER:
-		case BRAILLE_EXPRESS_100:
-		case BRAILLE_EXPRESS_150:
-		case BRAILLE_PLACE:
+		case ROMEO_ATTACHE:
+		case ROMEO_ATTACHE_PRO:
+		case ROMEO_25:
+		case ROMEO_PRO_50:
+		case ROMEO_PRO_LE_NARROW:
+		case ROMEO_PRO_LE_WIDE:
+		case THOMAS:
+		case THOMAS_PRO:
+		case MARATHON:
 			break;
 		default:
 			throw new IllegalArgumentException("Unsupported embosser type");
 		}
 
-		duplexEnabled = true;
+		duplexEnabled = false;
 	}
 
 	@Override
 	public boolean supportsDuplex() {
-		return true;
-	}
-
-	@Override
-	public Object getFeature(String key) {
-
-		if (EmbosserFeatures.DUPLEX.equals(key)) {
-			return duplexEnabled;
-		} else {
-			return super.getFeature(key);
-		}
-	}
-
-	@Override
-	public void setFeature(String key, Object value) {
-
-		if (EmbosserFeatures.DUPLEX.equals(key)) {
-			try {
-				duplexEnabled = (Boolean)value;
-			} catch (ClassCastException e) {
-				throw new IllegalArgumentException("Unsupported value for duplex.");
-			}
-		} else {
-			super.setFeature(key, value);
-		}
+		return false;
 	}
 
 	@Override
@@ -99,4 +74,5 @@ public class EnablingTechnologiesDoubleSidedEmbosser extends EnablingTechnologie
 	public PrintPage getPrintPage(PageFormat pageFormat) {
 		return new PrintPage(pageFormat);
 	}
+
 }

@@ -1,4 +1,4 @@
-package com_brailler;
+package org.daisy.braille.utils.impl.provider.brailler;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -18,6 +18,7 @@ import org.daisy.braille.utils.api.paper.SheetPaperFormat;
 import org.daisy.braille.utils.api.embosser.EmbosserCatalog;
 import org.daisy.braille.utils.api.paper.PaperCatalog;
 import org.daisy.braille.utils.api.table.TableCatalog;
+import org.daisy.braille.utils.impl.provider.brailler.EnablingTechnologiesEmbosser;
 import org.daisy.braille.utils.pef.FileCompare;
 import org.daisy.braille.utils.pef.FileTools;
 import org.daisy.braille.utils.pef.PEFConverterFacade;
