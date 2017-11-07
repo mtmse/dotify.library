@@ -6,5 +6,5 @@ es_once_cidat.CidatTableProvider
 org_daisy.EmbosserTableProvider
 org_daisy.BrailleEditorsTableProvider
 se_tpb.CXTableProvider
-com_viewplus.ViewPlusTableProvider
+org.daisy.braille.utils.impl.provider.viewplus.ViewPlusTableProvider
 org.daisy.braille.utils.impl.provider.interpoint.InterpointTableProvider

@@ -9,7 +9,7 @@ Private-Package: org.daisy.braille.utils.impl.provider.interpoint,\
 	org.daisy.braille.utils.impl.provider.brailler,\
 	org.daisy.braille.utils.impl.provider.braillo,\
 	org.daisy.braille.utils.impl.provider.indexbraille,\
-	com_viewplus,\
+	org.daisy.braille.utils.impl.provider.viewplus,\
 	com_yourdolphin,\
 	es_once_cidat,\
 	org.daisy.braille.utils.impl.tools.embosser,\

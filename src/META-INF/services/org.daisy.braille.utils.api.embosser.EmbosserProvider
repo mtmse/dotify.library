@@ -3,5 +3,5 @@ org.daisy.braille.utils.impl.provider.indexbraille.IndexEmbosserProvider
 es_once_cidat.CidatEmbosserProvider
 org.daisy.braille.utils.impl.provider.brailler.EnablingTechnologiesEmbosserProvider
 org_daisy.GenericEmbosserProvider
-com_viewplus.ViewPlusEmbosserProvider
+org.daisy.braille.utils.impl.provider.viewplus.ViewPlusEmbosserProvider
 pl_com_harpo.HarpoEmbosserProvider

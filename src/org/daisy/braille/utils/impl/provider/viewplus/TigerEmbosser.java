@@ -15,7 +15,7 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-package com_viewplus;
+package org.daisy.braille.utils.impl.provider.viewplus;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -37,13 +37,12 @@ import org.daisy.braille.utils.api.paper.SheetPaperFormat;
 import org.daisy.braille.utils.api.paper.SheetPaperFormat.Orientation;
 import org.daisy.braille.utils.api.table.TableCatalogService;
 import org.daisy.braille.utils.api.table.TableFilter;
+import org.daisy.braille.utils.impl.provider.viewplus.ViewPlusEmbosserProvider.EmbosserType;
 import org.daisy.braille.utils.impl.tools.embosser.AbstractEmbosser;
 import org.daisy.braille.utils.impl.tools.embosser.ConfigurableEmbosser;
 import org.daisy.braille.utils.impl.tools.embosser.EmbosserTools;
 import org.daisy.braille.utils.impl.tools.embosser.FileToDeviceEmbosserWriter;
 import org.daisy.braille.utils.impl.tools.embosser.SimpleEmbosserProperties;
-
-import com_viewplus.ViewPlusEmbosserProvider.EmbosserType;
 
 public class TigerEmbosser extends AbstractEmbosser {
 
