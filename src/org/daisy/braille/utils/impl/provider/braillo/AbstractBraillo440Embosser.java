@@ -15,7 +15,7 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-package com_braillo;
+package org.daisy.braille.utils.impl.provider.braillo;
 
 import java.io.OutputStream;
 
@@ -30,12 +30,11 @@ import org.daisy.braille.utils.api.paper.Area;
 import org.daisy.braille.utils.api.paper.PageFormat;
 import org.daisy.braille.utils.api.table.Table;
 import org.daisy.braille.utils.api.table.TableCatalogService;
+import org.daisy.braille.utils.impl.provider.braillo.Braillo440VolumeWriter.Mode;
+import org.daisy.braille.utils.impl.provider.braillo.BrailloEmbosserProvider.EmbosserType;
 import org.daisy.braille.utils.impl.tools.embosser.BufferedVolumeEmbosser;
 import org.daisy.braille.utils.impl.tools.embosser.EmbosserTools;
 import org.daisy.braille.utils.impl.tools.embosser.SimpleEmbosserProperties;
-
-import com_braillo.Braillo440VolumeWriter.Mode;
-import com_braillo.BrailloEmbosserProvider.EmbosserType;
 
 public abstract class AbstractBraillo440Embosser extends BrailloEmbosser {
 	/**

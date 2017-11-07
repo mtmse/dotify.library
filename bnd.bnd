@@ -7,7 +7,7 @@ Import-Package: \
 	org.daisy.braille.utils.api.table; provide:=true, *
 Private-Package: org.daisy.braille.utils.impl.provider.interpoint,\
 	org.daisy.braille.utils.impl.provider.brailler,\
-	com_braillo,\
+	org.daisy.braille.utils.impl.provider.braillo,\
 	com_indexbraille,\
 	com_viewplus,\
 	com_yourdolphin,\

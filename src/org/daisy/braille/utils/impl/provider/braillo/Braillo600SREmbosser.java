@@ -1,4 +1,4 @@
-package com_braillo;
+package org.daisy.braille.utils.impl.provider.braillo;
 
 import org.daisy.braille.utils.api.factory.FactoryProperties;
 import org.daisy.braille.utils.api.paper.PageFormat;

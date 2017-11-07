@@ -1,4 +1,4 @@
-package com_braillo;
+package org.daisy.braille.utils.impl.provider.braillo;
 
 import java.io.IOException;
 
@@ -7,11 +7,11 @@ import javax.xml.transform.TransformerException;
 
 import org.daisy.braille.utils.api.embosser.EmbosserFeatures;
 import org.daisy.braille.utils.api.table.TableCatalog;
+import org.daisy.braille.utils.impl.provider.braillo.Braillo440SWEmbosser;
+import org.daisy.braille.utils.impl.provider.braillo.BrailloEmbosserProvider.EmbosserType;
 import org.daisy.braille.utils.pef.UnsupportedWidthException;
 import org.junit.Test;
 import org.xml.sax.SAXException;
-
-import com_braillo.BrailloEmbosserProvider.EmbosserType;
 
 @SuppressWarnings("javadoc")
 public class Braillo440SW2PEmbosserTest extends AbstractTestBraillo440Embosser {

@@ -15,39 +15,56 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-package com_braillo;
+package org.daisy.braille.utils.impl.provider.braillo;
 
+import org.daisy.braille.utils.api.embosser.EmbosserFeatures;
 import org.daisy.braille.utils.api.factory.FactoryProperties;
 import org.daisy.braille.utils.api.paper.PageFormat;
 import org.daisy.braille.utils.api.paper.Paper;
+import org.daisy.braille.utils.api.paper.Paper.Type;
 import org.daisy.braille.utils.api.table.TableCatalogService;
 
-public class Braillo400SEmbosser extends AbstractBraillo200Embosser {
+public class Braillo440SWEmbosser extends AbstractBraillo440Embosser {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 458179752397011984L;
+	private static final long serialVersionUID = -7525199384507098502L;
 
-	public Braillo400SEmbosser(TableCatalogService service, FactoryProperties props) {
+	public Braillo440SWEmbosser(TableCatalogService service, FactoryProperties props) {
 		super(service, props);
 	}
 
 	@Override
+	public void setFeature(String key, Object value) {
+		if (EmbosserFeatures.SADDLE_STITCH.equals(key)) {
+			try {
+				saddleStitchEnabled = (Boolean)value;
+			} catch (ClassCastException e) {
+				throw new IllegalArgumentException("Unsupported value for saddle stitch.");
+			}
+		} else {
+			super.setFeature(key, value);
+		}
+	}
+
+	@Override
 	public boolean supportsPageFormat(PageFormat pageFormat) {
-		return pageFormat.getPageFormatType() == PageFormat.Type.TRACTOR
-				&& pageFormat.asTractorPaperFormat().getLengthAcrossFeed().asMillimeter() >= 140
-				&& pageFormat.asTractorPaperFormat().getLengthAcrossFeed().asMillimeter() <= 330
-				&& pageFormat.asTractorPaperFormat().getLengthAlongFeed().asInches() >= 4
-				&& pageFormat.asTractorPaperFormat().getLengthAlongFeed().asInches() <= 14;
+		return pageFormat.getPageFormatType() == PageFormat.Type.ROLL 
+				&& pageFormat.asRollPaperFormat().getLengthAcrossFeed().asMillimeter() <= 330
+				//TODO: this is inaccurate for 2 page mode
+				&& pageFormat.asRollPaperFormat().getLengthAlongFeed().asMillimeter() <= 585;
 	}
 
 	@Override
 	public boolean supportsPaper(Paper paper) {
-		return paper.getType() == Paper.Type.TRACTOR
-				&& paper.asTractorPaper().getLengthAcrossFeed().asMillimeter() >= 140
-				&& paper.asTractorPaper().getLengthAcrossFeed().asMillimeter() <= 330
-				&& paper.asTractorPaper().getLengthAlongFeed().asInches() >= 4
-				&& paper.asTractorPaper().getLengthAlongFeed().asInches() <= 14;
+		return paper.getType() == Type.ROLL
+				&& paper.asRollPaper().getLengthAcrossFeed().asMillimeter() <= 330;
 	}
+
+	@Override
+	public boolean supportsPrintMode(PrintMode mode) {
+		return true;
+	}
+
 }

@@ -1,4 +1,4 @@
-package com_braillo;
+package org.daisy.braille.utils.impl.provider.braillo;
 
 import static org.junit.Assert.assertTrue;
 

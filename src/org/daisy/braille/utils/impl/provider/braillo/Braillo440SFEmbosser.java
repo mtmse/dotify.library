@@ -15,7 +15,7 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-package com_braillo;
+package org.daisy.braille.utils.impl.provider.braillo;
 
 import org.daisy.braille.utils.api.embosser.EmbosserFeatures;
 import org.daisy.braille.utils.api.factory.FactoryProperties;
@@ -24,15 +24,16 @@ import org.daisy.braille.utils.api.paper.Paper;
 import org.daisy.braille.utils.api.paper.Paper.Type;
 import org.daisy.braille.utils.api.table.TableCatalogService;
 
-public class Braillo440SWEmbosser extends AbstractBraillo440Embosser {
+public class Braillo440SFEmbosser extends AbstractBraillo440Embosser {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -7525199384507098502L;
+	private static final long serialVersionUID = 3642071434258027472L;
 
-	public Braillo440SWEmbosser(TableCatalogService service, FactoryProperties props) {
+	public Braillo440SFEmbosser(TableCatalogService service, FactoryProperties props) {
 		super(service, props);
+		saddleStitchEnabled = true;
 	}
 
 	@Override
@@ -40,6 +41,10 @@ public class Braillo440SWEmbosser extends AbstractBraillo440Embosser {
 		if (EmbosserFeatures.SADDLE_STITCH.equals(key)) {
 			try {
 				saddleStitchEnabled = (Boolean)value;
+				if (!saddleStitchEnabled) {
+					saddleStitchEnabled = true;
+					throw new IllegalArgumentException("Unsupported value for saddle stitch.");
+				}
 			} catch (ClassCastException e) {
 				throw new IllegalArgumentException("Unsupported value for saddle stitch.");
 			}
@@ -52,7 +57,7 @@ public class Braillo440SWEmbosser extends AbstractBraillo440Embosser {
 	public boolean supportsPageFormat(PageFormat pageFormat) {
 		return pageFormat.getPageFormatType() == PageFormat.Type.ROLL 
 				&& pageFormat.asRollPaperFormat().getLengthAcrossFeed().asMillimeter() <= 330
-				//TODO: this is inaccurate for 2 page mode
+				&& pageFormat.asRollPaperFormat().getLengthAlongFeed().asMillimeter() >= 417
 				&& pageFormat.asRollPaperFormat().getLengthAlongFeed().asMillimeter() <= 585;
 	}
 
@@ -64,7 +69,7 @@ public class Braillo440SWEmbosser extends AbstractBraillo440Embosser {
 
 	@Override
 	public boolean supportsPrintMode(PrintMode mode) {
-		return true;
+		return mode == PrintMode.MAGAZINE;
 	}
 
 }

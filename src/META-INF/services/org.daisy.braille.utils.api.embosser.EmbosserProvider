@@ -1,4 +1,4 @@
-com_braillo.BrailloEmbosserProvider
+org.daisy.braille.utils.impl.provider.braillo.BrailloEmbosserProvider
 com_indexbraille.IndexEmbosserProvider
 es_once_cidat.CidatEmbosserProvider
 org.daisy.braille.utils.impl.provider.brailler.EnablingTechnologiesEmbosserProvider
