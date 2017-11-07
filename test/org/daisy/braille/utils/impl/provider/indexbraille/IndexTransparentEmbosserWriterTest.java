@@ -1,7 +1,9 @@
-package com_indexbraille;
+package org.daisy.braille.utils.impl.provider.indexbraille;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
+
+import org.daisy.braille.utils.impl.provider.indexbraille.IndexTransparentEmbosserWriter;
 
 public class IndexTransparentEmbosserWriterTest {
 

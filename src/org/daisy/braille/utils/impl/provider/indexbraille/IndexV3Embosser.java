@@ -15,7 +15,7 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-package com_indexbraille;
+package org.daisy.braille.utils.impl.provider.indexbraille;
 
 import java.io.OutputStream;
 
@@ -30,11 +30,10 @@ import org.daisy.braille.utils.api.paper.Length;
 import org.daisy.braille.utils.api.paper.PageFormat;
 import org.daisy.braille.utils.api.table.TableCatalogService;
 import org.daisy.braille.utils.api.table.TableFilter;
+import org.daisy.braille.utils.impl.provider.indexbraille.IndexEmbosserProvider.EmbosserType;
 import org.daisy.braille.utils.impl.tools.embosser.ConfigurableEmbosser;
 import org.daisy.braille.utils.impl.tools.embosser.EmbosserTools;
 import org.daisy.braille.utils.impl.tools.embosser.SimpleEmbosserProperties;
-
-import com_indexbraille.IndexEmbosserProvider.EmbosserType;
 
 public class IndexV3Embosser extends IndexEmbosser {
 

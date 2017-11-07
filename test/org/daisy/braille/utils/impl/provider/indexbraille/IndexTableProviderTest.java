@@ -1,4 +1,4 @@
-package com_indexbraille;
+package org.daisy.braille.utils.impl.provider.indexbraille;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -7,6 +7,7 @@ import java.nio.charset.Charset;
 
 import org.daisy.braille.utils.api.table.BrailleConstants;
 import org.daisy.braille.utils.api.table.BrailleConverter;
+import org.daisy.braille.utils.impl.provider.indexbraille.IndexTableProvider;
 import org.junit.Test;
 
 @SuppressWarnings("javadoc")

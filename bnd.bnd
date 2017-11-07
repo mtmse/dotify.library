@@ -8,7 +8,7 @@ Import-Package: \
 Private-Package: org.daisy.braille.utils.impl.provider.interpoint,\
 	org.daisy.braille.utils.impl.provider.brailler,\
 	org.daisy.braille.utils.impl.provider.braillo,\
-	com_indexbraille,\
+	org.daisy.braille.utils.impl.provider.indexbraille,\
 	com_viewplus,\
 	com_yourdolphin,\
 	es_once_cidat,\

@@ -1,6 +1,6 @@
 org.daisy.braille.utils.impl.tools.table.DefaultTableProvider
 org.daisy.braille.utils.impl.provider.braillo.BrailloTableProvider
-com_indexbraille.IndexTableProvider
+org.daisy.braille.utils.impl.provider.indexbraille.IndexTableProvider
 com_yourdolphin.SupernovaTableProvider
 es_once_cidat.CidatTableProvider
 org_daisy.EmbosserTableProvider

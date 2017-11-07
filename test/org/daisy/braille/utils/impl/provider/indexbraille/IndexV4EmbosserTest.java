@@ -1,4 +1,4 @@
-package com_indexbraille;
+package org.daisy.braille.utils.impl.provider.indexbraille;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -22,6 +22,7 @@ import org.daisy.braille.utils.api.paper.SheetPaper;
 import org.daisy.braille.utils.api.paper.SheetPaperFormat;
 import org.daisy.braille.utils.api.paper.TractorPaper;
 import org.daisy.braille.utils.api.paper.TractorPaperFormat;
+import org.daisy.braille.utils.impl.provider.indexbraille.IndexV4Embosser;
 import org.daisy.braille.utils.pef.FileCompare;
 import org.daisy.braille.utils.pef.FileTools;
 import org.daisy.braille.utils.pef.PEFConverterFacade;

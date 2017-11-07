@@ -1,4 +1,4 @@
-package com_indexbraille;
+package org.daisy.braille.utils.impl.provider.indexbraille;
 
 import org.daisy.braille.utils.api.paper.Length;
 
