@@ -5,7 +5,7 @@ Import-Package: \
 	org.daisy.braille.utils.api.factory; provide:=true,\
 	org.daisy.braille.utils.api.paper; provide:=true,\
 	org.daisy.braille.utils.api.table; provide:=true, *
-Private-Package: be_interpoint,\
+Private-Package: org.daisy.braille.utils.impl.provider.interpoint,\
 	com_brailler,\
 	com_braillo,\
 	com_indexbraille,\

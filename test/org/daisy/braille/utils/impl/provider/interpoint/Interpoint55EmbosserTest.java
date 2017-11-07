@@ -1,4 +1,4 @@
-package be_interpoint;
+package org.daisy.braille.utils.impl.provider.interpoint;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -20,6 +20,8 @@ import org.daisy.braille.utils.api.paper.SheetPaperFormat;
 import org.daisy.braille.utils.api.embosser.EmbosserCatalog;
 import org.daisy.braille.utils.api.paper.PaperCatalog;
 import org.daisy.braille.utils.api.table.TableCatalog;
+import org.daisy.braille.utils.impl.provider.interpoint.Interpoint55Embosser;
+import org.daisy.braille.utils.impl.provider.interpoint.InterpointEmbosserProvider.EmbosserType;
 import org.daisy.braille.utils.pef.FileCompare;
 import org.daisy.braille.utils.pef.FileTools;
 import org.daisy.braille.utils.pef.PEFConverterFacade;
@@ -27,8 +29,6 @@ import org.daisy.braille.utils.pef.PEFHandler;
 import org.daisy.braille.utils.pef.UnsupportedWidthException;
 import org.junit.Test;
 import org.xml.sax.SAXException;
-
-import be_interpoint.InterpointEmbosserProvider.EmbosserType;
 
 /**
  *
