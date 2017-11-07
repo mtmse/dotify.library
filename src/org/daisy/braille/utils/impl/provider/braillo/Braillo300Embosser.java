@@ -61,8 +61,8 @@ public class Braillo300Embosser extends BrailloEmbosser {
 
 	@Override
 	public boolean supportsPrintPage(PrintPage printPage) {
-		int height = (int)Math.ceil(printPage.getHeight()/EmbosserTools.INCH_IN_MM);
-		int width = EmbosserTools.getWidth(printPage, getCellWidth());
+		double height = printPage.getHeight()/EmbosserTools.INCH_IN_MM;
+		double width = printPage.getWidth();
 		if (width < 140) {
 			return false;
 		}
