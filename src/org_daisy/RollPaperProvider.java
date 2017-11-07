@@ -34,17 +34,25 @@ public class RollPaperProvider implements PaperProvider {
 		W21CM,
 		W24CM,
 		W28CM,
-		W33CM
+		W33CM;
+		
+		private final String identifier;
+		PaperSize() {
+			this.identifier = "org_daisy.RollPaperProvider.PaperSize." + this.toString();
+		}
+		String getIdentifier() {
+			return identifier;
+		}
 	}
 
 	private final Collection<Paper> papers;
 
 	public RollPaperProvider() {
 		ArrayList<Paper> tmp = new ArrayList<Paper>();
-		tmp.add(new RollPaper("21 cm wide", "", PaperSize.W21CM, Length.newCentimeterValue(21)));
-		tmp.add(new RollPaper("24 cm wide", "", PaperSize.W24CM, Length.newCentimeterValue(24)));
-		tmp.add(new RollPaper("28 cm wide", "", PaperSize.W28CM, Length.newCentimeterValue(28)));
-		tmp.add(new RollPaper("33 cm wide", "", PaperSize.W33CM, Length.newCentimeterValue(33)));
+		tmp.add(new RollPaper("21 cm wide", "", PaperSize.W21CM.getIdentifier(), Length.newCentimeterValue(21)));
+		tmp.add(new RollPaper("24 cm wide", "", PaperSize.W24CM.getIdentifier(), Length.newCentimeterValue(24)));
+		tmp.add(new RollPaper("28 cm wide", "", PaperSize.W28CM.getIdentifier(), Length.newCentimeterValue(28)));
+		tmp.add(new RollPaper("33 cm wide", "", PaperSize.W33CM.getIdentifier(), Length.newCentimeterValue(33)));
 		this.papers = Collections.unmodifiableCollection(tmp);
 	}
 

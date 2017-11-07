@@ -32,15 +32,23 @@ import aQute.bnd.annotation.component.Component;
 public class FA44PaperProvider implements PaperProvider {
 	public static final double INCH_IN_MM = 25.4;
 	enum PaperSize {
-		FA44,
+		FA44;
 		//FA44_LEGACY
+		private final String identifier;
+		PaperSize() {
+			this.identifier = "se_tpb.FA44PaperProvider.PaperSize." + this.toString();
+		}
+		String getIdentifier() {
+			return identifier;
+		}
+
 	};
 
 	private final Collection<Paper> papers;
 
 	public FA44PaperProvider() {
 		ArrayList<Paper> tmp = new ArrayList<Paper>();
-		tmp.add(new SheetPaper("FA44", "261 mm x 297 mm", PaperSize.FA44, 
+		tmp.add(new SheetPaper("FA44", "261 mm x 297 mm", PaperSize.FA44.getIdentifier(), 
 				Length.newMillimeterValue(261d),
 				Length.newMillimeterValue(297d)));
 		//papers.add(new DefaultPaper("FA44 (legacy)", "252 mm x 297 mm", PaperSize.FA44_LEGACY, 252d, 297d));

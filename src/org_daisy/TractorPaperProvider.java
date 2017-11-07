@@ -36,26 +36,33 @@ public class TractorPaperProvider implements PaperProvider {
 		W210MM_X_H11INCH, 
 		W210MM_X_H12INCH,
 		W240MM_X_H12INCH,
-		W280MM_X_H12INCH
+		W280MM_X_H12INCH;
+		private final String identifier;
+		PaperSize() {
+			this.identifier = "org_daisy.TractorPaperProvider.PaperSize." + this.toString();
+		}
+		String getIdentifier() {
+			return identifier;
+		}
 	};
 
 	private final Collection<Paper> papers;
 
 	public TractorPaperProvider() {
 		ArrayList<Paper> tmp = new ArrayList<Paper>();
-		tmp.add(new TractorPaper("210 mm x 10 inch", "Tractor paper: 210 mm wide (excluding paper guides)", PaperSize.W210MM_X_H10INCH, 
+		tmp.add(new TractorPaper("210 mm x 10 inch", "Tractor paper: 210 mm wide (excluding paper guides)", PaperSize.W210MM_X_H10INCH.getIdentifier(), 
 				Length.newMillimeterValue(210d), 
 				Length.newInchValue(10)));
-		tmp.add(new TractorPaper("210 mm x 11 inch", "Tractor paper: 210 mm wide (excluding paper guides)", PaperSize.W210MM_X_H11INCH, 
+		tmp.add(new TractorPaper("210 mm x 11 inch", "Tractor paper: 210 mm wide (excluding paper guides)", PaperSize.W210MM_X_H11INCH.getIdentifier(), 
 				Length.newMillimeterValue(210d), 
 				Length.newInchValue(11)));
-		tmp.add(new TractorPaper("210 mm x 12 inch", "Tractor paper: 210 mm wide (excluding paper guides)", PaperSize.W210MM_X_H12INCH, 
+		tmp.add(new TractorPaper("210 mm x 12 inch", "Tractor paper: 210 mm wide (excluding paper guides)", PaperSize.W210MM_X_H12INCH.getIdentifier(), 
 				Length.newMillimeterValue(210d), 
 				Length.newInchValue(12)));
-		tmp.add(new TractorPaper("240 mm x 12 inch", "Tractor paper: 240 mm wide (excluding paper guides)", PaperSize.W240MM_X_H12INCH, 
+		tmp.add(new TractorPaper("240 mm x 12 inch", "Tractor paper: 240 mm wide (excluding paper guides)", PaperSize.W240MM_X_H12INCH.getIdentifier(), 
 				Length.newMillimeterValue(240d), 
 				Length.newInchValue(12)));
-		tmp.add(new TractorPaper("280 mm x 12 inch", "Tractor paper: 280 mm wide (excluding paper guides)", PaperSize.W280MM_X_H12INCH, 
+		tmp.add(new TractorPaper("280 mm x 12 inch", "Tractor paper: 280 mm wide (excluding paper guides)", PaperSize.W280MM_X_H12INCH.getIdentifier(), 
 				Length.newMillimeterValue(280d), 
 				Length.newInchValue(12)));
 		this.papers = Collections.unmodifiableCollection(tmp);

@@ -37,29 +37,36 @@ public class NorthAmericaPaperProvider implements PaperProvider {
 		JUNIOR_LEGAL,
 		LEDGER,
 		TABLOID,
-		W11500THOU_X_H11INCH
+		W11500THOU_X_H11INCH;
+		private final String identifier;
+		PaperSize() {
+			this.identifier = "org_daisy.NorthAmericaPaperProvider.PaperSize." + this.toString();
+		}
+		String getIdentifier() {
+			return identifier;
+		}
 	};
 
 	private final Collection<Paper> papers;
 
 	public NorthAmericaPaperProvider() {
 		ArrayList<Paper> tmp = new ArrayList<Paper>();
-		tmp.add(new SheetPaper("Letter", "8.5 inch x 11 inch", PaperSize.LETTER,
+		tmp.add(new SheetPaper("Letter", "8.5 inch x 11 inch", PaperSize.LETTER.getIdentifier(),
 				Length.newInchValue(8.5), 
 				Length.newInchValue(11)));
-		tmp.add(new SheetPaper("Legal", " 8.5 inch x 14 inch", PaperSize.LEGAL, 
+		tmp.add(new SheetPaper("Legal", " 8.5 inch x 14 inch", PaperSize.LEGAL.getIdentifier(), 
 				Length.newInchValue(8.5), 
 				Length.newInchValue(14)));
-		tmp.add(new SheetPaper("Junior Legal", "8 inch x 5 inch", PaperSize.JUNIOR_LEGAL, 
+		tmp.add(new SheetPaper("Junior Legal", "8 inch x 5 inch", PaperSize.JUNIOR_LEGAL.getIdentifier(), 
 				Length.newInchValue(8), 
 				Length.newInchValue(5)));
-		tmp.add(new SheetPaper("Ledger", "17 inch x 11 inch", PaperSize.LEDGER, 
+		tmp.add(new SheetPaper("Ledger", "17 inch x 11 inch", PaperSize.LEDGER.getIdentifier(), 
 				Length.newInchValue(17),
 				Length.newInchValue(11)));
-		tmp.add(new SheetPaper("Tabloid", "11 inch x 17 inch", PaperSize.TABLOID,
+		tmp.add(new SheetPaper("Tabloid", "11 inch x 17 inch", PaperSize.TABLOID.getIdentifier(),
 				Length.newInchValue(11), 
 				Length.newInchValue(17)));
-		tmp.add(new SheetPaper("11.5 inch x 11 inch", "11.5 inch wide, 11 inch high", PaperSize.W11500THOU_X_H11INCH, 
+		tmp.add(new SheetPaper("11.5 inch x 11 inch", "11.5 inch wide, 11 inch high", PaperSize.W11500THOU_X_H11INCH.getIdentifier(), 
 				Length.newInchValue(11.5),
 				Length.newInchValue(11)));
 		this.papers = Collections.unmodifiableCollection(tmp);
