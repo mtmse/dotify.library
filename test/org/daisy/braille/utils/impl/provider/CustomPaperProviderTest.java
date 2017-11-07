@@ -1,4 +1,4 @@
-package org.daisy.paper;
+package org.daisy.braille.utils.impl.provider;
 
 import static org.junit.Assert.assertTrue;
 
@@ -10,7 +10,7 @@ import org.daisy.braille.utils.api.paper.Paper;
 import org.daisy.braille.utils.api.paper.PaperCatalog;
 import org.junit.Test;
 @SuppressWarnings("javadoc")
-public class CustomPaperCollectionTest {
+public class CustomPaperProviderTest {
 
 	@Test
 	public void customSheetPaper() throws IOException {
