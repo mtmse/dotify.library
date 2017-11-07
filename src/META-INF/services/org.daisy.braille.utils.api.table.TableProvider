@@ -5,6 +5,6 @@ org.daisy.braille.utils.impl.provider.yourdolphin.SupernovaTableProvider
 org.daisy.braille.utils.impl.provider.cidat.CidatTableProvider
 org.daisy.braille.utils.impl.provider.EmbosserTableProvider
 org.daisy.braille.utils.impl.provider.BrailleEditorsTableProvider
-se_tpb.CXTableProvider
+org.daisy.braille.utils.impl.provider.CXTableProvider
 org.daisy.braille.utils.impl.provider.viewplus.ViewPlusTableProvider
 org.daisy.braille.utils.impl.provider.interpoint.InterpointTableProvider
