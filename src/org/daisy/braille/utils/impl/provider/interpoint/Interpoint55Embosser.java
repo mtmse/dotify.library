@@ -30,7 +30,6 @@ import org.daisy.braille.utils.api.embosser.Device;
 import org.daisy.braille.utils.api.embosser.EmbosserFactoryException;
 import org.daisy.braille.utils.api.embosser.EmbosserFeatures;
 import org.daisy.braille.utils.api.embosser.EmbosserWriter;
-import org.daisy.braille.utils.api.embosser.EmbosserWriterProperties;
 import org.daisy.braille.utils.api.embosser.PrintPage;
 import org.daisy.braille.utils.api.embosser.PrintPage.PrintDirection;
 import org.daisy.braille.utils.api.embosser.StandardLineBreaks;
@@ -41,9 +40,9 @@ import org.daisy.braille.utils.api.paper.Paper;
 import org.daisy.braille.utils.api.table.TableCatalogService;
 import org.daisy.braille.utils.api.table.TableFilter;
 import org.daisy.braille.utils.impl.tools.embosser.AbstractEmbosser;
+import org.daisy.braille.utils.impl.tools.embosser.AbstractEmbosserWriter.Padding;
 import org.daisy.braille.utils.impl.tools.embosser.ConfigurableEmbosser;
 import org.daisy.braille.utils.impl.tools.embosser.SimpleEmbosserProperties;
-import org.daisy.braille.utils.impl.tools.embosser.AbstractEmbosserWriter.Padding;
 
 /**
  *

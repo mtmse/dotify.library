@@ -7,7 +7,6 @@ import java.nio.charset.Charset;
 
 import org.daisy.braille.utils.api.table.BrailleConstants;
 import org.daisy.braille.utils.api.table.BrailleConverter;
-import org.daisy.braille.utils.impl.provider.indexbraille.IndexTableProvider;
 import org.junit.Test;
 
 @SuppressWarnings("javadoc")

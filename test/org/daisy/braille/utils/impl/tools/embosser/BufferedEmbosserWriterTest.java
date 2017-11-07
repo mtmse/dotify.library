@@ -6,8 +6,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
-import org.daisy.braille.utils.impl.tools.embosser.BufferedEmbosserWriter;
-import org.daisy.braille.utils.impl.tools.embosser.ContractEmbosserWriter;
 import org.daisy.braille.utils.impl.tools.embosser.InternalContract.BrailleRange;
 import org.junit.Test;
 import org.mockito.Mockito;

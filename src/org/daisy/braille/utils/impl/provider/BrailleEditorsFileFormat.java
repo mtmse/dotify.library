@@ -23,7 +23,6 @@ import java.util.Collection;
 
 import org.daisy.braille.utils.api.embosser.EmbosserFeatures;
 import org.daisy.braille.utils.api.embosser.EmbosserWriter;
-import org.daisy.braille.utils.api.embosser.EmbosserWriterProperties;
 import org.daisy.braille.utils.api.embosser.FileFormat;
 import org.daisy.braille.utils.api.embosser.StandardLineBreaks;
 import org.daisy.braille.utils.api.factory.AbstractFactory;
@@ -32,9 +31,9 @@ import org.daisy.braille.utils.api.table.Table;
 import org.daisy.braille.utils.api.table.TableCatalogService;
 import org.daisy.braille.utils.api.table.TableFilter;
 import org.daisy.braille.utils.impl.provider.BrailleEditorsFileFormatProvider.FileType;
+import org.daisy.braille.utils.impl.tools.embosser.AbstractEmbosserWriter.Padding;
 import org.daisy.braille.utils.impl.tools.embosser.ConfigurableEmbosser;
 import org.daisy.braille.utils.impl.tools.embosser.SimpleEmbosserProperties;
-import org.daisy.braille.utils.impl.tools.embosser.AbstractEmbosserWriter.Padding;
 
 
 /**

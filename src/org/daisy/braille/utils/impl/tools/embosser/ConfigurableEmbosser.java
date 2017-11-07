@@ -23,7 +23,6 @@ import java.io.UnsupportedEncodingException;
 
 import org.daisy.braille.utils.api.embosser.Contract;
 import org.daisy.braille.utils.api.embosser.ContractNotSupportedException;
-import org.daisy.braille.utils.api.embosser.EmbosserWriterProperties;
 import org.daisy.braille.utils.api.embosser.LineBreaks;
 import org.daisy.braille.utils.api.embosser.StandardLineBreaks;
 import org.daisy.braille.utils.api.table.BrailleConverter;

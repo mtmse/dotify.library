@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import org.daisy.braille.utils.api.embosser.Device;
-import org.daisy.braille.utils.api.embosser.EmbosserFeatures;
 import org.daisy.braille.utils.api.embosser.EmbosserWriter;
 import org.daisy.braille.utils.api.embosser.PrintPage;
 import org.daisy.braille.utils.api.embosser.StandardLineBreaks;

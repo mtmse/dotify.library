@@ -1,7 +1,6 @@
 package org.daisy.braille.utils.impl.tools.table;
 import static org.junit.Assert.assertEquals;
 
-import org.daisy.braille.utils.impl.tools.table.StringTranslator;
 import org.daisy.braille.utils.impl.tools.table.StringTranslator.MatchMode;
 import org.junit.Test;
 

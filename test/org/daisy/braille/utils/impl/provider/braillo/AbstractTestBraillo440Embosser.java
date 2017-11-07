@@ -12,13 +12,13 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
 import org.daisy.braille.utils.api.embosser.Embosser;
+import org.daisy.braille.utils.api.embosser.EmbosserCatalog;
 import org.daisy.braille.utils.api.embosser.EmbosserFeatures;
 import org.daisy.braille.utils.api.embosser.EmbosserWriter;
 import org.daisy.braille.utils.api.paper.Length;
 import org.daisy.braille.utils.api.paper.PageFormat;
-import org.daisy.braille.utils.api.paper.RollPaperFormat;
-import org.daisy.braille.utils.api.embosser.EmbosserCatalog;
 import org.daisy.braille.utils.api.paper.PaperCatalog;
+import org.daisy.braille.utils.api.paper.RollPaperFormat;
 import org.daisy.braille.utils.api.table.TableCatalog;
 import org.daisy.braille.utils.pef.FileCompare;
 import org.daisy.braille.utils.pef.FileDevice;

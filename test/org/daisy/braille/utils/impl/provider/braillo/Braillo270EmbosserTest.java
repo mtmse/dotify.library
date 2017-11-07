@@ -6,7 +6,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.daisy.braille.utils.api.embosser.EmbosserFeatures;
 import org.daisy.braille.utils.api.table.TableCatalog;
-import org.daisy.braille.utils.impl.provider.braillo.Braillo200_270_400_v12_16Embosser;
 import org.daisy.braille.utils.impl.provider.braillo.BrailloEmbosserProvider.EmbosserType;
 import org.daisy.braille.utils.pef.UnsupportedWidthException;
 import org.junit.Test;

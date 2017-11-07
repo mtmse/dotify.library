@@ -2,8 +2,6 @@ package org.daisy.braille.utils.impl.tools.embosser;
 
 import static org.junit.Assert.assertTrue;
 
-import org.daisy.braille.utils.impl.tools.embosser.DotMapper;
-import org.daisy.braille.utils.impl.tools.embosser.DotMapperConfiguration;
 import org.junit.Test;
 
 @SuppressWarnings("javadoc")

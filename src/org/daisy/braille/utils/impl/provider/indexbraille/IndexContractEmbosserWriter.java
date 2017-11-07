@@ -30,8 +30,8 @@ import org.daisy.braille.utils.api.table.BrailleConverter;
 import org.daisy.braille.utils.impl.tools.embosser.ConfigurableEmbosser;
 import org.daisy.braille.utils.impl.tools.embosser.ContractEmbosserWriter;
 import org.daisy.braille.utils.impl.tools.embosser.InternalContract;
-import org.daisy.braille.utils.impl.tools.embosser.InternalContractNotSupportedException;
 import org.daisy.braille.utils.impl.tools.embosser.InternalContract.BrailleRange;
+import org.daisy.braille.utils.impl.tools.embosser.InternalContractNotSupportedException;
 
 /**
  * Provides an embosser writer that supports different configurations based on

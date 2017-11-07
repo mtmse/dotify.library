@@ -21,7 +21,6 @@ import java.io.OutputStream;
 
 import org.daisy.braille.utils.api.embosser.EmbosserFactoryException;
 import org.daisy.braille.utils.api.embosser.EmbosserWriter;
-import org.daisy.braille.utils.api.embosser.EmbosserWriterProperties;
 import org.daisy.braille.utils.api.embosser.PrintPage;
 import org.daisy.braille.utils.api.embosser.StandardLineBreaks;
 import org.daisy.braille.utils.api.embosser.UnsupportedPaperException;

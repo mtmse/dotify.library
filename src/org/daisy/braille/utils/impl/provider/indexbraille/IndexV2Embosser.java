@@ -20,7 +20,6 @@ package org.daisy.braille.utils.impl.provider.indexbraille;
 import java.io.OutputStream;
 
 import org.daisy.braille.utils.api.embosser.EmbosserWriter;
-import org.daisy.braille.utils.api.embosser.EmbosserWriterProperties;
 import org.daisy.braille.utils.api.embosser.StandardLineBreaks;
 import org.daisy.braille.utils.api.embosser.UnsupportedPaperException;
 import org.daisy.braille.utils.api.factory.FactoryProperties;
