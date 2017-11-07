@@ -24,8 +24,9 @@ import java.io.UnsupportedEncodingException;
 import org.daisy.braille.utils.api.embosser.LineBreaks;
 import org.daisy.braille.utils.api.embosser.StandardLineBreaks;
 import org.daisy.braille.utils.api.table.BrailleConverter;
-import org.daisy.braille.impl.embosser.AbstractEmbosserWriter;
-import org.daisy.braille.impl.embosser.SimpleEmbosserProperties;
+import org.daisy.braille.utils.impl.tools.embosser.AbstractEmbosserWriter;
+import org.daisy.braille.utils.impl.tools.embosser.SimpleEmbosserProperties;
+
 import org_daisy.BrailleEditorsTableProvider.TableType;
 
 /**

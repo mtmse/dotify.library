@@ -30,9 +30,9 @@ import org.daisy.braille.utils.api.paper.Length;
 import org.daisy.braille.utils.api.paper.PageFormat;
 import org.daisy.braille.utils.api.table.TableCatalogService;
 import org.daisy.braille.utils.api.table.TableFilter;
-import org.daisy.braille.impl.embosser.ConfigurableEmbosser;
-import org.daisy.braille.impl.embosser.EmbosserTools;
-import org.daisy.braille.impl.embosser.SimpleEmbosserProperties;
+import org.daisy.braille.utils.impl.tools.embosser.ConfigurableEmbosser;
+import org.daisy.braille.utils.impl.tools.embosser.EmbosserTools;
+import org.daisy.braille.utils.impl.tools.embosser.SimpleEmbosserProperties;
 
 import com_indexbraille.IndexEmbosserProvider.EmbosserType;
 

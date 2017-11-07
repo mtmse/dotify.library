@@ -30,9 +30,9 @@ import org.daisy.braille.utils.api.paper.Area;
 import org.daisy.braille.utils.api.paper.PageFormat;
 import org.daisy.braille.utils.api.table.Table;
 import org.daisy.braille.utils.api.table.TableCatalogService;
-import org.daisy.braille.impl.embosser.BufferedVolumeEmbosser;
-import org.daisy.braille.impl.embosser.EmbosserTools;
-import org.daisy.braille.impl.embosser.SimpleEmbosserProperties;
+import org.daisy.braille.utils.impl.tools.embosser.BufferedVolumeEmbosser;
+import org.daisy.braille.utils.impl.tools.embosser.EmbosserTools;
+import org.daisy.braille.utils.impl.tools.embosser.SimpleEmbosserProperties;
 
 import com_braillo.Braillo440VolumeWriter.Mode;
 import com_braillo.BrailloEmbosserProvider.EmbosserType;

@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.daisy.braille.utils.api.paper.Dimensions;
-import org.daisy.braille.impl.embosser.EmbosserTools;
+import org.daisy.braille.utils.impl.tools.embosser.EmbosserTools;
 
 
 class Braillo440VolumeWriter extends BrailloVolumeWriter {

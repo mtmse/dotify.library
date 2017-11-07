@@ -23,11 +23,11 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.daisy.braille.impl.embosser.AbstractEmbosserWriter;
-import org.daisy.braille.impl.embosser.InternalEmbosserWriterProperties;
 import org.daisy.braille.utils.api.embosser.LineBreaks;
 import org.daisy.braille.utils.api.embosser.StandardLineBreaks;
 import org.daisy.braille.utils.api.table.BrailleConverter;
+import org.daisy.braille.utils.impl.tools.embosser.AbstractEmbosserWriter;
+import org.daisy.braille.utils.impl.tools.embosser.InternalEmbosserWriterProperties;
 
 /**
  * Provides an embosser writer that uses the transparent mode of index embossers. 

@@ -31,9 +31,10 @@ import org.daisy.braille.utils.api.factory.FactoryProperties;
 import org.daisy.braille.utils.api.table.Table;
 import org.daisy.braille.utils.api.table.TableCatalogService;
 import org.daisy.braille.utils.api.table.TableFilter;
-import org.daisy.braille.impl.embosser.AbstractEmbosserWriter.Padding;
-import org.daisy.braille.impl.embosser.ConfigurableEmbosser;
-import org.daisy.braille.impl.embosser.SimpleEmbosserProperties;
+import org.daisy.braille.utils.impl.tools.embosser.ConfigurableEmbosser;
+import org.daisy.braille.utils.impl.tools.embosser.SimpleEmbosserProperties;
+import org.daisy.braille.utils.impl.tools.embosser.AbstractEmbosserWriter.Padding;
+
 import org_daisy.BrailleEditorsFileFormatProvider.FileType;
 
 

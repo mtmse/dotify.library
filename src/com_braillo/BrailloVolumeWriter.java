@@ -22,7 +22,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-import org.daisy.braille.impl.embosser.VolumeWriter;
+import org.daisy.braille.utils.impl.tools.embosser.VolumeWriter;
 
 /**
  * Provides a volume writer for Braillo embossers.

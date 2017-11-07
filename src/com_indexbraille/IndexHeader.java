@@ -1,6 +1,6 @@
 package com_indexbraille;
 
-import org.daisy.braille.impl.embosser.InternalEmbosserWriterProperties;
+import org.daisy.braille.utils.impl.tools.embosser.InternalEmbosserWriterProperties;
 
 interface IndexHeader extends InternalEmbosserWriterProperties {
 

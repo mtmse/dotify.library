@@ -17,7 +17,7 @@
  */
 package org_daisy;
 
-import org.daisy.braille.impl.embosser.PageBreaks;
+import org.daisy.braille.utils.impl.tools.embosser.PageBreaks;
 
 /**
  * Provides standard page break definitions

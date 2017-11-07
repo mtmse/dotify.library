@@ -17,11 +17,11 @@
  */
 package com_braillo;
 
-import org.daisy.braille.impl.embosser.AbstractEmbosser;
-import org.daisy.braille.impl.table.DefaultTableProvider;
 import org.daisy.braille.utils.api.factory.FactoryProperties;
 import org.daisy.braille.utils.api.table.TableCatalogService;
 import org.daisy.braille.utils.api.table.TableFilter;
+import org.daisy.braille.utils.impl.tools.embosser.AbstractEmbosser;
+import org.daisy.braille.utils.impl.tools.table.DefaultTableProvider;
 
 public abstract class BrailloEmbosser extends AbstractEmbosser {
 	/**

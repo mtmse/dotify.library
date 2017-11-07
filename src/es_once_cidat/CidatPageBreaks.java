@@ -17,7 +17,7 @@
  */
 package es_once_cidat;
 
-import org.daisy.braille.impl.embosser.PageBreaks;
+import org.daisy.braille.utils.impl.tools.embosser.PageBreaks;
 
 /**
  *

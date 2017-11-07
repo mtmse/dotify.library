@@ -1,4 +1,4 @@
-org.daisy.braille.impl.table.DefaultTableProvider
+org.daisy.braille.utils.impl.tools.table.DefaultTableProvider
 com_braillo.BrailloTableProvider
 com_indexbraille.IndexTableProvider
 com_yourdolphin.SupernovaTableProvider

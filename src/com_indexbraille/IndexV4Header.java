@@ -1,7 +1,7 @@
 package com_indexbraille;
 
-import org.daisy.braille.impl.embosser.EmbosserTools;
 import org.daisy.braille.utils.api.paper.Area;
+import org.daisy.braille.utils.impl.tools.embosser.EmbosserTools;
 
 class IndexV4Header implements IndexHeader {
 	private final Area printableArea;

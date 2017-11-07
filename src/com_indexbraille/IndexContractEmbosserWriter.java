@@ -22,16 +22,16 @@ import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.daisy.braille.impl.embosser.ConfigurableEmbosser;
-import org.daisy.braille.impl.embosser.ContractEmbosserWriter;
-import org.daisy.braille.impl.embosser.InternalContract;
-import org.daisy.braille.impl.embosser.InternalContract.BrailleRange;
-import org.daisy.braille.impl.embosser.InternalContractNotSupportedException;
 import org.daisy.braille.utils.api.embosser.Contract;
 import org.daisy.braille.utils.api.embosser.ContractNotSupportedException;
 import org.daisy.braille.utils.api.embosser.EmbosserWriter;
 import org.daisy.braille.utils.api.embosser.StandardLineBreaks;
 import org.daisy.braille.utils.api.table.BrailleConverter;
+import org.daisy.braille.utils.impl.tools.embosser.ConfigurableEmbosser;
+import org.daisy.braille.utils.impl.tools.embosser.ContractEmbosserWriter;
+import org.daisy.braille.utils.impl.tools.embosser.InternalContract;
+import org.daisy.braille.utils.impl.tools.embosser.InternalContractNotSupportedException;
+import org.daisy.braille.utils.impl.tools.embosser.InternalContract.BrailleRange;
 
 /**
  * Provides an embosser writer that supports different configurations based on

@@ -31,9 +31,9 @@ import org.daisy.braille.utils.api.paper.SheetPaper;
 import org.daisy.braille.utils.api.paper.SheetPaperFormat;
 import org.daisy.braille.utils.api.paper.SheetPaperFormat.Orientation;
 import org.daisy.braille.utils.api.table.TableCatalogService;
-import org.daisy.braille.impl.embosser.AbstractEmbosser;
-import org.daisy.braille.impl.embosser.EmbosserTools;
-import org.daisy.braille.impl.embosser.FileToDeviceEmbosserWriter;
+import org.daisy.braille.utils.impl.tools.embosser.AbstractEmbosser;
+import org.daisy.braille.utils.impl.tools.embosser.EmbosserTools;
+import org.daisy.braille.utils.impl.tools.embosser.FileToDeviceEmbosserWriter;
 
 import es_once_cidat.CidatEmbosserProvider.EmbosserType;
 

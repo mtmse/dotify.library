@@ -29,10 +29,10 @@ import org.daisy.braille.utils.api.factory.FactoryProperties;
 import org.daisy.braille.utils.api.table.BrailleConverter;
 import org.daisy.braille.utils.api.table.Table;
 import org.daisy.braille.utils.api.table.TableProvider;
-import org.daisy.braille.impl.table.AdvancedBrailleConverter;
-import org.daisy.braille.impl.table.EmbosserBrailleConverter;
-import org.daisy.braille.impl.table.EmbosserTable;
-import org.daisy.braille.impl.table.StringTranslator.MatchMode;
+import org.daisy.braille.utils.impl.tools.table.AdvancedBrailleConverter;
+import org.daisy.braille.utils.impl.tools.table.EmbosserBrailleConverter;
+import org.daisy.braille.utils.impl.tools.table.EmbosserTable;
+import org.daisy.braille.utils.impl.tools.table.StringTranslator.MatchMode;
 
 import aQute.bnd.annotation.component.Component;
 

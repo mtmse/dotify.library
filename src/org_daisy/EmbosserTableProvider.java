@@ -29,8 +29,8 @@ import org.daisy.braille.utils.api.table.BrailleConstants;
 import org.daisy.braille.utils.api.table.BrailleConverter;
 import org.daisy.braille.utils.api.table.Table;
 import org.daisy.braille.utils.api.table.TableProvider;
-import org.daisy.braille.impl.table.EmbosserBrailleConverter;
-import org.daisy.braille.impl.table.EmbosserTable;
+import org.daisy.braille.utils.impl.tools.table.EmbosserBrailleConverter;
+import org.daisy.braille.utils.impl.tools.table.EmbosserTable;
 
 import aQute.bnd.annotation.component.Component;
 

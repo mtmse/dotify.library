@@ -19,7 +19,6 @@ package com_indexbraille;
 
 import java.io.OutputStream;
 
-import org.daisy.braille.impl.embosser.BufferedEmbosserWriter;
 import org.daisy.braille.utils.api.embosser.EmbosserFactoryException;
 import org.daisy.braille.utils.api.embosser.EmbosserWriter;
 import org.daisy.braille.utils.api.embosser.PrintPage;
@@ -28,6 +27,7 @@ import org.daisy.braille.utils.api.paper.Length;
 import org.daisy.braille.utils.api.paper.PageFormat;
 import org.daisy.braille.utils.api.table.TableCatalogService;
 import org.daisy.braille.utils.api.table.TableFilter;
+import org.daisy.braille.utils.impl.tools.embosser.BufferedEmbosserWriter;
 
 import com_indexbraille.IndexEmbosserProvider.EmbosserType;
 
