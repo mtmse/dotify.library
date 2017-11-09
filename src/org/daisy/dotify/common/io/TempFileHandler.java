@@ -36,7 +36,9 @@ import java.nio.file.StandardCopyOption;
  * must contain data when a call to swap() is made.
  * 
  * @author Joel Håkansson
+ * @deprecated moved to streamline-engine
  */
+@Deprecated
 public class TempFileHandler implements StreamJuggler {
 	private File t1;
 	private File t2;
