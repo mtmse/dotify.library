@@ -7,7 +7,14 @@ import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.Map;
+import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -37,8 +44,182 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author Joel Håkansson
  */
 public class XMLTools {
-	
+
+	static final Pattern XML_DECL = Pattern.compile("\\A\uFEFF?\\s*<\\?xml[^>]*?encoding\\s*=\\s*[\"'](?<ENCODING>[^'\"]*)[\"'].*\\?>");
+	private static final Optional<Charset> UTF_32_BE = forName("UTF-32BE");
+	private static final Optional<Charset> UTF_32_LE = forName("UTF-32LE");
+	private static final Optional<Charset> IBM_500 = forName("IBM500");
+
+	// With bom
+	private static final byte[] USC_4_BE = new byte[]{0x00, 0x00, (byte)0xFE, (byte)0xFF};
+	private static final byte[] USC_4_LE = new byte[]{(byte)0xFF, (byte)0xFE, 0x00, 0x00};
+	private static final byte[] USC_4_2143 = new byte[]{0x00, 0x00, (byte)0xFF, (byte)0xFE};
+	private static final byte[] USC_4_3412 = new byte[]{(byte)0xFE, (byte)0xFF, 0x00, 0x00};
+
+	// NO bom
+	private static final byte[] UTF_16_BE = new byte[] {0x00, (byte)0x3C, 0x00, (byte)0x3F};
+	private static final byte[] UTF_16_LE = new byte[] {(byte)0x3C, 0x00, (byte)0x3F, 0x00};
+	private static final byte[] UTF_8 = new byte[] {(byte)0x3C, (byte)0x3F, 0x78, 0x6D};
+	private static final byte[] EBCDIC = new byte[] {(byte)0x4C, (byte)0x6F, (byte)0xA7, (byte)0x94};
+
 	private XMLTools() {}
+
+	/**
+	 * Gets the declared encoding from the given string. If the string
+	 * doesn't start with an XML declaration, an empty optional is returned.
+	 * @param text the xml
+	 * @return returns a string with the declared encoding
+	 */
+	public static Optional<String> getDeclaredEncoding(String text) {
+		Matcher m = XML_DECL.matcher(text);
+		String enc;
+		if (m.find() && (enc=m.group("ENCODING"))!=null) {
+			return Optional.of(enc);
+		}
+		return Optional.empty();
+	}
+	
+	/**
+	 * Detects XML encoding based on this algorithm: <a href="https://www.w3.org/TR/xml/#sec-guessing">https://www.w3.org/TR/xml/#sec-guessing</a>.
+	 * In accordance with this specification, it is assumed that the XML declaration 
+	 * is not preceded by whitespace (if present).
+	 * Note that some encodings mentioned in the specification are not supported 
+	 * because they are not supported by the JVM.
+	 * 
+	 * @param data the input bytes
+	 * @return returns the name of the detected charset
+	 * @throws IllegalArgumentException if the length of the data is less than 4 bytes
+	 * @throws XmlEncodingMismatchException if the declared encoding doesn't match the detected encoding and
+	 * 			the detected encoding is an exact match
+	 * @throws XmlEncodingDetectionException if detection fails
+	 */
+	public static String detectXmlEncoding(byte[] data) throws XmlEncodingDetectionException {
+		if (data.length<4) {
+			throw new IllegalArgumentException();
+		}
+		PreliminaryCharset preliminary = guessCharset(data);
+		if (preliminary==null) {
+			throw new XmlEncodingDetectionException("Could not detect encoding.");
+		}
+		String decl = new String(data, preliminary.getCharset());
+		Optional<String> specifiedEncoding = getDeclaredEncoding(decl);
+		if (specifiedEncoding.isPresent()) {
+			String returnEncoding = specifiedEncoding.get();
+			if (preliminary.isExactMatch()) {
+				if (!preliminary.getCharset().name().toUpperCase().startsWith(returnEncoding.toUpperCase())) {
+					String msg = MessageFormat.format("The specified encoding ({0}) doesn''t match detected encoding ({1}).", returnEncoding, preliminary.getCharset().name());
+					throw new XmlEncodingMismatchException(msg, preliminary.getCharset().name(), returnEncoding);
+				}
+				return preliminary.getCharset().name();
+			} else {
+				return returnEncoding;
+			}
+		} else if (preliminary.isExactMatch()) {
+			return preliminary.getCharset().name();
+		} else {
+			throw new XmlEncodingDetectionException("Could not detect encoding.");
+		}
+	}
+
+	/**
+	 * Finds group of encodings that can be used to decode the declaration (if any).
+	 * @param data the data
+	 * @return returns a preliminary charset, based on the first bytes of the file
+	 * @throws IllegalArgumentException if the length of the data is less than 4 bytes
+	 */
+	private static PreliminaryCharset guessCharset(byte[] data) {
+		// Based on https://www.w3.org/TR/xml/#sec-guessing
+		if (data.length<4) {
+			throw new IllegalArgumentException();
+		}
+		byte[] signature = Arrays.copyOf(data, 4);
+		int i;
+		// With BOM
+		if (Arrays.equals(signature, USC_4_BE)) {
+			return UTF_32_BE.map(v->new PreliminaryCharset.Builder(v).bom(true).exactMatch(true).build()).orElse(null);
+		} else if (Arrays.equals(signature, USC_4_LE)) {
+			// Note that this test must come before UTF-16 below
+			return UTF_32_LE.map(v->new PreliminaryCharset.Builder(v).bom(true).exactMatch(true).build()).orElse(null);
+		} else if (Arrays.equals(signature, USC_4_2143)) {
+			// Not supported by the JVM
+			return null;
+		} else if (Arrays.equals(signature, USC_4_3412)) {
+			// Note that this test must come before UTF-16 below
+			// Not supported by the JVM
+			return null;
+		} else if (signature[0]==(byte)0xFE && signature[1]==(byte)0xFF) {
+			// UTF-16, big endian
+			return new PreliminaryCharset.Builder(StandardCharsets.UTF_16BE).bom(true).exactMatch(true).build();
+		} else if (signature[0]==(byte)0xFF && signature[1]==(byte)0xFE) {
+			// UTF-16, little endian
+			return new PreliminaryCharset.Builder(StandardCharsets.UTF_16LE).bom(true).exactMatch(true).build();
+		} else if (signature[0]==(byte)0xEF && signature[1]==(byte)0xBB && signature[2]==(byte)0xBF) {
+			// UTF-8 with BOM
+			return new PreliminaryCharset.Builder(StandardCharsets.UTF_8).bom(true).exactMatch(true).build();
+		} 
+		// No BOM
+		else if ((i = detectUcs4WithoutBom(signature))>-1) {
+			if (i==1) {
+				//BE
+				return UTF_32_BE.map(v->new PreliminaryCharset.Builder(v).bom(false).exactMatch(false).build()).orElse(null);
+			} else if (i==3) {
+				//LE
+				return UTF_32_LE.map(v->new PreliminaryCharset.Builder(v).bom(false).exactMatch(false).build()).orElse(null);
+			} else {
+				// not supported
+				return null;
+			}
+		} else if (Arrays.equals(signature, UTF_16_BE)) {
+			// UTF-16, big endian
+			return new PreliminaryCharset.Builder(StandardCharsets.UTF_16BE).bom(false).exactMatch(false).build();
+		} else if (Arrays.equals(signature, UTF_16_LE)) {
+			// UTF-16, little endian
+			return new PreliminaryCharset.Builder(StandardCharsets.UTF_16LE).bom(false).exactMatch(false).build();
+		} else if (Arrays.equals(signature, UTF_8)) {
+			// UTF-8 no BOM
+			return new PreliminaryCharset.Builder(StandardCharsets.UTF_8).bom(false).exactMatch(false).build();
+		} else if (Arrays.equals(signature, EBCDIC)) {
+			return IBM_500.map(v->new PreliminaryCharset.Builder(v).bom(false).exactMatch(false).build()).orElse(null);
+		}
+		// UTF-8 without encoding declaration or corrupt
+		return new PreliminaryCharset.Builder(StandardCharsets.UTF_8).bom(false).exactMatch(true).build();
+	}
+	
+	/**
+	 * Detects if the supplied data is XML encoded with UCS4 without BOM.
+	 * Returns the index of the non-zero byte, or -1 if the data isn't
+	 * a match for UCS4 encoded XML.
+	 * 
+	 * @param data the input data
+	 * @return returns the non-zero byte
+	 */
+	private static int detectUcs4WithoutBom(byte[] data) {
+		if (data.length!=4) {
+			throw new IllegalArgumentException("Expected 4 bytes");
+		}
+		int seen = -1;
+		int i;
+		for (i=0; i<data.length; i++) {
+			if (data[i]==0x3C) {
+				if (seen==-1) {
+					seen = i;
+				} else {
+					return -1;
+				}
+			} else if (data[i]!=0x00) {
+				return -1;
+			}
+		}
+		return i;
+	}
+	
+	private static Optional<Charset> forName(String charset) {
+		try {
+			return Optional.of(Charset.forName(charset));
+		} catch (Exception e) {
+			return Optional.empty();
+		}
+	}
 
 	/**
 	 * <p>Transforms the xml with the specified parameters. By default, this method will set up a caching entity resolver, which
