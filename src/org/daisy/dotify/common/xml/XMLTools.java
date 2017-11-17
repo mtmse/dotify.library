@@ -9,6 +9,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.charset.UnsupportedCharsetException;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Map;
@@ -120,6 +121,22 @@ public class XMLTools {
 			throw new XmlEncodingDetectionException("Could not detect encoding.");
 		}
 	}
+	
+	/**
+	 * Tries to detect the unicode encoding from the supplied data based
+	 * on the presence of a BOM. If the file doesn't start with a BOM, 
+	 * an empty optional is returned.
+	 * @param data the data to detect encoding on
+	 * @return returns the encoding detected by the BOM
+	 * @throws IllegalArgumentException if the length of the data is less than 4 bytes
+	 * @throws UnsupportedCharsetException if the charset could be detected but not created
+	 */
+	public static Optional<Charset> detectBomEncoding(byte[] data) {
+		if (data.length<4) {
+			throw new IllegalArgumentException();
+		}
+		return Optional.ofNullable(guessCharsetFromBom(Arrays.copyOf(data, 4)));
+	}
 
 	/**
 	 * Finds group of encodings that can be used to decode the declaration (if any).
@@ -135,28 +152,15 @@ public class XMLTools {
 		byte[] signature = Arrays.copyOf(data, 4);
 		int i;
 		// With BOM
-		if (Arrays.equals(signature, USC_4_BE)) {
-			return UTF_32_BE.map(v->new PreliminaryCharset.Builder(v).bom(true).exactMatch(true).build()).orElse(null);
-		} else if (Arrays.equals(signature, USC_4_LE)) {
-			// Note that this test must come before UTF-16 below
-			return UTF_32_LE.map(v->new PreliminaryCharset.Builder(v).bom(true).exactMatch(true).build()).orElse(null);
-		} else if (Arrays.equals(signature, USC_4_2143)) {
-			// Not supported by the JVM
+		Charset charsetFromBom;
+		try {
+			charsetFromBom = guessCharsetFromBom(signature);
+		} catch (UnsupportedCharsetException e) {
 			return null;
-		} else if (Arrays.equals(signature, USC_4_3412)) {
-			// Note that this test must come before UTF-16 below
-			// Not supported by the JVM
-			return null;
-		} else if (signature[0]==(byte)0xFE && signature[1]==(byte)0xFF) {
-			// UTF-16, big endian
-			return new PreliminaryCharset.Builder(StandardCharsets.UTF_16BE).bom(true).exactMatch(true).build();
-		} else if (signature[0]==(byte)0xFF && signature[1]==(byte)0xFE) {
-			// UTF-16, little endian
-			return new PreliminaryCharset.Builder(StandardCharsets.UTF_16LE).bom(true).exactMatch(true).build();
-		} else if (signature[0]==(byte)0xEF && signature[1]==(byte)0xBB && signature[2]==(byte)0xBF) {
-			// UTF-8 with BOM
-			return new PreliminaryCharset.Builder(StandardCharsets.UTF_8).bom(true).exactMatch(true).build();
-		} 
+		}
+		if (charsetFromBom!=null) {
+			return new PreliminaryCharset.Builder(charsetFromBom).bom(true).exactMatch(true).build();
+		}
 		// No BOM
 		else if ((i = detectUcs4WithoutBom(signature))>-1) {
 			if (i==1) {
@@ -183,6 +187,39 @@ public class XMLTools {
 		}
 		// UTF-8 without encoding declaration or corrupt
 		return new PreliminaryCharset.Builder(StandardCharsets.UTF_8).bom(false).exactMatch(true).build();
+	}
+	
+	/**
+	 * Guess the charset from a BOM.
+	 * @param signature a four byte signature
+	 * @return returns the charset if detected or null if the charset could not be detected.
+	 * @throws UnsupportedCharsetException if the charset could be detected but not created
+	 */
+	private static Charset guessCharsetFromBom(byte[] signature) throws UnsupportedCharsetException {
+		if (Arrays.equals(signature, USC_4_BE)) {
+			return UTF_32_BE.orElseThrow(()->new UnsupportedCharsetException("UTF-32BE"));
+		} else if (Arrays.equals(signature, USC_4_LE)) {
+			// Note that this test must come before UTF-16 below
+			return UTF_32_LE.orElseThrow(()->new UnsupportedCharsetException("UTF-32LE"));
+		} else if (Arrays.equals(signature, USC_4_2143)) {
+			// Not supported by the JVM
+			throw new UnsupportedCharsetException("USC-4-2143");
+		} else if (Arrays.equals(signature, USC_4_3412)) {
+			// Note that this test must come before UTF-16 below
+			// Not supported by the JVM
+			throw new UnsupportedCharsetException("USC-4-3412");
+		} else if (signature[0]==(byte)0xFE && signature[1]==(byte)0xFF) {
+			// UTF-16, big endian
+			return StandardCharsets.UTF_16BE;
+		} else if (signature[0]==(byte)0xFF && signature[1]==(byte)0xFE) {
+			// UTF-16, little endian
+			return StandardCharsets.UTF_16LE;
+		} else if (signature[0]==(byte)0xEF && signature[1]==(byte)0xBB && signature[2]==(byte)0xBF) {
+			// UTF-8 with BOM
+			return StandardCharsets.UTF_8;
+		} else {
+			return null;
+		}
 	}
 	
 	/**
