@@ -123,19 +123,15 @@ public class XMLTools {
 	}
 	
 	/**
-	 * Tries to detect the unicode encoding from the supplied data based
+	 * Tries to detect a Unicode encoding from the supplied data based
 	 * on the presence of a BOM. If the file doesn't start with a BOM, 
 	 * an empty optional is returned.
 	 * @param data the data to detect encoding on
-	 * @return returns the encoding detected by the BOM
-	 * @throws IllegalArgumentException if the length of the data is less than 4 bytes
+	 * @return returns the encoding detected from the BOM
 	 * @throws UnsupportedCharsetException if the charset could be detected but not created
 	 */
 	public static Optional<Charset> detectBomEncoding(byte[] data) {
-		if (data.length<4) {
-			throw new IllegalArgumentException();
-		}
-		return Optional.ofNullable(guessCharsetFromBom(Arrays.copyOf(data, 4)));
+		return Optional.ofNullable(guessCharsetFromBom(data.length>4?Arrays.copyOf(data, 4):data));
 	}
 
 	/**
@@ -191,12 +187,15 @@ public class XMLTools {
 	
 	/**
 	 * Guess the charset from a BOM.
-	 * @param signature a four byte signature
+	 * @param signature a byte signature, 0-4 bytes long
 	 * @return returns the charset if detected or null if the charset could not be detected.
 	 * @throws UnsupportedCharsetException if the charset could be detected but not created
 	 */
 	private static Charset guessCharsetFromBom(byte[] signature) throws UnsupportedCharsetException {
-		if (Arrays.equals(signature, USC_4_BE)) {
+		if (signature.length<2) {
+			// No Unicode encoding has a byte order mark < 2 bytes
+			return null;
+		} else if (Arrays.equals(signature, USC_4_BE)) {
 			return UTF_32_BE.orElseThrow(()->new UnsupportedCharsetException("UTF-32BE"));
 		} else if (Arrays.equals(signature, USC_4_LE)) {
 			// Note that this test must come before UTF-16 below
@@ -214,7 +213,7 @@ public class XMLTools {
 		} else if (signature[0]==(byte)0xFF && signature[1]==(byte)0xFE) {
 			// UTF-16, little endian
 			return StandardCharsets.UTF_16LE;
-		} else if (signature[0]==(byte)0xEF && signature[1]==(byte)0xBB && signature[2]==(byte)0xBF) {
+		} else if (signature.length>2 && signature[0]==(byte)0xEF && signature[1]==(byte)0xBB && signature[2]==(byte)0xBF) {
 			// UTF-8 with BOM
 			return StandardCharsets.UTF_8;
 		} else {

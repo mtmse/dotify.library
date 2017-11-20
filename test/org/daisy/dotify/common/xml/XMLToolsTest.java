@@ -1,6 +1,5 @@
 package org.daisy.dotify.common.xml;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -12,7 +11,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.Optional;
 import java.util.regex.Matcher;
 
@@ -126,6 +124,37 @@ public class XMLToolsTest {
 	public void testXMLEncoding_06() throws XmlEncodingDetectionException {
 		byte[] data = encode(Charset.forName("ibm500"), "ibm500", false);
 		assertEquals("ibm500", XMLTools.detectXmlEncoding(data));
+	}
+
+	@Test
+	public void testBomEncoding_01() {
+		assertEquals(Optional.empty(), XMLTools.detectBomEncoding(new byte[]{}));
+	}
+
+	@Test
+	public void testBomEncoding_02() {
+		assertEquals(Optional.empty(), XMLTools.detectBomEncoding(new byte[]{'a'}));
+		//byte[] data = "abcd".getBytes("utf-8")
+	}
+
+	@Test
+	public void testBomEncoding_03() {
+		assertEquals(Optional.empty(), XMLTools.detectBomEncoding(new byte[]{'a', 'b'}));
+	}
+
+	@Test
+	public void testBomEncoding_04() throws UnsupportedEncodingException {
+		assertEquals(Optional.of(StandardCharsets.UTF_8), XMLTools.detectBomEncoding("\uFEFF".getBytes("utf-8")));
+	}
+	
+	@Test
+	public void testBomEncoding_05() throws UnsupportedEncodingException {
+		assertEquals(Optional.empty(), XMLTools.detectBomEncoding("abc".getBytes("utf-8")));
+	}
+	
+	@Test
+	public void testBomEncoding_06() throws UnsupportedEncodingException {
+		assertEquals(Optional.of(StandardCharsets.UTF_16LE), XMLTools.detectBomEncoding("\uFEFF".getBytes("utf-16LE")));
 	}
 
 	private byte[] encode(Charset charset, String name, boolean bom) {
