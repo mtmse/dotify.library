@@ -425,11 +425,21 @@ public class XMLTools {
 	/**
 	 * Returns true if the contents at the specified URI is well formed XML.
 	 * @param uri the URI
-	 * @return returns true if the file is well formed XML, false otherwise
+	 * @return returns true if the contents at the specified URI is well formed XML, false otherwise
 	 * @throws XMLToolsException if a parser cannot be configured or if parsing fails
 	 */
 	public static final boolean isWellformedXML(URI uri) throws XMLToolsException {
 		return parseXML(uri)!=null;
+	}
+	
+	/**
+	 * Returns true if the specified source is well formed XML.
+	 * @param source the source
+	 * @return returns true if the source is well formed XML, false otherwise
+	 * @throws XMLToolsException if a parser cannot be configured or if parsing fails
+	 */
+	public static final boolean isWellformedXML(InputSource source) throws XMLToolsException {
+		return parseXML(source)!=null;
 	}
 	
 	/**
@@ -445,13 +455,23 @@ public class XMLTools {
 	/**
 	 * Asserts that the contents at the specified URI is well formed and returns some root node information.
 	 * @param uri the URI
-	 * @return returns the root node, or null if file is not well formed
+	 * @return returns the root node, or null if the contents at the specified URI is not well formed
 	 * @throws XMLToolsException if a parser cannot be configured or if parsing fails
 	 */
 	public static final XMLInfo parseXML(URI uri) throws XMLToolsException {
 		return parseXML(uri, false);
 	}
-	
+
+	/**
+	 * Asserts that the source is well formed and returns some root node information.
+	 * @param source the source
+	 * @return returns the root node, or null if the source is not well formed
+	 * @throws XMLToolsException if a parser cannot be configured or if parsing fails
+	 */
+	public static final XMLInfo parseXML(InputSource source) throws XMLToolsException {
+		return parseXML(source, false);
+	}
+
 	/**
 	 * Returns some root node information and optionally asserts that the specified
 	 * file is well formed.
@@ -470,11 +490,30 @@ public class XMLTools {
 	 * specified URI is well formed.
 	 * @param uri the URI
 	 * @param peek true if the parsing should stop after reading the root element. If true,
-	 * the file may or may not be well formed beyond the first start tag.
+	 * the contents at the specified URI may or may not be well formed beyond the first start tag.
 	 * @return returns the root node, or null if file is not well formed
 	 * @throws XMLToolsException if a parser cannot be configured or if parsing fails
 	 */
 	public static final XMLInfo parseXML(URI uri, boolean peek) throws XMLToolsException {
+		try (InputStream is = uri.toURL().openStream()) {
+			InputSource source = new InputSource(is);
+			source.setSystemId(uri.toASCIIString());
+			return parseXML(source, peek);
+		} catch (IOException e) {
+			throw new XMLToolsException(e);
+		}
+	}
+
+	/**
+	 * Returns some root node information and optionally asserts that the contents at the
+	 * specified source is well formed.
+	 * @param source the source
+	 * @param peek true if the parsing should stop after reading the root element. If true,
+	 * the source may or may not be well formed beyond the first start tag.
+	 * @return returns the root node, or null if file is not well formed
+	 * @throws XMLToolsException if a parser cannot be configured or if parsing fails
+	 */
+	public static final XMLInfo parseXML(InputSource source, boolean peek) throws XMLToolsException {
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 		factory.setNamespaceAware(true);
 		SAXParser saxParser = null;
@@ -486,7 +525,7 @@ public class XMLTools {
 			throw new XMLToolsException("Failed to set up XML parser.", e);
 		}
 		XMLHandler dh = new XMLHandler(peek);
-		try (InputStream is = uri.toURL().openStream()) {
+		try {
 	        XMLReader reader = saxParser.getXMLReader();
 	        if (dh != null) {
 	            reader.setContentHandler(dh);
@@ -497,8 +536,6 @@ public class XMLTools {
 	            reader.setErrorHandler(dh);
 	            reader.setDTDHandler(dh);
 	        }
-	        InputSource source = new InputSource(is);
-	        source.setSystemId(uri.toASCIIString());
 			saxParser.getXMLReader().parse(source);
 		} catch (StopParsing e) {
 			//thrown if peek is true
