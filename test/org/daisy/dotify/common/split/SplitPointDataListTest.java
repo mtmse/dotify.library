@@ -6,6 +6,7 @@ import org.junit.Test;
 import static org.mockito.Mockito.mock;
 
 @SuppressWarnings("javadoc")
+@Deprecated
 public class SplitPointDataListTest {
 	
 	@Test

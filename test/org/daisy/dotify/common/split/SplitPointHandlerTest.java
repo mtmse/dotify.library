@@ -10,6 +10,7 @@ import org.daisy.dotify.common.collection.SplitList;
 import org.junit.Test;
 
 @SuppressWarnings("javadoc")
+@Deprecated
 public class SplitPointHandlerTest {
 
 	DummySplitPoint c = new DummySplitPoint.Builder().breakable(false).skippable(false).size(1).build();
