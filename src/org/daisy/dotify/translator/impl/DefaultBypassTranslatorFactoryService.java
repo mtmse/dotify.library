@@ -3,6 +3,7 @@ package org.daisy.dotify.translator.impl;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.daisy.dotify.api.hyphenator.HyphenatorFactoryMaker;
 import org.daisy.dotify.api.hyphenator.HyphenatorFactoryMakerService;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactoryService;
@@ -60,7 +61,7 @@ public class DefaultBypassTranslatorFactoryService implements
 
 	@Override
 	public void setCreatedWithSPI() {
-		setHyphenator(SPIHelper.getHyphenatorFactoryMakerService());
+		setHyphenator(HyphenatorFactoryMaker.newInstance());
 	}
 
 }

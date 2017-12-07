@@ -18,7 +18,7 @@ import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.api.translator.TextBorderConfigurationException;
 import org.daisy.dotify.api.translator.TextBorderFactory;
 import org.daisy.dotify.api.translator.TextBorderStyle;
-import org.daisy.dotify.graphics.BrailleGraphics;
+import org.daisy.dotify.api.graphics.BrailleGraphics;
 
 class BrailleTextBorderFactory implements TextBorderFactory {
 	private static final Logger logger = Logger.getLogger(BrailleTextBorderFactory.class.getCanonicalName());

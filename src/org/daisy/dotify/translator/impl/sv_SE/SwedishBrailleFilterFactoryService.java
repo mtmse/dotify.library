@@ -3,12 +3,12 @@ package org.daisy.dotify.translator.impl.sv_SE;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.daisy.dotify.api.hyphenator.HyphenatorFactoryMaker;
 import org.daisy.dotify.api.hyphenator.HyphenatorFactoryMakerService;
 import org.daisy.dotify.api.translator.BrailleFilterFactory;
 import org.daisy.dotify.api.translator.BrailleFilterFactoryService;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.api.translator.TranslatorSpecification;
-import org.daisy.dotify.translator.impl.SPIHelper;
 
 import aQute.bnd.annotation.component.Component;
 import aQute.bnd.annotation.component.Reference;
@@ -67,7 +67,7 @@ public class SwedishBrailleFilterFactoryService implements
 
 	@Override
 	public void setCreatedWithSPI() {
-		setHyphenator(SPIHelper.getHyphenatorFactoryMakerService());
+		setHyphenator(HyphenatorFactoryMaker.newInstance());
 	}
 
 }

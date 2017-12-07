@@ -9,7 +9,7 @@ import org.daisy.dotify.api.translator.TextAttribute;
 import org.daisy.dotify.api.translator.Translatable;
 import org.daisy.dotify.api.translator.TranslationException;
 import org.daisy.dotify.api.translator.TranslatorConfigurationException;
-import org.daisy.dotify.consumer.hyphenator.HyphenatorFactoryMaker;
+import org.daisy.dotify.api.hyphenator.HyphenatorFactoryMaker;
 import org.daisy.dotify.translator.impl.sv_SE.SwedishBrailleTranslatorFactory;
 import org.junit.Ignore;
 import org.junit.Test;
