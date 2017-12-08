@@ -2,21 +2,24 @@ package org.daisy.dotify.common.splitter;
 
 import java.util.List;
 
-public class SplitResult<T extends SplitPointUnit> {
-	private final List<T> head;
-	private final SplitPointDataSource<T> tail;
-	
-	public SplitResult(List<T> head, SplitPointDataSource<T> tail) {
-		this.head = head;
-		this.tail = tail;
-	}
-	
-	public List<T> head() {
-		return head;
-	}
+/**
+ * Provides a split result.
+ * @author Joel Håkansson
+ *
+ * @param <T> the type of units
+ * @param <U> the type of data source
+ */
+public interface SplitResult <T extends SplitPointUnit, U extends SplitPointDataSource<T, U>> {
 
-	public SplitPointDataSource<T> tail() {
-		return tail;
-	}
+	/**
+	 * The head of the result.
+	 * @return returns the head
+	 */
+	public List<T> head();
 
+	/**
+	 * The tail of the result.
+	 * @return returns the tail
+	 */
+	public U tail();
 }

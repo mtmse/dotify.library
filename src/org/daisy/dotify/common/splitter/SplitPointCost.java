@@ -17,6 +17,6 @@ public interface SplitPointCost<T extends SplitPointUnit> {
 	 * @param limit the maximum length to consider
 	 * @return returns the cost
 	 */
-	public double getCost(SplitPointDataSource<T> units, int index, int limit);
+	public double getCost(SplitPointDataSource<T, ?> units, int index, int limit);
 	
 }
