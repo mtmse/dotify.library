@@ -302,5 +302,32 @@ public class BreakPointHandlerTest {
 		assertEquals("def", bp.getTail());
 		assertTrue(bp.isHardBreak());		
 	}
+	
+	@Test
+	public void testMarkReset() {
+		BreakPointHandler bph = new BreakPointHandler("abc 123");
+		BreakPoint bp = bph.nextRow(3, false);
+		assertEquals("abc", bp.getHead());
+		assertEquals("123", bp.getTail());
+
+		bph.reset();
+		bp = bph.nextRow(3, false);
+		assertEquals("abc", bp.getHead());
+		assertEquals("123", bp.getTail());
+
+		bph.mark();
+		bp = bph.nextRow(3, false);
+		assertEquals("123", bp.getHead());
+		assertEquals("", bp.getTail());
+
+		bph.reset();
+		bp = bph.nextRow(3, false);
+		assertEquals("123", bp.getHead());
+		assertEquals("", bp.getTail());
+		
+		bp = bph.nextRow(3, false);
+		assertEquals("", bp.getHead());
+		assertEquals("", bp.getTail());
+	}
 
 }
