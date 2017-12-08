@@ -1,4 +1,4 @@
-package org.daisy.dotify.common.split;
+package org.daisy.dotify.common.splitter;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.daisy.dotify.common.collection.SplitList;
-import org.daisy.dotify.common.split.SplitPointSpecification.Type;
+import org.daisy.dotify.common.splitter.SplitPointSpecification.Type;
 
 
 /**

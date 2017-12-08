@@ -1,9 +1,13 @@
-package org.daisy.dotify.common.split;
+package org.daisy.dotify.common.splitter;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 import static org.mockito.Mockito.mock;
+
+import org.daisy.dotify.common.splitter.SplitPointDataList;
+import org.daisy.dotify.common.splitter.SplitPointDataSource;
+import org.daisy.dotify.common.splitter.SplitPointUnit;
 
 @SuppressWarnings("javadoc")
 public class SplitPointDataListTest {
