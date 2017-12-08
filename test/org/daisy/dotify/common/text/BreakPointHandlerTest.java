@@ -238,5 +238,69 @@ public class BreakPointHandlerTest {
 		assertEquals("teen", bp.getTail());
 		assertTrue(!bp.isHardBreak());
 	}
+	
+	@Test
+	public void testIgnoreHyphen_01() {
+		// Tests ignoring hyphens with a space in the input
+		String input = "xyz abc\u00addef";
+
+		// The regular behavior for reference
+		BreakPointHandler bph = new BreakPointHandler(input);
+		BreakPoint bp = bph.nextRow(9, false);
+		assertEquals("xyz abc-", bp.getHead());
+		assertEquals("def", bp.getTail());
+		assertTrue(!bp.isHardBreak());
+
+		// Tests that when not using force and ignoring hyphens, the result will be 
+		// broken at a space if there is one in the string.
+		bph = new BreakPointHandler(input);
+		bp = bph.nextRow(9, false, true);
+		assertEquals("xyz", bp.getHead());
+		assertEquals("abc\u00addef", bp.getTail());
+		assertTrue(!bp.isHardBreak());
+
+		// Tests that when using force and ignoring hyphens, the result will still be 
+		// broken at a space if there is one in the string.
+		bph = new BreakPointHandler(input);
+		bp = bph.nextRow(9, true, true);
+		assertEquals("xyz", bp.getHead());
+		assertEquals("abc\u00addef", bp.getTail());
+		assertTrue(!bp.isHardBreak());
+	}
+	
+	@Test
+	public void testIgnoreHyphen_02() {
+		testIgnoreHypensHelper("xyzabc\u00addef");
+	}
+	
+	@Test
+	public void testIgnoreHyphen_03() {
+		testIgnoreHypensHelper("xyzabc-def");
+	}
+	
+	private void testIgnoreHypensHelper(String input) {
+		// The regular behavior for reference
+		BreakPointHandler bph = new BreakPointHandler(input);
+		BreakPoint bp = bph.nextRow(8, false);
+		assertEquals("xyzabc-", bp.getHead());
+		assertEquals("def", bp.getTail());
+		assertTrue(!bp.isHardBreak());
+		
+		// Tests that when not using force and ignore hyphens, the result is empty
+		// when there are no a spaces in the string.
+		bph = new BreakPointHandler(input);
+		bp = bph.nextRow(8, false, true);
+		assertEquals("", bp.getHead());
+		assertEquals(input, bp.getTail());
+		assertTrue(!bp.isHardBreak());
+
+		// Tests that when using force and ignore hyphens, the result is broken
+		// at a hyphen if there are no spaces in the string. Note that this
+		// is a hard break, even though it's broken at a hyphen.
+		bp = bph.nextRow(8, true, true);
+		assertEquals("xyzabc-", bp.getHead());
+		assertEquals("def", bp.getTail());
+		assertTrue(bp.isHardBreak());		
+	}
 
 }

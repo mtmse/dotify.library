@@ -123,6 +123,17 @@ public class BreakPointHandler {
 	 * @return returns the next BreakPoint
 	 */
 	public BreakPoint nextRow(int breakPoint, boolean force) {
+		return nextRow(breakPoint, force, false);
+	}
+
+	/**
+	 * Gets the next row from this BreakPointHandler
+	 * @param breakPoint the desired breakpoint for this row
+	 * @param force if force is allowed if no breakpoint is found
+	 * @param ignoreHyphens ignore hyphenation points inside words
+	 * @return returns the next break point
+	 */
+	public BreakPoint nextRow(int breakPoint, boolean force, boolean ignoreHyphens) {
 		if (charsStr.length()==0) {
 			// pretty simple...
 			return new BreakPoint("", "", false);
@@ -134,11 +145,11 @@ public class BreakPointHandler {
 		} else if (breakPoint<=0) {
 			return finalizeBreakpointTrimTail("", charsStr, false);
 		} else {
-			return findBreakpoint(breakPoint, force);
+			return findBreakpoint(breakPoint, force, ignoreHyphens);
 		}
 	}
 	
-	private BreakPoint findBreakpoint(int breakPoint, boolean force) {
+	private BreakPoint findBreakpoint(int breakPoint, boolean force, boolean ignoreHyphens) {
 		int strPos = findBreakpointPosition(charsStr, breakPoint);
 		assert strPos<charsStr.length();
 
@@ -157,18 +168,24 @@ public class BreakPointHandler {
 			int tailStart = strPos+2;
 			return finalizeBreakpointFull(head, tailStart, false);
 		} else {
-			return newBreakpointFromPosition(strPos, breakPoint, force);
+			return newBreakpointFromPosition(strPos, breakPoint, force, ignoreHyphens);
 		}
 	}
 	
-	private BreakPoint newBreakpointFromPosition(int strPos, int breakPoint, boolean force) {
+	private BreakPoint newBreakpointFromPosition(int strPos, int breakPoint, boolean force, boolean ignoreHyphens) {
 		// back up
-		int i=findBreakpointBefore(strPos);
+		int i=findBreakpointBefore(strPos, ignoreHyphens);
 		String head;
 		boolean hard = false;
 		int tailStart;
 		if (i<0) { // no breakpoint found, break hard 
 			if (force) {
+				if (ignoreHyphens) {
+					// Try again without ignoring hyphens
+					BreakPoint s = newBreakpointFromPosition(strPos, breakPoint, force, false);
+					// Even if the string was broken at a hyphenation point, it's a hard break in this case 
+					return new BreakPoint(s.getHead(), s.getTail(), true);
+				}
 				hard = true;
 				head = charsStr.substring(0, strPos+1);
 				tailStart = strPos+1;
@@ -274,11 +291,14 @@ public class BreakPointHandler {
 	 * @param strPos
 	 * @return returns the break point, or -1 if none is found
 	 */
-	private int findBreakpointBefore(int strPos) {
+	private int findBreakpointBefore(int strPos, boolean ignoreHyphens) {
 		int i = strPos;
 whileLoop: while (i>=0) {
 			switch (charsStr.charAt(i)) {
 				case SOFT_HYPHEN: case ZERO_WIDTH_SPACE:
+					if (ignoreHyphens) {
+						break;
+					}
 					boolean done = true;
 					if (meta!=null) {
 						Entry<Integer, NonStandardHyphenationInfo> entry = meta.floorEntry(i+offset);
@@ -300,7 +320,11 @@ whileLoop: while (i>=0) {
 						break whileLoop;
 					}
 					break;
-				case SPACE: case DASH:
+				case DASH:
+					if (ignoreHyphens) {
+						break;
+					}
+				case SPACE: 
 					//non-standard hyphenation does not apply
 					break whileLoop;
 			}
