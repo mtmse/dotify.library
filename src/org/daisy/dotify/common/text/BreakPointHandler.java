@@ -1,6 +1,8 @@
 package org.daisy.dotify.common.text;
 
+import java.util.Collections;
 import java.util.Map.Entry;
+import java.util.NavigableMap;
 import java.util.TreeMap;
 import java.util.regex.Pattern;
 
@@ -25,10 +27,10 @@ public class BreakPointHandler {
 	private static final char SPACE = ' ';
 	private static final Pattern LEADING_WHITESPACE = Pattern.compile("\\A[\\s\u200b]+");
 	private static final Pattern TRAILING_WHITESPACE = Pattern.compile("[\\s\u200b]+\\z");
+	private final NavigableMap<Integer, NonStandardHyphenationInfo> meta;
 	private String charsStr;
 	private int offset;
-	private TreeMap<Integer, NonStandardHyphenationInfo> meta;
-	
+
 	/**
 	 * Provides a builder for break point handlers
 	 * @author Joel Håkansson
@@ -36,7 +38,7 @@ public class BreakPointHandler {
 	 */
 	public static class Builder {
 		private final String str;
-		private final TreeMap<Integer, NonStandardHyphenationInfo> meta;
+		private final NavigableMap<Integer, NonStandardHyphenationInfo> meta;
 		
 		/**
 		 * Creates a new builder with the string to break.
@@ -79,7 +81,7 @@ public class BreakPointHandler {
 			if (meta.isEmpty()) {
 				return new BreakPointHandler(str, null, 0);
 			} else {
-				return new BreakPointHandler(str, meta, 0);
+				return new BreakPointHandler(str, Collections.unmodifiableNavigableMap(new TreeMap<Integer, NonStandardHyphenationInfo>(meta)), 0);
 			}
 		}
 	}
@@ -94,20 +96,19 @@ public class BreakPointHandler {
 		this(str, null, 0);
 	}
 
-	@SuppressWarnings("unchecked")
-	private BreakPointHandler(String str, TreeMap<Integer, NonStandardHyphenationInfo> meta, int offset) {
+	private BreakPointHandler(String str, NavigableMap<Integer, NonStandardHyphenationInfo> meta, int offset) {
 		if (str==null) {
 			throw new NullPointerException("Input string cannot be null.");
 		}
 		this.charsStr = str;
 		this.offset = offset;
 		if (meta!=null) {
-			this.meta = (TreeMap<Integer, NonStandardHyphenationInfo>)meta.clone();
+			this.meta = meta;
 		} else {
 			this.meta = null;
 		}
 	}
-	
+
 	/**
 	 * Creates a new copy of this object in its current state.
 	 * @return returns a new instance
