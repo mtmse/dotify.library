@@ -1,5 +1,6 @@
 package org.daisy.dotify.common.splitter;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -38,11 +39,43 @@ public interface SplitPointDataSource<T extends SplitPointUnit, U extends SplitP
 	public U createEmpty();
 	
 	/**
-	 * Gets the result of splitting at the specified index.
+	 * <p>Gets the result of splitting at the specified index.
+	 * An implementation must be able to handle indexes where
+	 * {@link #hasElementAt(int)} returns false.</p>
+	 * 
+	 * <p>If atIndex is 0, the head of the result is empty and the
+	 * original stream is in the tail. Conversely, if atIndex is greater
+	 * than {@link #hasElementAt(int)} the  head of the result contains 
+	 * {@link #getRemaining()} and the tail is empty.</p>
+	 * 
 	 * @param atIndex the index where the tail starts
 	 * @return returns a split result at the specified index
 	 */
-	public SplitResult<T, U> split(int atIndex);
+	public default SplitResult<T, U> split(int atIndex) {
+		if (atIndex==0) {
+			return new DefaultSplitResult<T, U>(Collections.emptyList(), getDataSource());
+		} else if (hasElementAt(atIndex-1)) {
+			return splitInRange(atIndex);
+		} else {
+			return new DefaultSplitResult<>(getRemaining(), createEmpty());
+		}
+	}
+	
+	/**
+	 * Gets the result of splitting at the specified index.
+	 * 
+	 * @param atIndex the index where the tail starts
+	 * @return returns a split result at the specified index
+	 * @throws IndexOutOfBoundsException if the index isn't within the bounds of
+	 * 			available data.
+	 */
+	public SplitResult<T, U> splitInRange(int atIndex);
+	
+	/**
+	 * Gets the data source as is, typically "<code>return this</code>" 
+	 * @return returns the data source
+	 */
+	public U getDataSource();
 	
 	/**
 	 * Returns true if the manager has an element at the specified index

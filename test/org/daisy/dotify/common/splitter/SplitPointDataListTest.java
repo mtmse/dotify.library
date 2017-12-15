@@ -53,5 +53,28 @@ public class SplitPointDataListTest {
 		assertEquals(1, m.head(1).size());
 	}
 
+	@Test
+	public void testSplitOutOfRange_01() {
+		SplitPointDataList<SplitPointUnit> m = new SplitPointDataList<>(mock(SplitPointUnit.class), mock(SplitPointUnit.class));
+		SplitResult<?, ?> res = m.split(4);
+		assertEquals(2, res.head().size());
+		assertEquals(0, res.tail().getRemaining().size());
+	}
+
+	@Test (expected=IndexOutOfBoundsException.class)
+	public void testSplitOutOfRange_02() {
+		SplitPointDataList<SplitPointUnit> m = new SplitPointDataList<>(mock(SplitPointUnit.class), mock(SplitPointUnit.class));
+		SplitResult<?, ?> res = m.splitInRange(4);
+		assertEquals(2, res.head().size());
+		assertEquals(0, res.tail().getRemaining().size());
+	}
+
+	@Test
+	public void testSplitOutOfRange_03() {
+		SplitPointDataList<SplitPointUnit> m = new SplitPointDataList<>(mock(SplitPointUnit.class), mock(SplitPointUnit.class));
+		SplitResult<?, ?> res = m.splitInRange(0);
+		assertEquals(0, res.head().size());
+		assertEquals(2, res.tail().getRemaining().size());
+	}
 
 }

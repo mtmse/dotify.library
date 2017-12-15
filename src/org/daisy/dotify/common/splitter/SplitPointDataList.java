@@ -131,7 +131,7 @@ public final class SplitPointDataList<T extends SplitPointUnit> implements Split
 	}
 	
 	@Override
-	public SplitResult<T, SplitPointDataList<T>> split(int atIndex) {
+	public SplitResult<T, SplitPointDataList<T>> splitInRange(int atIndex) {
 		return new DefaultSplitResult<T, SplitPointDataList<T>>(head(atIndex), tail(atIndex));
 	}
 
@@ -143,6 +143,11 @@ public final class SplitPointDataList<T extends SplitPointUnit> implements Split
 	@Override
 	public SplitPointDataList<T> createEmpty() {
 		return emptyManager();
+	}
+
+	@Override
+	public SplitPointDataList<T> getDataSource() {
+		return this;
 	}
 
 }

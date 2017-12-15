@@ -115,9 +115,11 @@ public class SplitPointHandler<T extends SplitPointUnit, U extends SplitPointDat
 	}
 	
 	/**
-	 * Splits the data according to the supplied specification. A specification can be created by using 
-	 * {@link #find(float, SplitPointDataSource, SplitPointCost, SplitOption...)} on the data source.
-	 * No data is beyond the specified split point is produced using this method.
+	 * <p>Splits the data according to the supplied specification. A specification can be created by using 
+	 * {@link #find(float, SplitPointDataSource, SplitPointCost, SplitOption...)} on the data source.</p>
+	 * <p>No data is beyond the specified split point is produced using this method.
+	 * Also, only one of the data producing operations is called, either
+	 * {@link SplitPointDataSource#getRemaining()} or {@link SplitPointDataSource#split(int)}.</p>
 	 * 
 	 * @param spec the specification
 	 * @param data the data
@@ -222,7 +224,7 @@ public class SplitPointHandler<T extends SplitPointUnit, U extends SplitPointDat
 
 	private SplitPoint<T, U> makeBreakpoint(U data, SplitPointSpecification spec) {
 		Supplements<T> map = data.getSupplements();
-		SplitResult<T, U> split = getResult(data, spec.getIndex());
+		SplitResult<T, U> split = data.split(spec.getIndex());
 		return finalizeBreakpointFull(split, map, spec.isHard(), spec.shouldTrimTrailing());
 	}
 	
@@ -338,17 +340,7 @@ public class SplitPointHandler<T extends SplitPointUnit, U extends SplitPointDat
 		}
 		return SplitList.split(in, i+1);
 	}
-	
-	static <T extends SplitPointUnit, U extends SplitPointDataSource<T, U>> SplitResult<T, U> getResult(U data, int tailStart) {
-		if (tailStart==0) {
-			return new DefaultSplitResult<>(Collections.emptyList(), data);
-		} else if (data.hasElementAt(tailStart-1)) {
-			return data.split(tailStart);
-		} else {
-			return new DefaultSplitResult<>(data.getRemaining(), data.createEmpty());
-		}
-	}
-	
+
 	/**
 	 * Finds the index for the last unit that fits into the given space
 	 * @param data
