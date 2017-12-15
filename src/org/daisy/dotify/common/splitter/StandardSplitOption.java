@@ -1,12 +1,10 @@
-package org.daisy.dotify.common.split;
+package org.daisy.dotify.common.splitter;
 
 /**
  * Defines standard split options.
  * 
  * @author Joel Håkansson
- * @deprecated use the corresponding class in org.daisy.dotify.common.splitter
  */
-@Deprecated
 public enum StandardSplitOption implements SplitOption {
 
 	/**

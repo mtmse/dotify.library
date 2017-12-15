@@ -1,6 +1,5 @@
-package org.daisy.dotify.common.split;
+package org.daisy.dotify.common.splitter;
 
-@Deprecated
 public class SplitPointSpecification {
 	enum Type {
 		ALL,

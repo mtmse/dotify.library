@@ -1,14 +1,13 @@
-package org.daisy.dotify.common.split;
+package org.daisy.dotify.common.splitter;
 
 /**
  * Provides a cost function for a split point.
  *  
  * @author Joel Håkansson
  * @param <T> the type of split point unit
- * @deprecated use the corresponding interface in org.daisy.dotify.common.splitter
+ *
  */
 @FunctionalInterface
-@Deprecated
 public interface SplitPointCost<T extends SplitPointUnit> {
 
 	/**
@@ -18,6 +17,6 @@ public interface SplitPointCost<T extends SplitPointUnit> {
 	 * @param limit the maximum length to consider
 	 * @return returns the cost
 	 */
-	public double getCost(SplitPointDataSource<T> units, int index, int limit);
+	public double getCost(SplitPointDataSource<T, ?> units, int index, int limit);
 	
 }

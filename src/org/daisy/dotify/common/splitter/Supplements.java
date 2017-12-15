@@ -1,13 +1,11 @@
-package org.daisy.dotify.common.split;
+package org.daisy.dotify.common.splitter;
 
 /**
  * Provides an interface for getting supplementary units.
  * @author Joel Håkansson
  *
  * @param <T> the type of units
- * @deprecated use the corresponding interface in org.daisy.dotify.common.splitter
  */
-@Deprecated
 public interface Supplements<T> {
 
 	/**

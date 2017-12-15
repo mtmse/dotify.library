@@ -1,4 +1,4 @@
-package org.daisy.dotify.common.split;
+package org.daisy.dotify.common.splitter;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -9,10 +9,8 @@ import java.util.List;
  * @author Joel Håkansson
  *
  * @param <T> the type of split point units
- * @deprecated use the corresponding class in org.daisy.dotify.common.splitter
  */
-@Deprecated
-public final class SplitPointDataList<T extends SplitPointUnit> implements SplitPointDataSource<T> {
+public final class SplitPointDataList<T extends SplitPointUnit> implements SplitPointDataSource<T, SplitPointDataList<T>> {
 	/**
 	 * Provides an empty manager.
 	 */
@@ -59,8 +57,8 @@ public final class SplitPointDataList<T extends SplitPointUnit> implements Split
      * @return returns an empty manager
      */
     @SuppressWarnings("unchecked")
-    public static final <T extends SplitPointUnit> SplitPointDataSource<T> emptyManager() {
-        return (SplitPointDataSource<T>)EMPTY_MANAGER;
+    public static final <T extends SplitPointUnit> SplitPointDataList<T> emptyManager() {
+        return EMPTY_MANAGER;
     }
     
     @SuppressWarnings("unchecked")
@@ -106,10 +104,15 @@ public final class SplitPointDataList<T extends SplitPointUnit> implements Split
 	public T get(int n) {
 		return this.units.get(offset+n);
 	}
-	
-	@Override
-	public List<T> head(int n) {
-		return this.units.subList(offset, offset+n);
+
+	/**
+	 * Gets the items before index.
+	 * @param toIndex the index, exclusive
+	 * @return returns a head list
+	 * @throws IndexOutOfBoundsException if the index is beyond the end of the stream
+	 */
+	public List<T> head(int toIndex) {
+		return this.units.subList(offset, offset+toIndex);
 	}
 	
 	@Override
@@ -117,19 +120,34 @@ public final class SplitPointDataList<T extends SplitPointUnit> implements Split
 		return this.units.subList(offset, units.size());
 	}
 
-	@Override
-	public SplitPointDataSource<T> tail(int n) {
-		return new SplitPointDataList<T>(units, supplements, offset+n);
+	/**
+	 * Gets a tail list.
+	 * @param fromIndex the starting index, inclusive
+	 * @return returns a new split point data source starting from fromIndex
+	 * @throws IndexOutOfBoundsException if the index is beyond the end of the stream
+	 */
+	public SplitPointDataList<T> tail(int fromIndex) {
+		return new SplitPointDataList<T>(units, supplements, offset+fromIndex);
 	}
 	
 	@Override
-	public SplitResult<T> split(int atIndex) {
-		return new SplitResult<T>(head(atIndex), tail(atIndex));
+	public SplitResult<T, SplitPointDataList<T>> splitInRange(int atIndex) {
+		return new DefaultSplitResult<T, SplitPointDataList<T>>(head(atIndex), tail(atIndex));
 	}
 
 	@Override
 	public int getSize(int limit) {
 		return Math.min(this.units.size()-offset, limit);
+	}
+
+	@Override
+	public SplitPointDataList<T> createEmpty() {
+		return emptyManager();
+	}
+
+	@Override
+	public SplitPointDataList<T> getDataSource() {
+		return this;
 	}
 
 }
