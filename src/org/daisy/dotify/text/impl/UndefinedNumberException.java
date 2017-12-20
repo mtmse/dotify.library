@@ -1,4 +1,4 @@
-package org.daisy.dotify.impl.text;
+package org.daisy.dotify.text.impl;
 
 /**
  * Provides an exception when the number is not defined in a lookup table.

@@ -1,6 +1,6 @@
 Import-Package:  \
 	org.daisy.dotify.api.text; provide:=true, *
-Private-Package: org.daisy.dotify.impl.text
+Private-Package: org.daisy.dotify.text.impl
 Service-Component: *
 -buildpath: osgi.core,\
 	osgi.cmpn,\

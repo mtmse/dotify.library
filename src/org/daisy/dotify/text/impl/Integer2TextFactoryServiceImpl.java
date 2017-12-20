@@ -1,4 +1,4 @@
-package org.daisy.dotify.impl.text;
+package org.daisy.dotify.text.impl;
 
 import java.util.Collection;
 import java.util.Locale;
