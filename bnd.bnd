@@ -7,5 +7,4 @@ Service-Component: *
 	biz.aQute.bnd.annotation,\
 	junit.osgi,\
 	dotify.api;version=latest
-Include-Resource: / = src/
--sources: false
+-sources: true
