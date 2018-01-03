@@ -9,5 +9,4 @@ Export-Package:  \
 	org.daisy.dotify.common.splitter,\
 	org.daisy.dotify.common.text,\
 	org.daisy.dotify.common.xml
-Include-Resource: / = src/
--sources: false
+-sources: true
