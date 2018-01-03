@@ -17,6 +17,5 @@ Private-Package: org.daisy.braille.utils.impl.provider.interpoint,\
 	org.daisy.braille.utils.impl.provider,\
 	org.daisy.braille.utils.impl.provider.harpo,\
 	se_tpb
-Include-Resource: / = src/
--sources: false
+-sources: true
 Service-Component: *
