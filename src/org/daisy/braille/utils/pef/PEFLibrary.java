@@ -55,7 +55,7 @@ public class PEFLibrary {
 			if (recursive && f.isDirectory()) {
 				logger.fine("Scanning dir " + f);
 				listFiles(files, f, recursive);
-			} else if (f.exists()) {
+			} else if (f.isFile()) {
 				logger.fine("Adding file: " + f);
 				files.add(f);
 			} else {
