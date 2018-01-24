@@ -16,12 +16,21 @@ plugins {
 
 apply plugin: 'biz.aQute.bnd.builder'
 
+// Used for dependencies resolution and javadoc links.
+// Never use snapshots here.
+// To test with snapshots, modify the version directly in the dependencies section,
+// but don't forget to change it back when you're done.
+ext.versions = [
+	'dotifyApi'		: '5.0.0'
+]
+
 compileJava.options.encoding = 'UTF-8'
 compileTestJava.options.encoding = 'UTF-8'
 javadoc {
 	options.encoding = 'UTF-8'
 	options.source = 8
 	options.links('https://docs.oracle.com/javase/8/docs/api/');
+	options.links("https://brailleapps.github.io/dotify.api/$versions.dotifyApi/javadoc/")
 }
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
