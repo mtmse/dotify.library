@@ -28,8 +28,9 @@ public class FileIO {
 	 *            the output stream
 	 * @throws IOException
 	 *             if IO fails
+	 * @deprecated use is.transferTo(OutputStream) (since Java 9)
 	 */
-	//TODO: deprecate this in Java 9: is.transferTo(OutputStream)
+	@Deprecated
 	public static void copy(InputStream is, OutputStream os) throws IOException {
 		try (
 			InputStream bis = new BufferedInputStream(is);
