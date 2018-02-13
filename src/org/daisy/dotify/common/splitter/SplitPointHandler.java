@@ -172,10 +172,10 @@ public class SplitPointHandler<T extends SplitPointUnit, U extends SplitPointDat
 			return SplitPointSpecification.empty();
 		} else if (breakPoint<=0) {
 			return SplitPointSpecification.none();
-		} else if (fits(data, breakPoint)) {
+		} else if (fits(data, breakPoint, opts.useLastUnitSize)) {
 			return SplitPointSpecification.all();
 		} else {
-			int startPos = findCollapse(data, new SizeStep<>(breakPoint, data.getSupplements()));
+			int startPos = findCollapse(data, new SizeStep<>(breakPoint, data.getSupplements(), opts.useLastUnitSize));
 			// If no units are returned here it's because even the first unit doesn't fit.
 			// Therefore, force will not help.
 			if (startPos<0) {
@@ -189,6 +189,7 @@ public class SplitPointHandler<T extends SplitPointUnit, U extends SplitPointDat
 	private static class SplitOptions {
 		boolean useForce = false;
 		boolean trimTrailing = true;
+		boolean useLastUnitSize = true;
 		static SplitOptions parse(SplitOption ... opts) {
 			SplitOptions result = new SplitOptions();
 			for (SplitOption option : opts) {
@@ -196,6 +197,8 @@ public class SplitPointHandler<T extends SplitPointUnit, U extends SplitPointDat
 					result.useForce = true;
 				} else if (option==StandardSplitOption.RETAIN_TRAILING) {
 					result.trimTrailing = false;
+				} else if (option==StandardSplitOption.NO_LAST_UNIT_SIZE) {
+					result.useLastUnitSize = false; 
 				} else if (option == null) {
                    //no-op
 				} else {
@@ -445,8 +448,8 @@ public class SplitPointHandler<T extends SplitPointUnit, U extends SplitPointDat
 	 * @param limit the maximum width that is relevant to calculate
 	 * @return returns the size 
 	 */
-	static <T extends SplitPointUnit, U extends SplitPointDataSource<T, U>> boolean fits(U data, float limit) {
-		return totalSize(data, limit)<=limit;
+	static <T extends SplitPointUnit, U extends SplitPointDataSource<T, U>> boolean fits(U data, float limit, boolean useLastUnitSize) {
+		return totalSize(data, limit, useLastUnitSize)<=limit;
 	}
 	/**
 	 * If the total size is less than the limit, the size is returned, otherwise a value greater
@@ -456,7 +459,7 @@ public class SplitPointHandler<T extends SplitPointUnit, U extends SplitPointDat
 	 * @param limit the maximum width that is relevant to calculate
 	 * @return returns the size 
 	 */
-	static <T extends SplitPointUnit, U extends SplitPointDataSource<T, U>> float totalSize(U data, float limit) {
+	static <T extends SplitPointUnit, U extends SplitPointDataSource<T, U>> float totalSize(U data, float limit, boolean useLastUnitSize) {
 		float ret = 0;
 		Set<String> ids = new HashSet<>();
 		Supplements<T> map = data.getSupplements();
@@ -480,7 +483,7 @@ public class SplitPointHandler<T extends SplitPointUnit, U extends SplitPointDat
 				}
 			}
 			//last unit?
-			if (!data.hasElementAt(i+1)) {
+			if (useLastUnitSize && !data.hasElementAt(i+1)) {
 				ret += unit.getLastUnitSize();
 			} else {
 				ret += unit.getUnitSize();

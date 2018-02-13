@@ -14,5 +14,9 @@ public enum StandardSplitOption implements SplitOption {
 	/**
 	 * Retain trailing skippable units
 	 */
-	RETAIN_TRAILING;
+	RETAIN_TRAILING,
+	/**
+	 * Treats the last unit as a regular unit.
+	 */
+	NO_LAST_UNIT_SIZE;
 }

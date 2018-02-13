@@ -349,7 +349,7 @@ public class SplitPointHandlerTest {
 		final DummySplitPoint s1 = new DummySplitPoint.Builder().breakable(true).skippable(false).size(1).minSize(0.5f).build();
 		final DummySplitPoint s2 = new DummySplitPoint.Builder().breakable(true).skippable(false).size(1).minSize(0.5f).build();
 		final DummySplitPoint s3 = new DummySplitPoint.Builder().breakable(true).skippable(false).size(1).minSize(0.5f).build();
-		float res = SplitPointHandler.totalSize(new SplitPointDataList<DummySplitPoint>(Arrays.asList(s1, s2, s3)), 3);
+		float res = SplitPointHandler.totalSize(new SplitPointDataList<DummySplitPoint>(Arrays.asList(s1, s2, s3)), 3, true);
 		assertEquals(2.5, res, 0);
 	}
 	
