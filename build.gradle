@@ -1,7 +1,8 @@
+plugins {
+    id 'org.dm.bundle' version '0.10.0'
+}
 apply plugin: 'java'
 apply plugin: "maven"
-//custom plugins
-apply plugin: "org.dm.bundle"
 apply plugin: "signing"
 
 group = 'org.daisy.dotify'
@@ -38,11 +39,6 @@ repositories {
 dependencies {
     testCompile group: "junit", name: "junit", version: "4.7"
     testCompile "org.mockito:mockito-core:1.10.19"
-}
-
-buildscript {
-    repositories { mavenCentral() }
-    dependencies { classpath group: "org.dm.gradle", name: "gradle-bundle-plugin", version: "0.6.4" }
 }
 
 task updateBndVersion() {
