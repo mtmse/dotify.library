@@ -18,7 +18,6 @@
 package org.daisy.braille.utils.pef;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -61,14 +60,29 @@ public class PEFFileMerger {
 		/**
 		 * Sort groups of digits as numbers
 		 */
-		NUMERAL_GROUPING,
+		NUMERAL_GROUPING((File o1, File o2)->
+			new NumeralSortString(o1.getName().toLowerCase()).compareTo(new NumeralSortString(o2.getName().toLowerCase()))
+		),
 		/**
 		 * Sort alphabetically
 		 */
-		STANDARD
+		STANDARD(null);
+
+		private final Comparator<File> comparator;
+		private SortType(Comparator<File> comparator) {
+			this.comparator = comparator;
+		}
+
+		public void sort(File[] files) {
+			if (comparator==null) {
+				Arrays.sort(files);
+			} else {
+				Arrays.sort(files, comparator);
+			}
+		}
 	};
 
-	private Logger logger;
+	private static final Logger logger = Logger.getLogger(PEFFileMerger.class.getCanonicalName());
 	private final ValidatorFactoryService validatorFactory;
 
 	/**
@@ -76,7 +90,6 @@ public class PEFFileMerger {
 	 * @param validatorFactory the validator factory
 	 */
 	public PEFFileMerger(ValidatorFactoryService validatorFactory) {
-		logger = Logger.getLogger(this.getClass().getCanonicalName());
 		this.validatorFactory = validatorFactory;
 	}
 
@@ -85,70 +98,58 @@ public class PEFFileMerger {
 	 * @param input input directory
 	 * @param os output file
 	 * @param identifier identifier of the new publication
-	 * @param sort sort type
+	 * @param sortType sort type
 	 * @return returns true if merge was successful, false otherwise
 	 */
-	public boolean merge(File input, OutputStream os, String identifier, SortType sort) {
-		//progress(0);
+	public boolean merge(File input, OutputStream os, String identifier, SortType sortType) {
 		if (!input.isDirectory()) {
 			throw new IllegalArgumentException("Input must be an existing directory " + input);
 		}
-		File[] files = input.listFiles(new FileFilter(){
-			@Override
-			public boolean accept(File pathname) {
-				return pathname.isFile();
-			}});
-		switch (sort) {
-		case NUMERAL_GROUPING:
-			Arrays.sort(files, new Comparator<File>() {
-				@Override
-				public int compare(File o1, File o2) {
-					NumeralSortString s1 = new NumeralSortString(o1.getName().toLowerCase());
-					NumeralSortString s2 = new NumeralSortString(o2.getName().toLowerCase());
-					return s1.compareTo(s2);
-				}});
-			break;
-		case STANDARD:
-			Arrays.sort(files);
-			break;
-		}
+		File[] files = input.listFiles(pathname->pathname.isFile());
+		sortType.sort(files);
+		return merge(files, os, identifier);
+	}
 
+	/**
+	 * Merges several PEF-files into one.
+	 * @param files the files, in order
+	 * @param os the output file
+	 * @param identifier the identifier of the new publication
+	 * @return true if merge was successful, false otherwise
+	 */
+	public boolean merge(File[] files, OutputStream os, String identifier) {
 		try {
 			Validator v = validatorFactory.newValidator(PEFValidator.class.getName());
 			if (v!=null) {
 				v.setFeature(PEFValidator.FEATURE_MODE, PEFValidator.Mode.FULL_MODE);
-				sendMessage("Checking input files");
+				logInfo("Checking input files");
 				for (File f : files) {
-					sendMessage("Examining " + f.getName(), Level.INFO);
+					log("Examining " + f.getName(), Level.INFO);
 					if (!v.validate(f.toURI().toURL())) {
-						sendMessage("Validation of input file \"" + f.getName() + "\" failed.", Level.SEVERE);
+						log("Validation of input file \"" + f.getName() + "\" failed.", Level.SEVERE);
 						return false;
 					}
-					sendMessage(f.getName() + " ok!", Level.FINE);
+					log(f.getName() + " ok!", Level.FINE);
 				}
-				sendMessage("Input files ok");
+				logInfo("Input files ok");
 			} else {
-				sendMessage("Cannot find validator", Level.WARNING);
+				log("Cannot find validator", Level.WARNING);
 				return false;
 			}
 
-			sendMessage("Assembling files");
-			//progress(1);
+			logInfo("Assembling files");
 			if (!writeFile(files, os, identifier)) {
-				sendMessage("Assemby failed");
+				logInfo("Assemby failed");
 				return false;
 			} else {
-				sendMessage("Done!");
+				logInfo("Done!");
 				return true;
 			}
 		} catch (MalformedURLException e) {
-			//throw new TransformerRunException("MalformedURLException", e);
 			return false;
 		} catch (XMLStreamException e) {
-			// throw new TransformerRunException("XMLStreamException", e);
 			return false;
 		} catch (IOException e) {
-			// throw new TransformerRunException("IOException", e);
 			return false;
 		}
 	}
@@ -221,11 +222,11 @@ public class PEFFileMerger {
 		return true;
 	}
 
-	private void sendMessage(String msg) {
-		sendMessage(msg, Level.INFO);
+	private void logInfo(String msg) {
+		log(msg, Level.INFO);
 	}
 
-	private void sendMessage(String msg, Level level) {
+	private void log(String msg, Level level) {
 		logger.log(level, msg);
 	}
 
