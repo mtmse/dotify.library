@@ -22,8 +22,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Objects;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -83,14 +86,31 @@ public class PEFFileMerger {
 	};
 
 	private static final Logger logger = Logger.getLogger(PEFFileMerger.class.getCanonicalName());
-	private final ValidatorFactoryService validatorFactory;
+	private final Predicate<URL> validator;
 
 	/**
 	 * Creates a new PEFFileMerger
 	 * @param validatorFactory the validator factory
+	 * @deprecated use {@link #PEFFileMerger(Predicate)}
 	 */
+	@Deprecated
 	public PEFFileMerger(ValidatorFactoryService validatorFactory) {
-		this.validatorFactory = validatorFactory;
+		Validator v = Objects.requireNonNull(validatorFactory).newValidator(PEFValidator.class.getName());
+		if (v!=null) {
+			v.setFeature(PEFValidator.FEATURE_MODE, PEFValidator.Mode.FULL_MODE);
+			this.validator = t->v.validate(t);
+		} else {
+			// Using null here to preserve the original behavior, see also below.
+			this.validator = null;
+		}
+	}
+	
+	/**
+	 * Creates a new PEFFileMerger.
+	 * @param validator a PEF-validator. A full validation is strongly recommended.
+	 */
+	public PEFFileMerger(Predicate<URL> validator) {
+		this.validator = Objects.requireNonNull(validator);
 	}
 
 	/**
@@ -119,13 +139,13 @@ public class PEFFileMerger {
 	 */
 	public boolean merge(File[] files, OutputStream os, String identifier) {
 		try {
-			Validator v = validatorFactory.newValidator(PEFValidator.class.getName());
-			if (v!=null) {
-				v.setFeature(PEFValidator.FEATURE_MODE, PEFValidator.Mode.FULL_MODE);
+			// This check remains for compatibility with the deprecated constructor
+			// PEFFileMerger(ValidatorFactoryService validatorFactory)
+			if (validator!=null) {
 				logInfo("Checking input files");
 				for (File f : files) {
 					log("Examining " + f.getName(), Level.INFO);
-					if (!v.validate(f.toURI().toURL())) {
+					if (!validator.test(f.toURI().toURL())) {
 						log("Validation of input file \"" + f.getName() + "\" failed.", Level.SEVERE);
 						return false;
 					}
@@ -222,11 +242,11 @@ public class PEFFileMerger {
 		return true;
 	}
 
-	private void logInfo(String msg) {
+	private static void logInfo(String msg) {
 		log(msg, Level.INFO);
 	}
 
-	private void log(String msg, Level level) {
+	private static void log(String msg, Level level) {
 		logger.log(level, msg);
 	}
 
