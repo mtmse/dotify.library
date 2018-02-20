@@ -23,8 +23,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Stack;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -60,16 +63,32 @@ public class PEFFileSplitter implements ErrorHandler  {
 	 */
 	public static final String POSTFIX = ".pef";
 	enum State {HEADER, BODY, FOOTER};
-	private Logger logger;
-	private final ValidatorFactoryService validatorFactory;
+	private static final Logger logger = Logger.getLogger(PEFFileSplitter.class.getCanonicalName());
+	private final Predicate<URL> validator;
 
 	/**
 	 * Creates a new PEFFileSplitter object.
 	 * @param validatorFactory the validator factory
+	 * @deprecated use {@link #PEFFileSplitter(Predicate)}
 	 */
+	@Deprecated
 	public PEFFileSplitter(ValidatorFactoryService validatorFactory) {
-		logger = Logger.getLogger(PEFFileSplitter.class.getCanonicalName());
-		this.validatorFactory = validatorFactory;
+		Validator v = Objects.requireNonNull(validatorFactory).newValidator(PEFValidator.class.getName());
+		if (v!=null) {
+			v.setFeature(PEFValidator.FEATURE_MODE, PEFValidator.Mode.FULL_MODE);
+			this.validator = t->v.validate(t);
+		} else {
+			// Using null here to preserve the original behavior, see also below.
+			this.validator = null;
+		}
+	}
+
+	/**
+	 * Creates a new PEFFileSplitter object.
+	 * @param validator a PEF validator. A full validation is strongly recommended.
+	 */
+	public PEFFileSplitter(Predicate<URL> validator) {
+		this.validator = Objects.requireNonNull(validator);
 	}
 
 	/**
@@ -121,20 +140,13 @@ public class PEFFileSplitter implements ErrorHandler  {
 	 * @return returns true if split was successful, false otherwise
 	 */
 	public boolean split(InputStream is, File directory, String prefix, String postfix) {
-		//progress(0);
-
 		directory.mkdirs();
 		XMLInputFactory inFactory = XMLInputFactory.newInstance();
 		inFactory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);        
 		inFactory.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, Boolean.TRUE);
 		inFactory.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.TRUE);
 		inFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.TRUE);
-		/*
-    	try {
-			inFactory.setXMLResolver(new StaxEntityResolver(CatalogEntityResolver.getInstance()));
-		} catch (CatalogExceptionNotRecoverable e1) {
-			e1.printStackTrace();
-		}*/
+
 		sendMessage("Splitting");
 		try {
 			XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
@@ -201,13 +213,12 @@ public class PEFFileSplitter implements ErrorHandler  {
 			}
 			is.close();
 			sendMessage("Checking result for errors");
-			//progress(0.5);
-			Validator v = validatorFactory.newValidator(PEFValidator.class.getName());
-			if (v!=null) {
-				v.setFeature(PEFValidator.FEATURE_MODE, PEFValidator.Mode.FULL_MODE);
+			// This check remains for compatibility with the deprecated constructor
+			// PEFFileSplitter(ValidatorFactoryService validatorFactory)
+			if (validator!=null) {
 				for (File f : files) {
 					sendMessage("Examining " + f.getName(), Level.FINE);
-					if (!v.validate(f.toURI().toURL())) {
+					if (!validator.test(f.toURI().toURL())) {
 						sendMessage("Validation of result file failed: " + f.getName(), Level.SEVERE);
 						return false;
 					}
@@ -219,23 +230,17 @@ public class PEFFileSplitter implements ErrorHandler  {
 				return false;
 			}
 			sendMessage("Done!");
-			//progress(1);
 			return true;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			//throw new TransformerRunException("FileNotFoundException: ", e);
 			return false;
 		} catch (IOException e) {
 			e.printStackTrace();
 			return false;
-			//throw new TransformerRunException("IOException: ", e);
 		} catch (XMLStreamException e) {
 			e.printStackTrace();
 			return false;
-			//throw new TransformerRunException("XMLStreamException: ", e);
-		}/* catch (ValidationException e) {
-			throw new TransformerRunException("ValidationException: ", e);
-		}*/
+		}
 	}
 
 	@Override
