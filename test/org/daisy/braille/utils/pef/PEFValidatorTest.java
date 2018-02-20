@@ -13,6 +13,7 @@ import org.daisy.braille.utils.api.validator.ValidatorFactory;
 import org.junit.Test;
 
 @SuppressWarnings("javadoc")
+@Deprecated
 public class PEFValidatorTest {
 
 	@Test

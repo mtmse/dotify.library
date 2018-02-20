@@ -50,7 +50,9 @@ import com.thaiopensource.validate.ValidationDriver;
  * Validates PEF-documents against the official Relax NG schema. Optionally performs additional
  * checks, see the different modes. 
  * @author Joel Håkansson
+ * @deprecated this class is deprecated, to validate PEF-files, use the Streamline API.
  */
+@Deprecated
 public class PEFValidator extends AbstractFactory implements org.daisy.braille.utils.api.validator.Validator {
 
 	/**

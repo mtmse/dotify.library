@@ -11,6 +11,7 @@ import org.daisy.braille.utils.api.validator.ValidatorProvider;
 import aQute.bnd.annotation.component.Component;
 
 @Component
+@Deprecated
 public class DefaultValidatorProvider implements ValidatorProvider {
 	private static final String PEF_MIME = "application/x-pef+xml"; 
 	//Legacy value for PEF Validator value provider

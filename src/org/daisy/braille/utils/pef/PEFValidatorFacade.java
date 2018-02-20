@@ -29,6 +29,7 @@ import org.daisy.braille.utils.api.validator.ValidatorFactoryService;
  * Provides a facade for PEFValidator
  * @author Joel Håkansson
  */
+@Deprecated
 public class PEFValidatorFacade {
 	private final ValidatorFactoryService factory;
 

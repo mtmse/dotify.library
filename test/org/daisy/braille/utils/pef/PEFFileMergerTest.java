@@ -11,7 +11,6 @@ import java.io.InputStream;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 
-import org.daisy.braille.utils.api.validator.ValidatorFactory;
 import org.daisy.braille.utils.pef.PEFFileMerger.SortType;
 import org.junit.Test;
 
@@ -35,7 +34,7 @@ public class PEFFileMergerTest {
 			FileTools.copy(this.getClass().getResourceAsStream("resource-files/PEFFileMergerTestInput-2.pef"), new FileOutputStream(f2));
 			FileTools.copy(this.getClass().getResourceAsStream("resource-files/PEFFileMergerTestInput-3.pef"), new FileOutputStream(f3));
 
-			PEFFileMerger merger = new PEFFileMerger(ValidatorFactory.newInstance());
+			PEFFileMerger merger = new PEFFileMerger(t->true);
 			merger.merge(dir, new FileOutputStream(output), "Merged file", SortType.STANDARD);
 			XMLFileCompare fc = new XMLFileCompare(TransformerFactory.newInstance());
 			try (InputStream resultStream = new FileInputStream(output)) {
