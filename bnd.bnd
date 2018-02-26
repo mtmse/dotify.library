@@ -6,6 +6,7 @@ Export-Package:  \
 	org.daisy.dotify.common.braille,\
 	org.daisy.dotify.common.collection,\
 	org.daisy.dotify.common.io,\
+	org.daisy.dotify.common.java,\
 	org.daisy.dotify.common.splitter,\
 	org.daisy.dotify.common.text,\
 	org.daisy.dotify.common.xml
