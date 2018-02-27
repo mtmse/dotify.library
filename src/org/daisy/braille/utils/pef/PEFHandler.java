@@ -127,7 +127,7 @@ public class PEFHandler extends DefaultHandler {
 		 * @return returns this object
 		 */
 		public Builder range(Range value) {
-			if (value!=null && !"".equals(value)) {
+			if (value!=null) {
 				range = value;
 			}
 			return this; 
