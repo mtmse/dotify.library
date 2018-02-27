@@ -76,6 +76,10 @@ public class PEFFileMerger {
 			this.comparator = comparator;
 		}
 
+		/**
+		 * Sorts the files.
+		 * @param files the files to sort
+		 */
 		public void sort(File[] files) {
 			if (comparator==null) {
 				Arrays.sort(files);

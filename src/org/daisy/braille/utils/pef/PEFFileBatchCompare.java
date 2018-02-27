@@ -33,20 +33,36 @@ public class PEFFileBatchCompare {
 	private int checked;
 	private String unbraillerTable;
 
+	/**
+	 * Provides a difference specification.
+	 */
 	public static class Diff {
 		private final String key;
 		private final int pos;
 
+		/**
+		 * Creates a new difference specification with the supplied parameters.
+		 * @param key the file name
+		 * @param pos the position
+		 */
 		public Diff(String key, int pos) {
 			super();
 			this.key = key;
 			this.pos = pos;
 		}
 
+		/**
+		 * Gets the file name.
+		 * @return the file name
+		 */
 		public String getKey() {
 			return key;
 		}
 
+		/**
+		 * Gets the byte position of the first difference.
+		 * @return the position of the first difference
+		 */
 		public int getPos() {
 			return pos;
 		}
@@ -78,10 +94,18 @@ public class PEFFileBatchCompare {
 		this(filter, null);
 	}
 
+	/**
+	 * Gets the identifier for the unbrailler table.
+	 * @return the table identifier
+	 */
 	public String getUnbraillerTable() {
 		return unbraillerTable;
 	}
 
+	/**
+	 * Sets the identifier for the unbrailler table.
+	 * @param unbraillerTable the table
+	 */
 	public void setUnbraillerTable(String unbraillerTable) {
 		this.unbraillerTable = unbraillerTable;
 	}
@@ -199,22 +223,42 @@ public class PEFFileBatchCompare {
 		oks.add(filename);
 	}
 
+	/**
+	 * Gets a list of notices.
+	 * @return a list of notices
+	 */
 	public List<String> getNotices() {
 		return notices;
 	}
 
+	/**
+	 * Gets a list of warnings.
+	 * @return a list of warnings
+	 */
 	public List<String> getWarnings() {
 		return warnings;
 	}
 
+	/**
+	 * Gets a list of different file pairs.
+	 * @return a list of different file pairs
+	 */
 	public List<Diff> getDiffs() {
 		return diffs;
 	}
 
+	/**
+	 * Gets a list of matching file pairs.
+	 * @return a list of matching file pairs
+	 */
 	public List<String> getOk() {
 		return oks;
 	}
 
+	/**
+	 * Gets the number of pairs checked.
+	 * @return the number of pairs checked
+	 */
 	public int checkedCount() {
 		return checked;
 	}
