@@ -94,11 +94,7 @@ public class TextHandler {
 	private int maxCols;
 
 	/**
-	 * 
 	 * Provides a Builder for TextHandler
-	 * 
-	 * @author  Joel Håkansson
-	 * @version 3 sep 2008
 	 */
 	public static class Builder {
 		// required params
@@ -241,6 +237,15 @@ public class TextHandler {
 		public TextHandler build() throws IOException, InputDetectionException {
 			return new TextHandler(this);
 		}
+		
+		/**
+		 * Parses the input file with the current settings.
+		 * @throws InputDetectionException if an error occurs
+		 * @throws IOException if an error occurs
+		 */
+		public void parse() throws InputDetectionException, IOException {
+			new TextHandler(this).parse();
+		}
 	}
 
 	private TextHandler(Builder builder) throws IOException, InputDetectionException {
@@ -279,6 +284,17 @@ public class TextHandler {
 		}
 		duplex = builder.duplex;
 		date = builder.date;
+	}
+	
+	/**
+	 * Creates a new builder with the supplied parameters.
+	 * @param input the input file
+	 * @param output the output file
+	 * @param factory the table catalog
+	 * @return returns a new builder
+	 */
+	public static Builder with(File input, File output, TableCatalogService factory) {
+		return new TextHandler.Builder(input, output, factory);
 	}
 
 	/**

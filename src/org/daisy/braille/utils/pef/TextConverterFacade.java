@@ -73,9 +73,8 @@ public class TextConverterFacade {
 	 * @throws IOException if IO fails
 	 */
 	public void parseTextFile(File input, File output, Map<String, String> settings) throws IOException {
-		new TextHandler.Builder(input, output, factory)
-			.options(settings)
-			.build()
-			.parse();
-	}	
+		TextHandler.with(input, output, factory)
+					.options(settings)
+					.parse();
+	}
 }
