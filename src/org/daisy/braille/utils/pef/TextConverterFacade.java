@@ -2,7 +2,6 @@ package org.daisy.braille.utils.pef;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Map;
 
@@ -11,8 +10,9 @@ import org.daisy.braille.utils.api.table.TableCatalogService;
 /**
  * Provides a facade for text converter.
  * @author Joel Håkansson
- *
+ * @deprecated use {@link TextHandler}
  */
+@Deprecated
 public class TextConverterFacade {
 	/**
 	 * Defines a date format (yyyy-MM-dd)
@@ -73,32 +73,9 @@ public class TextConverterFacade {
 	 * @throws IOException if IO fails
 	 */
 	public void parseTextFile(File input, File output, Map<String, String> settings) throws IOException {
-		TextHandler.Builder builder = new TextHandler.Builder(input, output, factory);
-		for (String key : settings.keySet()) {
-			String value = settings.get(key);
-			if (KEY_TITLE.equals(key)) {
-				builder.title(value);
-			} else if (KEY_AUTHOR.equals(key)) {
-				builder.author(value);
-			} else if (KEY_IDENTIFIER.equals(key)) {
-				builder.identifier(value);
-			} else if (KEY_MODE.equals(key)) {
-				builder.converterId(value);
-			} else if (KEY_LANGUAGE.equals(key)) {
-				builder.language(value);
-			} else if (KEY_DUPLEX.equals(key)) {
-				builder.duplex("true".equals(value.toLowerCase()));
-			}else if (KEY_DATE.equals(key)) {
-				try {
-					builder.date(DATE_FORMAT.parse(value));
-				} catch (ParseException e) {
-					throw new IllegalArgumentException(e);
-				}
-			} else {
-				throw new IllegalArgumentException("Unknown option \"" + key + "\"");
-			}
-		}
-		TextHandler tp = builder.build();
-		tp.parse();
+		new TextHandler.Builder(input, output, factory)
+			.options(settings)
+			.build()
+			.parse();
 	}	
 }

@@ -24,9 +24,11 @@ import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.daisy.braille.utils.api.table.BrailleConverter;
 import org.daisy.braille.utils.api.table.Table;
@@ -41,6 +43,41 @@ public class TextHandler {
 	 * Defines a date format (yyyy-MM-dd).
 	 */
 	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+	/**
+	 * Key for parseTextFile setting,
+	 * corresponding settings value should contain the title of the publication
+	 */
+	public static final String KEY_TITLE = "title";
+	/**
+	 * Key for parseTextFile setting,
+	 * corresponding settings value should contain the author of the publication
+	 */
+	public static final String KEY_AUTHOR = "author";
+	/**
+	 * Key for parseTextFile setting,
+	 * corresponding settings value should contain the identifier for the publication 
+	 */
+	public static final String KEY_IDENTIFIER = "identifier";
+	/**
+	 * Key for parseTextFile setting,
+	 * corresponding settings value should match the table to use
+	 */
+	public static final String KEY_MODE = "mode";
+	/**
+	 * Key for parseTextFile setting,
+	 * corresponding settings value should contain the language of the publication
+	 */
+	public static final String KEY_LANGUAGE = "language";
+	/**
+	 * Key for parseTextFile setting,
+	 * corresponding settings value should be "true" for duplex or "false" for simplex
+	 */
+	public static final String KEY_DUPLEX = "duplex";
+	/**
+	 * Key for parseTextFile setting,
+	 * corresponding settings value should be a string containing a valid date on the form yyyy-MM-dd
+	 */
+	public static final String KEY_DATE = "date";
 
 	private final File input;
 	private final File output;
@@ -93,6 +130,40 @@ public class TextHandler {
 			char[] dest = new char[] {'0','0','0','0','0','0','0','0','0'};
 			System.arraycopy(chars, 0, dest, 9-chars.length, chars.length);
 			this.identifier = "AUTO_ID_" + new String(dest);
+		}
+		
+		/**
+		 * Sets options from a map.
+		 * @param settings the settings.
+		 * @return returns this object
+		 * @throws IllegalArgumentException if a key is unknown or if a value doesn't meet the requirements.
+		 */
+		public Builder options(Map<String, String> settings) {
+			for (String key : settings.keySet()) {
+				String value = settings.get(key);
+				if (KEY_TITLE.equals(key)) {
+					title(value);
+				} else if (KEY_AUTHOR.equals(key)) {
+					author(value);
+				} else if (KEY_IDENTIFIER.equals(key)) {
+					identifier(value);
+				} else if (KEY_MODE.equals(key)) {
+					converterId(value);
+				} else if (KEY_LANGUAGE.equals(key)) {
+					language(value);
+				} else if (KEY_DUPLEX.equals(key)) {
+					duplex("true".equals(value.toLowerCase()));
+				} else if (KEY_DATE.equals(key)) {
+					try {
+						date(DATE_FORMAT.parse(value));
+					} catch (ParseException e) {
+						throw new IllegalArgumentException(e);
+					}
+				} else {
+					throw new IllegalArgumentException("Unknown option \"" + key + "\"");
+				}
+			}
+			return this;
 		}
 
 		//init optional params here
