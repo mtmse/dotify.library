@@ -15,7 +15,6 @@ Private-Package: org.daisy.braille.utils.impl.provider.interpoint,\
 	org.daisy.braille.utils.impl.tools.embosser,\
 	org.daisy.braille.utils.impl.tools.table,\
 	org.daisy.braille.utils.impl.provider,\
-	org.daisy.braille.utils.impl.provider.harpo,\
-	se_tpb
+	org.daisy.braille.utils.impl.provider.harpo
 -sources: true
 Service-Component: *

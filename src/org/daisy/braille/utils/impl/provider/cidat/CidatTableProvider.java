@@ -33,8 +33,7 @@ import org.daisy.braille.utils.impl.tools.table.AdvancedBrailleConverter;
 import org.daisy.braille.utils.impl.tools.table.EmbosserBrailleConverter;
 import org.daisy.braille.utils.impl.tools.table.EmbosserTable;
 import org.daisy.braille.utils.impl.tools.table.StringTranslator.MatchMode;
-
-import aQute.bnd.annotation.component.Component;
+import org.osgi.service.component.annotations.Component;
 
 /**
  *

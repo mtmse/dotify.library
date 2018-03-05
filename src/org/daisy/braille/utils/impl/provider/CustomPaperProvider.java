@@ -23,8 +23,7 @@ import java.util.Collections;
 import org.daisy.braille.utils.api.paper.CustomPaperCollection;
 import org.daisy.braille.utils.api.paper.Paper;
 import org.daisy.braille.utils.api.paper.PaperProvider;
-
-import aQute.bnd.annotation.component.Component;
+import org.osgi.service.component.annotations.Component;
 
 @Component
 public class CustomPaperProvider implements PaperProvider {

@@ -29,9 +29,9 @@ import org.daisy.braille.utils.api.factory.FactoryProperties;
 import org.daisy.braille.utils.api.paper.Length;
 import org.daisy.braille.utils.api.table.TableCatalog;
 import org.daisy.braille.utils.api.table.TableCatalogService;
-
-import aQute.bnd.annotation.component.Component;
-import aQute.bnd.annotation.component.Reference;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
 
 @Component
 public class IndexEmbosserProvider implements EmbosserProvider {
@@ -123,7 +123,7 @@ public class IndexEmbosserProvider implements EmbosserProvider {
 		return Collections.unmodifiableCollection(embossers.values());
 	}
 
-	@Reference
+	@Reference(cardinality=ReferenceCardinality.MANDATORY)
 	public void setTableCatalog(TableCatalogService service) {
 		this.tableCatalogService = service;
 	}

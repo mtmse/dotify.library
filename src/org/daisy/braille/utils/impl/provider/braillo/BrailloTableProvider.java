@@ -30,8 +30,7 @@ import org.daisy.braille.utils.api.table.Table;
 import org.daisy.braille.utils.api.table.TableProvider;
 import org.daisy.braille.utils.impl.tools.table.EmbosserBrailleConverter;
 import org.daisy.braille.utils.impl.tools.table.EmbosserTable;
-
-import aQute.bnd.annotation.component.Component;
+import org.osgi.service.component.annotations.Component;
 
 @Component
 public class BrailloTableProvider implements TableProvider {
