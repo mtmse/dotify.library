@@ -40,16 +40,15 @@ dependencies {
 	testCompile 'org.daisy.braille:braille-utils.pef-tools:3.0.0'
 }
 
-task updateBndVersion() {
-	doLast() {
-		String contents = file('bnd.bnd').getText('UTF-8')
-		file('bnd.bnd').write(contents.replaceAll('Bundle-Version: [\\d\\.A-Za-z\\-]+', "Bundle-Version: $version"), 'UTF-8')
-	}
-}
-
 bundle {
 	instructions << [
-		"-include": file('bnd.bnd'),
+		'-sources': 'true',
+		'Import-Package': 'org.daisy.braille.utils.api.embosser; provide:=true,' +
+							'org.daisy.braille.utils.api.factory; provide:=true,'+
+							'org.daisy.braille.utils.api.paper; provide:=true,'+
+							'org.daisy.braille.utils.api.table; provide:=true, *',
+		'Private-Package': 'org.daisy.braille.utils.impl.*',
+		'Service-Component': '*',
 		'Automatic-Module-Name': "$moduleName",
 		'Built-By': System.getProperty("user.name"),
 		'Built-On': new Date().format('yyyy-MM-dd'),
