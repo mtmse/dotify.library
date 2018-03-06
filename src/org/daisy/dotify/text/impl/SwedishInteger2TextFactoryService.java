@@ -6,8 +6,7 @@ import java.util.List;
 
 import org.daisy.dotify.api.text.Integer2TextFactory;
 import org.daisy.dotify.api.text.Integer2TextFactoryService;
-
-import aQute.bnd.annotation.component.Component;
+import org.osgi.service.component.annotations.Component;
 
 /**
  * Provides a Swedish integer to text implementation.

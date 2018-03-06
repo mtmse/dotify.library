@@ -5,8 +5,7 @@ import java.util.Locale;
 
 import org.daisy.dotify.api.text.Integer2TextFactory;
 import org.daisy.dotify.api.text.Integer2TextFactoryService;
-
-import aQute.bnd.annotation.component.Component;
+import org.osgi.service.component.annotations.Component;
 
 /**
  * Provides an integer to text factory service.
