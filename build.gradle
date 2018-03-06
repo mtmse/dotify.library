@@ -43,16 +43,12 @@ dependencies {
     testCompile group: "junit", name: "junit", version: "4.7"
 }
 
-task updateBndVersion() {
-	doLast() {
-		String contents = file('bnd.bnd').getText('UTF-8')
-		file('bnd.bnd').write(contents.replaceAll('Bundle-Version: [\\d\\.A-Za-z\\-]+', "Bundle-Version: $version"), 'UTF-8')
-	}
-}
-
 bundle {
 	instructions << [
-        "-include": file('bnd.bnd'),
+        '-sources': 'true',
+        'Import-Package': 'org.daisy.dotify.api.text; provide:=true, *',
+        'Private-Package': 'org.daisy.dotify.text.impl',
+        'Service-Component': '*',
         'Automatic-Module-Name': "$moduleName",
   		'Built-By': System.getProperty("user.name"),
         'Built-On': new Date().format('yyyy-MM-dd'),
