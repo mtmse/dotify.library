@@ -3,8 +3,7 @@ package org.daisy.dotify.translator.impl.sv_SE;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.api.translator.MarkerProcessorFactory;
 import org.daisy.dotify.api.translator.MarkerProcessorFactoryService;
-
-import aQute.bnd.annotation.component.Component;
+import org.osgi.service.component.annotations.Component;
 
 /**
  * Provides a Swedish marker processor factory service.

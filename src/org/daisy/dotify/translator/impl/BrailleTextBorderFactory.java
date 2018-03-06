@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import org.daisy.dotify.api.graphics.BrailleGraphics;
 import org.daisy.dotify.api.translator.Border;
 import org.daisy.dotify.api.translator.Border.Builder.BuilderView;
 import org.daisy.dotify.api.translator.BorderSpecification.Align;
@@ -18,7 +19,6 @@ import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.api.translator.TextBorderConfigurationException;
 import org.daisy.dotify.api.translator.TextBorderFactory;
 import org.daisy.dotify.api.translator.TextBorderStyle;
-import org.daisy.dotify.api.graphics.BrailleGraphics;
 
 class BrailleTextBorderFactory implements TextBorderFactory {
 	private static final Logger logger = Logger.getLogger(BrailleTextBorderFactory.class.getCanonicalName());

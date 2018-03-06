@@ -9,9 +9,9 @@ import org.daisy.dotify.api.translator.BrailleFilterFactory;
 import org.daisy.dotify.api.translator.BrailleFilterFactoryService;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.api.translator.TranslatorSpecification;
-
-import aQute.bnd.annotation.component.Component;
-import aQute.bnd.annotation.component.Reference;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
 
 /**
  * Provides a Swedish braille filter factory service.
@@ -47,7 +47,7 @@ public class SwedishBrailleFilterFactoryService implements
 	 * Sets the hyphenator factory maker service.
 	 * @param hyphenator the hyphenator factory maker service.
 	 */
-	@Reference
+	@Reference(cardinality=ReferenceCardinality.MANDATORY)
 	public void setHyphenator(HyphenatorFactoryMakerService hyphenator) {
 		this.hyphenator = hyphenator;
 	}
