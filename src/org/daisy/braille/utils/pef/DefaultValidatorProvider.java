@@ -7,8 +7,7 @@ import java.util.Collections;
 import org.daisy.braille.utils.api.factory.FactoryProperties;
 import org.daisy.braille.utils.api.validator.Validator;
 import org.daisy.braille.utils.api.validator.ValidatorProvider;
-
-import aQute.bnd.annotation.component.Component;
+import org.osgi.service.component.annotations.Component;
 
 @Component
 @Deprecated
