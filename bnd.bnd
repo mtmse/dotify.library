@@ -1,6 +1,0 @@
--buildpath: biz.aQute.bnd.annotation,\
-	braille-utils.api;version=latest
-Export-Package: \
-	org.daisy.braille.utils.pef
--sources: true
-Service-Component: *

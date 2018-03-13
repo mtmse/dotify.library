@@ -41,16 +41,11 @@ dependencies {
 	
 }
 
-task updateBndVersion() {
-	doLast() {
-		String contents = file('bnd.bnd').getText('UTF-8')
-		file('bnd.bnd').write(contents.replaceAll('Bundle-Version: [\\d\\.A-Za-z\\-]+', "Bundle-Version: $version"), 'UTF-8')
-	}
-}
-
 bundle {
 	instructions << [
-		"-include": file('bnd.bnd'),
+		'-sources': 'true',
+		'Export-Package': 'org.daisy.braille.utils.pef',
+		'Service-Component': '*',
 		'Automatic-Module-Name': "$moduleName",
 		'Built-By': System.getProperty("user.name"),
 		'Built-On': new Date().format('yyyy-MM-dd'),
