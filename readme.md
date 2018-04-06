@@ -4,6 +4,12 @@
 # Introduction #
 dotify.translator.impl contains an implementation of the translator interfaces of [dotify.api](https://github.com/joeha480/dotify/tree/master/dotify.api). If you want to use it, you can get it [here](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22dotify.translator.impl%22).
 
+## Techniques
+Java, Java SPI, OSGi
+
+## Limitations
+Currently, braille translation is implemented for Swedish only.
+
 ## Using ##
 Download the [latest release](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22org.daisy.dotify%22%20%20a%3A%22dotify.translator.impl%22) from maven central and add it to your runtime environment.
 
