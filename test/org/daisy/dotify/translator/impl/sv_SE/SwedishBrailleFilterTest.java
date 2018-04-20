@@ -15,7 +15,7 @@ public class SwedishBrailleFilterTest {
 	private final SwedishBrailleFilter filter;
 	
 	public SwedishBrailleFilterTest() {
-		filter = new SwedishBrailleFilter();
+		filter = new SwedishBrailleFilter("sv-SE");
 	}
 	// 1.2 - Numbers	
 	@Test

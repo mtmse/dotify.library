@@ -30,12 +30,13 @@ public class SwedishBrailleFilterFactoryService implements
 	 */
 	public SwedishBrailleFilterFactoryService() {
 		this.specs = new ArrayList<>();
+		specs.add(new TranslatorSpecification("sv", BrailleTranslatorFactory.MODE_UNCONTRACTED));
 		specs.add(new TranslatorSpecification("sv-SE", BrailleTranslatorFactory.MODE_UNCONTRACTED));
 	}
 	
 	@Override
 	public boolean supportsSpecification(String locale, String mode) {
-		return "sv-SE".equalsIgnoreCase(locale) && mode.equals(BrailleTranslatorFactory.MODE_UNCONTRACTED);
+		return ("sv".equalsIgnoreCase(locale) || "sv-SE".equalsIgnoreCase(locale)) && mode.equals(BrailleTranslatorFactory.MODE_UNCONTRACTED);
 	}
 
 	@Override

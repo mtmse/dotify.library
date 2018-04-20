@@ -29,6 +29,8 @@ public class SwedishBrailleTranslatorFactoryService implements
 	 */
 	public SwedishBrailleTranslatorFactoryService() {
 		this.specs = new ArrayList<>();
+		specs.add(new TranslatorSpecification("sv", BrailleTranslatorFactory.MODE_UNCONTRACTED));
+		specs.add(new TranslatorSpecification("sv", SwedishBrailleTranslatorFactory.PRE_TRANSLATED));
 		specs.add(new TranslatorSpecification("sv-SE", BrailleTranslatorFactory.MODE_UNCONTRACTED));
 		specs.add(new TranslatorSpecification("sv-SE", SwedishBrailleTranslatorFactory.PRE_TRANSLATED));
 	}

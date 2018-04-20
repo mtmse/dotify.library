@@ -16,7 +16,7 @@ public class SwedishMarkerProcessorFactoryService implements
 
 	@Override
 	public boolean supportsSpecification(String locale, String mode) {
-		return "sv-SE".equalsIgnoreCase(locale) && mode.equals(BrailleTranslatorFactory.MODE_UNCONTRACTED);
+		return ("sv".equalsIgnoreCase(locale) || "sv-SE".equalsIgnoreCase(locale)) && mode.equals(BrailleTranslatorFactory.MODE_UNCONTRACTED);
 	}
 
 	@Override

@@ -14,22 +14,23 @@ import org.daisy.dotify.common.text.UCharFilter;
  * @author Joel Håkansson
  */
 public class SwedishBrailleFilter implements StringFilter {
-	private static final String sv_SE = "sv-SE";
 	private CombinationFilter filters;
 	
 	/**
 	 * Creates a new Swedish braille filter.
+	 * @param locale the locale
 	 */
-	public SwedishBrailleFilter() { 
-		this(false);
+	public SwedishBrailleFilter(String locale) { 
+		this(locale, false);
 	}
 
 	/**
 	 * Creates a new Swedish braille filter with the specified mode.
+	 * @param locale the locale
 	 * @param strict if true the result is braille only, if false the result 
 	 * 			contains break point characters such as space, dash and soft hyphen.
 	 */
-	public SwedishBrailleFilter(boolean strict) {
+	public SwedishBrailleFilter(String locale, boolean strict) {
 		filters = new CombinationFilter();
 		// Remove zero width space
 		filters.add(new RegexFilter("\\u200B", ""));
@@ -40,7 +41,7 @@ public class SwedishBrailleFilter implements StringFilter {
 		//filters.add(new RegexFilter("(\\u2820\\p{Lu}\\u00ad*\\p{Lu}[\\p{Lu}\\u00ad]*)", "\u2820$1"));
 		filters.add(new CapitalizationMarkers());
 
-		Locale l = FilterLocale.parse(sv_SE).toLocale();
+		Locale l = FilterLocale.parse(locale).toLocale();
 		// Text to braille, Pas 1
 		filters.add(new UCharFilter(getResource("sv_SE-pas1.xml"), l));
 		// Text to braille, Pas 2

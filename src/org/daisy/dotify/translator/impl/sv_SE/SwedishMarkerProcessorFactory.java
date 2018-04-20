@@ -17,10 +17,11 @@ class SwedishMarkerProcessorFactory implements MarkerProcessorFactory {
 	private static final String WHITESPACE_REGEX = "\\s+";
 	private static final String ALPHANUM_REGEX = "\\A[a-zA-Z0-9]+\\z";
 	private static final FilterLocale sv_SE = FilterLocale.parse("sv-SE");
+	private static final FilterLocale sv = FilterLocale.parse("sv");
 
 	@Override
 	public MarkerProcessor newMarkerProcessor(String locale, String mode) throws MarkerProcessorConfigurationException {
-		if (FilterLocale.parse(locale).equals(sv_SE)) {
+		if (FilterLocale.parse(locale).equals(sv)||FilterLocale.parse(locale).equals(sv_SE)) {
 			if (mode.equals(BrailleTranslatorFactory.MODE_UNCONTRACTED)) {
 	
 				// Svenska skrivregler för punktskrift 2009, page 34
