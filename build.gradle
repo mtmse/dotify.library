@@ -40,7 +40,7 @@ repositories {
 dependencies {
 	compileOnly 'org.osgi:org.osgi.service.component.annotations:1.3.0'
     compile "org.daisy.dotify:dotify.api:4.1.1"
-    testCompile group: "junit", name: "junit", version: "4.7"
+    testCompile group: "junit", name: "junit", version: "4.12"
 }
 
 bundle {
@@ -53,7 +53,8 @@ bundle {
   		'Built-By': System.getProperty("user.name"),
         'Built-On': new Date().format('yyyy-MM-dd'),
         'Repository-Revision': "$repoRevision",
-        'Repository-URL': "$repositoryURL"
+        'Repository-URL': "$repositoryURL",
+		'Include-Resource': 'LICENSE, NOTICE'
     ]
 }
 
