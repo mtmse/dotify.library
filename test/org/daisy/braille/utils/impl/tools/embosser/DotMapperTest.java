@@ -176,5 +176,36 @@ public class DotMapperTest {
 				.build());
 		assertEquals("When the width of the mapper is 2, each character is a braille cell.", "ABC", mapper2.trimTrailing("ABC@@@"));
 	}
+	
+	@Test
+	public void testTrimInput() {
+		DotMapper mapper = new DotMapper(21, DotMapperConfiguration.builder().cellHeight(4).inputCellHeight(3).build());
+		mapper.write("⠀⠀⠏⠉⠉⠉⠉⠉⠉⠩⠉⠿⠉⠍⠉⠉⠉⠉⠉⠉⠹");
+		mapper.newLine(0);
+		mapper.write("⠀⠀⠇⠀⠀⠀⠀⠀⠀⠀⠡⠀⠌⠀⠀⠀⠀⠀⠀⠀⠸");
+		mapper.newLine(0);
+		mapper.write("⠀⠀⠇⠀⠀⠖⠊⠱⠀⠀⠰⠶⠆⠀⠀⠎⠑⠲⠀⠀⠸");
+		mapper.newLine(0);
+		mapper.write("⠀⠀⠇⠳⠀⠫⠀⠈⠦⠾⠿⠿⠿⠷⠴⠁⠀⠝⠀⠞⠸");
+		mapper.newLine(0);
+		mapper.write("⠀⠀⠗⠒⠐⠪⠅⠀⠀⠭⠽⠿⠯⠭⠀⠀⠨⠕⠂⠒⠺");
+		mapper.newLine(0);
+		mapper.write("⠀⠀⠇⠞⠀⠮⠀⠠⠋⠻⠿⠿⠿⠟⠙⠄⠀⠵⠀⠳⠸");
+		mapper.newLine(0);
+		mapper.write("⠀⠀⠇⠀⠀⠓⠢⠜⠀⠀⠘⠛⠃⠀⠀⠣⠔⠚⠀⠀⠸");
+		mapper.newLine(0);
+		mapper.write("⠀⠀⠇⠀⠀⠀⠀⠀⠀⠀⠌⠀⠡⠀⠀⠀⠀⠀⠀⠀⠸");
+		mapper.newLine(0);
+		mapper.write("⠀⠀⠧⠤⠤⠤⠤⠤⠤⠬⠤⠿⠤⠥⠤⠤⠤⠤⠤⠤⠼");
+		mapper.newLine(0);
+		assertEquals(mapper.readLine(), "⠀⠀⡏⠉⠉⠉⠉⠉⠉⠩⡉⠿⢉⠍⠉⠉⠉⠉⠉⠉⢹");
+		assertEquals(mapper.readLine(), "⠀⠀⡇⠀⠀⣀⡠⢄⠀⠀⢐⣀⡂⠀⠀⡠⢄⣀⠀⠀⢸");
+		assertEquals(mapper.readLine(), "⠀⠀⡇⢦⠀⢗⠀⠘⣄⣴⣾⣿⣷⣦⣠⠃⠀⡺⠀⡴⢸");
+		assertEquals(mapper.readLine(), "⠀⠀⡗⢒⠐⢪⠅⠀⣀⣭⣽⣿⣯⣭⣀⠀⠨⡕⠂⡒⢺");
+		assertEquals(mapper.readLine(), "⠀⠀⡇⠋⠀⣗⡀⢰⠁⠙⢻⣿⡟⠋⠈⡆⢀⣺⠀⠙⢸");
+		assertEquals(mapper.readLine(), "⠀⠀⡇⠀⠀⠀⠈⠁⠀⠀⡐⠀⢂⠀⠀⠈⠁⠀⠀⠀⢸");
+		assertEquals(mapper.readLine(), "⠀⠀⠧⠤⠤⠤⠤⠤⠤⠬⠤⠿⠤⠥⠤⠤⠤⠤⠤⠤⠼");
+		assertEquals(mapper.readLine(), null);
+	}
 
 }

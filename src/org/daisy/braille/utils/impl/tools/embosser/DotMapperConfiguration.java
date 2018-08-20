@@ -4,11 +4,13 @@ public class DotMapperConfiguration {
 	private final int[] bitMap;
 	private final int cellHeight;
 	private final int cellWidth;
+	private final int inputCellHeight;
 	private final char baseCharacter;
 	
 	public static class Builder {
 		private int cellHeight=3;
 		private int cellWidth=2;
+		private int inputCellHeight=4;
 		private char baseCharacter=0x2800;
 		private int[] bitMap = DotMapper.UNICODE_BIT_MAP;
 
@@ -28,6 +30,22 @@ public class DotMapperConfiguration {
 				throw new IllegalArgumentException("Value out of range [1, 2]");
 			}
 			this.cellWidth = value;
+			return this;
+		}
+		
+		/**
+		 * Sets the cell height of the input data. For values less than 4, 
+		 * some input data may be ignored. For example, if this option is set to 3, 
+		 * dots 7 and 8 will be ignored. This is useful when mapping a 6-dot graphic 
+		 * onto 8-dot cells.
+		 * @param value the height, in the range [1, 4].
+		 * @return this builder
+		 */
+		public Builder inputCellHeight(int value) {
+			if (value<1 || value>4) {
+				throw new IllegalArgumentException("Value out of range [1, 4]");
+			}
+			this.inputCellHeight = value;
 			return this;
 		}
 		
@@ -51,6 +69,7 @@ public class DotMapperConfiguration {
 		this.bitMap = builder.bitMap;
 		this.cellHeight = builder.cellHeight;
 		this.cellWidth = builder.cellWidth;
+		this.inputCellHeight = builder.inputCellHeight;
 		this.baseCharacter = builder.baseCharacter;
 	}
 	
@@ -78,6 +97,15 @@ public class DotMapperConfiguration {
 
 	public int getCellWidth() {
 		return cellWidth;
+	}
+	
+	/**
+	 * Gets the height of the input cell. If the value is less
+	 * than 4, some dots at the bottom of the cell will be ignored.
+	 * @return the input cell height
+	 */
+	public int getInputCellHeight() {
+		return inputCellHeight;
 	}
 
 	public char getBaseCharacter() {

@@ -21,9 +21,9 @@ import java.util.ArrayList;
 import java.util.BitSet;
 
 /**
- * <p>Provides a utility to map eight dot unicode braille patterns to a braille 
+ * <p>Provides a utility to map unicode braille patterns to a braille 
  * graphics mode. This can be useful when embossing 8-dot files on an embosser using
- * a 6-dot table.</p>
+ * a 6-dot table, or when converting 6-dot graphics into 8-dot graphics.</p>
  * 
  * <p>Data is added via {@link #write(String)}, {@link #newLine(int)} and {@link #flush()}.
  * The patterns are then mapped internally using a mapping configuration. The result
@@ -104,7 +104,7 @@ public class DotMapper {
 
 	private void flushToBitSet() {
 		String t = sb.toString();
-		for (int i=0; i<4; i++) {
+		for (int i=0; i<config.getInputCellHeight(); i++) {
 			BitSet s = new BitSet(width*2);
 			int j=0;
 			for (char c : t.toCharArray()) {
