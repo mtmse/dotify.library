@@ -1,5 +1,9 @@
 package org.daisy.dotify.common.splitter;
 
+/**
+ * Provides a specification for a split point.
+ * @author Joel Håkansson
+ */
 public class SplitPointSpecification {
 	enum Type {
 		ALL,

@@ -3,6 +3,7 @@ package org.daisy.dotify.common.text;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+@SuppressWarnings("javadoc")
 public class ConditionalMapperTest {
 
 	@Test
