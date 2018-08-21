@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.daisy.braille.utils.pef.PEFGenerator;
 import org.junit.Test;
 
 @SuppressWarnings("javadoc")

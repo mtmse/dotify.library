@@ -14,7 +14,6 @@ import java.net.URISyntaxException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
-import org.daisy.braille.utils.pef.PEFBook;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
