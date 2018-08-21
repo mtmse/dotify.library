@@ -32,7 +32,9 @@ import java.util.logging.Logger;
 /**
  * Provides common file tools useful for braille.
  * @author Joel Håkansson
+ * @deprecated Use dotify.common FileIO
  */
+@Deprecated
 public class FileTools {
 	private static final Logger logger = Logger.getLogger(FileTools.class.getCanonicalName());
 

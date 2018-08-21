@@ -12,6 +12,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 
 import org.daisy.braille.utils.pef.PEFFileMerger.SortType;
+import org.daisy.dotify.common.io.FileIO;
 import org.junit.Test;
 
 @SuppressWarnings("javadoc")
@@ -30,9 +31,9 @@ public class PEFFileMergerTest {
 		File f3 = new File(dir, "volume-3");
 		File output = File.createTempFile("MergerTest", ".tmp");
 		try {
-			FileTools.copy(this.getClass().getResourceAsStream("resource-files/PEFFileMergerTestInput-1.pef"), new FileOutputStream(f1));
-			FileTools.copy(this.getClass().getResourceAsStream("resource-files/PEFFileMergerTestInput-2.pef"), new FileOutputStream(f2));
-			FileTools.copy(this.getClass().getResourceAsStream("resource-files/PEFFileMergerTestInput-3.pef"), new FileOutputStream(f3));
+			FileIO.copy(this.getClass().getResourceAsStream("resource-files/PEFFileMergerTestInput-1.pef"), new FileOutputStream(f1));
+			FileIO.copy(this.getClass().getResourceAsStream("resource-files/PEFFileMergerTestInput-2.pef"), new FileOutputStream(f2));
+			FileIO.copy(this.getClass().getResourceAsStream("resource-files/PEFFileMergerTestInput-3.pef"), new FileOutputStream(f3));
 
 			PEFFileMerger merger = new PEFFileMerger(t->true);
 			merger.merge(dir, new FileOutputStream(output), "Merged file", SortType.STANDARD);
