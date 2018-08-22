@@ -27,22 +27,23 @@ import java.io.InputStream;
  * @author Joel Håkansson
  */
 public class FileCompare {
-	protected final boolean keepTempFiles;
 	private int pos;
 
 	/**
 	 * Creates a new FileCompare object
 	 */
 	public FileCompare() {
-		this(false);
+		super();
 	}
 
 	/**
 	 * Creates a new FileCompare object
 	 * @param keepTempFiles true if temporary files should be kept, false otherwise
+	 * @deprecated this constructor serves no purpose
 	 */
+	@Deprecated
 	public FileCompare(boolean keepTempFiles) {
-		this.keepTempFiles = keepTempFiles;
+		super();
 	}
 
 	/**

@@ -19,6 +19,7 @@ import javax.xml.transform.stream.StreamSource;
  */
 public class XMLFileCompare extends FileCompare {
 	private final Templates templates;
+	private final boolean keepTempFiles;
 	private File t1;
 	private File t2;
 
@@ -36,8 +37,9 @@ public class XMLFileCompare extends FileCompare {
 	 * @param keepTempFiles true if temporary files should be kept, false otherwise
 	 */
 	public XMLFileCompare(TransformerFactory factory, boolean keepTempFiles) {
-		super(keepTempFiles);
+		super();
 		this.templates = init(factory);
+		this.keepTempFiles = keepTempFiles;
 		this.t1 = null;
 		this.t2 = null;
 	}
