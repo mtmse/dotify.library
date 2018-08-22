@@ -28,8 +28,6 @@ import java.io.InputStream;
  */
 public class FileCompare {
 	protected final boolean keepTempFiles;
-	protected File t1;
-	protected File t2;
 	private int pos;
 
 	/**
@@ -45,8 +43,6 @@ public class FileCompare {
 	 */
 	public FileCompare(boolean keepTempFiles) {
 		this.keepTempFiles = keepTempFiles;
-		this.t1 = null;
-		this.t2 = null;
 	}
 
 	/**
@@ -56,12 +52,11 @@ public class FileCompare {
 	 * @return returns the first file
 	 * @throws IllegalStateException if temporary files are not kept
 	 * or if compareXML has not been called.
+	 * @deprecated this method serves no purpose here
 	 */
+	@Deprecated
 	public File getFileOne() {
-		if (!keepTempFiles || t1==null) {
-			throw new IllegalStateException();
-		}
-		return t1;
+		throw new IllegalStateException();
 	}
 
 	/**
@@ -71,12 +66,11 @@ public class FileCompare {
 	 * @return returns the second file
 	 * @throws IllegalStateException if temporary files are not kept
 	 * or if compareXML has not been called.
+	 * @deprecated this method serves no purpose here
 	 */
+	@Deprecated
 	public File getFileTwo() {
-		if (!keepTempFiles || t2==null) {
-			throw new IllegalStateException();
-		}
-		return t2;
+		throw new IllegalStateException();
 	}
 
 	/**

@@ -19,6 +19,8 @@ import javax.xml.transform.stream.StreamSource;
  */
 public class XMLFileCompare extends FileCompare {
 	private final Templates templates;
+	private File t1;
+	private File t2;
 
 	/**
 	 * Creates a new FileCompare object
@@ -36,6 +38,8 @@ public class XMLFileCompare extends FileCompare {
 	public XMLFileCompare(TransformerFactory factory, boolean keepTempFiles) {
 		super(keepTempFiles);
 		this.templates = init(factory);
+		this.t1 = null;
+		this.t2 = null;
 	}
 	
 	private static Templates init(TransformerFactory factory) {
@@ -49,6 +53,36 @@ public class XMLFileCompare extends FileCompare {
 		} catch (TransformerConfigurationException e) {
 			return null;
 		}
+	}
+	
+	/**
+	 * Gets the intermediary file created  
+	 * from the first argument of the latest call to compareXML 
+	 * (as base for the post normalization binary compare).
+	 * @return returns the first file
+	 * @throws IllegalStateException if temporary files are not kept
+	 * or if compareXML has not been called.
+	 */
+	public File getFileOne() {
+		if (!keepTempFiles || t1==null) {
+			throw new IllegalStateException();
+		}
+		return t1;
+	}
+
+	/**
+	 * Gets the intermediary file created  
+	 * from the second argument of the latest call to compareXML 
+	 * (as base for the post normalization binary compare).
+	 * @return returns the second file
+	 * @throws IllegalStateException if temporary files are not kept
+	 * or if compareXML has not been called.
+	 */
+	public File getFileTwo() {
+		if (!keepTempFiles || t2==null) {
+			throw new IllegalStateException();
+		}
+		return t2;
 	}
 
 	/**
