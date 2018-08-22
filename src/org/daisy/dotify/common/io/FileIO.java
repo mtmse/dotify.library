@@ -28,7 +28,8 @@ public class FileIO {
 	private FileIO() {}
 
 	/**
-	 * Copies an input stream to an output stream
+	 * Copies an input stream to an output stream. In Java 9 or later, use 
+	 * <code>is.transferTo(OutputStream)</code>.
 	 * 
 	 * @param is
 	 *            the input stream
@@ -36,9 +37,9 @@ public class FileIO {
 	 *            the output stream
 	 * @throws IOException
 	 *             if IO fails
-	 * @deprecated use is.transferTo(OutputStream) (since Java 9)
 	 */
-	@Deprecated
+	//TODO: @deprecated use is.transferTo(OutputStream) (since Java 9)
+	//TODO: @Deprecated 
 	public static void copy(InputStream is, OutputStream os) throws IOException {
 		try (
 			InputStream bis = new BufferedInputStream(is);
