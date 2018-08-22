@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.function.Supplier;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.Templates;
@@ -20,7 +21,7 @@ import javax.xml.transform.stream.StreamSource;
  *
  */
 public class PEFFileCompare {
-	private static final NormalizationResource def = new PackageNormalizationResource("resource-files/strip-meta.xsl");
+	private static final Supplier<InputStream> def = ()->fromPath("resource-files/strip-meta.xsl");
 	private final TransformerFactory factory;
 	private final Templates templates;
 	private int pos = -1;
@@ -35,15 +36,25 @@ public class PEFFileCompare {
 	/**
 	 * Creates a new comparator with the specified normalization resource.
 	 * @param nr the normalization resource
+	 * @deprecated 
 	 */
+	@Deprecated
 	public PEFFileCompare(NormalizationResource nr) {
+		this((Supplier<InputStream>)()->nr.getNormalizationResourceAsStream());
+	}
+	
+	/**
+	 * Creates a new comparator with the specified normalization resource.
+	 * @param nr the normalization resource
+	 */
+	public PEFFileCompare(Supplier<InputStream> nr) {
 		this.factory = TransformerFactory.newInstance();
 		try {
 			this.factory.setAttribute("http://saxon.sf.net/feature/version-warning", Boolean.FALSE);
 		} catch (IllegalArgumentException iae) {
 			iae.printStackTrace();
 		}
-		this.templates = init(factory, new StreamSource(nr.getNormalizationResourceAsStream()));
+		this.templates = init(factory, new StreamSource(nr.get()));
 	}
 	
 	private static Templates init(TransformerFactory factory, Source xslt) {
@@ -59,7 +70,7 @@ public class PEFFileCompare {
 	 * @param path the path to the normalization resource
 	 */
 	public PEFFileCompare(String path) {
-		this(new PackageNormalizationResource(path));
+		this((Supplier<InputStream>)()->fromPath(path));
 	}
 
 	/**
@@ -67,7 +78,7 @@ public class PEFFileCompare {
 	 * @param nr the url to the normalization resource
 	 */
 	public PEFFileCompare(URL nr) {
-		this(new URLNormalizationResource(nr));
+		this((Supplier<InputStream>)()->fromURL(nr));
 	}
 
 	/**
@@ -135,37 +146,17 @@ public class PEFFileCompare {
 	public int getPos() {
 		return pos;
 	}
-
-	static class URLNormalizationResource implements NormalizationResource {
-		private final URL url;
-
-		public URLNormalizationResource(URL url) {
-			this.url = url;
-		}
-
-
-		@Override
-		public InputStream getNormalizationResourceAsStream() {
-			try {
-				return url.openStream();
-			} catch (IOException e) {
-				return null;
-			}
-		}
+	
+	private static InputStream fromURL(URL url) {
+		try {
+			return url.openStream();
+		} catch (IOException e) {
+			return null;
+		}		
 	}
-
-	static class PackageNormalizationResource implements NormalizationResource {
-		private final String path;
-
-		public PackageNormalizationResource(String path) {
-			this.path = path;
-		}
-
-
-		@Override
-		public InputStream getNormalizationResourceAsStream() {
-			return this.getClass().getResourceAsStream(path);
-		}
+	
+	private static InputStream fromPath(String path) {
+		return PEFFileCompare.class.getResourceAsStream(path);
 	}
 
 }

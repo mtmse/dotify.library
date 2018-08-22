@@ -3,12 +3,14 @@ package org.daisy.braille.utils.pef;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 
 
 /**
@@ -25,7 +27,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class PEFFileBatchCompare {
 	private final FileFilter filter;
-	private final NormalizationResource nr;
+	private final Supplier<InputStream> nr;
 	private final List<String> notices;
 	private final List<String> warnings;
 	private final List<Diff> diffs;
@@ -73,8 +75,19 @@ public class PEFFileBatchCompare {
 	 * Creates a new batch comparator with the specified file filter and normalization.
 	 * @param filter the filter
 	 * @param nr the normalization resource, an xslt
+	 * @deprecated
 	 */
+	@Deprecated
 	public PEFFileBatchCompare(FileFilter filter, NormalizationResource nr) {
+		this(filter, (Supplier<InputStream>)()->nr.getNormalizationResourceAsStream());
+	}
+
+	/**
+	 * Creates a new batch comparator with the specified file filter and normalization.
+	 * @param filter the filter
+	 * @param nr the normalization resource, an xslt
+	 */
+	public PEFFileBatchCompare(FileFilter filter, Supplier<InputStream> nr) {
 		this.filter = filter;
 		this.nr = nr;
 		notices = new ArrayList<>();
@@ -87,11 +100,11 @@ public class PEFFileBatchCompare {
 
 	/**
 	 * Creates a new batch comparator with the specified file filter. No normalization
-	 * will be applied. To apply a normalization, use {@link #PEFFileBatchCompare(FileFilter, NormalizationResource)} 
+	 * will be applied. To apply a normalization, use {@link #PEFFileBatchCompare(FileFilter, Supplier)} 
 	 * @param filter the filter
 	 */
 	public PEFFileBatchCompare(FileFilter filter) {
-		this(filter, null);
+		this(filter, (Supplier<InputStream>)null);
 	}
 
 	/**

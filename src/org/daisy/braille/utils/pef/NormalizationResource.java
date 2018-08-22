@@ -5,8 +5,9 @@ import java.io.InputStream;
 /**
  * Provides an interface for an input stream maker.
  * @author Joel Håkansson
- *
+ * @deprecated
  */
+@Deprecated
 public interface NormalizationResource {
 
 	/**
