@@ -7,6 +7,8 @@ import java.io.FileFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
@@ -186,5 +188,24 @@ public class FileIO {
 				// ignore
 			}
 		}
+	}
+	
+	/**
+	 * Converts an array of File objects into URL's
+	 * @param files the files to convert
+	 * @return returns an array of URL's
+	 */
+	public static URL[] toURL(File[] files) {
+		ArrayList<URL> urls = new ArrayList<>();
+		if (files!=null && files.length>0) {
+			for (File f : files) {
+				try {
+					urls.add(f.toURI().toURL());
+				} catch (MalformedURLException e) {
+					logger.warning("Failed to convert " + f + " into an URL.");
+				}
+			}
+		}
+		return urls.toArray(new URL[]{});
 	}
 }
