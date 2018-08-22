@@ -5,8 +5,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
+import javax.xml.transform.Templates;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
@@ -18,8 +18,7 @@ import javax.xml.transform.stream.StreamSource;
  * @author Joel Håkansson
  */
 public class XMLFileCompare extends FileCompare {
-	//private static final String TRANSFORMER_FACTORY_KEY = "javax.xml.transform.TransformerFactory";
-	private final TransformerFactory factory;
+	private final Templates templates;
 
 	/**
 	 * Creates a new FileCompare object
@@ -36,7 +35,20 @@ public class XMLFileCompare extends FileCompare {
 	 */
 	public XMLFileCompare(TransformerFactory factory, boolean keepTempFiles) {
 		super(keepTempFiles);
-		this.factory = factory;
+		this.templates = init(factory);
+	}
+	
+	private static Templates init(TransformerFactory factory) {
+		try {
+			factory.setAttribute("http://saxon.sf.net/feature/version-warning", Boolean.FALSE);
+		} catch (IllegalArgumentException iae) { 
+			iae.printStackTrace();
+		}
+		try {
+			return factory.newTemplates(new StreamSource(XMLFileCompare.class.getResourceAsStream("resource-files/normalize.xsl")));
+		} catch (TransformerConfigurationException e) {
+			return null;
+		}
 	}
 
 	/**
@@ -50,28 +62,17 @@ public class XMLFileCompare extends FileCompare {
 	 * @throws TransformerException if transformation fails
 	 */
 	public boolean compareXML(InputStream f1, InputStream f2) throws IOException, TransformerException {
-		//String originalTransformer = System.getProperty(TRANSFORMER_FACTORY_KEY);
-		//System.setProperty(TRANSFORMER_FACTORY_KEY, "net.sf.saxon.TransformerFactoryImpl");
-		try {
-			factory.setAttribute("http://saxon.sf.net/feature/version-warning", Boolean.FALSE);
-		} catch (IllegalArgumentException iae) { 
-			iae.printStackTrace();
+		if (templates==null) {
+			throw new TransformerException("No template.");
 		}
 		t1 = File.createTempFile("FileCompare", ".tmp");
 		t2 = File.createTempFile("FileCompare", ".tmp");
 		try {
 			StreamSource xml1 = new StreamSource(f1);
 			StreamSource xml2 = new StreamSource(f2);
-			Source xslt;
-			Transformer transformer;
 
-			xslt = new StreamSource(this.getClass().getResourceAsStream("resource-files/normalize.xsl"));
-			transformer = factory.newTransformer(xslt);
-			transformer.transform(xml1, new StreamResult(t1));
-
-			xslt = new StreamSource(this.getClass().getResourceAsStream("resource-files/normalize.xsl"));
-			transformer = factory.newTransformer(xslt);
-			transformer.transform(xml2, new StreamResult(t2));
+			templates.newTransformer().transform(xml1, new StreamResult(t1));
+			templates.newTransformer().transform(xml2, new StreamResult(t2));
 
 			return compareBinary(new FileInputStream(t1), new FileInputStream(t2));
 		} finally {
@@ -83,12 +84,6 @@ public class XMLFileCompare extends FileCompare {
 					t2.deleteOnExit();
 				}
 			}
-			/*
-        	if (originalTransformer!=null) {
-        		System.setProperty(TRANSFORMER_FACTORY_KEY, originalTransformer);
-        	} else {
-        		System.clearProperty(TRANSFORMER_FACTORY_KEY);
-        	}*/
 		}
 	}
 }
