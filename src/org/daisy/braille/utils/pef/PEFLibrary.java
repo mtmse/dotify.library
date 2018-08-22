@@ -11,7 +11,9 @@ import java.util.logging.Logger;
  * Provides a library for pef files.
  * @author Joel Håkansson
  *
+ * @deprecated use FileIO in dotify.common
  */
+@Deprecated
 public class PEFLibrary {
 	private static final FileFilter ff;
 	private static final Logger logger;
