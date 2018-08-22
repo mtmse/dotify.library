@@ -3,11 +3,16 @@ package org.daisy.dotify.common.io;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -16,6 +21,7 @@ import java.util.logging.Logger;
  *
  */
 public class FileIO {
+	private static final Logger logger = Logger.getLogger(FileIO.class.getCanonicalName());
 	
 	private FileIO() {}
 
@@ -144,6 +150,41 @@ public class FileIO {
 				return pos;
 			}
 			return -1;
+		}
+	}
+	
+	/**
+	 * Lists files in the specified folder and sub folders having the specified extension.
+	 * For non-recursive file listing, use: <code>dir.listFiles((parent, name)-&gt;name.endsWith(ext));</code>
+	 * @param dir the folder to start search
+	 * @param ext the file extensions to find
+	 * @return returns a list of files
+	 */
+	public static Collection<File> listFilesRecursive(File dir, String ext) {
+		ArrayList<File> files = new ArrayList<>();
+		listFilesRecursive(files, dir, pathname->pathname.isDirectory() || pathname.getName().endsWith(ext));
+		return files;
+	}
+
+	private static void listFilesRecursive(List<File> files, File dir, FileFilter ff) {
+		File[] listFiles = dir.listFiles(ff);
+		if (listFiles==null) {
+			return;
+		}
+		for (File f : listFiles) {
+			if (f.isDirectory()) {
+				if (logger.isLoggable(Level.FINE)) {
+					logger.fine("Scanning dir " + f);
+				}
+				listFilesRecursive(files, f, ff);
+			} else if (f.isFile()) {
+				if (logger.isLoggable(Level.FINE)) {
+					logger.fine("Adding file: " + f);
+				}
+				files.add(f);
+			} else {
+				// ignore
+			}
 		}
 	}
 }
