@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.net.URL;
 
 import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
+import javax.xml.transform.Templates;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -21,7 +21,8 @@ import javax.xml.transform.stream.StreamSource;
  */
 public class PEFFileCompare {
 	private static final NormalizationResource def = new PackageNormalizationResource("resource-files/strip-meta.xsl");
-	private final NormalizationResource nr;
+	private final TransformerFactory factory;
+	private final Templates templates;
 	private int pos = -1;
 
 	/**
@@ -36,7 +37,21 @@ public class PEFFileCompare {
 	 * @param nr the normalization resource
 	 */
 	public PEFFileCompare(NormalizationResource nr) {
-		this.nr = nr;
+		this.factory = TransformerFactory.newInstance();
+		try {
+			this.factory.setAttribute("http://saxon.sf.net/feature/version-warning", Boolean.FALSE);
+		} catch (IllegalArgumentException iae) {
+			iae.printStackTrace();
+		}
+		this.templates = init(factory, new StreamSource(nr.getNormalizationResourceAsStream()));
+	}
+	
+	private static Templates init(TransformerFactory factory, Source xslt) {
+		try {
+			return factory.newTemplates(xslt);
+		} catch (TransformerConfigurationException e) {
+			return null;
+		}
 	}
 
 	/**
@@ -74,14 +89,10 @@ public class PEFFileCompare {
 	 * @throws PEFFileCompareException if comarison fails
 	 */
 	public boolean compare(StreamSource xml1, StreamSource xml2) throws PEFFileCompareException {
-		pos = -1;
-
-		TransformerFactory factory = TransformerFactory.newInstance();
-		try {
-			factory.setAttribute("http://saxon.sf.net/feature/version-warning", Boolean.FALSE);
-		} catch (IllegalArgumentException iae) {
-			iae.printStackTrace();
+		if (templates==null) {
+			throw new PEFFileCompareException("No template.");
 		}
+		pos = -1;
 
 		try {
 			File t1 = File.createTempFile("FileCompare", ".tmp");
@@ -91,16 +102,9 @@ public class PEFFileCompare {
 
 			try {
 
-				Source xslt;
-				Transformer transformer;
+				templates.newTransformer().transform(xml1, new StreamResult(t1));
+				templates.newTransformer().transform(xml2, new StreamResult(t2));
 
-				xslt = new StreamSource(nr.getNormalizationResourceAsStream());
-				transformer = factory.newTransformer(xslt);
-				transformer.transform(xml1, new StreamResult(t1));
-
-				xslt = new StreamSource(nr.getNormalizationResourceAsStream());
-				transformer = factory.newTransformer(xslt);
-				transformer.transform(xml2, new StreamResult(t2));
 				XMLFileCompare fc = new XMLFileCompare(factory);
 				boolean ret = fc.compareXML(new FileInputStream(t1), new FileInputStream(t2));
 				pos = fc.getPos();
