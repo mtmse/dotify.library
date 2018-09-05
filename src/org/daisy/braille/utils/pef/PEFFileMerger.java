@@ -40,9 +40,6 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 
-import org.daisy.braille.utils.api.validator.Validator;
-import org.daisy.braille.utils.api.validator.ValidatorFactoryService;
-
 /**
  * Merges several single volume PEF-files into one. Metadata is collected from
  * the first file. The order of the files is determined by the file names.
@@ -93,23 +90,6 @@ public class PEFFileMerger {
 	private final Predicate<URL> validator;
 
 	/**
-	 * Creates a new PEFFileMerger
-	 * @param validatorFactory the validator factory
-	 * @deprecated use {@link #PEFFileMerger(Predicate)}
-	 */
-	@Deprecated
-	public PEFFileMerger(ValidatorFactoryService validatorFactory) {
-		Validator v = Objects.requireNonNull(validatorFactory).newValidator(PEFValidator.class.getName());
-		if (v!=null) {
-			v.setFeature(PEFValidator.FEATURE_MODE, PEFValidator.Mode.FULL_MODE);
-			this.validator = t->v.validate(t);
-		} else {
-			// Using null here to preserve the original behavior, see also below.
-			this.validator = null;
-		}
-	}
-	
-	/**
 	 * Creates a new PEFFileMerger.
 	 * @param validator a PEF-validator. A full validation is strongly recommended.
 	 */
@@ -143,25 +123,17 @@ public class PEFFileMerger {
 	 */
 	public boolean merge(File[] files, OutputStream os, String identifier) {
 		try {
-			// This check remains for compatibility with the deprecated constructor
-			// PEFFileMerger(ValidatorFactoryService validatorFactory)
-			if (validator!=null) {
-				logInfo("Checking input files");
-				for (File f : files) {
-					log("Examining " + f.getName(), Level.INFO);
-					if (!validator.test(f.toURI().toURL())) {
-						log("Validation of input file \"" + f.getName() + "\" failed.", Level.SEVERE);
-						return false;
-					}
-					log(f.getName() + " ok!", Level.FINE);
+			logInfo("Checking input files");
+			for (File f : files) {
+				log("Examining " + f.getName(), Level.INFO);
+				if (!validator.test(f.toURI().toURL())) {
+					log("Validation of input file \"" + f.getName() + "\" failed.", Level.SEVERE);
+					return false;
 				}
-				logInfo("Input files ok");
-			} else {
-				log("Cannot find validator", Level.WARNING);
-				return false;
+				log(f.getName() + " ok!", Level.FINE);
 			}
-
-			logInfo("Assembling files");
+			logInfo("Input files ok.");
+			logInfo("Assembling files...");
 			if (!writeFile(files, os, identifier)) {
 				logInfo("Assemby failed");
 				return false;

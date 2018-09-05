@@ -41,8 +41,6 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 
-import org.daisy.braille.utils.api.validator.Validator;
-import org.daisy.braille.utils.api.validator.ValidatorFactoryService;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -65,23 +63,6 @@ public class PEFFileSplitter implements ErrorHandler  {
 	enum State {HEADER, BODY, FOOTER};
 	private static final Logger logger = Logger.getLogger(PEFFileSplitter.class.getCanonicalName());
 	private final Predicate<URL> validator;
-
-	/**
-	 * Creates a new PEFFileSplitter object.
-	 * @param validatorFactory the validator factory
-	 * @deprecated use {@link #PEFFileSplitter(Predicate)}
-	 */
-	@Deprecated
-	public PEFFileSplitter(ValidatorFactoryService validatorFactory) {
-		Validator v = Objects.requireNonNull(validatorFactory).newValidator(PEFValidator.class.getName());
-		if (v!=null) {
-			v.setFeature(PEFValidator.FEATURE_MODE, PEFValidator.Mode.FULL_MODE);
-			this.validator = t->v.validate(t);
-		} else {
-			// Using null here to preserve the original behavior, see also below.
-			this.validator = null;
-		}
-	}
 
 	/**
 	 * Creates a new PEFFileSplitter object.
@@ -213,21 +194,13 @@ public class PEFFileSplitter implements ErrorHandler  {
 			}
 			is.close();
 			sendMessage("Checking result for errors");
-			// This check remains for compatibility with the deprecated constructor
-			// PEFFileSplitter(ValidatorFactoryService validatorFactory)
-			if (validator!=null) {
-				for (File f : files) {
-					sendMessage("Examining " + f.getName(), Level.FINE);
-					if (!validator.test(f.toURI().toURL())) {
-						sendMessage("Validation of result file failed: " + f.getName(), Level.SEVERE);
-						return false;
-					}
-					sendMessage(f.getName() + " ok!", Level.FINE);
+			for (File f : files) {
+				sendMessage("Examining " + f.getName(), Level.FINE);
+				if (!validator.test(f.toURI().toURL())) {
+					sendMessage("Validation of result file failed: " + f.getName(), Level.SEVERE);
+					return false;
 				}
-				sendMessage("All ok!");
-			} else {
-				sendMessage("Cannot find validator", Level.WARNING);
-				return false;
+				sendMessage(f.getName() + " ok!", Level.FINE);
 			}
 			sendMessage("Done!");
 			return true;
