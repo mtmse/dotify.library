@@ -17,8 +17,6 @@
  */
 package org.daisy.braille.utils.impl.tools.embosser;
 
-import org.daisy.braille.utils.api.embosser.Contract;
-
 /**
  * Provides an object representation for each event in the EmbosserWriter interface.
  * The purpose is to add the possibility to buffer EmbosserWriter events for later use.
@@ -85,41 +83,15 @@ public class EmbosserWriterEvent {
 	 *
 	 */
 	public static class OpenEvent extends DuplexEvent {
-		private final Contract contract;
 
 		/**
 		 * Creates a new OpenEvent with no contract
 		 * @param duplex true if using both sides of a sheet, false otherwise
 		 */
 		public OpenEvent(boolean duplex) {
-			this(duplex, null);
-		}
-
-		/**
-		 * Creates a new OpenEvent
-		 * @param duplex true if using both sides of a sheet, false otherwise
-		 * @param contract the contract
-		 */
-		public OpenEvent(boolean duplex, Contract contract) {
 			super(EventType.OPEN_EVENT, duplex);
-			this.contract = contract;
 		}
 
-		/**
-		 * Gets the contract for the event
-		 * @return returns the contract for the event, or null if no contract exist
-		 */
-		public Contract getContract() {
-			return contract;
-		}
-
-		/**
-		 * Returns true if a contract has been defined
-		 * @return returns true if a contract has been defined, false otherwise
-		 */
-		public boolean hasContract() {
-			return contract!=null;
-		}
 	}
 
 	/**

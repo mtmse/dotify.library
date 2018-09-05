@@ -22,8 +22,6 @@ import java.io.IOException;
 
 import javax.print.PrintException;
 
-import org.daisy.braille.utils.api.embosser.Contract;
-import org.daisy.braille.utils.api.embosser.ContractNotSupportedException;
 import org.daisy.braille.utils.api.embosser.Device;
 import org.daisy.braille.utils.api.embosser.EmbosserWriter;
 
@@ -118,12 +116,6 @@ public class FileToDeviceEmbosserWriter implements EmbosserWriter {
 			e2.initCause(e);
 			throw e2;
 		}
-	}
-
-	@Override
-	@Deprecated
-	public void open(boolean duplex, Contract contract) throws IOException, ContractNotSupportedException {
-		w.open(duplex, contract);
 	}
 
 }

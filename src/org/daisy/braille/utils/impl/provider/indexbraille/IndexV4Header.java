@@ -143,11 +143,6 @@ class IndexV4Header implements IndexHeader {
 	public int getMaxWidth() {
 		return EmbosserTools.getWidth(printableArea, cellWidth);
 	}
-	
-	@Override
-	public int getMaxHeight() {
-		return getMaxHeight(false);
-	}
 
 	private int getMaxHeight(boolean transparentMode) {
 		return EmbosserTools.getHeight(printableArea, cellHeight+(transparentMode?2.5:0));

@@ -21,8 +21,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 
-import org.daisy.braille.utils.api.embosser.Contract;
-import org.daisy.braille.utils.api.embosser.ContractNotSupportedException;
 import org.daisy.braille.utils.api.embosser.LineBreaks;
 import org.daisy.braille.utils.api.embosser.StandardLineBreaks;
 import org.daisy.braille.utils.api.table.BrailleConverter;
@@ -205,12 +203,6 @@ public class ConfigurableEmbosser extends AbstractEmbosserWriter {
 	@Override
 	public void open(boolean duplex) throws IOException {
 		super.open(duplex);
-		os.write(header);
-	}
-
-	@Override
-	public void open(boolean duplex, Contract contract) throws IOException, ContractNotSupportedException {
-		super.open(duplex, contract);
 		os.write(header);
 	}
 

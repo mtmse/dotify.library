@@ -22,8 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.daisy.braille.utils.api.embosser.Contract;
-import org.daisy.braille.utils.api.embosser.ContractNotSupportedException;
 import org.daisy.braille.utils.api.embosser.EmbosserWriter;
 import org.daisy.braille.utils.impl.tools.embosser.EmbosserWriterEvent.CloseEvent;
 import org.daisy.braille.utils.impl.tools.embosser.EmbosserWriterEvent.NewLineEvent;
@@ -117,11 +115,6 @@ public class BufferedEmbosserWriter implements EmbosserWriter {
 		isOpen = true;
 		events.add(new OpenEvent(duplex));
 		contractBuilder = new InternalContract.Builder().setBrailleRange(BrailleRange.SIX_DOT);
-	}
-
-	@Override
-	public void open(boolean duplex, Contract contract) throws IOException, ContractNotSupportedException {
-		throw new ContractNotSupportedException("Contracts not supported");
 	}
 
 	@Override

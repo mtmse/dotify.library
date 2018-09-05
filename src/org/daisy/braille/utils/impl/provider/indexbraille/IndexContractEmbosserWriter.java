@@ -22,8 +22,6 @@ import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.daisy.braille.utils.api.embosser.Contract;
-import org.daisy.braille.utils.api.embosser.ContractNotSupportedException;
 import org.daisy.braille.utils.api.embosser.EmbosserWriter;
 import org.daisy.braille.utils.api.embosser.StandardLineBreaks;
 import org.daisy.braille.utils.api.table.BrailleConverter;
@@ -35,9 +33,7 @@ import org.daisy.braille.utils.impl.tools.embosser.InternalContractNotSupportedE
 
 /**
  * Provides an embosser writer that supports different configurations based on
- * the properties of an {@link InternalContract}. The {@link Contract} in
- * the braille utils api is not used. It will be deprecated as it has been
- * demonstrated here that it doesn't have to be in the API.
+ * the properties of an {@link InternalContract}.
  * @author Joel Håkansson
  */
 public class IndexContractEmbosserWriter implements ContractEmbosserWriter {
@@ -61,11 +57,6 @@ public class IndexContractEmbosserWriter implements ContractEmbosserWriter {
 	@Override
 	public void open(boolean duplex) throws IOException {
 		throw new IOException("Only use this with an internal contract.");
-	}
-
-	@Override
-	public void open(boolean duplex, Contract contract) throws IOException, ContractNotSupportedException {
-		throw new ContractNotSupportedException("Only use this with an internal contract.");
 	}
 
 	@Override
@@ -159,11 +150,6 @@ public class IndexContractEmbosserWriter implements ContractEmbosserWriter {
 	@Override
 	public boolean supportsAligning() {
 		return props.supportsAligning();
-	}
-
-	@Override
-	public boolean supportsDuplex() {
-		return props.supportsDuplex();
 	}
 
 }

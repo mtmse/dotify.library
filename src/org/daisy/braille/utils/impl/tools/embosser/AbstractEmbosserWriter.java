@@ -20,8 +20,6 @@ package org.daisy.braille.utils.impl.tools.embosser;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-import org.daisy.braille.utils.api.embosser.Contract;
-import org.daisy.braille.utils.api.embosser.ContractNotSupportedException;
 import org.daisy.braille.utils.api.embosser.EmbosserWriter;
 import org.daisy.braille.utils.api.embosser.LineBreaks;
 
@@ -111,13 +109,6 @@ public abstract class AbstractEmbosserWriter implements EmbosserWriter {
 	@Override
 	public void open(boolean duplex) throws IOException {
 		init(duplex);
-	}
-
-	@Override
-	public void open(boolean duplex, Contract contract) throws IOException, ContractNotSupportedException {
-		init(duplex);
-		// Contract does not affect the implementation here, subclasses should override this method,
-		// to make use of contract information
 	}
 	
 	private void init(boolean duplex) {
