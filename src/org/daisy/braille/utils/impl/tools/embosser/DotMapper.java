@@ -156,7 +156,7 @@ public class DotMapper {
 			return null;
 		}
 		String res = getFirstRow();
-		removeRemoveRow();
+		removeRow();
 		return trimTrailing?trimTrailing(res):res;
 	}
 	
@@ -198,7 +198,7 @@ public class DotMapper {
 		return res.toString();
 	}
 
-	void removeRemoveRow() {
+	void removeRow() {
 		for (int i=0; i<config.getCellHeight(); i++) {
 			if (bs.size()>0) {
 				bs.remove(0);

@@ -157,6 +157,20 @@ public class DotMapperTest {
 		mapper.flush();
 		assertEquals("@ABCDEFGHIJKLMNO", mapper.getFirstRow());
 	}
+	
+	@Test
+	public void testBinaryMapping() {
+		DotMapper mapper = new DotMapper(8, DotMapperConfiguration.builder()
+				.baseCharacter('0')
+				.cellHeight(1)
+				.cellWidth(1)
+				.map(new int[]{1})
+				.build());
+		mapper.write("⠁⠂⠃");
+		mapper.flush();
+		assertEquals("100010", mapper.readLine(true));
+		assertEquals("001010", mapper.readLine(true));
+	}
 
 	@Test
 	public void testTrimTrailing() {
