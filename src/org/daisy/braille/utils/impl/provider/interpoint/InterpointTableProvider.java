@@ -72,10 +72,6 @@ public class InterpointTableProvider implements TableProvider {
 		//addTable(TableType.USA1_8);
 	}
 
-	private void addTable(FactoryProperties t) {
-		tables.put(t.getIdentifier(), t);
-	}
-
 	/**
 	 * Get a new table instance based on the factory's current settings.
 	 *
