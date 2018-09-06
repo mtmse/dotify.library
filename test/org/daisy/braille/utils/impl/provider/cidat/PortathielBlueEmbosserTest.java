@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -99,9 +100,11 @@ public class PortathielBlueEmbosserTest {
 		FileIO.copy(this.getClass().getResourceAsStream("resource-files/single_sided.pef"), new FileOutputStream(pef));
 		FileIO.copy(this.getClass().getResourceAsStream("resource-files/portathiel_transparent_single_sided.prn"), new FileOutputStream(prn2));
 		new PEFConverterFacade(EmbosserCatalog.newInstance()).parsePefFile(pef, builder.build());
-		assertTrue("Assert that the contents of the file is as expected.",
-				fc.compareBinary(new FileInputStream(prn1), new FileInputStream(prn2))
-				);
+		try (InputStream is2 = new FileInputStream(prn2)) {
+			assertTrue("Assert that the contents of the file is as expected.",
+					fc.compareBinary(new FileInputStream(prn1), is2)
+					);
+		}
 
 		// Double sided, transparent mode
 
@@ -115,9 +118,11 @@ public class PortathielBlueEmbosserTest {
 		FileIO.copy(this.getClass().getResourceAsStream("resource-files/double_sided.pef"), new FileOutputStream(pef));
 		FileIO.copy(this.getClass().getResourceAsStream("resource-files/portathiel_transparent_double_sided.prn"), new FileOutputStream(prn2));
 		new PEFConverterFacade(EmbosserCatalog.newInstance()).parsePefFile(pef, builder.build());
-		assertTrue("Assert that the contents of the file is as expected.",
-				fc.compareBinary(new FileInputStream(prn1), new FileInputStream(prn2))
-				);
+		try (InputStream is2 = new FileInputStream(prn2)) {
+			assertTrue("Assert that the contents of the file is as expected.",
+					fc.compareBinary(new FileInputStream(prn1), is2)
+					);
+		}
 
 		// Single sided, MIT set
 
@@ -132,9 +137,11 @@ public class PortathielBlueEmbosserTest {
 		FileIO.copy(this.getClass().getResourceAsStream("resource-files/single_sided.pef"), new FileOutputStream(pef));
 		FileIO.copy(this.getClass().getResourceAsStream("resource-files/portathiel_mit_single_sided.prn"), new FileOutputStream(prn2));
 		new PEFConverterFacade(EmbosserCatalog.newInstance()).parsePefFile(pef, builder.build());
-		assertTrue("Assert that the contents of the file is as expected.",
-				fc.compareBinary(new FileInputStream(prn1), new FileInputStream(prn2))
-				);
+		try (InputStream is2 = new FileInputStream(prn2)) {
+			assertTrue("Assert that the contents of the file is as expected.",
+					fc.compareBinary(new FileInputStream(prn1), is2)
+					);
+		}
 
 		// Double sided, MIT set
 
@@ -148,9 +155,11 @@ public class PortathielBlueEmbosserTest {
 		FileIO.copy(this.getClass().getResourceAsStream("resource-files/double_sided.pef"), new FileOutputStream(pef));
 		FileIO.copy(this.getClass().getResourceAsStream("resource-files/portathiel_mit_double_sided.prn"), new FileOutputStream(prn2));
 		new PEFConverterFacade(EmbosserCatalog.newInstance()).parsePefFile(pef, builder.build());
-		assertTrue("Assert that the contents of the file is as expected.",
-				fc.compareBinary(new FileInputStream(prn1), new FileInputStream(prn2))
-				);
+		try (InputStream is2 = new FileInputStream(prn2)) {
+			assertTrue("Assert that the contents of the file is as expected.",
+					fc.compareBinary(new FileInputStream(prn1), is2)
+					);
+		}
 
 		prn1.deleteOnExit();
 		prn2.deleteOnExit();
