@@ -21,10 +21,10 @@ import org.daisy.braille.utils.api.paper.TractorPaper;
 import org.daisy.braille.utils.api.paper.TractorPaperFormat;
 import org.daisy.braille.utils.api.table.TableCatalog;
 import org.daisy.braille.utils.pef.FileCompare;
-import org.daisy.braille.utils.pef.FileTools;
 import org.daisy.braille.utils.pef.PEFConverterFacade;
 import org.daisy.braille.utils.pef.PEFHandler;
 import org.daisy.braille.utils.pef.UnsupportedWidthException;
+import org.daisy.dotify.common.io.FileIO;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
@@ -157,8 +157,8 @@ public class IndexV2EmbosserTest {
 				.offset(0)
 				.topOffset(0);
 
-		FileTools.copy(this.getClass().getResourceAsStream("resource-files/single_sided.pef"), new FileOutputStream(pef));
-		FileTools.copy(this.getClass().getResourceAsStream("resource-files/basic_s_v2_single_sided.prn"), new FileOutputStream(prn2));
+		FileIO.copy(this.getClass().getResourceAsStream("resource-files/single_sided.pef"), new FileOutputStream(pef));
+		FileIO.copy(this.getClass().getResourceAsStream("resource-files/basic_s_v2_single_sided.prn"), new FileOutputStream(prn2));
 		new PEFConverterFacade(EmbosserCatalog.newInstance()).parsePefFile(pef, builder.build());
 		assertTrue("Assert that the contents of the file is as expected.",
 				fc.compareBinary(new FileInputStream(prn1), new FileInputStream(prn2))
@@ -174,7 +174,7 @@ public class IndexV2EmbosserTest {
 				.offset(0)
 				.topOffset(0);
 
-		FileTools.copy(this.getClass().getResourceAsStream("resource-files/basic_d_v2_single_sided.prn"), new FileOutputStream(prn2));
+		FileIO.copy(this.getClass().getResourceAsStream("resource-files/basic_d_v2_single_sided.prn"), new FileOutputStream(prn2));
 		new PEFConverterFacade(EmbosserCatalog.newInstance()).parsePefFile(pef, builder.build());
 		assertTrue("Assert that the contents of the file is as expected.",
 				fc.compareBinary(new FileInputStream(prn1), new FileInputStream(prn2))
@@ -189,8 +189,8 @@ public class IndexV2EmbosserTest {
 				.offset(0)
 				.topOffset(0);
 
-		FileTools.copy(this.getClass().getResourceAsStream("resource-files/double_sided.pef"), new FileOutputStream(pef));
-		FileTools.copy(this.getClass().getResourceAsStream("resource-files/basic_d_v2_double_sided.prn"), new FileOutputStream(prn2));
+		FileIO.copy(this.getClass().getResourceAsStream("resource-files/double_sided.pef"), new FileOutputStream(pef));
+		FileIO.copy(this.getClass().getResourceAsStream("resource-files/basic_d_v2_double_sided.prn"), new FileOutputStream(prn2));
 		new PEFConverterFacade(EmbosserCatalog.newInstance()).parsePefFile(pef, builder.build());
 		assertTrue("Assert that the contents of the file is as expected.",
 				fc.compareBinary(new FileInputStream(prn1), new FileInputStream(prn2))
@@ -206,7 +206,7 @@ public class IndexV2EmbosserTest {
 				.offset(0)
 				.topOffset(0);
 
-		FileTools.copy(this.getClass().getResourceAsStream("resource-files/basic_d_v2_zfolding.prn"), new FileOutputStream(prn2));
+		FileIO.copy(this.getClass().getResourceAsStream("resource-files/basic_d_v2_zfolding.prn"), new FileOutputStream(prn2));
 		new PEFConverterFacade(EmbosserCatalog.newInstance()).parsePefFile(pef, builder.build());
 		assertTrue("Assert that the contents of the file is as expected.",
 				fc.compareBinary(new FileInputStream(prn1), new FileInputStream(prn2))
@@ -221,7 +221,7 @@ public class IndexV2EmbosserTest {
 				.offset(0)
 				.topOffset(0);
 
-		FileTools.copy(this.getClass().getResourceAsStream("resource-files/everest_v2_double_sided.prn"), new FileOutputStream(prn2));
+		FileIO.copy(this.getClass().getResourceAsStream("resource-files/everest_v2_double_sided.prn"), new FileOutputStream(prn2));
 		new PEFConverterFacade(EmbosserCatalog.newInstance()).parsePefFile(pef, builder.build());
 		assertTrue("Assert that the contents of the file is as expected.",
 				fc.compareBinary(new FileInputStream(prn1), new FileInputStream(prn2))
@@ -237,7 +237,7 @@ public class IndexV2EmbosserTest {
 				.offset(0)
 				.topOffset(0);
 
-		FileTools.copy(this.getClass().getResourceAsStream("resource-files/4x4_pro_v2_double_sided.prn"), new FileOutputStream(prn2));
+		FileIO.copy(this.getClass().getResourceAsStream("resource-files/4x4_pro_v2_double_sided.prn"), new FileOutputStream(prn2));
 		new PEFConverterFacade(EmbosserCatalog.newInstance()).parsePefFile(pef, builder.build());
 		assertTrue("Assert that the contents of the file is as expected.",
 				fc.compareBinary(new FileInputStream(prn1), new FileInputStream(prn2))
@@ -253,7 +253,7 @@ public class IndexV2EmbosserTest {
 				.offset(0)
 				.topOffset(0);
 
-		FileTools.copy(this.getClass().getResourceAsStream("resource-files/4x4_pro_v2_saddle_stitch.prn"), new FileOutputStream(prn2));
+		FileIO.copy(this.getClass().getResourceAsStream("resource-files/4x4_pro_v2_saddle_stitch.prn"), new FileOutputStream(prn2));
 		new PEFConverterFacade(EmbosserCatalog.newInstance()).parsePefFile(pef, builder.build());
 		assertTrue("Assert that the contents of the file is as expected.",
 				fc.compareBinary(new FileInputStream(prn1), new FileInputStream(prn2))
@@ -284,7 +284,7 @@ public class IndexV2EmbosserTest {
 				.topOffset(0);
 
 		new PEFConverterFacade(EmbosserCatalog.newInstance()).parsePefFile(this.getClass().getResourceAsStream("resource-files/test-input-1.pef"), builder.build());
-		//FileTools.copy(new FileInputStream(prn1), new FileOutputStream(new File("c:\\bu1_2.txt")));
+		//FileIO.copy(new FileInputStream(prn1), new FileOutputStream(new File("c:\\bu1_2.txt")));
 		assertTrue("Assert that the contents of the file is as expected.",
 				fc.compareBinary(new FileInputStream(prn1), this.getClass().getResourceAsStream("resource-files/test-input-1_everest-v2_a4.prn"))
 				);
@@ -301,7 +301,7 @@ public class IndexV2EmbosserTest {
 				.topOffset(0);
 
 		new PEFConverterFacade(EmbosserCatalog.newInstance()).parsePefFile(this.getClass().getResourceAsStream("resource-files/test-input-1.pef"), builder.build());
-		//FileTools.copy(new FileInputStream(prn1), new FileOutputStream(new File("c:\\bu1_2.txt")));
+		//FileIO.copy(new FileInputStream(prn1), new FileOutputStream(new File("c:\\bu1_2.txt")));
 		assertTrue("Assert that the contents of the file is as expected.",
 				fc.compareBinary(new FileInputStream(prn1), this.getClass().getResourceAsStream("resource-files/test-input-1_basic-v2_12inch.prn"))
 				);
