@@ -37,9 +37,14 @@ import org.osgi.service.component.annotations.Component;
 @Component
 public class DefaultTableProvider implements TableProvider {
 
+	/**
+	 * Table ids.
+	 */
 	public enum TableType implements FactoryProperties {
-		EN_US("US", "Commonly used embosser table"), // US computer braille, compatible with
-		// "Braillo USA 6 DOT 001.00"
+		/**
+		 * US computer braille 
+		 */
+		EN_US("US", "Commonly used embosser table"), // compatible with "Braillo USA 6 DOT 001.00"
 		;
 		private final String name;
 		private final String desc;

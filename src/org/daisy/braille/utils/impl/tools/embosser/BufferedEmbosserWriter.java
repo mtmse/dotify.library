@@ -53,6 +53,11 @@ public class BufferedEmbosserWriter implements EmbosserWriter {
 	private InternalContract.Builder contractBuilder;
 	private boolean hasEightDot;
 
+	/**
+	 * Creates a new buffered embosser writer with an embosser writer 
+	 * that supports a contract.
+	 * @param writer the writer
+	 */
 	public BufferedEmbosserWriter(ContractEmbosserWriter writer) {
 		this.writer = writer;
 		this.isOpen = false;

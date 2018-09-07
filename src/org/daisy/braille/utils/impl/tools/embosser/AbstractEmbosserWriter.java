@@ -151,6 +151,13 @@ public abstract class AbstractEmbosserWriter implements EmbosserWriter {
 		addAll(getBytes(braille));
 	}
 	
+	/**
+	 * Translates a string of braille into bytes that should be transfered to the embosser.
+	 * @param braille the braille (characters in the Braille Patterns unicode block 0x2800-0x28FF).
+	 * @return the bytes
+	 * @throws UnsupportedEncodingException if the string could not be encoded.
+	 */
+	//FIXME: don't throw UnsupportedEncodingException, throw something more appropriate.
 	public abstract byte[] getBytes(String braille) throws UnsupportedEncodingException;
 
 	/**

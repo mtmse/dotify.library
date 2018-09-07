@@ -1,5 +1,10 @@
 package org.daisy.braille.utils.impl.tools.embosser;
 
+/**
+ * Provides a configuration for a {@link DotMapper}.
+ * @author Joel Håkansson
+ *
+ */
 public class DotMapperConfiguration {
 	private final int[] bitMap;
 	private final int cellHeight;
@@ -7,6 +12,9 @@ public class DotMapperConfiguration {
 	private final int inputCellHeight;
 	private final char baseCharacter;
 	
+	/**
+	 * Provides a builder for a {@link DotMapperConfiguration}.
+	 */
 	public static class Builder {
 		private int cellHeight=3;
 		private int cellWidth=2;
@@ -17,6 +25,15 @@ public class DotMapperConfiguration {
 		private Builder() {
 		}
 		
+		/**
+		 * Sets the output cell height for this configuration. This represents the height of 
+		 * the window used to construct an output character from the dot grid. For example,
+		 * if cellHeight = 1 and cellWidth = 1 then only two different characters will be used
+		 * in the result, regardless of the contents of the input. In other words, this would
+		 * be binary encoding using unicode characters). 
+		 * @param value the value
+		 * @return this builder
+		 */
 		public Builder cellHeight(int value) {
 			if (value<1 || value>4) {
 				throw new IllegalArgumentException("Value out of range [1, 4]");
@@ -25,6 +42,13 @@ public class DotMapperConfiguration {
 			return this;
 		}
 		
+		/**
+		 * Sets the output cell width for this configuration. This represents the width of 
+		 * the window used to construct an output character from the dot grid.
+		 * See also {@link #cellHeight(int)}.
+		 * @param value the value
+		 * @return this builder
+		 */
 		public Builder cellWidth(int value) {
 			if (value<1 || value>2) {
 				throw new IllegalArgumentException("Value out of range [1, 2]");
@@ -49,16 +73,38 @@ public class DotMapperConfiguration {
 			return this;
 		}
 		
+		/**
+		 * Sets the base character. This character is used when all "bits" in the pattern
+		 * are zero.
+		 * @param value the value
+		 * @return this builder
+		 */
 		public Builder baseCharacter(char value) {
 			this.baseCharacter = value;
 			return this;
 		}
 		
+		/**
+		 * Sets the bit pattern mapper. This maps input dots in a braille cell to a
+		 * bit in the output character's bit pattern. When an input dot is present, it
+		 * sets the corresponding bit in the output character. The result is
+		 * superimposed onto the base character with logical or.
+		 * 
+		 * @param value an array of integers (all a power of two). Each value must occur
+		 * only once.
+		 * @return this builder
+		 * @throws IllegalArgumentException if any value isn't a power of two, or if a
+		 * value occurs more than once.
+		 */
 		public Builder map(int[] value) {
 			this.bitMap = checkBitMap(value);
 			return this;
 		}
 		
+		/**
+		 * Builds a new configuration based on the current state of the builder.
+		 * @return a new {@link DotMapperConfiguration}
+		 */
 		public DotMapperConfiguration build() {
 			return new DotMapperConfiguration(this);
 		}
@@ -87,14 +133,31 @@ public class DotMapperConfiguration {
 		return new DotMapperConfiguration.Builder();
 	}
 	
+	/**
+	 * Gets the bit pattern mapper. This map defines how input dots in a braille 
+	 * cell are translated to a bit in the output character's bit pattern. When
+	 * an input dot is present, the corresponding bit in the output character
+	 * should be set.
+	 * @return the bit map
+	 */
 	public int[] getBitMap() {
 		return bitMap;
 	}
 
+	/**
+	 * Gets the output cell height. This represents the height of 
+	 * the window used to construct an output character from the dot grid.
+	 * @return the cell height
+	 */
 	public int getCellHeight() {
 		return cellHeight;
 	}
 
+	/**
+	 * Gets the output cell width. This represents the width of 
+	 * the window used to construct an output character from the dot grid.
+	 * @return the cell width
+	 */
 	public int getCellWidth() {
 		return cellWidth;
 	}
@@ -108,6 +171,11 @@ public class DotMapperConfiguration {
 		return inputCellHeight;
 	}
 
+	/**
+	 * Gets the base character. This character is used when all "bits" in the pattern
+	 * are zero.
+	 * @return the base character
+	 */
 	public char getBaseCharacter() {
 		return baseCharacter;
 	}

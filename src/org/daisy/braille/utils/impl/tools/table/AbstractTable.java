@@ -42,10 +42,19 @@ public abstract class AbstractTable extends AbstractFactory implements Table {
 		super(name, desc, identifier);
 	}
 
+	/**
+	 * Creates a new AbstractTable with the supplied settings.
+	 * @param name the name of the Table 
+	 * @param desc the description of the Table
+	 */
 	public AbstractTable(String name, String desc) {
 		this(name, desc, null);
 	}
 
+	/**
+	 * Creates a new AbstractTable with the supplied settings.
+	 * @param name the name of the Table 
+	 */
 	public AbstractTable(String name) {
 		this(name, "", null);
 	}
