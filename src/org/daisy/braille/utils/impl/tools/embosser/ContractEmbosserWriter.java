@@ -2,7 +2,7 @@ package org.daisy.braille.utils.impl.tools.embosser;
 
 import java.io.IOException;
 
-import org.daisy.braille.utils.api.embosser.EmbosserWriter;
+import org.daisy.dotify.api.embosser.EmbosserWriter;
 
 /**
  * Extends embosser writer with an internal contract.

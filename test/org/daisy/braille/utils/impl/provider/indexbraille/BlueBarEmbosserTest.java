@@ -11,14 +11,14 @@ import java.io.InputStream;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.daisy.braille.utils.api.embosser.EmbosserCatalog;
-import org.daisy.braille.utils.api.embosser.EmbosserFeatures;
-import org.daisy.braille.utils.api.embosser.EmbosserWriter;
-import org.daisy.braille.utils.api.paper.PageFormat;
-import org.daisy.braille.utils.api.paper.PaperCatalog;
-import org.daisy.braille.utils.api.paper.TractorPaper;
-import org.daisy.braille.utils.api.paper.TractorPaperFormat;
-import org.daisy.braille.utils.api.table.TableCatalog;
+import org.daisy.dotify.api.embosser.EmbosserCatalog;
+import org.daisy.dotify.api.embosser.EmbosserFeatures;
+import org.daisy.dotify.api.embosser.EmbosserWriter;
+import org.daisy.dotify.api.paper.PageFormat;
+import org.daisy.dotify.api.paper.PaperCatalog;
+import org.daisy.dotify.api.paper.TractorPaper;
+import org.daisy.dotify.api.paper.TractorPaperFormat;
+import org.daisy.dotify.api.table.TableCatalog;
 import org.daisy.braille.utils.pef.FileCompare;
 import org.daisy.braille.utils.pef.PEFConverterFacade;
 import org.daisy.braille.utils.pef.PEFHandler;

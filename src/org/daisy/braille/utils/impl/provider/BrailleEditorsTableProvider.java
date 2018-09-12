@@ -23,11 +23,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.daisy.braille.utils.api.embosser.EightDotFallbackMethod;
-import org.daisy.braille.utils.api.factory.FactoryProperties;
-import org.daisy.braille.utils.api.table.BrailleConverter;
-import org.daisy.braille.utils.api.table.Table;
-import org.daisy.braille.utils.api.table.TableProvider;
+import org.daisy.dotify.api.embosser.EightDotFallbackMethod;
+import org.daisy.dotify.api.factory.FactoryProperties;
+import org.daisy.dotify.api.table.BrailleConverter;
+import org.daisy.dotify.api.table.Table;
+import org.daisy.dotify.api.table.TableProvider;
 import org.daisy.braille.utils.impl.tools.table.EmbosserBrailleConverter;
 import org.daisy.braille.utils.impl.tools.table.EmbosserTable;
 import org.osgi.service.component.annotations.Component;

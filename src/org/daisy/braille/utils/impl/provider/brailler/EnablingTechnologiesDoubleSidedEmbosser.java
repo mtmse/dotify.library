@@ -17,10 +17,10 @@
  */
 package org.daisy.braille.utils.impl.provider.brailler;
 
-import org.daisy.braille.utils.api.embosser.EmbosserFeatures;
-import org.daisy.braille.utils.api.embosser.PrintPage;
-import org.daisy.braille.utils.api.paper.PageFormat;
-import org.daisy.braille.utils.api.table.TableCatalogService;
+import org.daisy.dotify.api.embosser.EmbosserFeatures;
+import org.daisy.dotify.api.embosser.PrintPage;
+import org.daisy.dotify.api.paper.PageFormat;
+import org.daisy.dotify.api.table.TableCatalogService;
 import org.daisy.braille.utils.impl.provider.brailler.EnablingTechnologiesEmbosserProvider.EmbosserType;
 
 /**

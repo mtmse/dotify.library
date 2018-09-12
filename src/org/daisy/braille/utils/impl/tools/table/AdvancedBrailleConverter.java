@@ -20,8 +20,8 @@ package org.daisy.braille.utils.impl.tools.table;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 
-import org.daisy.braille.utils.api.embosser.EightDotFallbackMethod;
-import org.daisy.braille.utils.api.table.BrailleConverter;
+import org.daisy.dotify.api.embosser.EightDotFallbackMethod;
+import org.daisy.dotify.api.table.BrailleConverter;
 import org.daisy.braille.utils.impl.tools.table.StringTranslator.MatchMode;
 
 /**

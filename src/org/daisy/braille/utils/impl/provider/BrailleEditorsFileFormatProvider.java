@@ -22,11 +22,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.daisy.braille.utils.api.embosser.FileFormat;
-import org.daisy.braille.utils.api.embosser.FileFormatProvider;
-import org.daisy.braille.utils.api.factory.FactoryProperties;
-import org.daisy.braille.utils.api.table.TableCatalog;
-import org.daisy.braille.utils.api.table.TableCatalogService;
+import org.daisy.dotify.api.embosser.FileFormat;
+import org.daisy.dotify.api.embosser.FileFormatProvider;
+import org.daisy.dotify.api.factory.FactoryProperties;
+import org.daisy.dotify.api.table.TableCatalog;
+import org.daisy.dotify.api.table.TableCatalogService;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;

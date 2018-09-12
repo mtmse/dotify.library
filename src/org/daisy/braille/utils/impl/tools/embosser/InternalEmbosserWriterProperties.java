@@ -1,6 +1,6 @@
 package org.daisy.braille.utils.impl.tools.embosser;
 
-import org.daisy.braille.utils.api.embosser.EmbosserWriterProperties;
+import org.daisy.dotify.api.embosser.EmbosserWriterProperties;
 
 /**
  * Extends {@link EmbosserWriterProperties} with support for duplex, which is

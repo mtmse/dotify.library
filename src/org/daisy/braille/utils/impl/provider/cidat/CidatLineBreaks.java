@@ -17,7 +17,7 @@
  */
 package org.daisy.braille.utils.impl.provider.cidat;
 
-import org.daisy.braille.utils.api.embosser.LineBreaks;
+import org.daisy.dotify.api.embosser.LineBreaks;
 
 
 /**

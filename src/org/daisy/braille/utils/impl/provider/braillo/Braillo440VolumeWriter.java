@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.daisy.braille.utils.api.paper.Dimensions;
+import org.daisy.dotify.api.paper.Dimensions;
 import org.daisy.braille.utils.impl.tools.embosser.EmbosserTools;
 
 

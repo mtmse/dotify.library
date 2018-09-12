@@ -25,10 +25,10 @@ import java.util.Stack;
 
 import javax.print.PrintException;
 
-import org.daisy.braille.utils.api.embosser.Device;
-import org.daisy.braille.utils.api.embosser.LineBreaks;
-import org.daisy.braille.utils.api.embosser.StandardLineBreaks;
-import org.daisy.braille.utils.api.table.BrailleConverter;
+import org.daisy.dotify.api.embosser.Device;
+import org.daisy.dotify.api.embosser.LineBreaks;
+import org.daisy.dotify.api.embosser.StandardLineBreaks;
+import org.daisy.dotify.api.table.BrailleConverter;
 
 /**
  * Provides a buffered volume embossers. This is similar to {@link ConfigurableEmbosser},

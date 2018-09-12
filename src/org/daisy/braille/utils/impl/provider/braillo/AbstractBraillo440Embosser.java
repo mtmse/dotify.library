@@ -19,17 +19,17 @@ package org.daisy.braille.utils.impl.provider.braillo;
 
 import java.io.OutputStream;
 
-import org.daisy.braille.utils.api.embosser.Device;
-import org.daisy.braille.utils.api.embosser.EmbosserFactoryException;
-import org.daisy.braille.utils.api.embosser.EmbosserFactoryProperties;
-import org.daisy.braille.utils.api.embosser.EmbosserWriter;
-import org.daisy.braille.utils.api.embosser.PrintPage;
-import org.daisy.braille.utils.api.embosser.PrintPage.PrintDirection;
-import org.daisy.braille.utils.api.embosser.StandardLineBreaks;
-import org.daisy.braille.utils.api.paper.Area;
-import org.daisy.braille.utils.api.paper.PageFormat;
-import org.daisy.braille.utils.api.table.Table;
-import org.daisy.braille.utils.api.table.TableCatalogService;
+import org.daisy.dotify.api.embosser.Device;
+import org.daisy.dotify.api.embosser.EmbosserFactoryException;
+import org.daisy.dotify.api.embosser.EmbosserFactoryProperties;
+import org.daisy.dotify.api.embosser.EmbosserWriter;
+import org.daisy.dotify.api.embosser.PrintPage;
+import org.daisy.dotify.api.embosser.PrintPage.PrintDirection;
+import org.daisy.dotify.api.embosser.StandardLineBreaks;
+import org.daisy.dotify.api.paper.Area;
+import org.daisy.dotify.api.paper.PageFormat;
+import org.daisy.dotify.api.table.Table;
+import org.daisy.dotify.api.table.TableCatalogService;
 import org.daisy.braille.utils.impl.provider.braillo.Braillo440VolumeWriter.Mode;
 import org.daisy.braille.utils.impl.provider.braillo.BrailloEmbosserProvider.EmbosserType;
 import org.daisy.braille.utils.impl.tools.embosser.BufferedVolumeEmbosser;

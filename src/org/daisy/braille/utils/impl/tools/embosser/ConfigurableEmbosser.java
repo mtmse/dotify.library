@@ -21,9 +21,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 
-import org.daisy.braille.utils.api.embosser.LineBreaks;
-import org.daisy.braille.utils.api.embosser.StandardLineBreaks;
-import org.daisy.braille.utils.api.table.BrailleConverter;
+import org.daisy.dotify.api.embosser.LineBreaks;
+import org.daisy.dotify.api.embosser.StandardLineBreaks;
+import org.daisy.dotify.api.table.BrailleConverter;
 
 /**
  * Provides a configurable embosser. Outputs to a single OutputStream. 

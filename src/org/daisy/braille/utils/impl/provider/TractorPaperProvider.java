@@ -21,10 +21,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-import org.daisy.braille.utils.api.paper.Length;
-import org.daisy.braille.utils.api.paper.Paper;
-import org.daisy.braille.utils.api.paper.PaperProvider;
-import org.daisy.braille.utils.api.paper.TractorPaper;
+import org.daisy.dotify.api.paper.Length;
+import org.daisy.dotify.api.paper.Paper;
+import org.daisy.dotify.api.paper.PaperProvider;
+import org.daisy.dotify.api.paper.TractorPaper;
 import org.osgi.service.component.annotations.Component;
 
 @Component

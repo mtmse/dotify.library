@@ -20,8 +20,8 @@ package org.daisy.braille.utils.impl.tools.embosser;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-import org.daisy.braille.utils.api.embosser.EmbosserWriter;
-import org.daisy.braille.utils.api.embosser.LineBreaks;
+import org.daisy.dotify.api.embosser.EmbosserWriter;
+import org.daisy.dotify.api.embosser.LineBreaks;
 
 /**
  * Provides an abstract base for embossers.

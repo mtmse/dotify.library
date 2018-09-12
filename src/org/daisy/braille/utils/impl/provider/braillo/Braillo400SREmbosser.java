@@ -17,10 +17,10 @@
  */
 package org.daisy.braille.utils.impl.provider.braillo;
 
-import org.daisy.braille.utils.api.embosser.EmbosserFactoryProperties;
-import org.daisy.braille.utils.api.paper.PageFormat;
-import org.daisy.braille.utils.api.paper.Paper;
-import org.daisy.braille.utils.api.table.TableCatalogService;
+import org.daisy.dotify.api.embosser.EmbosserFactoryProperties;
+import org.daisy.dotify.api.paper.PageFormat;
+import org.daisy.dotify.api.paper.Paper;
+import org.daisy.dotify.api.table.TableCatalogService;
 
 public class Braillo400SREmbosser extends AbstractBraillo200Embosser {
 

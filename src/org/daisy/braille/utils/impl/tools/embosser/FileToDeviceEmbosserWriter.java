@@ -22,8 +22,8 @@ import java.io.IOException;
 
 import javax.print.PrintException;
 
-import org.daisy.braille.utils.api.embosser.Device;
-import org.daisy.braille.utils.api.embosser.EmbosserWriter;
+import org.daisy.dotify.api.embosser.Device;
+import org.daisy.dotify.api.embosser.EmbosserWriter;
 
 /**
  * Provides a bridge between a Device and file based EmbosserWriter

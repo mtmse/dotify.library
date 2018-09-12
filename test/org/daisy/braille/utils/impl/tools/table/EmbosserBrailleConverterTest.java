@@ -1,8 +1,8 @@
 package org.daisy.braille.utils.impl.tools.table;
 import java.nio.charset.Charset;
 
-import org.daisy.braille.utils.api.embosser.EightDotFallbackMethod;
-import org.daisy.braille.utils.api.table.BrailleConstants;
+import org.daisy.dotify.api.embosser.EightDotFallbackMethod;
+import org.daisy.dotify.api.table.BrailleConstants;
 import org.junit.Test;
 
 @SuppressWarnings("javadoc")

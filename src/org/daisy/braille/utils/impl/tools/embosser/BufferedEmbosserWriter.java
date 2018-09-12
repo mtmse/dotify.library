@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.daisy.braille.utils.api.embosser.EmbosserWriter;
+import org.daisy.dotify.api.embosser.EmbosserWriter;
 import org.daisy.braille.utils.impl.tools.embosser.EmbosserWriterEvent.CloseEvent;
 import org.daisy.braille.utils.impl.tools.embosser.EmbosserWriterEvent.NewLineEvent;
 import org.daisy.braille.utils.impl.tools.embosser.EmbosserWriterEvent.NewPageEvent;

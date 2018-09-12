@@ -19,14 +19,14 @@ package org.daisy.braille.utils.impl.provider.indexbraille;
 
 import java.io.OutputStream;
 
-import org.daisy.braille.utils.api.embosser.EmbosserFactoryException;
-import org.daisy.braille.utils.api.embosser.EmbosserWriter;
-import org.daisy.braille.utils.api.embosser.PrintPage;
-import org.daisy.braille.utils.api.embosser.UnsupportedPaperException;
-import org.daisy.braille.utils.api.paper.Length;
-import org.daisy.braille.utils.api.paper.PageFormat;
-import org.daisy.braille.utils.api.table.TableCatalogService;
-import org.daisy.braille.utils.api.table.TableFilter;
+import org.daisy.dotify.api.embosser.EmbosserFactoryException;
+import org.daisy.dotify.api.embosser.EmbosserWriter;
+import org.daisy.dotify.api.embosser.PrintPage;
+import org.daisy.dotify.api.embosser.UnsupportedPaperException;
+import org.daisy.dotify.api.paper.Length;
+import org.daisy.dotify.api.paper.PageFormat;
+import org.daisy.dotify.api.table.TableCatalogService;
+import org.daisy.dotify.api.table.TableFilter;
 import org.daisy.braille.utils.impl.provider.indexbraille.IndexEmbosserProvider.EmbosserType;
 import org.daisy.braille.utils.impl.tools.embosser.BufferedEmbosserWriter;
 

@@ -5,8 +5,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.nio.charset.Charset;
 
-import org.daisy.braille.utils.api.table.BrailleConstants;
-import org.daisy.braille.utils.api.table.BrailleConverter;
+import org.daisy.dotify.api.table.BrailleConstants;
+import org.daisy.dotify.api.table.BrailleConverter;
 import org.junit.Test;
 
 @SuppressWarnings("javadoc")

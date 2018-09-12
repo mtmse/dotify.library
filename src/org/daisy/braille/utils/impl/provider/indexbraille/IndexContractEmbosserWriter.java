@@ -22,9 +22,9 @@ import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.daisy.braille.utils.api.embosser.EmbosserWriter;
-import org.daisy.braille.utils.api.embosser.StandardLineBreaks;
-import org.daisy.braille.utils.api.table.BrailleConverter;
+import org.daisy.dotify.api.embosser.EmbosserWriter;
+import org.daisy.dotify.api.embosser.StandardLineBreaks;
+import org.daisy.dotify.api.table.BrailleConverter;
 import org.daisy.braille.utils.impl.tools.embosser.ConfigurableEmbosser;
 import org.daisy.braille.utils.impl.tools.embosser.ContractEmbosserWriter;
 import org.daisy.braille.utils.impl.tools.embosser.InternalContract;

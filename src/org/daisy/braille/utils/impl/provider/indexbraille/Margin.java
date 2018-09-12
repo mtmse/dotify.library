@@ -1,6 +1,6 @@
 package org.daisy.braille.utils.impl.provider.indexbraille;
 
-import org.daisy.braille.utils.api.paper.Length;
+import org.daisy.dotify.api.paper.Length;
 
 final class Margin {
 	private final Length top;
