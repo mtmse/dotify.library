@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @SuppressWarnings("PMD")
 enum UserPapersCollection {
 	INSTANCE;
-	private static final String ID_PREFIX = "org.daisy.braille.utils.api.paper.CustomPaperCollection";
+	private static final String ID_PREFIX = "org.daisy.dotify.api.paper.UserPapersCollection";
 	private final File f;
 	private Map<String, Paper> papers;
 	private Integer index;
