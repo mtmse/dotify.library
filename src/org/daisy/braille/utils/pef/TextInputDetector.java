@@ -28,11 +28,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.daisy.braille.utils.api.factory.FactoryProperties;
-import org.daisy.braille.utils.api.table.BrailleConstants;
-import org.daisy.braille.utils.api.table.BrailleConverter;
-import org.daisy.braille.utils.api.table.Table;
-import org.daisy.braille.utils.api.table.TableCatalogService;
+import org.daisy.dotify.api.factory.FactoryProperties;
+import org.daisy.dotify.api.table.BrailleConstants;
+import org.daisy.dotify.api.table.BrailleConverter;
+import org.daisy.dotify.api.table.Table;
+import org.daisy.dotify.api.table.TableCatalogService;
 
 /**
  * Provides a method for detecting a table based on text input.

@@ -30,9 +30,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.daisy.braille.utils.api.table.BrailleConverter;
-import org.daisy.braille.utils.api.table.Table;
-import org.daisy.braille.utils.api.table.TableCatalogService;
+import org.daisy.dotify.api.table.BrailleConverter;
+import org.daisy.dotify.api.table.Table;
+import org.daisy.dotify.api.table.TableCatalogService;
 
 /**
  * Provides a handler for reading text and writing a PEF-file.
