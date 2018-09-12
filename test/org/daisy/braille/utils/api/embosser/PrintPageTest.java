@@ -2,7 +2,6 @@ package org.daisy.braille.utils.api.embosser;
 
 import static org.junit.Assert.assertEquals;
 
-import org.daisy.braille.utils.api.embosser.PrintPage;
 import org.daisy.braille.utils.api.embosser.EmbosserProperties.PrintMode;
 import org.daisy.braille.utils.api.embosser.PrintPage.PrintDirection;
 import org.daisy.braille.utils.api.paper.Length;

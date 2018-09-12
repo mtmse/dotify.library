@@ -1,6 +1,7 @@
 package org.daisy.braille.utils.api.paper;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Provides a default implementation for Paper.
@@ -23,12 +24,9 @@ public abstract class AbstractPaper implements Paper, Serializable {
 	 * @param identifier the identifier
 	 */
 	public AbstractPaper(String name, String desc, String identifier) {
-		if (identifier==null) {
-			throw new NullPointerException("Null identifier.");
-		}
 		this.name = name;
 		this.desc = desc;
-		this.identifier = identifier;
+		this.identifier = Objects.requireNonNull(identifier);
 	}
 
 

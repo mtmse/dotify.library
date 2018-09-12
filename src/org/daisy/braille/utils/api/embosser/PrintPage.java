@@ -91,7 +91,7 @@ public class PrintPage implements Dimensions {
 		case TRACTOR:
 			return ((TractorPaperFormat)inputPage).getLengthAcrossFeed();
 		default:
-			throw new RuntimeException("Coding error");
+			throw new AssertionError("Coding error");
 		}
 	}
 
@@ -114,7 +114,7 @@ public class PrintPage implements Dimensions {
 		case TRACTOR:
 			return ((TractorPaperFormat)inputPage).getLengthAlongFeed();
 		default:
-			throw new RuntimeException("Coding error");
+			throw new AssertionError("Coding error");
 		}
 	}
 

@@ -4,7 +4,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
-import org.daisy.braille.utils.api.paper.UserPapersCollection;
 import org.junit.Test;
 @SuppressWarnings("javadoc")
 public class UserPapersCollectionTest {
