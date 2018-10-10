@@ -102,7 +102,9 @@ public class XMLTools {
 		if (preliminary==null) {
 			throw new XmlEncodingDetectionException("Could not detect encoding.");
 		}
-		String decl = new String(data, preliminary.getCharset());
+		// We're only looking at the xml-declaration here, so 4000 bytes is much, much more than what we should ever need.
+		int cutoff = 4000;
+		String decl = new String(data.length>cutoff?Arrays.copyOf(data, cutoff):data, preliminary.getCharset());
 		Optional<String> specifiedEncoding = getDeclaredEncoding(decl);
 		if (specifiedEncoding.isPresent()) {
 			String returnEncoding = specifiedEncoding.get();
