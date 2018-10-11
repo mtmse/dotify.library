@@ -1,9 +1,12 @@
 package org.daisy.dotify.common.xml;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.Reader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -64,6 +67,47 @@ public class XMLTools {
 	private static final byte[] EBCDIC = new byte[] {(byte)0x4C, (byte)0x6F, (byte)0xA7, (byte)0x94};
 
 	private XMLTools() {}
+	
+	static Optional<String> getDeclaredEncoding(byte[] data, Charset preliminaryEncoding) throws XmlEncodingDetectionException {
+		try (Reader r = new InputStreamReader(new ByteArrayInputStream(data), preliminaryEncoding)) {
+			StringBuilder sb = new StringBuilder();
+			int c = r.read();
+			if (c=='\uFEFF') {
+				c = -2;
+			}
+			// Append BOM or any whitespace characters
+			while (c==-2 || Character.isWhitespace((int)c)) {
+				sb.append((char)c);
+				c = r.read();
+			}
+			// Read the next 5 characters to determine if an XML declaration is present
+			for (int i=0; i<5 && c!=-1; i++) {
+				sb.append((char)c);
+				c = r.read();
+			}
+			boolean closing = false;
+			if (sb.length()>=5 && "<?xml".equals(sb.substring(sb.length()-5))) {
+				while (c!=-1 && sb.length()<4000) { // give up after 4000 characters (this should only happen if the file is broken, but technically it is possible to have a longer xml-declaration than that)
+					sb.append((char)c);
+					c = r.read();
+					// The xml declaration never contains ? or >.
+					if (c=='?') {
+						closing = true;
+					} else if (c=='>' && closing) {
+						sb.append((char)c);
+						break;
+					} else {
+						closing = false;
+					}
+				}
+				return getDeclaredEncoding(sb.toString());
+			} else {
+				return Optional.empty();
+			}
+		} catch (IOException e) {
+			throw new XmlEncodingDetectionException("Failed to read.", e);
+		}
+	}
 
 	/**
 	 * Gets the declared encoding from the given string. If the string
@@ -102,10 +146,7 @@ public class XMLTools {
 		if (preliminary==null) {
 			throw new XmlEncodingDetectionException("Could not detect encoding.");
 		}
-		// We're only looking at the xml-declaration here, so 4000 bytes is much, much more than what we should ever need.
-		int cutoff = 4000;
-		String decl = new String(data.length>cutoff?Arrays.copyOf(data, cutoff):data, preliminary.getCharset());
-		Optional<String> specifiedEncoding = getDeclaredEncoding(decl);
+		Optional<String> specifiedEncoding = getDeclaredEncoding(data, preliminary.getCharset());
 		if (specifiedEncoding.isPresent()) {
 			String returnEncoding = specifiedEncoding.get();
 			if (preliminary.isExactMatch()) {
