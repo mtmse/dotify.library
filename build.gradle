@@ -1,9 +1,20 @@
+// For bnd
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath 'biz.aQute.bnd:biz.aQute.bnd.gradle:3.3.0'
+	}
+}
+
 plugins {
 	id 'java'
 	id 'maven'
 	id 'signing'
-	id 'org.dm.bundle' version '0.10.0'
 }
+
+apply plugin: 'biz.aQute.bnd.builder'
 
 compileJava.options.encoding = 'UTF-8'
 compileTestJava.options.encoding = 'UTF-8'
@@ -41,19 +52,23 @@ dependencies {
 	
 }
 
-bundle {
-	instructions << [
-		'-sources': 'true',
-		'Export-Package': 'org.daisy.braille.utils.pef',
-		'Service-Component': '*',
-		'Automatic-Module-Name': "$moduleName",
-		'Built-By': System.getProperty("user.name"),
-		'Built-On': new Date().format('yyyy-MM-dd'),
-		'Implementation-Title': "$releaseName",
-		'Repository-Revision': "$repoRevision",
-		'Repository-URL': "$repositoryURL",
-		'Include-Resource': 'LICENSE, NOTICE'
-	]
+jar {
+	manifest {
+		attributes(
+			'-sources': 'true',
+			'Export-Package': 'org.daisy.braille.utils.pef',
+			'Service-Component': '*',
+			'Automatic-Module-Name': "$moduleName",
+			'Bundle-Name': "$bundleName",
+			'Bundle-SymbolicName': "$bundleName",
+			'Built-By': System.getProperty("user.name"),
+			'Built-On': new Date().format('yyyy-MM-dd'),
+			'Implementation-Title': "$releaseName",
+			'Repository-Revision': "$repoRevision",
+			'Repository-URL': "$repositoryURL",
+			'Include-Resource': 'LICENSE, NOTICE'
+		)
+	}
 }
 
 task javadocJar(type: Jar) {
