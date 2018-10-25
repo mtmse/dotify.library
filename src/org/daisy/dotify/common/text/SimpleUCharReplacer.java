@@ -37,15 +37,15 @@ import java.util.Set;
  * <p>
  * The translation table file is using the same xml format as that of
  * java.util.Properties [1][2], using the HEX representation (without the
- * characteristic 0x-prefix!) of a unicode character as the <tt>key</tt>
- * attribute and the replacement string as value of the <tt>entry</tt> element.
+ * characteristic 0x-prefix!) of a unicode character as the <code>key</code>
+ * attribute and the replacement string as value of the <code>entry</code> element.
  * </p>
  * 
  * <p>
- * If the <tt>key</tt> attribute contains exactly one unicode codepoint (one
+ * If the <code>key</code> attribute contains exactly one unicode codepoint (one
  * character) it will be treated literally. It will not be interpreted as a HEX
  * representation of another character, even if theoretically possible. E.g. if
- * the <tt>key</tt> is "a", it will be treated as 0x0061 rather than as 0x000a
+ * the <code>key</code> is "a", it will be treated as 0x0061 rather than as 0x000a
  * </p>
  * 
  * <p>

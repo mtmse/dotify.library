@@ -26,7 +26,7 @@ public interface SplitPointUnit {
 	
 	/**
 	 * Returns true if this unit can be excluded if an adjoining object 
-	 * <tt>collapsesWith</tt> this unit, but has a greater size.
+	 * <code>collapsesWith</code> this unit, but has a greater size.
 	 * 
 	 * @return true if the unit is collapsible, false otherwise
 	 */
