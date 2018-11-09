@@ -40,8 +40,8 @@ public class PEFNamespaceContext implements NamespaceContext {
 
 	/**
 	 * Creates a new PEFNamespaceContext using the prefixes
-	 * <strong>pef</strong> for <tt>http://www.daisy.org/ns/2008/pef</tt> and <strong>dc</strong> for
-	 * <tt>http://purl.org/dc/elements/1.1/</tt>
+	 * <strong>pef</strong> for <code>http://www.daisy.org/ns/2008/pef</code> and <strong>dc</strong> for
+	 * <code>http://purl.org/dc/elements/1.1/</code>
 	 */
 	public PEFNamespaceContext() {
 		this("pef", "dc");
@@ -49,8 +49,8 @@ public class PEFNamespaceContext implements NamespaceContext {
 
 	/**
 	 * Creates a new PEFNamespaceContext using the supplied prefixes
-	 * @param pefPrefix the prefix to use for <tt>http://www.daisy.org/ns/2008/pef</tt>
-	 * @param dcPrefix the prefix to use for <tt>http://purl.org/dc/elements/1.1/</tt>
+	 * @param pefPrefix the prefix to use for <code>http://www.daisy.org/ns/2008/pef</code>
+	 * @param dcPrefix the prefix to use for <code>http://purl.org/dc/elements/1.1/</code>
 	 */
 	public PEFNamespaceContext(String pefPrefix, String dcPrefix) {
 		namespaces = new HashMap<>();
