@@ -18,21 +18,12 @@ class CapitalizationMarkers implements StringFilter {
 	private static final String WORD_PART_POSTFIX = "\u2831";
 	private static final String SEQ_PREFIX_MARKER = "\u2820\u2820\u2820";
 	private static final String SEQ_POSTFIX_MARKER = "\u2831";
-	private final Pattern p1;
-	private final Pattern p2;
-	private final Pattern p3;
-	private final Pattern p4;
-	private final Pattern p5;
-	private final Pattern p6;
-	
-	public CapitalizationMarkers() {
-		this.p1 = Pattern.compile("(?<=[^\\p{L}]|\\A)(((\\p{Lu}(\u00ad)?)+[\\s\\-/]+)+(\\p{Lu}(\u00ad)?)+)(?=[^\\p{L}^\u283c^\\d]|\\z)");
-		this.p2 = Pattern.compile("([\\p{Lu}][\\s]+)+[\\p{Lu}]");
-		this.p3 = Pattern.compile("(\\p{Lu})");
-		this.p4 = Pattern.compile("[\\p{L}[\\-\\d\u00ad]]+");
-		this.p5 = Pattern.compile("\\A(\\p{Lu}(\u00ad)?){2,}\\z");
-		this.p6 = Pattern.compile("(\\A|(?<=\\-))(\\p{Lu}(\u00ad)?)+");
-	}
+	private static final Pattern p1 = Pattern.compile("(?<=[^\\p{L}]|\\A)(((\\p{Lu}(\u00ad)?)+[\\s\\-/]+)+(\\p{Lu}(\u00ad)?)+)(?=[^\\p{L}^\u283c^\\d]|\\z)");
+	private static final Pattern p2 = Pattern.compile("([\\p{Lu}][\\s]+)+[\\p{Lu}]");
+	private static final Pattern p3 = Pattern.compile("(\\p{Lu})");
+	private static final Pattern p4 = Pattern.compile("[\\p{L}[\\-\\d\u00ad]]+");
+	private static final Pattern p5 = Pattern.compile("\\A(\\p{Lu}(\u00ad)?){2,}\\z");
+	private static final Pattern p6 = Pattern.compile("(\\A|(?<=\\-))(\\p{Lu}(\u00ad)?)+");
 
 	@Override
 	public String filter(String str) {
