@@ -18,12 +18,32 @@ class CapitalizationMarkers implements StringFilter {
 	private static final String WORD_PART_POSTFIX = "\u2831";
 	private static final String SEQ_PREFIX_MARKER = "\u2820\u2820\u2820";
 	private static final String SEQ_POSTFIX_MARKER = "\u2831";
-	private static final Pattern p1 = Pattern.compile("(?<=[^\\p{L}]|\\A)(((\\p{Lu}(\u00ad)?)+[\\s\\-/]+)+(\\p{Lu}(\u00ad)?)+)(?=[^\\p{L}^\u283c^\\d]|\\z)");
-	private static final Pattern p2 = Pattern.compile("([\\p{Lu}][\\s]+)+[\\p{Lu}]");
-	private static final Pattern p3 = Pattern.compile("(\\p{Lu})");
-	private static final Pattern p4 = Pattern.compile("[\\p{L}[\\-\\d\u00ad]]+");
-	private static final Pattern p5 = Pattern.compile("\\A(\\p{Lu}(\u00ad)?){2,}\\z");
-	private static final Pattern p6 = Pattern.compile("(\\A|(?<=\\-))(\\p{Lu}(\u00ad)?)+");
+	/**
+	 * Matches sequences of upper case letters and soft hyphens with white spaces, dashes and forward slashes in between,
+	 * starting at the beginning of input or after a non-letter character
+	 * and ending at the end of input or before any character that isn't a letter, the braille number symbol (⠼)  or a digit. 
+	 */
+	private static final Pattern UPPERCASE_LETTER_SEQUENCE_SPACE_DASH_SLASH = Pattern.compile("(?<=[^\\p{L}]|\\A)(((\\p{Lu}(\u00ad)?)+[\\s\\-/]+)+(\\p{Lu}(\u00ad)?)+)(?=[^\\p{L}^\u283c^\\d]|\\z)");
+	/**
+	 * Matches sequences of upper case letters with one or more whitespace in between.
+	 */
+	private static final Pattern UPPERCASE_LETTER_SEQUENCE_WITH_SPACES_IN_BETWEEN = Pattern.compile("([\\p{Lu}][\\s]+)+[\\p{Lu}]");
+	/**
+	 * Matches upper case letters in the input.
+	 */
+	private static final Pattern UPPERCASE_LETTER = Pattern.compile("(\\p{Lu})");
+	/**
+	 * Matches sequences of letters, dashes, digits and soft hyphens.
+	 */
+	private static final Pattern WORDS = Pattern.compile("[\\p{L}[\\-\\d\u00ad]]+");
+	/**
+	 * Matches an input containing two or more upper case letters (optionally with soft hyphens in between) and nothing else.
+	 */
+	private static final Pattern UPPERCASE_LETTER_SEQUENCE_INPUT = Pattern.compile("\\A(\\p{Lu}(\u00ad)?){2,}\\z");
+	/**
+	 * Matches one or more upper case letters (optionally followed by a soft hyphen) at the beginning of input or following a dash.
+	 */
+	private static final Pattern UPPERCASE_LETTER_SEQUENCE_START = Pattern.compile("(\\A|(?<=\\-))(\\p{Lu}(\u00ad)?)+");
 
 	@Override
 	public String filter(String str) {
@@ -36,12 +56,12 @@ class CapitalizationMarkers implements StringFilter {
 		// if preceded by beginning of input or any non letter character and
 		// followed by end of input or any non letter character except a digit or 0x283c
 		//^\\-^/^\\d
-		for (SplitResult sr : StringSplitter.split(input, p1)) {
+		for (SplitResult sr : StringSplitter.split(input, UPPERCASE_LETTER_SEQUENCE_SPACE_DASH_SLASH)) {
 			String s = sr.getText();
 			if (sr.isMatch()) {
-				if (p2.matcher(s).matches()) {
+				if (UPPERCASE_LETTER_SEQUENCE_WITH_SPACES_IN_BETWEEN.matcher(s).matches()) {
 					// String is a group of single capital letters, e.g: 'E X A M P L E'
-					ret.append(p3.matcher(s).replaceAll(CHAR_MARKER + "$1"));
+					ret.append(UPPERCASE_LETTER.matcher(s).replaceAll(CHAR_MARKER + "$1"));
 				} else {
 					// String is a group of capitalized words.
 					String asGroup = markAsGroup(s);
@@ -70,16 +90,16 @@ class CapitalizationMarkers implements StringFilter {
 	private String markAsWords(String s) {
 		StringBuffer ret = new StringBuffer();
 		// Split on words, or word like character groups (such as passwords)
-		for (SplitResult tr : StringSplitter.split(s, p4)) {
+		for (SplitResult tr : StringSplitter.split(s, WORDS)) {
 			String t = tr.getText();
 			if (tr.isMatch()) {
 				// String is a word, e.g. 'hello', 'pqr6XWr', 'ISBN-centralen'
-				if (p5.matcher(t).matches()) {
+				if (UPPERCASE_LETTER_SEQUENCE_INPUT.matcher(t).matches()) {
 					// String is a single capitalized word longer than one letter, e.g. 'OK'
 					ret.append(WORD_MARKER+t);
 				} else {
 					// String contains non upper case letters or other characters
-					for (SplitResult ur : StringSplitter.split(t, p6)) {
+					for (SplitResult ur : StringSplitter.split(t, UPPERCASE_LETTER_SEQUENCE_START)) {
 						String u = ur.getText();
 						if (ur.isMatch() && u.length()>2) {
 							// Input begins with upper case letters
@@ -88,7 +108,7 @@ class CapitalizationMarkers implements StringFilter {
 							ret.append(WORD_PART_POSTFIX);
 						} else {
 							// Use a single upper case mark for all upper case letters
-							ret.append(p3.matcher(u).replaceAll(CHAR_MARKER+"$1"));
+							ret.append(UPPERCASE_LETTER.matcher(u).replaceAll(CHAR_MARKER+"$1"));
 						}
 					}
 				}
