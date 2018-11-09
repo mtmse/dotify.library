@@ -72,8 +72,9 @@ public class PEFNamespaceContext implements NamespaceContext {
 		return prefixes.get(namespaceURI);
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
-	public Iterator<Entry<String, String>> getPrefixes(String namespaceURI) {
+	public Iterator getPrefixes(String namespaceURI) {
 		return prefixes.entrySet().iterator();
 	}
 
