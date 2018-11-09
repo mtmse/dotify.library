@@ -41,7 +41,7 @@ public class AdvancedBrailleConverter implements BrailleConverter {
 
 	/**
 	 * Creates a new 6-dot table. Each string in the table array represents a braille character.
-	 * The string at index <tt>i</tt> in the array is interpreted as the 
+	 * The string at index <code>i</code> in the array is interpreted as the 
 	 * translation for the braille character with Unicode value 0x2800+i.
 	 * @param table the table data, 64 entries
 	 * @param charset the preferred charset as defined in the BrailleConverter interface
@@ -57,7 +57,7 @@ public class AdvancedBrailleConverter implements BrailleConverter {
 
 	/**
 	 * Creates a new 8-dot table. Each string in the table array represents a braille character.
-	 * The string at index <tt>i</tt> in the array is interpreted as the 
+	 * The string at index <code>i</code> in the array is interpreted as the 
 	 * translation for the braille character with Unicode value 0x2800+i.
 	 * @param table the table data, 256 entries
 	 * @param charset the preferred charset as defined in the BrailleConverter interface

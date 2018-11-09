@@ -36,7 +36,7 @@ public class EmbosserTools {
 	 * @param size the number of bytes to output
 	 * @return returns a zero padded byte array containing the value
 	 * @throws IllegalArgumentException if the integer value requires more bytes than
-	 * specified by <tt>size</tt>.
+	 * specified by <code>size</code>.
 	 */
 	public static byte[] toBytes(int val, int size) {
 		StringBuffer sb = new StringBuffer();
