@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/brailleapps/braille-utils.pef-tools.svg?branch=master)](https://travis-ci.org/brailleapps/braille-utils.pef-tools)
+[![Build Status](https://travis-ci.com/brailleapps/braille-utils.pef-tools.svg?branch=master)](https://travis-ci.com/brailleapps/braille-utils.pef-tools)
 [![Type](https://img.shields.io/badge/type-consumer_bundle-blue.svg)](https://github.com/brailleapps/wiki/wiki/Types)
 [![License: LGPL v2.1](https://img.shields.io/badge/License-LGPL%20v2%2E1%20%28or%20later%29-blue.svg)](https://www.gnu.org/licenses/lgpl-2.1)
 
