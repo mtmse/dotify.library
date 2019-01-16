@@ -4,7 +4,7 @@ buildscript {
 		mavenCentral()
 	}
 	dependencies {
-		classpath 'biz.aQute.bnd:biz.aQute.bnd.gradle:3.3.0'
+		classpath 'biz.aQute.bnd:biz.aQute.bnd.gradle:4.1.0'
 	}
 }
 
@@ -57,7 +57,6 @@ jar {
 		attributes(
 			'-sources': 'true',
 			'Export-Package': 'org.daisy.braille.utils.pef',
-			'Service-Component': '*',
 			'Automatic-Module-Name': "$moduleName",
 			'Bundle-Name': "$bundleName",
 			'Bundle-SymbolicName': "$bundleName",
