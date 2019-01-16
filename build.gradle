@@ -4,7 +4,7 @@ buildscript {
 		mavenCentral()
 	}
 	dependencies {
-		classpath 'biz.aQute.bnd:biz.aQute.bnd.gradle:3.3.0'
+		classpath 'biz.aQute.bnd:biz.aQute.bnd.gradle:4.1.0'
 	}
 }
 
@@ -62,7 +62,6 @@ jar {
 								'org.daisy.dotify.api.table; provide:=true, *',
 			// See https://github.com/bndtools/bnd/issues/2677
 			//'Private-Package': 'org.daisy.braille.utils.impl.*',
-			'Service-Component': '*',
 			'Automatic-Module-Name': "$moduleName",
 			'Bundle-Name': "$moduleName",
 			'Bundle-SymbolicName': "$moduleName",
