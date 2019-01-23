@@ -11,6 +11,7 @@ import org.daisy.dotify.api.translator.TranslatorConfigurationException;
 import org.daisy.dotify.translator.DefaultBrailleFilter;
 import org.daisy.dotify.translator.PreTranslatedBrailleFilter;
 import org.daisy.dotify.translator.SimpleBrailleTranslator;
+import org.daisy.dotify.translator.impl.DefaultBrailleFinalizer;
 
 class SwedishBrailleTranslatorFactory implements BrailleTranslatorFactory {
 	//TODO: remove when this string is part of the api
@@ -40,11 +41,11 @@ class SwedishBrailleTranslatorFactory implements BrailleTranslatorFactory {
 
 			return new SimpleBrailleTranslator(
 					new DefaultBrailleFilter(new SwedishBrailleFilter(loc.get()), loc.get(), sap, hyphenatorService),
-					new SwedishBrailleFinalizer(), mode);
+					new DefaultBrailleFinalizer(), mode);
 		} else if (loc.isPresent() && mode.equals(PRE_TRANSLATED)) {
 			return new SimpleBrailleTranslator(
 					new PreTranslatedBrailleFilter(),
-					new SwedishBrailleFinalizer(),
+					new DefaultBrailleFinalizer(),
 					mode);
 		}
 		throw new SwedishTranslatorConfigurationException("Factory does not support " + locale + "/" + mode);

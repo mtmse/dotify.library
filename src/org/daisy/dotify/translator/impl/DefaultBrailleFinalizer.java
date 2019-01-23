@@ -1,8 +1,8 @@
-package org.daisy.dotify.translator.impl.sv_SE;
+package org.daisy.dotify.translator.impl;
 
 import org.daisy.dotify.translator.BrailleFinalizer;
 
-class SwedishBrailleFinalizer implements BrailleFinalizer {
+public class DefaultBrailleFinalizer implements BrailleFinalizer {
 	@Override
 	public String finalizeBraille(String input) {
 		StringBuilder sb = new StringBuilder();
