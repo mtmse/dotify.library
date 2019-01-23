@@ -1,11 +1,11 @@
-package org.daisy.dotify.translator.impl.liblouis;
+package org.daisy.dotify.translator.impl.liblouis.java;
 
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 
-import org.daisy.dotify.translator.impl.liblouis.CharClass;
-import org.daisy.dotify.translator.impl.liblouis.LiblouisBrailleFilter;
+import org.daisy.dotify.translator.impl.liblouis.java.CharClass;
+import org.daisy.dotify.translator.impl.liblouis.java.LiblouisBrailleFilter;
 import org.junit.Test;
 
 @SuppressWarnings("javadoc")

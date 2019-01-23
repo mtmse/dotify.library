@@ -1,4 +1,4 @@
-package org.daisy.dotify.translator.impl.liblouis;
+package org.daisy.dotify.translator.impl.liblouis.java;
 
 
 /**

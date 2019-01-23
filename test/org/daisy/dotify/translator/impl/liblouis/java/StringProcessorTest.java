@@ -1,8 +1,8 @@
-package org.daisy.dotify.translator.impl.liblouis;
+package org.daisy.dotify.translator.impl.liblouis.java;
 
 import static org.junit.Assert.assertEquals;
 
-import org.daisy.dotify.translator.impl.liblouis.StringProcessor;
+import org.daisy.dotify.translator.impl.liblouis.java.StringProcessor;
 import org.junit.Test;
 @SuppressWarnings("javadoc")
 public class StringProcessorTest {
