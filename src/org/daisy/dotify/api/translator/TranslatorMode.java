@@ -1,9 +1,12 @@
 package org.daisy.dotify.api.translator;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.daisy.dotify.api.factory.FactoryProperties;
 
@@ -89,7 +92,21 @@ public final class TranslatorMode implements FactoryProperties {
 		 * @return a new builder
 		 */
 		public static Builder withGrade(double grade) {
-			return new Builder().type(grade);
+			return new Builder().grade(grade);
+		}
+		
+		/**
+		 * Parses the string as translator mode segments and sets the builder accordingly.
+		 * @param str the input string
+		 * @return a new builder
+		 * @throws IllegalArgumentException if parsing fails
+		 */
+		public static Builder parse(String str) {
+			Builder builder = new Builder();
+			for (String s : str.split(Pattern.quote("/"))) {
+				builder.parseSegment(s);
+			}
+			return builder;
 		}
 		
 		/**
@@ -106,17 +123,10 @@ public final class TranslatorMode implements FactoryProperties {
 		/**
 		 * Sets the contraction grade.
 		 * 
-		 * <p>Note that setting the contraction grade implies that the translator type is 
-		 * <code>contracted</code> even though in some locales a particular contraction grade
-		 * could have another meaning, for example that the braille is not contracted.</p>
-		 * 
-		 * <p>See also {@link #type(TranslatorType)}.</p>
-		 * 
 		 * @param grade the contraction grade
 		 * @return this instance
 		 */
-		public Builder type(double grade) {
-			this.type = Optional.of(TranslatorType.CONTRACTED);
+		public Builder grade(double grade) {
 			this.grade = Optional.of(grade);
 			return this;
 		}
@@ -124,15 +134,11 @@ public final class TranslatorMode implements FactoryProperties {
 		/**
 		 * Sets the translator type.
 		 * 
-		 * <p>Note that setting the translator type will reset the contraction grade. To
-		 * set a contraction grade, use {@link #type(double)}.</p>
-		 * 
 		 * @param type the type
 		 * @return this instance
 		 */
 		public Builder type(TranslatorType type) {
 			this.type = Optional.of(type);
-			this.grade = Optional.empty();
 			return this;
 		}
 		
@@ -142,7 +148,7 @@ public final class TranslatorMode implements FactoryProperties {
 			}
 			String strLC = str.toLowerCase(Locale.ROOT);
 			if (strLC.startsWith(GRADE_PREFIX)) {
-				type(Double.parseDouble(str.substring(GRADE_PREFIX.length())));
+				grade(Double.parseDouble(str.substring(GRADE_PREFIX.length())));
 				return this;
 			} else {
 				Optional<DotsPerCell> dpc = Arrays.asList(DotsPerCell.values()).stream()
@@ -215,14 +221,18 @@ public final class TranslatorMode implements FactoryProperties {
 		this.description = builder.description;
 		if (builder.identifier==null) {
 			// Generate an identifier, note that this should mirror the parse method
-			String typeOrGrade = null;
+			List<String> segments = new ArrayList<>();
+			if (builder.dotsPerCell.isPresent()) {
+				segments.add(""+builder.dotsPerCell.get());
+			}
+			if (builder.type.isPresent()) {
+				segments.add(builder.type.get().toString());
+			}
 			if (builder.grade.isPresent()) {
 				double grade = builder.grade.get();
-				typeOrGrade = GRADE_PREFIX + (Math.round(grade)==grade?(int)grade:Double.toString(grade));
-			} else if (builder.type.isPresent()) {
-				typeOrGrade =  builder.type.get().toString();
+				segments.add(GRADE_PREFIX + (Math.round(grade)==grade?(int)grade:Double.toString(grade)));
 			}
-			this.identifier = typeOrGrade + (builder.dotsPerCell.isPresent()?"/"+builder.dotsPerCell.get():"");
+			this.identifier = segments.stream().collect(Collectors.joining("/"));
 		} else {
 			this.identifier = builder.identifier;
 		}
@@ -235,11 +245,7 @@ public final class TranslatorMode implements FactoryProperties {
 	 * @throws IllegalArgumentException if parsing fails
 	 */
 	public static TranslatorMode parse(String str) {
-		Builder builder = new Builder();
-		for (String s : str.split(Pattern.quote("/"))) {
-			builder.parseSegment(s);
-		}
-		return builder.build();
+		return Builder.parse(str).build();
 	}
 	
 	/**
