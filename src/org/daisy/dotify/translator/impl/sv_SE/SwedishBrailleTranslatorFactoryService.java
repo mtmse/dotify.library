@@ -2,6 +2,8 @@ package org.daisy.dotify.translator.impl.sv_SE;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import org.daisy.dotify.api.hyphenator.HyphenatorFactoryMaker;
 import org.daisy.dotify.api.hyphenator.HyphenatorFactoryMakerService;
@@ -23,6 +25,7 @@ import org.osgi.service.component.annotations.ReferenceCardinality;
 public class SwedishBrailleTranslatorFactoryService implements
 		BrailleTranslatorFactoryService {
 
+	private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(SwedishBrailleTranslatorFactoryService.class.getPackage().getName() + ".messages", Locale.getDefault());
 	private HyphenatorFactoryMakerService hyphenator = null;
 	private final ArrayList<TranslatorSpecification> specs;
 
@@ -31,10 +34,30 @@ public class SwedishBrailleTranslatorFactoryService implements
 	 */
 	public SwedishBrailleTranslatorFactoryService() {
 		this.specs = new ArrayList<>();
-		specs.add(new TranslatorSpecification("sv", TranslatorMode.Builder.withType(TranslatorType.UNCONTRACTED).displayName("Uncontracted 6-dot").build()));
-		specs.add(new TranslatorSpecification("sv", TranslatorMode.Builder.withType(TranslatorType.PRE_TRANSLATED).displayName("Pre-translated").build()));
-		specs.add(new TranslatorSpecification("sv-SE", TranslatorMode.Builder.withType(TranslatorType.UNCONTRACTED).displayName("Uncontracted 6-dot").build()));
-		specs.add(new TranslatorSpecification("sv-SE", TranslatorMode.Builder.withType(TranslatorType.PRE_TRANSLATED).displayName("Pre-translated").build()));
+		String uncontracted = RESOURCE_BUNDLE.getString("uncontracted-6-dot");
+		String preTranslated = RESOURCE_BUNDLE.getString("pre-translated");
+		String descUncontracted = RESOURCE_BUNDLE.getString("uncontracted-description");
+		String descPreTranslated = RESOURCE_BUNDLE.getString("pre-translated-description");
+		specs.add(new TranslatorSpecification("sv", TranslatorMode.Builder
+				.withType(TranslatorType.UNCONTRACTED)
+				.displayName(uncontracted)
+				.description(descUncontracted)
+				.build()));
+		specs.add(new TranslatorSpecification("sv", TranslatorMode.Builder
+				.withType(TranslatorType.PRE_TRANSLATED)
+				.displayName(preTranslated)
+				.description(descPreTranslated)
+				.build()));
+		specs.add(new TranslatorSpecification("sv-SE", TranslatorMode.Builder
+				.withType(TranslatorType.UNCONTRACTED)
+				.displayName(uncontracted)
+				.description(descUncontracted)
+				.build()));
+		specs.add(new TranslatorSpecification("sv-SE", TranslatorMode.Builder
+				.withType(TranslatorType.PRE_TRANSLATED)
+				.displayName(preTranslated)
+				.description(descPreTranslated)
+				.build()));
 	}
 	
 	@Override
