@@ -7,8 +7,9 @@ import org.daisy.dotify.api.hyphenator.HyphenatorFactoryMaker;
 import org.daisy.dotify.api.hyphenator.HyphenatorFactoryMakerService;
 import org.daisy.dotify.api.translator.BrailleFilterFactory;
 import org.daisy.dotify.api.translator.BrailleFilterFactoryService;
-import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
+import org.daisy.dotify.api.translator.TranslatorMode;
 import org.daisy.dotify.api.translator.TranslatorSpecification;
+import org.daisy.dotify.api.translator.TranslatorType;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
@@ -30,13 +31,13 @@ public class SwedishBrailleFilterFactoryService implements
 	 */
 	public SwedishBrailleFilterFactoryService() {
 		this.specs = new ArrayList<>();
-		specs.add(new TranslatorSpecification("sv", BrailleTranslatorFactory.MODE_UNCONTRACTED));
-		specs.add(new TranslatorSpecification("sv-SE", BrailleTranslatorFactory.MODE_UNCONTRACTED));
+		specs.add(new TranslatorSpecification("sv", TranslatorMode.Builder.withType(TranslatorType.UNCONTRACTED).build()));
+		specs.add(new TranslatorSpecification("sv-SE", TranslatorMode.Builder.withType(TranslatorType.UNCONTRACTED).build()));
 	}
 	
 	@Override
 	public boolean supportsSpecification(String locale, String mode) {
-		return ("sv".equalsIgnoreCase(locale) || "sv-SE".equalsIgnoreCase(locale)) && mode.equals(BrailleTranslatorFactory.MODE_UNCONTRACTED);
+		return ("sv".equalsIgnoreCase(locale) || "sv-SE".equalsIgnoreCase(locale)) && mode.equals(TranslatorType.UNCONTRACTED.toString());
 	}
 
 	@Override

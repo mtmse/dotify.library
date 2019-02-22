@@ -1,10 +1,10 @@
 package org.daisy.dotify.translator.impl.sv_SE;
 
-import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.api.translator.MarkerProcessor;
 import org.daisy.dotify.api.translator.MarkerProcessorConfigurationException;
 import org.daisy.dotify.api.translator.MarkerProcessorFactory;
 import org.daisy.dotify.api.translator.TextAttribute;
+import org.daisy.dotify.api.translator.TranslatorType;
 import org.daisy.dotify.common.text.FilterLocale;
 import org.daisy.dotify.translator.DefaultMarkerProcessor;
 import org.daisy.dotify.translator.Marker;
@@ -22,7 +22,7 @@ class SwedishMarkerProcessorFactory implements MarkerProcessorFactory {
 	@Override
 	public MarkerProcessor newMarkerProcessor(String locale, String mode) throws MarkerProcessorConfigurationException {
 		if (FilterLocale.parse(locale).equals(sv)||FilterLocale.parse(locale).equals(sv_SE)) {
-			if (mode.equals(BrailleTranslatorFactory.MODE_UNCONTRACTED)) {
+			if (mode.equals(TranslatorType.UNCONTRACTED.toString())) {
 	
 				// Svenska skrivregler för punktskrift 2009, page 34
 				RegexMarkerDictionary strong = new RegexMarkerDictionary.Builder().

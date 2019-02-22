@@ -7,7 +7,9 @@ import org.daisy.dotify.api.hyphenator.HyphenatorFactoryMaker;
 import org.daisy.dotify.api.hyphenator.HyphenatorFactoryMakerService;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactoryService;
+import org.daisy.dotify.api.translator.TranslatorMode;
 import org.daisy.dotify.api.translator.TranslatorSpecification;
+import org.daisy.dotify.api.translator.TranslatorType;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
@@ -25,7 +27,7 @@ public class DefaultBypassTranslatorFactoryService implements
 
 	@Override
 	public boolean supportsSpecification(String locale, String mode) {
-		return mode.equals(BrailleTranslatorFactory.MODE_BYPASS);
+		return mode.equals(TranslatorType.BYPASS.toString());
 	}
 
 	@Override
@@ -54,7 +56,11 @@ public class DefaultBypassTranslatorFactoryService implements
 	public Collection<TranslatorSpecification> listSpecifications() {
 		ArrayList<TranslatorSpecification> ret = new ArrayList<>();
 		for (String loc : hyphenator.listLocales()) {
-			ret.add(new TranslatorSpecification(loc, BrailleTranslatorFactory.MODE_BYPASS));
+			ret.add(new TranslatorSpecification(loc, TranslatorMode.Builder.withType(TranslatorType.BYPASS)
+				.displayName("Hyphenator: " + loc)
+				.description("Identity translator that doesn't translate any characters.")
+				.build())
+			);
 		}
 		return ret;
 	}

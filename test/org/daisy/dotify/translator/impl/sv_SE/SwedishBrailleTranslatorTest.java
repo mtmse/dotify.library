@@ -1,16 +1,15 @@
 package org.daisy.dotify.translator.impl.sv_SE;
 import static org.junit.Assert.assertEquals;
 
+import org.daisy.dotify.api.hyphenator.HyphenatorFactoryMaker;
 import org.daisy.dotify.api.translator.BrailleTranslator;
-import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.api.translator.BrailleTranslatorResult;
 import org.daisy.dotify.api.translator.DefaultTextAttribute;
 import org.daisy.dotify.api.translator.TextAttribute;
 import org.daisy.dotify.api.translator.Translatable;
 import org.daisy.dotify.api.translator.TranslationException;
 import org.daisy.dotify.api.translator.TranslatorConfigurationException;
-import org.daisy.dotify.api.hyphenator.HyphenatorFactoryMaker;
-import org.daisy.dotify.translator.impl.sv_SE.SwedishBrailleTranslatorFactory;
+import org.daisy.dotify.api.translator.TranslatorType;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -20,7 +19,7 @@ public class SwedishBrailleTranslatorTest {
 	private final BrailleTranslator translator;
 	
 	public SwedishBrailleTranslatorTest() throws TranslatorConfigurationException {
-		this.translator = new SwedishBrailleTranslatorFactory(HyphenatorFactoryMaker.newInstance()).newTranslator("sv-SE",BrailleTranslatorFactory.MODE_UNCONTRACTED);
+		this.translator = new SwedishBrailleTranslatorFactory(HyphenatorFactoryMaker.newInstance()).newTranslator("sv-SE", TranslatorType.UNCONTRACTED.toString());
 		// this.translator.setHyphenating(true);
 	}
 

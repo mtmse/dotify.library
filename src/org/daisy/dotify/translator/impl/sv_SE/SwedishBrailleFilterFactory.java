@@ -5,10 +5,10 @@ import java.util.Optional;
 import org.daisy.dotify.api.hyphenator.HyphenatorFactoryMakerService;
 import org.daisy.dotify.api.translator.BrailleFilter;
 import org.daisy.dotify.api.translator.BrailleFilterFactory;
-import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.api.translator.MarkerProcessor;
 import org.daisy.dotify.api.translator.MarkerProcessorConfigurationException;
 import org.daisy.dotify.api.translator.TranslatorConfigurationException;
+import org.daisy.dotify.api.translator.TranslatorType;
 import org.daisy.dotify.translator.DefaultBrailleFilter;
 
 class SwedishBrailleFilterFactory implements BrailleFilterFactory {
@@ -26,7 +26,7 @@ class SwedishBrailleFilterFactory implements BrailleFilterFactory {
 			throw new SwedishFilterConfigurationException("HyphenatorFactoryMakerService not set.");
 		}
 		Optional<String> loc = getSupportedLocale(locale);
-		if (loc.isPresent() && mode.equals(BrailleTranslatorFactory.MODE_UNCONTRACTED)) {
+		if (loc.isPresent() && mode.equals(TranslatorType.UNCONTRACTED.toString())) {
 
 			MarkerProcessor sap;
 			try {

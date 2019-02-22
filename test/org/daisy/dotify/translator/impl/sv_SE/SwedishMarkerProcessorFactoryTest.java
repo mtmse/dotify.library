@@ -2,11 +2,10 @@ package org.daisy.dotify.translator.impl.sv_SE;
 
 import static org.junit.Assert.assertEquals;
 
-import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.api.translator.DefaultTextAttribute;
 import org.daisy.dotify.api.translator.MarkerProcessor;
 import org.daisy.dotify.api.translator.MarkerProcessorConfigurationException;
-import org.daisy.dotify.translator.impl.sv_SE.SwedishMarkerProcessorFactory;
+import org.daisy.dotify.api.translator.TranslatorType;
 import org.junit.Test;
 
 @SuppressWarnings("javadoc")
@@ -14,7 +13,7 @@ public class SwedishMarkerProcessorFactoryTest {
 	private final MarkerProcessor processor;
 
 	public SwedishMarkerProcessorFactoryTest() throws MarkerProcessorConfigurationException {
-		processor = new SwedishMarkerProcessorFactory().newMarkerProcessor("sv-se", BrailleTranslatorFactory.MODE_UNCONTRACTED);
+		processor = new SwedishMarkerProcessorFactory().newMarkerProcessor("sv-se", TranslatorType.UNCONTRACTED.toString());
 	}
 
 	@Test

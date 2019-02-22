@@ -2,11 +2,10 @@ package org.daisy.dotify.translator.impl;
 
 import static org.junit.Assert.assertEquals;
 
-import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.api.translator.DefaultTextAttribute;
 import org.daisy.dotify.api.translator.MarkerProcessor;
 import org.daisy.dotify.api.translator.MarkerProcessorConfigurationException;
-import org.daisy.dotify.translator.impl.DefaultBypassMarkerProcessorFactory;
+import org.daisy.dotify.api.translator.TranslatorType;
 import org.junit.Test;
 
 @SuppressWarnings("javadoc")
@@ -14,7 +13,7 @@ public class DefaultBypassMarkerProcessorFactoryTest {
 	private final MarkerProcessor tp;
 
 	public DefaultBypassMarkerProcessorFactoryTest() throws MarkerProcessorConfigurationException {
-		tp = new DefaultBypassMarkerProcessorFactory().newMarkerProcessor("sv-se", BrailleTranslatorFactory.MODE_BYPASS);
+		tp = new DefaultBypassMarkerProcessorFactory().newMarkerProcessor("sv-se", TranslatorType.BYPASS.toString());
 	}
 
 	@Test

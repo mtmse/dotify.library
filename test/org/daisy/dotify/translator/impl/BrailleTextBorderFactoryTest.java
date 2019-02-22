@@ -5,10 +5,9 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.api.translator.TextBorderConfigurationException;
 import org.daisy.dotify.api.translator.TextBorderStyle;
-import org.daisy.dotify.translator.impl.BrailleTextBorderFactory;
+import org.daisy.dotify.api.translator.TranslatorType;
 import org.junit.Test;
 @SuppressWarnings("javadoc")
 public class BrailleTextBorderFactoryTest {
@@ -16,7 +15,7 @@ public class BrailleTextBorderFactoryTest {
 	@Test
 	public void testBorderString_01() throws TextBorderConfigurationException {
 		BrailleTextBorderFactory f = new BrailleTextBorderFactory();
-		f.setFeature("mode", BrailleTranslatorFactory.MODE_UNCONTRACTED);
+		f.setFeature("mode", TranslatorType.UNCONTRACTED.toString());
 		f.setFeature("border-style", "none");
 		List<String> str = styleToStrings(f.newTextBorderStyle()); 
 		assertEquals("", str.get(0));
@@ -26,7 +25,7 @@ public class BrailleTextBorderFactoryTest {
 	@Test
 	public void testBorderString_02() throws TextBorderConfigurationException {
 		BrailleTextBorderFactory f = new BrailleTextBorderFactory();
-		f.setFeature("mode", BrailleTranslatorFactory.MODE_UNCONTRACTED);
+		f.setFeature("mode", TranslatorType.UNCONTRACTED.toString());
 		f.setFeature("border-style", "solid");
 		List<String> str = styleToStrings(f.newTextBorderStyle()); 
 		assertEquals("⠏⠉⠹", str.get(0));
@@ -37,7 +36,7 @@ public class BrailleTextBorderFactoryTest {
 	@Test
 	public void testBorderString_03() throws TextBorderConfigurationException {
 		BrailleTextBorderFactory f = new BrailleTextBorderFactory();
-		f.setFeature("mode", BrailleTranslatorFactory.MODE_UNCONTRACTED);
+		f.setFeature("mode", TranslatorType.UNCONTRACTED.toString());
 		f.setFeature("border-style", "solid");
 		f.setFeature("border-left-style", "none");
 		List<String> str = styleToStrings(f.newTextBorderStyle()); 
@@ -49,7 +48,7 @@ public class BrailleTextBorderFactoryTest {
 	@Test
 	public void testBorderString_04() throws TextBorderConfigurationException {
 		BrailleTextBorderFactory f = new BrailleTextBorderFactory();
-		f.setFeature("mode", BrailleTranslatorFactory.MODE_UNCONTRACTED);
+		f.setFeature("mode", TranslatorType.UNCONTRACTED.toString());
 		f.setFeature("border-style", "solid");
 		f.setFeature("border-left-width", "2");
 		List<String> str = styleToStrings(f.newTextBorderStyle()); 
@@ -61,7 +60,7 @@ public class BrailleTextBorderFactoryTest {
 	@Test
 	public void testBorderString_05() throws TextBorderConfigurationException {
 		BrailleTextBorderFactory f = new BrailleTextBorderFactory();
-		f.setFeature("mode", BrailleTranslatorFactory.MODE_UNCONTRACTED);
+		f.setFeature("mode", TranslatorType.UNCONTRACTED.toString());
 		f.setFeature("border-style", "solid");
 		f.setFeature("border-left-width", "2");
 		f.setFeature("border-top-width", "3");
@@ -74,7 +73,7 @@ public class BrailleTextBorderFactoryTest {
 	@Test
 	public void testBorderString_06() throws TextBorderConfigurationException {
 		BrailleTextBorderFactory f = new BrailleTextBorderFactory();
-		f.setFeature("mode", BrailleTranslatorFactory.MODE_UNCONTRACTED);
+		f.setFeature("mode", TranslatorType.UNCONTRACTED.toString());
 		f.setFeature("border-style", "solid");
 		f.setFeature("border-bottom-width", "2");
 		f.setFeature("border-right-width", "2");
@@ -87,7 +86,7 @@ public class BrailleTextBorderFactoryTest {
 	@Test
 	public void testBorderString_07() throws TextBorderConfigurationException {
 		BrailleTextBorderFactory f = new BrailleTextBorderFactory();
-		f.setFeature("mode", BrailleTranslatorFactory.MODE_UNCONTRACTED);
+		f.setFeature("mode", TranslatorType.UNCONTRACTED.toString());
 		f.setFeature("border-style", "solid");
 		f.setFeature("border-align", "inner");
 		List<String> str = styleToStrings(f.newTextBorderStyle()); 
@@ -99,7 +98,7 @@ public class BrailleTextBorderFactoryTest {
 	@Test
 	public void testBorderString_08() throws TextBorderConfigurationException {
 		BrailleTextBorderFactory f = new BrailleTextBorderFactory();
-		f.setFeature("mode", BrailleTranslatorFactory.MODE_UNCONTRACTED);
+		f.setFeature("mode", TranslatorType.UNCONTRACTED.toString());
 		f.setFeature("border-style", "solid");
 		f.setFeature("border-align", "inner");
 		f.setFeature("border-width", "2");

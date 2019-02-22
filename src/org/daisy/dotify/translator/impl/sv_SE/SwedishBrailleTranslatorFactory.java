@@ -8,14 +8,13 @@ import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.api.translator.MarkerProcessor;
 import org.daisy.dotify.api.translator.MarkerProcessorConfigurationException;
 import org.daisy.dotify.api.translator.TranslatorConfigurationException;
+import org.daisy.dotify.api.translator.TranslatorType;
 import org.daisy.dotify.translator.DefaultBrailleFilter;
 import org.daisy.dotify.translator.PreTranslatedBrailleFilter;
 import org.daisy.dotify.translator.SimpleBrailleTranslator;
 import org.daisy.dotify.translator.impl.DefaultBrailleFinalizer;
 
 class SwedishBrailleTranslatorFactory implements BrailleTranslatorFactory {
-	//TODO: remove when this string is part of the api
-	static final String PRE_TRANSLATED = "pre-translated";
 	private static final String sv = "sv";
 	private static final String sv_SE = "sv-SE";
 	private final HyphenatorFactoryMakerService hyphenatorService;
@@ -30,7 +29,7 @@ class SwedishBrailleTranslatorFactory implements BrailleTranslatorFactory {
 			throw new SwedishTranslatorConfigurationException("HyphenatorFactoryMakerService not set.");
 		}
 		Optional<String> loc = getSupportedLocale(locale);
-		if (loc.isPresent() && mode.equals(MODE_UNCONTRACTED)) {
+		if (loc.isPresent() && mode.equals(TranslatorType.UNCONTRACTED.toString())) {
 
 			MarkerProcessor sap;
 			try {
@@ -42,7 +41,7 @@ class SwedishBrailleTranslatorFactory implements BrailleTranslatorFactory {
 			return new SimpleBrailleTranslator(
 					new DefaultBrailleFilter(new SwedishBrailleFilter(loc.get()), loc.get(), sap, hyphenatorService),
 					new DefaultBrailleFinalizer(), mode);
-		} else if (loc.isPresent() && mode.equals(PRE_TRANSLATED)) {
+		} else if (loc.isPresent() && mode.equals(TranslatorType.PRE_TRANSLATED.toString())) {
 			return new SimpleBrailleTranslator(
 					new PreTranslatedBrailleFilter(),
 					new DefaultBrailleFinalizer(),

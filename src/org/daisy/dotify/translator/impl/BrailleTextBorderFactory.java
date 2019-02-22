@@ -15,10 +15,10 @@ import org.daisy.dotify.api.translator.Border;
 import org.daisy.dotify.api.translator.Border.Builder.BuilderView;
 import org.daisy.dotify.api.translator.BorderSpecification.Align;
 import org.daisy.dotify.api.translator.BorderSpecification.Style;
-import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.api.translator.TextBorderConfigurationException;
 import org.daisy.dotify.api.translator.TextBorderFactory;
 import org.daisy.dotify.api.translator.TextBorderStyle;
+import org.daisy.dotify.api.translator.TranslatorType;
 
 class BrailleTextBorderFactory implements TextBorderFactory {
 	private static final Logger logger = Logger.getLogger(BrailleTextBorderFactory.class.getCanonicalName());
@@ -110,7 +110,7 @@ class BrailleTextBorderFactory implements TextBorderFactory {
 		} catch (Exception e) {
 		}
 
-		if (!mode.equals(BrailleTranslatorFactory.MODE_BYPASS)) {
+		if (!mode.equals(TranslatorType.BYPASS.toString())) {
 			if (useBorderBuilder || border!=null) {
 				if (border==null) {
 					border = builder.build();

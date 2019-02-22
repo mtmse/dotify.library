@@ -1,8 +1,8 @@
 package org.daisy.dotify.translator.impl;
 
-import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.api.translator.MarkerProcessorFactory;
 import org.daisy.dotify.api.translator.MarkerProcessorFactoryService;
+import org.daisy.dotify.api.translator.TranslatorType;
 import org.osgi.service.component.annotations.Component;
 
 /**
@@ -15,7 +15,7 @@ public class DefaultBypassMarkerProcessorFactoryService implements
 
 	@Override
 	public boolean supportsSpecification(String locale, String mode) {
-		return mode.equals(BrailleTranslatorFactory.MODE_BYPASS);
+		return mode.equals(TranslatorType.BYPASS.toString());
 	}
 
 	@Override

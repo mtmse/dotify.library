@@ -2,6 +2,7 @@ package org.daisy.dotify.translator.impl;
 
 import org.daisy.dotify.api.translator.MarkerProcessorFactory;
 import org.daisy.dotify.api.translator.MarkerProcessorFactoryService;
+import org.daisy.dotify.api.translator.TranslatorType;
 import org.osgi.service.component.annotations.Component;
 
 /**
@@ -15,7 +16,7 @@ public class PreTranslatedMarkerProcessorFactoryService implements
 
 	@Override
 	public boolean supportsSpecification(String locale, String mode) {
-		return mode.equals(PreTranslatedMarkerProcessorFactory.PRE_TRANSLATED);
+		return mode.equals(TranslatorType.PRE_TRANSLATED.toString());
 	}
 
 	@Override

@@ -1,9 +1,9 @@
 package org.daisy.dotify.translator.impl;
 
-import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.api.translator.MarkerProcessor;
 import org.daisy.dotify.api.translator.MarkerProcessorConfigurationException;
 import org.daisy.dotify.api.translator.MarkerProcessorFactory;
+import org.daisy.dotify.api.translator.TranslatorType;
 import org.daisy.dotify.translator.DefaultMarkerProcessor;
 import org.daisy.dotify.translator.Marker;
 import org.daisy.dotify.translator.MarkerStyleConstants;
@@ -14,7 +14,7 @@ class DefaultBypassMarkerProcessorFactory implements
 
 	@Override
 	public MarkerProcessor newMarkerProcessor(String locale, String mode) throws MarkerProcessorConfigurationException {
-		if (mode.equals(BrailleTranslatorFactory.MODE_BYPASS)) {
+		if (mode.equals(TranslatorType.BYPASS.toString())) {
 			SimpleMarkerDictionary dd = new SimpleMarkerDictionary(new Marker("* ", ""));
 
 			DefaultMarkerProcessor sap = new DefaultMarkerProcessor.Builder().addDictionary(MarkerStyleConstants.DD, dd).build();

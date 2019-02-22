@@ -7,7 +7,9 @@ import org.daisy.dotify.api.hyphenator.HyphenatorFactoryMaker;
 import org.daisy.dotify.api.hyphenator.HyphenatorFactoryMakerService;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactory;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactoryService;
+import org.daisy.dotify.api.translator.TranslatorMode;
 import org.daisy.dotify.api.translator.TranslatorSpecification;
+import org.daisy.dotify.api.translator.TranslatorType;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
@@ -29,10 +31,10 @@ public class SwedishBrailleTranslatorFactoryService implements
 	 */
 	public SwedishBrailleTranslatorFactoryService() {
 		this.specs = new ArrayList<>();
-		specs.add(new TranslatorSpecification("sv", BrailleTranslatorFactory.MODE_UNCONTRACTED));
-		specs.add(new TranslatorSpecification("sv", SwedishBrailleTranslatorFactory.PRE_TRANSLATED));
-		specs.add(new TranslatorSpecification("sv-SE", BrailleTranslatorFactory.MODE_UNCONTRACTED));
-		specs.add(new TranslatorSpecification("sv-SE", SwedishBrailleTranslatorFactory.PRE_TRANSLATED));
+		specs.add(new TranslatorSpecification("sv", TranslatorMode.Builder.withType(TranslatorType.UNCONTRACTED).displayName("Uncontracted 6-dot").build()));
+		specs.add(new TranslatorSpecification("sv", TranslatorMode.Builder.withType(TranslatorType.PRE_TRANSLATED).displayName("Pre-translated").build()));
+		specs.add(new TranslatorSpecification("sv-SE", TranslatorMode.Builder.withType(TranslatorType.UNCONTRACTED).displayName("Uncontracted 6-dot").build()));
+		specs.add(new TranslatorSpecification("sv-SE", TranslatorMode.Builder.withType(TranslatorType.PRE_TRANSLATED).displayName("Pre-translated").build()));
 	}
 	
 	@Override
