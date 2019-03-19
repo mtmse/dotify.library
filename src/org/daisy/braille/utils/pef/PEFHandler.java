@@ -95,6 +95,7 @@ public class PEFHandler extends DefaultHandler {
 	private boolean isDuplex;
 	private boolean widthError;
 	private boolean newVolume;
+	private int bufferedRowGap;
 
 	/**
 	 * Provides a Builder for PEFHandler
@@ -223,6 +224,7 @@ public class PEFHandler extends DefaultHandler {
 		this.versoAlignmentPadding = 0;
 		this.widthError = false;
 		this.newVolume = false;
+		this.bufferedRowGap = -1;
 	}
 
 
@@ -247,6 +249,10 @@ public class PEFHandler extends DefaultHandler {
 				throw new RuntimeException("Wrong root element.");
 			} else if ("row".equals(localName)) {
 				if (range.inRange(pageCount)) {
+					if (bufferedRowGap>-1) {
+						embosser.setRowGap(bufferedRowGap);
+						bufferedRowGap = -1;
+					}
 					try {
 						if (currentPage==elements.peek()) { // same page 
 							embosser.newLine();
@@ -264,8 +270,10 @@ public class PEFHandler extends DefaultHandler {
 					} catch (IOException e) {
 						throw new SAXException(e);
 					}
+					embosser.setRowGap(Integer.parseInt(getKey(atts, "", "rowgap")));
+				} else {
+					bufferedRowGap = Integer.parseInt(getKey(atts, "", "rowgap"));
 				}
-				embosser.setRowGap(Integer.parseInt(getKey(atts, "", "rowgap")));
 			} else if ("page".equals(localName)) {
 				if (isDuplex) {
 					verso = !verso;
