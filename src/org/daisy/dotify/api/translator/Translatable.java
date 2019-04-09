@@ -1,8 +1,19 @@
 package org.daisy.dotify.api.translator;
 
 /**
- * Provides a specification for a text to translate
+ * <p>Provides a specification for a text to translate. The text to translate 
+ * is a simple string, optionally with style attributes associated with all 
+ * and/or part of the text.</p>
+ * 
+ * <p>This class has the following characteristics:</p>
+ * <ul>
+ * <li>it applies to a single text string</li>
+ * <li>style attributes apply to the whole text or to some part of it</li>
+ * <li>there's no information about the context of the text to translate</li>
+ * </ul>
+ * 
  * @author Joel Håkansson
+ * @see TranslatableWithContext 
  *
  */
 public class Translatable {
