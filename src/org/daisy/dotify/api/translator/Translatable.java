@@ -10,6 +10,7 @@ public class Translatable {
 	private final String locale;
 	private final TextAttribute attributes;
 	private final Boolean hyphenate;
+	private final boolean markCapitalLetters;
 	
 	/**
 	 * Provides a builder for translatable objects
@@ -21,9 +22,12 @@ public class Translatable {
 		private String locale = null;
 		private TextAttribute attributes = null;
 		private boolean hyphenate = false;
+		private boolean markCapitalLetters = true;
+		
 		private Builder(String text) {
 			this.text = text;
 		}
+		
 		/**
 		 * Sets the locale for this builder
 		 * @param value the locale
@@ -55,6 +59,16 @@ public class Translatable {
 		}
 		
 		/**
+		 * Sets the capital letters property for this builder
+		 * @param value the capital letters policy
+		 * @return this object
+		 */
+		public Builder markCapitalLetters(boolean value) {
+			this.markCapitalLetters = value;
+			return this;
+		}
+		
+		/**
 		 * Builds a new Translatable object using the current
 		 * status of this builder.
 		 * @return returns a Translatable instance
@@ -70,6 +84,7 @@ public class Translatable {
 		this.locale = builder.locale;
 		this.attributes = builder.attributes;
 		this.hyphenate = builder.hyphenate;
+		this.markCapitalLetters = builder.markCapitalLetters;
 	}
 
 	/**
@@ -111,5 +126,13 @@ public class Translatable {
 	 */
 	public Boolean isHyphenating() {
 		return hyphenate;
+	}
+	
+	/**
+	 * Returns true if the text should mark capital letters.
+	 * @return true if the capital letters should be marked, false otherwise
+	 */
+	public boolean shouldMarkCapitalLetters() {
+		return markCapitalLetters;
 	}
 }
