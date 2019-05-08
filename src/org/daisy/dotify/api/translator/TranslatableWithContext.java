@@ -77,15 +77,15 @@ public class TranslatableWithContext {
 
 	/**
 	 * <p>Returns a new Translatable builder for this list. 
-	 * The current item is the specified <tt>index</tt>.</p> 
+	 * The current item is the specified <code>index</code>.</p> 
 	 *
 	 * @param list the list
 	 * @param index the index of the current item
 	 * @param <T> the type of items
 	 * @return a new context
 	 * @throws IndexOutOfBoundsException for an illegal endpoint index value
-	 *         (<tt>fromIndex &lt; 0 || toIndex &gt; size ||
-	 *         fromIndex &gt; toIndex</tt>)
+	 *         (<code>fromIndex &lt; 0 || toIndex &gt; size ||
+	 *         fromIndex &gt; toIndex</code>)
 	 */
 	public static <T extends ResolvableText> Builder from(List<T> list, int index) {
 		return new Builder(newContext(list, index));
@@ -93,9 +93,9 @@ public class TranslatableWithContext {
 	
 	/**
 	 * <p>Returns a new Translatable builder for this list.
-	 * The current items are between the specified <tt>fromIndex</tt>,
-	 * inclusive, and <tt>toIndex</tt>, exclusive. (If
-	 * <tt>fromIndex</tt> and <tt>toIndex</tt> are equal, the current items list 
+	 * The current items are between the specified <code>fromIndex</code>,
+	 * inclusive, and <code>toIndex</code>, exclusive. (If
+	 * <code>fromIndex</code> and <code>toIndex</code> are equal, the current items list 
 	 * is empty, however this isn't useful in practice.)</p> 
 	 *
 	 * @param list the list
@@ -104,8 +104,8 @@ public class TranslatableWithContext {
 	 * @param <T> the type of items
 	 * @return a new context
 	 * @throws IndexOutOfBoundsException for an illegal endpoint index value
-	 *         (<tt>fromIndex &lt; 0 || toIndex &gt; size ||
-	 *         fromIndex &gt; toIndex</tt>)
+	 *         (<code>fromIndex &lt; 0 || toIndex &gt; size ||
+	 *         fromIndex &gt; toIndex</code>)
 	 */
 	public static <T extends ResolvableText> Builder from(List<T> list, int fromIndex, int toIndex) {
 		return new Builder(newContext(list, fromIndex, toIndex));
@@ -113,7 +113,7 @@ public class TranslatableWithContext {
 	
 	/**
 	 * <p>Returns a context for this list where the current item is at the specified
-	 * <tt>index</tt>.</p> 
+	 * <code>index</code>.</p> 
 	 * 
 	 * <p>See {@link #newContext(int, int)} for more information about the returned
 	 * lists.</p>
@@ -123,8 +123,8 @@ public class TranslatableWithContext {
 	 * @param <T> the type of resolvable
 	 * @return a new context
 	 * @throws IndexOutOfBoundsException for an illegal endpoint index value
-	 *         (<tt>fromIndex &lt; 0 || toIndex &gt; size ||
-	 *         fromIndex &gt; toIndex</tt>)
+	 *         (<code>fromIndex &lt; 0 || toIndex &gt; size ||
+	 *         fromIndex &gt; toIndex</code>)
 	 */
 	static <T extends ResolvableText> TextWithContext newContext(List<T> list, int index) {
 		return newContext(list, index, index+1);
@@ -132,8 +132,8 @@ public class TranslatableWithContext {
 	
 	/**
 	 * <p>Returns a context for this list where the current items are between the specified
-	 * <tt>fromIndex</tt>, inclusive, and <tt>toIndex</tt>, exclusive. (If
-	 * <tt>fromIndex</tt> and <tt>toIndex</tt> are equal, the current items list 
+	 * <code>fromIndex</code>, inclusive, and <code>toIndex</code>, exclusive. (If
+	 * <code>fromIndex</code> and <code>toIndex</code> are equal, the current items list 
 	 * is empty, however this isn't useful in practice.)</p> 
 	 * 
 	 * <p>The returned list is backed by the original list, so non-structural
@@ -151,8 +151,8 @@ public class TranslatableWithContext {
 	 * @param <T> the type of resolvable
 	 * @return a new context
 	 * @throws IndexOutOfBoundsException for an illegal endpoint index value
-	 *         (<tt>fromIndex &lt; 0 || toIndex &gt; size ||
-	 *         fromIndex &gt; toIndex</tt>)
+	 *         (<code>fromIndex &lt; 0 || toIndex &gt; size ||
+	 *         fromIndex &gt; toIndex</code>)
 	 */
 	static <T extends ResolvableText> TextWithContext newContext(List<T> list, int fromIndex, int toIndex) {
 		return new TextWithContext() {
