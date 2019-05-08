@@ -41,6 +41,7 @@ javadoc {
 	options.encoding = 'UTF-8'
 	options.source = 8
 	options.links('https://docs.oracle.com/javase/8/docs/api/')
+	options.overview = 'src/javadoc-overview.html'
 }
 
 repositories {
