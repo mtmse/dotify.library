@@ -17,7 +17,7 @@ class LiblouisBrailleFilterFactory implements BrailleFilterFactory {
 
 	@Override
 	public BrailleFilter newFilter(String locale, String mode) throws TranslatorConfigurationException {
-		return new LiblouisBrailleFilter(new TranslatorSpecification(locale, mode), hyphenatorService);
+		return new LiblouisBrailleFilter(new TranslatorSpecification(locale, mode), LiblouisMarkerProcessor.newInstance(), hyphenatorService);
 	}
 
 }

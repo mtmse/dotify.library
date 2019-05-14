@@ -1,17 +1,28 @@
 package org.daisy.dotify.translator.impl.liblouis;
 
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.daisy.dotify.api.hyphenator.HyphenatorConfigurationException;
 import org.daisy.dotify.api.hyphenator.HyphenatorFactoryMakerService;
 import org.daisy.dotify.api.hyphenator.HyphenatorInterface;
 import org.daisy.dotify.api.translator.BrailleFilter;
+import org.daisy.dotify.api.translator.ResolvableText;
 import org.daisy.dotify.api.translator.TextAttribute;
 import org.daisy.dotify.api.translator.Translatable;
+import org.daisy.dotify.api.translator.TranslatableWithContext;
 import org.daisy.dotify.api.translator.TranslationException;
 import org.daisy.dotify.api.translator.TranslatorSpecification;
+import org.daisy.dotify.translator.DefaultMarkerProcessor;
 import org.liblouis.CompilationException;
 import org.liblouis.DisplayException;
 import org.liblouis.DisplayTable.Fallback;
@@ -20,18 +31,19 @@ import org.liblouis.TranslationResult;
 import org.liblouis.Translator;
 
 class LiblouisBrailleFilter implements BrailleFilter {
+	private static final Logger LOGGER = Logger.getLogger(LiblouisBrailleFilter.class.getCanonicalName());
 	private static final int SOFT_HYPHEN = 0x00ad;
 	private static final int ZERO_WIDTH_SPACE = 0x200b;
 	private static final int LIBLOUIS_NO_BREAKPOINT = 0;
 	private static final int LIBLOUIS_SOFT_HYPEN = 1;
 	private static final int LIBLOUIS_ZERO_WIDTH_SPACE = 2;
-	private static final Map<String, Integer> MARKERS = makeMarkersMap();
 	private final String loc;
 	private final HyphenatorFactoryMakerService hyphenatorFactoryMaker;
 	private final Map<String, HyphenatorInterface> hyphenators;
 	private final Translator table;
+	private final LiblouisMarkerProcessor mp;
 
-	LiblouisBrailleFilter(TranslatorSpecification ts, HyphenatorFactoryMakerService hyphenatorFactoryMaker) {
+	LiblouisBrailleFilter(TranslatorSpecification ts, LiblouisMarkerProcessor mp, HyphenatorFactoryMakerService hyphenatorFactoryMaker) {
 		this.loc = ts.getLocale();
 		this.hyphenatorFactoryMaker = hyphenatorFactoryMaker;
 		this.hyphenators = new HashMap<>();
@@ -40,14 +52,10 @@ class LiblouisBrailleFilter implements BrailleFilter {
 		} catch (CompilationException e) {
 			throw new IllegalArgumentException(e);
 		}
+		this.mp = mp;
 	}
 
-	static Map<String, Integer> makeMarkersMap() {
-		Map<String, Integer> ret = new HashMap<>();
-		ret.put("em", 1);
-		ret.put("strong", 4);
-		return Collections.unmodifiableMap(ret);
-	}
+
 
 	@Override
 	public String filter(Translatable specification) throws TranslationException {
@@ -58,55 +66,198 @@ class LiblouisBrailleFilter implements BrailleFilter {
 		if (locale==null) {
 			locale = loc;
 		}
-		HyphenatorInterface h = hyphenators.get(locale);
-		if (h == null && specification.isHyphenating()) {
-			// if we're not hyphenating the language in question, we do not
-			// need to add it, nor throw an exception if it cannot be found.
-			try {
-				h = hyphenatorFactoryMaker.newHyphenator(locale);
-			} catch (HyphenatorConfigurationException e) {
-				throw new LiblouisBrailleFilterException(e);
-			}
-			hyphenators.put(locale, h);
+		
+		// Attributes should be processed here. To do that, the text must be split up into
+		// the attribute parts, processed and then reassembled with updated attributes.
+		// The updated attributes should then be used when creating the type form below.
+		// See also https://github.com/brailleapps/dotify.translator.impl/issues/4
+		// Something like this:
+		// 		String[] t = splitByAttribute(specification.getText(), specification.getAttributes());
+		// 		AttributeWithContext atts = toAttributeWithContext(specification.getAttributes(), t);
+		// 		List<String> x = Arrays.asList(mp.getMarkerProcessor().processAttributesRetain(specification.getAttributes(), t));
+		// 		TextAttribute ta = DefaultMarkerProcessor.toTextAttribute(atts, x);
+		// 		String text = x.stream().collect(Collectors.toList());
+		
+		String text = specification.getText();
+		
+		if (!specification.shouldMarkCapitalLetters()) {
+			//TODO: toLowerCase may not always do what we want here,
+			//it depends on the lower case algorithm and the rules 
+			//of the braille for that language
+			text = text.toLowerCase(Locale.ROOT);
 		}
-		String str = specification.isHyphenating()?h.hyphenate(specification.getText()):specification.getText();
-		//translate braille using the same filter, regardless of language
-		LiblouisTranslatable louisSpec = toLiblouisSpecification(str, specification, MARKERS);
+		
+		if (specification.isHyphenating()) {
+			HyphenatorInterface h = hyphenators.get(locale);
+			if (h == null) {
+				try {
+					h = hyphenatorFactoryMaker.newHyphenator(locale);
+				} catch (HyphenatorConfigurationException e) {
+					throw new LiblouisBrailleFilterException(e);
+				}
+				hyphenators.put(locale, h);
+			}
+			text = h.hyphenate(text);
+		}
+		
+		// Only style attributes from Liblouis itself are processed here
+		LiblouisTranslatable louisSpec = toLiblouisSpecification(text, specification.getText());
+		TextAttribute ta = specification.getAttributes();
+		short[] typeForm;
+		if (ta==null || mp.getTypeForm()==null) {
+			typeForm = new short[louisSpec.getCharAtts().length];
+		} else {
+			typeForm = toTypeForm(ta, mp.getTypeForm());
+		}
+
 		try {
-			return toBrailleFilterString(louisSpec.getText(), table.translate(louisSpec.getText(), louisSpec.getTypeForm(), louisSpec.getCharAtts(), louisSpec.getInterCharAtts(), new UnicodeBrailleDisplayTable(Fallback.MASK)));
+			return toBrailleFilterString(louisSpec.getText(), table.translate(louisSpec.getText(), typeForm, louisSpec.getCharAtts(), louisSpec.getInterCharAtts(), new UnicodeBrailleDisplayTable(Fallback.MASK)));
 		} catch (org.liblouis.TranslationException | DisplayException e) {
 			throw new LiblouisBrailleFilterException(e);
 		}
+	}
+	
+	@Override
+	public String filter(TranslatableWithContext specification) throws TranslationException {
+		if (specification.getTextToTranslate().isEmpty()) {
+			return "";
+		}
+		
+		Stream<String> inStream = specification.getTextToTranslate().stream().map(v->v.resolve());
+		List<String> texts;
+		
+		if (mp != null && specification.getAttributes().isPresent()) {
+			Stream<String> preceding = specification.getPrecedingText().stream().map(v->v.resolve());
+			Stream<String> following = specification.getFollowingText().stream().map(v->v.peek());
+			List<String> textsI = Stream.concat(Stream.concat(preceding, inStream), following).collect(Collectors.toList());
+			String[] out = mp.getMarkerProcessor().processAttributesRetain(specification.getAttributes().get(), textsI);
+			int start = specification.getPrecedingText().size();
+			int end = start + specification.getTextToTranslate().size();
+			texts = Arrays.asList(out).subList(start, end);
+		} else {
+			texts = inStream.collect(Collectors.toList());
+		}
+
+		Processor p = new Processor(specification.getTextToTranslate().get(0));
+		int i = 0;
+		for (ResolvableText t : specification.getTextToTranslate()) {
+			p.process(texts.get(i), t);
+			i++;
+		}
+		p.flush();
+		
+		String strIn = p.textB.toString();
+		String strHyph = p.hyphB.toString();
+
+		LiblouisTranslatable louisSpec = toLiblouisSpecification(strHyph, strIn);
+		
+		short[] typeForm;
+		
+		if (specification.getAttributes().isPresent() && mp.getTypeForm()!=null) {
+			List<String> preceding = specification.getPrecedingText().stream().map(v->v.resolve()).collect(Collectors.toList()); 
+			List<String> following = specification.getFollowingText().stream().map(v->v.peek()).collect(Collectors.toList());
+			List<String> textsI = Stream.concat(Stream.concat(preceding.stream(), p.parts.stream()), following.stream()).collect(Collectors.toList());
+			TextAttribute ta = DefaultMarkerProcessor.toTextAttribute(specification.getAttributes().get(), textsI);
+			short[] typeForm2 = toTypeForm(ta, mp.getTypeForm());
+			int start = preceding.stream().mapToInt(v->v.length()).sum();
+			int end = start + strIn.length();
+			typeForm = Arrays.copyOfRange(typeForm2, start, end);
+		} else {
+			typeForm = new short[louisSpec.getCharAtts().length];
+		}
+		
+		try {
+			return toBrailleFilterString(louisSpec.getText(), table.translate(louisSpec.getText(), typeForm, louisSpec.getCharAtts(), louisSpec.getInterCharAtts(), new UnicodeBrailleDisplayTable(Fallback.MASK)));
+		} catch (org.liblouis.TranslationException | DisplayException e) {
+			throw new LiblouisBrailleFilterException(e);
+		}
+	}
+	
+	private class Processor {
+		
+		private Processor(ResolvableText props) {
+			_loc_ = props.getLocale();
+			hyphenate = props.shouldHyphenate();
+			markCapitals = props.shouldMarkCapitalLetters();
+		}
+		
+		Optional<String> _loc_;
+		boolean hyphenate;
+		boolean markCapitals;
+		
+		List<String> parts  = new ArrayList<>();
+		StringBuilder textB = new StringBuilder();
+		StringBuilder hyphB = new StringBuilder();
+		StringBuilder toTranslate = new StringBuilder();
+		
+		private void process(String s, ResolvableText props) {
+			if (!props.getLocale().equals(_loc_) || props.shouldHyphenate()!=hyphenate || props.shouldMarkCapitalLetters()!=markCapitals) {
+				//Flush
+				flush();
+				// Set
+				_loc_ = props.getLocale();
+				hyphenate = props.shouldHyphenate();
+				markCapitals = props.shouldMarkCapitalLetters();
+				toTranslate = new StringBuilder();
+			}
+			parts.add(s);
+			toTranslate.append(s);
+		}
+		
+		private void flush() {
+			if (toTranslate.length()==0) {
+				return;
+			}
+			String text = toTranslate.toString();
+			String hyphText = text;
+			if (!markCapitals) {
+				//TODO: toLowerCase may not always do what we want here,
+				//it depends on the lower case algorithm and the rules 
+				//of the braille for that language
+				text = text.toLowerCase(Locale.ROOT);
+			}
+			if (hyphenate) {
+				String locale = _loc_.orElse(loc);
+				HyphenatorInterface hx = hyphenators.get(locale);
+				if (hx == null) {
+					try {
+						hx = hyphenatorFactoryMaker.newHyphenator(locale);
+					} catch (HyphenatorConfigurationException e) {
+						if (LOGGER.isLoggable(Level.WARNING)) {
+							LOGGER.log(Level.WARNING, String.format("Failed to create hyphenator for %s", locale), e);
+						}
+					}
+					hyphenators.put(locale, hx);
+				}
+				hyphText = hx.hyphenate(text);
+			}
+
+			textB.append(text);
+			hyphB.append(hyphText);
+		}
+
 	}
 
 	/**
 	 * Maps a translatable and the corresponding hyphenated string to a set of data that can be 
 	 * used with Liblouis. The hyphenated string is used to set the intercharacter attributes.
-	 * The map is used for creating a type form array from the translatable's text attributes.
 	 * 
 	 * @param hyphStr the hyphenated string
-	 * @param spec the translatable
-	 * @param map the "type form" map, may be null
+	 * @param inputStr the input string
 	 * @return hyphenation information
 	 */
-	static LiblouisTranslatable toLiblouisSpecification(String hyphStr, Translatable spec, Map<String, Integer> map) {
-		String inputStr = spec.getText();
+	static LiblouisTranslatable toLiblouisSpecification(String hyphStr, String inputStr) {
 		if (hyphStr.length() < inputStr.length()) {
 			throw new IllegalArgumentException("The hyphenated string cannot be shorter than the input string");
 		}
-		TextAttribute ta = spec.getAttributes();
+		
 		int[] cpHyph = hyphStr.codePoints().toArray();
 		int[] cpInput = inputStr.codePoints().toArray();
 		int j=0;
 		int flag;
 		int[] interCharAttr = new int[cpInput.length-1];
 		int[] charAtts = new int[cpInput.length];
-		short[] typeForm;
-		if (ta==null || map==null) {
-			typeForm = new short[cpInput.length];
-		} else {
-			typeForm = toTypeForm(spec.getAttributes(), map);
-		}
+
 		for (int i=0; i<cpInput.length; i++) {
 			charAtts[i]=i;
 			flag = LIBLOUIS_NO_BREAKPOINT;
@@ -125,7 +276,7 @@ class LiblouisBrailleFilter implements BrailleFilter {
 				interCharAttr[i] = flag;
 			}
 		}
-		return new LiblouisTranslatable(inputStr, charAtts, interCharAttr, typeForm);
+		return new LiblouisTranslatable(inputStr, charAtts, interCharAttr);
 	}
 
 	/**
@@ -140,9 +291,9 @@ class LiblouisBrailleFilter implements BrailleFilter {
 		short[] ret = new short[attr.getWidth()];
 		short typeForm = 0;
 		if (attr.getDictionaryIdentifier()!=null) {
-			Short v = map.get(attr.getDictionaryIdentifier()).shortValue();
-			if (v!=null) {
-				typeForm = v;
+			Integer tfValue = map.get(attr.getDictionaryIdentifier());
+			if (tfValue!=null) {
+				typeForm = tfValue.shortValue();
 			}
 		}
 
