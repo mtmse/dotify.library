@@ -37,6 +37,25 @@ public class UCharFilter extends SimpleUCharReplacer implements StringFilter {
 		}
 	}
 	
+	/**
+	 * Create a new CharFilter
+	 * @param table relative path to replacement table, see UCharReplacement for more information
+	 * @param autoComplete adds upper/lower case entries with the same value, where missing according to the specified locale
+	 */
+	public UCharFilter(Locale autoComplete, URL ... table) {
+		super();
+		for (URL t : table) {
+			try {
+				addSubstitutionTable(t);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		if (autoComplete!=null) {
+			putAll(fillInCase(this, autoComplete));
+		}
+	}
+	
 	private static Map<Integer, String> fillInCase(Map<Integer, String> map, Locale autoComplete) {
 		Map<Integer, String> add = new HashMap<>();
 		String substitute;
