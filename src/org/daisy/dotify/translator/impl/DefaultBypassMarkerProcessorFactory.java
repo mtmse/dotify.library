@@ -17,7 +17,14 @@ class DefaultBypassMarkerProcessorFactory implements
 		if (mode.equals(TranslatorType.BYPASS.toString())) {
 			SimpleMarkerDictionary dd = new SimpleMarkerDictionary(new Marker("* ", ""));
 
-			DefaultMarkerProcessor sap = new DefaultMarkerProcessor.Builder().addDictionary(MarkerStyleConstants.DD, dd).build();
+			DefaultMarkerProcessor sap = new DefaultMarkerProcessor.Builder()
+					.addDictionary(MarkerStyleConstants.EM, new SimpleMarkerDictionary(new Marker("", "")))
+					.addDictionary(MarkerStyleConstants.STRONG, new SimpleMarkerDictionary(new Marker("", "")))
+					.addDictionary(MarkerStyleConstants.SUB, new SimpleMarkerDictionary(new Marker("", "")))
+					.addDictionary(MarkerStyleConstants.SUP, new SimpleMarkerDictionary(new Marker("^", "")))
+					.addDictionary(MarkerStyleConstants.DD, dd)
+					.addDictionary("table-cell-continued", new SimpleMarkerDictionary(new Marker("--", "")))
+					.build();
 			return sap;
 		}
 		throw new DefaultBypassMarkerProcessorConfigurationException("Factory does not support " + locale + "/" + mode);
