@@ -8,10 +8,12 @@ import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 import org.daisy.dotify.common.io.FileIO;
 
 class URLCache {
+	private static final Logger LOGGER = Logger.getLogger(URLCache.class.getCanonicalName());
 	private final File root;
 	
 	URLCache() {
@@ -106,6 +108,7 @@ class URLCache {
 			return null;
 		}
 		if (overwrite || !f.exists()) {
+			LOGGER.info("Fetching " + url);
 			//Download a copy
 			copyStream(url.openStream(), f);
 		}
