@@ -5,11 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.Reader;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.charset.UnsupportedCharsetException;
@@ -26,13 +23,9 @@ import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.sax.SAXSource;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.EntityResolver;
@@ -317,7 +310,7 @@ public class XMLTools {
 	 * @throws XMLToolsException if the transformation is unsuccessful
 	 */
 	public static void transform(Object source, Object result, Object xslt, Map<String, Object> params) throws XMLToolsException {
-		transform(toSource(source), toResult(result), toSource(xslt), params);
+		transform(TransformerTools.toSource(source), TransformerTools.toResult(result), TransformerTools.toSource(xslt), params);
 	}
 	
 	/**
@@ -336,7 +329,7 @@ public class XMLTools {
 	 * @throws XMLToolsException if the transformation is unsuccessful
 	 */
 	public static void transform(Object source, Object result, Object xslt, Map<String, Object> params, TransformerFactory factory) throws XMLToolsException {
-		transform(toSource(source), toResult(result), toSource(xslt), params, factory);
+		transform(TransformerTools.toSource(source), TransformerTools.toResult(result), TransformerTools.toSource(xslt), params, factory);
 	}
 	
 	/**
@@ -365,21 +358,46 @@ public class XMLTools {
 	 * @throws XMLToolsException if the transformation is unsuccessful
 	 */
 	public static void transform(Source source, Result result, Source xslt, Map<String, Object> params, TransformerFactory factory) throws XMLToolsException {
-		Transformer transformer;
-		try {
-			transformer = factory.newTransformer(xslt);
-		} catch (TransformerConfigurationException e) {
-			throw new XMLToolsException(e);
-		} catch (TransformerFactoryConfigurationError e) {
-			throw new XMLToolsException(e);
-		}
+		transform(source, result, xslt, TransformerEnvironment.builder().transformerFactory(factory).parameters(params).build());
+	}
+	
+	/**
+	 * <p>Transforms the xml with the specified parameters. By default, this method will set up a caching entity resolver, which
+	 * will reduce the amount of fetching of dtd's from the Internet.</p>
+	 * @param source the source xml
+	 * @param result the result xml
+	 * @param xslt the xslt
+	 * @param env the transformer environment
+	 * @param <T> the type of exception thrown
+	 * @throws T if the transformation is unsuccessful
+	 */
+	public static <T extends Exception> void transform(Object source, Object result, Object xslt, TransformerEnvironment<T> env) throws T {
+		transform(env.asSource(source), env.asResult(result), env.asSource(xslt), env);
+	}
 
-		for (String name : params.keySet()) {
-			transformer.setParameter(name, params.get(name));
+	/**
+	 * <p>Transforms the xml with the specified parameters. By default, this method will set up a caching entity resolver, which
+	 * will reduce the amount of fetching of dtd's from the Internet.</p>
+	 * @param source the source xml
+	 * @param result the result xml
+	 * @param xslt the xslt
+	 * @param env the transformer environment
+	 * @param <T> the type of exception thrown
+	 * @throws T if the transformation is unsuccessful
+	 */
+	public static <T extends Exception> void transform(Source source, Result result, Source xslt, TransformerEnvironment<T> env) throws T {
+		Transformer transformer = env.newTransformer(xslt);
+
+		for (String name : env.getParameters().keySet()) {
+			transformer.setParameter(name, env.getParameters().get(name));
 		}
 		
 		SAXParserFactory parserFactory = SAXParserFactory.newInstance();
-		transformer.setURIResolver(new CachingURIResolver(parserFactory));
+		try {
+			transformer.setURIResolver(new CachingURIResolver(parserFactory));
+		} catch (XMLToolsException e) {
+			env.toThrowable(e);
+		}
         //Create a SAXSource, hook up an entityresolver
         if(source.getSystemId()!=null && source.getSystemId().length()>0) {
         	try {
@@ -397,7 +415,7 @@ public class XMLTools {
 					}
 				}
         	} catch (TransformerException e) {
-    			throw new XMLToolsException(e);
+    			throw env.toThrowable(e);
     		} catch (Exception e) {
     			//TODO: really catch everything?
 				e.printStackTrace();
@@ -410,49 +428,6 @@ public class XMLTools {
 			source.getXMLReader().setEntityResolver(new EntityResolverCache());
 		}
 		return source;
-	}
-
-	private static Source toSource(Object source) throws XMLToolsException {
-		if (source instanceof File) {
-			return new StreamSource((File) source);
-		} else if (source instanceof String) {
-			return new StreamSource((String) source);
-		} else if (source instanceof URL) {
-			try {
-				// Compare to {@link StreamSource#StreamSource(File)}
-				return new StreamSource(((URL) source).toURI().toASCIIString());
-			} catch (URISyntaxException e) {
-				throw new XMLToolsException(e);
-			}
-		} else if (source instanceof URI) {
-			return new StreamSource(((URI) source).toASCIIString());
-		} else if (source instanceof Source) {
-			return (Source) source;
-		} else {
-			throw new XMLToolsException("Failed to create source: " + source);
-		}
-	}
-
-	private static Result toResult(Object result) throws XMLToolsException {
-		if (result instanceof File) {
-			return new StreamResult((File) result);
-		} else if (result instanceof OutputStream) {
-			return new StreamResult((OutputStream) result);
-		} else if (result instanceof String) {
-			return new StreamResult((String) result);
-		} else if (result instanceof URL) {
-			try {
-				return new StreamResult(((URL) result).toURI().toASCIIString());
-			} catch (URISyntaxException e) {
-				throw new XMLToolsException(e);
-			}
-		} else if (result instanceof URI) {
-			return new StreamResult(((URI) result).toASCIIString());
-		} else if (result instanceof Result) {
-			return (Result) result;
-		} else {
-			throw new XMLToolsException("Failed to create result: " + result);
-		}
 	}
 
 	/**
