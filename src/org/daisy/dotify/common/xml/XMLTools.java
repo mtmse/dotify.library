@@ -420,7 +420,9 @@ public class XMLTools {
     			//TODO: really catch everything?
 				e.printStackTrace();
 			}
-        }
+		} else {
+			throw env.toThrowable(new XMLToolsException("No system id on source, see https://github.com/brailleapps/dotify.common/issues/4."));
+		}
 	}
 	
 	private static SAXSource setEntityResolver(SAXSource source) {
