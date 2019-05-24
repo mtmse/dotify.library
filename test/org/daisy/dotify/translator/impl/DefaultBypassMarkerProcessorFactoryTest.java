@@ -3,16 +3,16 @@ package org.daisy.dotify.translator.impl;
 import static org.junit.Assert.assertEquals;
 
 import org.daisy.dotify.api.translator.DefaultTextAttribute;
-import org.daisy.dotify.api.translator.MarkerProcessor;
-import org.daisy.dotify.api.translator.MarkerProcessorConfigurationException;
 import org.daisy.dotify.api.translator.TranslatorType;
+import org.daisy.dotify.translator.DefaultMarkerProcessor;
+import org.daisy.dotify.translator.impl.DefaultBypassMarkerProcessorFactory.DefaultBypassMarkerProcessorConfigurationException;
 import org.junit.Test;
 
 @SuppressWarnings("javadoc")
 public class DefaultBypassMarkerProcessorFactoryTest {
-	private final MarkerProcessor tp;
+	private final DefaultMarkerProcessor tp;
 
-	public DefaultBypassMarkerProcessorFactoryTest() throws MarkerProcessorConfigurationException {
+	public DefaultBypassMarkerProcessorFactoryTest() throws DefaultBypassMarkerProcessorConfigurationException {
 		tp = new DefaultBypassMarkerProcessorFactory().newMarkerProcessor("sv-se", TranslatorType.BYPASS.toString());
 	}
 

@@ -11,14 +11,13 @@ import java.util.stream.Collectors;
 
 import org.daisy.dotify.api.translator.AttributeWithContext;
 import org.daisy.dotify.api.translator.DefaultTextAttribute;
-import org.daisy.dotify.api.translator.MarkerProcessor;
 import org.daisy.dotify.api.translator.TextAttribute;
 
 /**
  * Provides a default marker processor implementation.
  * @author Joel Håkansson
  */
-public class DefaultMarkerProcessor implements MarkerProcessor {
+public class DefaultMarkerProcessor {
 	private final Map<String, MarkerDictionary> specs;
 
 	/**
@@ -59,12 +58,33 @@ public class DefaultMarkerProcessor implements MarkerProcessor {
 		this.specs = builder.specs;
 	}
 
-	@Override
+	/**
+	 * Processes the input text and attributes into a text containing
+	 * markers at the appropriate positions. The length of the text(s)
+	 * must match the text attributes specified width.
+	 * 
+	 * @param atts the text attributes that apply to the text.
+	 * @param text the text(s) to process
+	 * @return returns a string with markers
+	 * @throws IllegalArgumentException
+	 * 			if the specified attributes does not match the text.
+	 */
 	public String processAttributes(TextAttribute atts, String... text) {
 		return join(processAttributesRetain(atts, text));
 	}
 
-	@Override
+	/**
+	 * Processes the input text chunks and attributes into a text containing
+	 * markers at the appropriate positions while retaining the text
+	 * partition as specified by the input array. The length of the texts
+	 * must match the text attributes specified width.
+	 * 
+	 * @param text the texts to process
+	 * @param atts the text attributes that apply to the text.
+	 * @return returns an array of strings with markers
+	 * @throws IllegalArgumentException
+	 * 			if the specified attributes does not match the text.
+	 */
 	public String[] processAttributesRetain(TextAttribute atts, String[] text) {
 		if (atts == null) {
 			return text;

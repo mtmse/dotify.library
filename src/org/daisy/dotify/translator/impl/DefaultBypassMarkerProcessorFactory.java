@@ -1,19 +1,14 @@
 package org.daisy.dotify.translator.impl;
 
-import org.daisy.dotify.api.translator.MarkerProcessor;
-import org.daisy.dotify.api.translator.MarkerProcessorConfigurationException;
-import org.daisy.dotify.api.translator.MarkerProcessorFactory;
 import org.daisy.dotify.api.translator.TranslatorType;
 import org.daisy.dotify.translator.DefaultMarkerProcessor;
 import org.daisy.dotify.translator.Marker;
 import org.daisy.dotify.translator.MarkerStyleConstants;
 import org.daisy.dotify.translator.SimpleMarkerDictionary;
 
-class DefaultBypassMarkerProcessorFactory implements
-		MarkerProcessorFactory {
+class DefaultBypassMarkerProcessorFactory {
 
-	@Override
-	public DefaultMarkerProcessor newMarkerProcessor(String locale, String mode) throws MarkerProcessorConfigurationException {
+	public DefaultMarkerProcessor newMarkerProcessor(String locale, String mode) throws DefaultBypassMarkerProcessorConfigurationException {
 		if (mode.equals(TranslatorType.BYPASS.toString())) {
 			SimpleMarkerDictionary dd = new SimpleMarkerDictionary(new Marker("* ", ""));
 
@@ -30,7 +25,7 @@ class DefaultBypassMarkerProcessorFactory implements
 		throw new DefaultBypassMarkerProcessorConfigurationException("Factory does not support " + locale + "/" + mode);
 	}
 
-	private class DefaultBypassMarkerProcessorConfigurationException extends MarkerProcessorConfigurationException {
+	class DefaultBypassMarkerProcessorConfigurationException extends Exception {
 
 		/**
 		 * 

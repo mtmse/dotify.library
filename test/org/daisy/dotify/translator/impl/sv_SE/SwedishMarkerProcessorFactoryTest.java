@@ -3,16 +3,16 @@ package org.daisy.dotify.translator.impl.sv_SE;
 import static org.junit.Assert.assertEquals;
 
 import org.daisy.dotify.api.translator.DefaultTextAttribute;
-import org.daisy.dotify.api.translator.MarkerProcessor;
-import org.daisy.dotify.api.translator.MarkerProcessorConfigurationException;
 import org.daisy.dotify.api.translator.TranslatorType;
+import org.daisy.dotify.translator.DefaultMarkerProcessor;
+import org.daisy.dotify.translator.impl.sv_SE.SwedishMarkerProcessorFactory.SwedishMarkerProcessorConfigurationException;
 import org.junit.Test;
 
 @SuppressWarnings("javadoc")
 public class SwedishMarkerProcessorFactoryTest {
-	private final MarkerProcessor processor;
+	private final DefaultMarkerProcessor processor;
 
-	public SwedishMarkerProcessorFactoryTest() throws MarkerProcessorConfigurationException {
+	public SwedishMarkerProcessorFactoryTest() throws SwedishMarkerProcessorConfigurationException {
 		processor = new SwedishMarkerProcessorFactory().newMarkerProcessor("sv-se", TranslatorType.UNCONTRACTED.toString());
 	}
 
