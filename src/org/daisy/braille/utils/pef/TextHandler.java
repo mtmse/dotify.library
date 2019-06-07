@@ -29,6 +29,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.daisy.dotify.api.table.BrailleConverter;
 import org.daisy.dotify.api.table.Table;
@@ -78,6 +80,8 @@ public class TextHandler {
 	 * corresponding settings value should be a string containing a valid date on the form yyyy-MM-dd
 	 */
 	public static final String KEY_DATE = "date";
+	
+	private static final Logger LOGGER = Logger.getLogger(TextHandler.class.getCanonicalName());
 
 	private final File input;
 	private final File output;
@@ -277,7 +281,9 @@ public class TextHandler {
 				}
 				throw new InputDetectionException("Cannot choose a table automatically. Possible matches: " + sb.toString());
 			}
-			System.out.println("Using " + tableCandiates.get(0).getDisplayName());
+			if (LOGGER.isLoggable(Level.FINE)) {
+				LOGGER.fine("Using " + tableCandiates.get(0).getDisplayName());
+			}
 			converter = tableCandiates.get(0).newBrailleConverter();
 		} else {
 			converter = factory.newTable(builder.converterId).newBrailleConverter();			
