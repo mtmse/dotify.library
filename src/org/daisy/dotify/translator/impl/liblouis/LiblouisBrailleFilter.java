@@ -29,6 +29,7 @@ import org.liblouis.DisplayTable.Fallback;
 import org.liblouis.DisplayTable.UnicodeBrailleDisplayTable;
 import org.liblouis.TranslationResult;
 import org.liblouis.Translator;
+import org.liblouis.Typeform;
 
 class LiblouisBrailleFilter implements BrailleFilter {
 	private static final Logger LOGGER = Logger.getLogger(LiblouisBrailleFilter.class.getCanonicalName());
@@ -41,6 +42,7 @@ class LiblouisBrailleFilter implements BrailleFilter {
 	private final HyphenatorFactoryMakerService hyphenatorFactoryMaker;
 	private final Map<String, HyphenatorInterface> hyphenators;
 	private final Translator table;
+	private final Map<String, Typeform> typeformMap;
 	private final LiblouisMarkerProcessor mp;
 
 	LiblouisBrailleFilter(TranslatorSpecification ts, LiblouisMarkerProcessor mp, HyphenatorFactoryMakerService hyphenatorFactoryMaker) {
@@ -48,14 +50,23 @@ class LiblouisBrailleFilter implements BrailleFilter {
 		this.hyphenatorFactoryMaker = hyphenatorFactoryMaker;
 		this.hyphenators = new HashMap<>();
 		try {
-			table = new Translator(LiblouisSpecifications.getMap().get(ts));
+			this.table = new Translator(LiblouisSpecifications.getMap().get(ts));
 		} catch (CompilationException e) {
 			throw new IllegalArgumentException(e);
 		}
+		this.typeformMap = table.getSupportedTypeforms().stream()
+				.collect(Collectors.toMap(x->x.getName(), x->x));
+		addTypeformAlias("italic", "em");
+		addTypeformAlias("bold", "strong");
 		this.mp = mp;
 	}
-
-
+	
+	private void addTypeformAlias(String name, String alias) {
+		if (typeformMap.containsKey(name) && !typeformMap.containsKey(alias)) {
+			Typeform t = typeformMap.get(name);
+			typeformMap.put(alias, t);
+		}
+	}
 
 	@Override
 	public String filter(Translatable specification) throws TranslationException {
@@ -103,11 +114,11 @@ class LiblouisBrailleFilter implements BrailleFilter {
 		// Only style attributes from Liblouis itself are processed here
 		LiblouisTranslatable louisSpec = toLiblouisSpecification(text, specification.getText());
 		TextAttribute ta = specification.getAttributes();
-		short[] typeForm;
-		if (ta==null || mp.getTypeForm()==null) {
-			typeForm = new short[louisSpec.getCharAtts().length];
+		Typeform[] typeForm;
+		if (ta==null) {
+			typeForm = new Typeform[louisSpec.getCharAtts().length];
 		} else {
-			typeForm = toTypeForm(ta, mp.getTypeForm());
+			typeForm = toTypeForm(ta, typeformMap);
 		}
 
 		try {
@@ -151,19 +162,19 @@ class LiblouisBrailleFilter implements BrailleFilter {
 
 		LiblouisTranslatable louisSpec = toLiblouisSpecification(strHyph, strIn);
 		
-		short[] typeForm;
+		Typeform[] typeForm;
 		
-		if (specification.getAttributes().isPresent() && mp.getTypeForm()!=null) {
+		if (specification.getAttributes().isPresent()) {
 			List<String> preceding = specification.getPrecedingText().stream().map(v->v.resolve()).collect(Collectors.toList()); 
 			List<String> following = specification.getFollowingText().stream().map(v->v.peek()).collect(Collectors.toList());
 			List<String> textsI = Stream.concat(Stream.concat(preceding.stream(), p.parts.stream()), following.stream()).collect(Collectors.toList());
 			TextAttribute ta = DefaultMarkerProcessor.toTextAttribute(specification.getAttributes().get(), textsI);
-			short[] typeForm2 = toTypeForm(ta, mp.getTypeForm());
+			Typeform[] typeForm2 = toTypeForm(ta, typeformMap);
 			int start = preceding.stream().mapToInt(v->v.length()).sum();
 			int end = start + strIn.length();
 			typeForm = Arrays.copyOfRange(typeForm2, start, end);
 		} else {
-			typeForm = new short[louisSpec.getCharAtts().length];
+			typeForm = new Typeform[louisSpec.getCharAtts().length];
 		}
 		
 		try {
@@ -280,29 +291,25 @@ class LiblouisBrailleFilter implements BrailleFilter {
 	}
 
 	/**
-	 * Converts a text attribute to its "type form" equivalent. Note that type form
-	 * values should be a power of two, since they can be superimposed to create
-	 * composite type forms. For example: "italic"=>1, "underline"=>2 and "bold"=>4
+	 * Converts a text attribute to its "type form" equivalent.
 	 * @param attr the text attribute
 	 * @param map the text attribute name to type form value map
 	 * @return returns an array with the corresponding values
 	 */
-	static short[] toTypeForm(TextAttribute attr, Map<String, Integer> map) {
-		short[] ret = new short[attr.getWidth()];
-		short typeForm = 0;
+	static Typeform[] toTypeForm(TextAttribute attr, Map<String, Typeform> map) {
+		Typeform[] ret = new Typeform[attr.getWidth()];
+		Typeform typeForm = Typeform.PLAIN_TEXT;
 		if (attr.getDictionaryIdentifier()!=null) {
-			Integer tfValue = map.get(attr.getDictionaryIdentifier());
-			if (tfValue!=null) {
-				typeForm = tfValue.shortValue();
-			}
+			typeForm = Optional.ofNullable(map.get(attr.getDictionaryIdentifier())).orElse(typeForm);
 		}
 
 		if (attr.hasChildren()) {
 			int offset = 0;
 			for (TextAttribute t : attr) {
-				short[] v = toTypeForm(t, map);
+				Typeform[] v = toTypeForm(t, map);
+				//Note: v.length == t.getWidth()
 				for (int i=0; i<v.length; i++) {
-					ret[i+offset] = (short)(typeForm | v[i]);
+					ret[i+offset] = typeForm.add(v[i]);
 				}
 				offset += t.getWidth();
 			}

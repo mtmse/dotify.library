@@ -13,7 +13,7 @@ import org.junit.Test;
 
 @SuppressWarnings("javadoc")
 public class LiblouisBrailleFilterTest {
-	
+	/*
 	@Test
 	public void testToTypeForm_01() {
 		TextAttribute ta = new DefaultTextAttribute.Builder()
@@ -61,7 +61,7 @@ public class LiblouisBrailleFilterTest {
 		short[] expecteds = new short[] {2,2,2,2,2,3,3,3,3,2,2,2,2,2};
 		short[] actuals = LiblouisBrailleFilter.toTypeForm(ta, dict);
 		assertArrayEquals(expecteds, actuals);
-	}
+	}*/
 	
 	@Test
 	public void testToLiblouisSpecification_01() {
