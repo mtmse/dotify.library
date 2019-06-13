@@ -24,6 +24,10 @@ import org.daisy.dotify.api.table.TableFilter;
 import org.daisy.braille.utils.impl.tools.embosser.AbstractEmbosser;
 import org.daisy.braille.utils.impl.tools.table.DefaultTableProvider;
 
+/**
+ * Provides an abstract Braillo embosser.
+ * @author Joel Håkansson
+ */
 public abstract class BrailloEmbosser extends AbstractEmbosser {
 	/**
 	 * 
@@ -41,6 +45,11 @@ public abstract class BrailloEmbosser extends AbstractEmbosser {
 		};
 	}
 
+	/**
+	 * Creates a new Braillo embosser.
+	 * @param service the table catalog
+	 * @param props the embosser properties
+	 */
 	public BrailloEmbosser(TableCatalogService service, EmbosserFactoryProperties props) {
 		super(service, props);
 	}

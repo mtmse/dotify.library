@@ -62,6 +62,11 @@ public class ImpactoEmbosser extends CidatEmbosser {
 	private int numberOfCopies = 1;
 	private int maxNumberOfCopies = 32767;
 
+	/**
+	 * Creates a new Impacto embosser.
+	 * @param service the table catalog
+	 * @param props the embosser properties
+	 */
 	public ImpactoEmbosser(TableCatalogService service, EmbosserType props) {
 
 		super(service, props);

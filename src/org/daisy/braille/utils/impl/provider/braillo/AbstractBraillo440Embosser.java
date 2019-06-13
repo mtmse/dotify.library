@@ -36,6 +36,10 @@ import org.daisy.braille.utils.impl.tools.embosser.BufferedVolumeEmbosser;
 import org.daisy.braille.utils.impl.tools.embosser.EmbosserTools;
 import org.daisy.braille.utils.impl.tools.embosser.SimpleEmbosserProperties;
 
+/**
+ * Provides an abstract Braillo 440 embosser.
+ * @author Joel Håkansson
+ */
 public abstract class AbstractBraillo440Embosser extends BrailloEmbosser {
 	/**
 	 * 
@@ -45,6 +49,11 @@ public abstract class AbstractBraillo440Embosser extends BrailloEmbosser {
 
 	protected boolean saddleStitchEnabled;
 
+	/**
+	 * Creates a new Braillo 440 embosser.
+	 * @param service the table catalog
+	 * @param props the embosser properties
+	 */
 	public AbstractBraillo440Embosser(TableCatalogService service, EmbosserFactoryProperties props) {
 		super(service, props);
 		saddleStitchEnabled = false;

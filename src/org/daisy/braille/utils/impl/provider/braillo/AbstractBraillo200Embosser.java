@@ -67,6 +67,11 @@ public abstract class AbstractBraillo200Embosser extends BrailloEmbosser {
 		return true;
 	}
 
+	/**
+	 * Creates a new Braillo 200 embosser.
+	 * @param service the table catalog
+	 * @param props the embosser properties
+	 */
 	public AbstractBraillo200Embosser(TableCatalogService service, EmbosserFactoryProperties props) {
 		super(service, props);
 		this.zFoldingEnabled = false;

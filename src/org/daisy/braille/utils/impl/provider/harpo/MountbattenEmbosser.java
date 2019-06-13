@@ -41,6 +41,9 @@ import org.daisy.braille.utils.impl.tools.embosser.ConfigurableEmbosser;
 import org.daisy.braille.utils.impl.tools.embosser.FileToDeviceEmbosserWriter;
 import org.daisy.braille.utils.impl.tools.embosser.SimpleEmbosserProperties;
 
+/**
+ * Provides a Mountbatten embosser.
+ */
 public class MountbattenEmbosser extends AbstractEmbosser {
 
 	/**
@@ -73,6 +76,11 @@ public class MountbattenEmbosser extends AbstractEmbosser {
 		return tableFilter;
 	}
 
+	/**
+	 * Creates a new Mountbatten embosser.
+	 * @param service the table catalog
+	 * @param props the embosser properties
+	 */
 	public MountbattenEmbosser(TableCatalogService service, EmbosserFactoryProperties props) {
 
 		super(service, props);

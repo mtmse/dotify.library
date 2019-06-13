@@ -22,6 +22,11 @@ import org.daisy.dotify.api.paper.PageFormat;
 import org.daisy.dotify.api.paper.Paper;
 import org.daisy.dotify.api.table.TableCatalogService;
 
+/**
+ * Provides a Braillo 400 SR embosser.
+ * @author Joel Håkansson
+ *
+ */
 public class Braillo400SREmbosser extends AbstractBraillo200Embosser {
 
 	/**
@@ -29,6 +34,11 @@ public class Braillo400SREmbosser extends AbstractBraillo200Embosser {
 	 */
 	private static final long serialVersionUID = 4824785073677884484L;
 
+	/**
+	 * Creates a new Braillo 400 SR embosser.
+	 * @param service the table catalog
+	 * @param props the embosser properties
+	 */
 	public Braillo400SREmbosser(TableCatalogService service, EmbosserFactoryProperties props) {
 		super(service, props);
 	}

@@ -56,6 +56,11 @@ public abstract class CidatEmbosser extends AbstractEmbosser {
 
 	protected boolean duplexEnabled = true;
 
+	/**
+	 * Creates a new Cidat embosser.
+	 * @param service the table catalog
+	 * @param props the embosser properties
+	 */
 	public CidatEmbosser(TableCatalogService service, EmbosserType props) {
 
 		super(service, props);

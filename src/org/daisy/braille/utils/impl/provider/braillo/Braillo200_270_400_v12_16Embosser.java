@@ -72,6 +72,11 @@ public class Braillo200_270_400_v12_16Embosser extends BrailloEmbosser {
 		return true;
 	}
 
+	/**
+	 * Creates a new Braillo 200/270/400 embosser having firmware version 12-16.
+	 * @param service the table catalog
+	 * @param props the embosser properties
+	 */
 	public Braillo200_270_400_v12_16Embosser(TableCatalogService service, EmbosserFactoryProperties props) {
 		super(service, props);
 		zFoldingEnabled = false;
