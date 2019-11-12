@@ -42,6 +42,7 @@ import org.daisy.dotify.formatter.impl.volume.VolumeTemplate;
  * @author Joel Håkansson
  */
 class FormatterImpl implements Formatter {
+	private static final int MAX_ITERATIONS = 200;
 
 	private final Stack<VolumeTemplate> volumeTemplates;
 	private final Logger logger;
@@ -163,8 +164,7 @@ class FormatterImpl implements Formatter {
 		 * this value permanently. It should therefore not be parameterized.  Having that said,
 		 * changing this value temporarily could be useful for debugging purposes.
 		 */
-		int maxIterations = 50;
-		for (int j=1;j<=maxIterations;j++) {
+		for (int j=1;j<=MAX_ITERATIONS;j++) {
 			try {
 				ret = new ArrayList<>();
 				volumeProvider.prepare();
