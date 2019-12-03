@@ -13,9 +13,8 @@ public interface TableOfContents extends FormatterCore {
 	 * Starts a new entry with the supplied properties.
 	 * 
 	 * @param refId the element that this toc entry is connected to
-	 * @param props the properties
 	 */
-	public void startEntry(String refId, BlockProperties props);
+	public void startEntry(String refId);
 	
 	/**
 	 * Ends the current entry.
