@@ -7,11 +7,18 @@
 			</default-template>
 		</layout-master>
 		<table-of-contents name="toc">
-			<toc-entry ref-id="h-1">Blocks</toc-entry>
-			<toc-entry ref-id="h-2">Whitespace that moves
-				<toc-entry ref-id="h-2-1">   Marker space is moved before marker  </toc-entry>
-				<toc-entry ref-id="h-2-2">  Anchor space is moved before marker:</toc-entry>
+			<toc-block>
+				<toc-entry ref-id="h-1">Blocks</toc-entry>
+			</toc-block>
+			<toc-block>
+				<toc-entry ref-id="h-2">Whitespace that moves</toc-entry>
+				<toc-block>
+					<toc-entry ref-id="h-2-1">   Marker space is moved before marker  </toc-entry>
+				</toc-block>
+				<toc-block>
+					<toc-entry ref-id="h-2-2">  Anchor space is moved before marker:</toc-entry>
+				</toc-block>
 				unknown page.
-			</toc-entry>
+			</toc-block>
 		</table-of-contents>
 </obfl>

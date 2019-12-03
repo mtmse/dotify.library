@@ -14,12 +14,24 @@
 		</default-template>
 	</layout-master>
 	<table-of-contents name="toc">
-		<toc-entry ref-id="block1">Entry 1</toc-entry>
-		<toc-entry ref-id="block2">Entry 2</toc-entry>
-		<toc-entry ref-id="block3">Entry 3</toc-entry>
-		<toc-entry ref-id="block4">Entry 4</toc-entry>
-		<toc-entry ref-id="block5">Entry 5</toc-entry>
-		<toc-entry ref-id="block6">Entry 6</toc-entry>
+		<toc-block>
+			<toc-entry ref-id="block1">Entry 1</toc-entry>
+		</toc-block>
+		<toc-block>
+			<toc-entry ref-id="block2">Entry 2</toc-entry>
+		</toc-block>
+		<toc-block>
+			<toc-entry ref-id="block3">Entry 3</toc-entry>
+		</toc-block>
+		<toc-block>
+			<toc-entry ref-id="block4">Entry 4</toc-entry>
+		</toc-block>
+		<toc-block>
+			<toc-entry ref-id="block5">Entry 5</toc-entry>
+		</toc-block>
+		<toc-block>
+			<toc-entry ref-id="block6">Entry 6</toc-entry>
+		</toc-block>
 	</table-of-contents>
 	<volume-template sheets-in-volume-max="50"  use-when="(= 1 1)">
 		<pre-content>

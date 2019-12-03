@@ -1161,7 +1161,9 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
 		TableOfContents toc = formatter.newToc(tocName);
 		while (input.hasNext()) {
 			event=input.nextEvent();
-			if (equalsStart(event, ObflQName.TOC_ENTRY)) {
+			if (equalsStart(event, ObflQName.TOC_BLOCK)) {
+				parseTocBlock(event, input, toc, tp);
+			} else if (equalsStart(event, ObflQName.TOC_ENTRY)) {
 				parseTocEntry(event, input, toc, tp);
 			} else if (equalsEnd(event, ObflQName.TABLE_OF_CONTENTS)) {
 				break;
@@ -1186,20 +1188,35 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
 		}
 	}
 
+	private void parseTocBlock(XMLEvent event, XMLEventIterator input, TableOfContents toc, TextProperties tp) throws XMLStreamException {
+		toc.startBlock(blockBuilder(event.asStartElement()));
+		tp = getTextProperties(event, tp);
+		while (input.hasNext()) {
+			event=input.nextEvent();
+			if (equalsStart(event, ObflQName.TOC_BLOCK)) {
+				parseTocBlock(event, input, toc, tp);
+			} else if (equalsStart(event, ObflQName.TOC_ENTRY)) {
+				parseTocEntry(event, input, toc, tp);
+			} else if (equalsEnd(event, ObflQName.TOC_BLOCK)) {
+				toc.endBlock();
+				break;
+			} else {
+				report(event);
+			}
+		}
+	}
+
 	private void parseTocEntry(XMLEvent event, XMLEventIterator input, TableOfContents toc, TextProperties tp) throws XMLStreamException {
 		String refId = getAttr(event, "ref-id");
 		tp = getTextProperties(event, tp);
-		toc.startEntry(refId, blockBuilder(event.asStartElement()));
+		toc.startEntry(refId);
 		while (input.hasNext()) {
 			event=input.nextEvent();
 			if (event.isCharacters()) {
 				toc.addChars(event.asCharacters().getData(), tp);
-			} else if (equalsStart(event, ObflQName.TOC_ENTRY)) {
-				parseTocEntry(event, input, toc, tp);
 			} else if (processAsBlockContents(toc, event, input, tp)) {
 				//done!
-			}
-			else if (equalsEnd(event, ObflQName.TOC_ENTRY)) {
+			} else if (equalsEnd(event, ObflQName.TOC_ENTRY)) {
 				toc.endEntry();
 				break;
 			} else {

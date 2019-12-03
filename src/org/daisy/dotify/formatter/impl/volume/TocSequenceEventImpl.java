@@ -2,7 +2,8 @@ package org.daisy.dotify.formatter.impl.volume;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collection;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -118,89 +119,43 @@ class TocSequenceEventImpl implements VolumeSequence {
 			BlockSequenceManipulator fsm = new BlockSequenceManipulator(
 					context.getMasters().get(getSequenceProperties().getMasterName()), 
 					getSequenceProperties());
-
 			fsm.appendGroup(getTocStart(vars));
-
-			fsm.appendGroup(data);
-			
-			if (getRange()==TocProperties.TocRange.DOCUMENT) {
-				fsm.appendGroup(getVolumeEnd(vars));
-			}
-
-			fsm.appendGroup(getTocEnd(vars));
-
 			if (getRange()==TocProperties.TocRange.VOLUME) {
-
-				String start = null;
-				String stop = null;
-				//assumes toc is in sequential order
-				for (String id : data.getTocIdList()) {
-					String ref = data.getRefForID(id);
-					Integer volNo = crh.getVolumeNumber(ref);
-					
-					int vol = (volNo!=null?volNo:1);
-					if (vol<vars.getCurrentVolume()) {
-						
-					} else if (vol==vars.getCurrentVolume()) {
-						if (start==null) {
-							start = id;
-						}
-						stop = id;
-					} else {
-						break;
-					}
-				}
-				// start/stop can be null if no entries are in that volume
-				if (start!=null && stop!=null) {
-					try {
-						fsm.removeRange(data.getTocIdList().iterator().next(), start);
-						fsm.removeTail(stop);
-						fsm.appendGroup(getTocEnd(vars));
-						return fsm.newSequence();
-					} catch (Exception e) {
-						Logger.getLogger(this.getClass().getCanonicalName()).
-							log(Level.SEVERE, "TOC failed for: volume " + vars.getCurrentVolume() + " of " + vars.getVolumeCount(), e);
-					}
-				}
+				fsm.appendGroup(data.filter(refToVolume(vars.getCurrentVolume(), crh)));
 			} else if (getRange()==TocProperties.TocRange.DOCUMENT) {
-
-				int nv=0;
-				HashMap<String, Iterable<Block>> statics = new HashMap<>();
-				for (Block b : fsm.getBlocks()) {
-					if (b.getBlockIdentifier()!=null) {
-						String ref = data.getRefForID(b.getBlockIdentifier());
-						Integer vol = crh.getVolumeNumber(ref);
-						if (vol!=null && nv!=vol) {
-							ArrayList<Block> rr = new ArrayList<>();
-							if (nv>0) {
-								Iterable<Block> ib1 = getVolumeEnd(DefaultContext.from(vars).metaVolume(nv).build());
-								for (Block b1 : ib1) {
-									//set the meta volume for each block, for later evaluation
-									b1.setMetaVolume(nv);
-									rr.add(b1);
-								}
-							}
-							nv = vol;
-							Iterable<Block> ib1 = getVolumeStart(DefaultContext.from(vars).metaVolume(vol).build());
-							for (Block b1 : ib1) {
-								//set the meta volume for each block, for later evaluation
-								b1.setMetaVolume(vol);
-								rr.add(b1);
-							}
-							statics.put(b.getBlockIdentifier(), rr);
+				for (int vol = 1; vol <= crh.getVolumeCount(); vol++) {
+					Collection<Block> volumeToc = data.filter(refToVolume(vol, crh));
+					if (!volumeToc.isEmpty()) {
+						Context varsWithVolume = DefaultContext.from(vars).metaVolume(vol).build();
+						Iterable<Block> volumeStart = getVolumeStart(varsWithVolume);
+						for (Block b : volumeStart) {
+							b.setMetaVolume(vol);
 						}
+						Iterable<Block> volumeEnd = getVolumeEnd(varsWithVolume);
+						for (Block b : volumeEnd) {
+							b.setMetaVolume(vol);
+						}
+						fsm.appendGroup(volumeStart);
+						fsm.appendGroup(volumeToc);
+						fsm.appendGroup(volumeEnd);
 					}
 				}
-				for (String key : statics.keySet()) {
-					fsm.insertGroup(statics.get(key), key);
-				}
-				return fsm.newSequence();
 			} else {
 				throw new RuntimeException("Coding error");
 			}
+			fsm.appendGroup(getTocEnd(vars));
+			return fsm.newSequence();
 		} catch (IOException e) {
 			Logger.getLogger(this.getClass().getCanonicalName()).log(Level.WARNING, "Failed to assemble toc.", e);
 		}
 		return null;
+	}
+
+	private Predicate<String> refToVolume(int vol, CrossReferenceHandler crh) {
+		return refId -> {
+			Integer volNo = crh.getVolumeNumber(refId);
+			int v = volNo != null ? volNo : 1;
+			return v == vol;
+		};
 	}
 }

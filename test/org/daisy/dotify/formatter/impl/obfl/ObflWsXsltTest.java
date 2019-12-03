@@ -149,6 +149,9 @@ public class ObflWsXsltTest {
 		if (!keep && !in.delete()) {
 			in.deleteOnExit();
 		}
+		if (keep && normalizedFile.isFile()) {
+			System.out.println(normalizedFile.getAbsolutePath());
+		}
 		
 		return ret;
 	}
