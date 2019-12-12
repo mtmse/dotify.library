@@ -136,10 +136,9 @@ public class TableOfContentsImpl extends FormatterCoreImpl implements TableOfCon
 			if (refIdForBlock.containsKey(b)) {
 				continue;
 			}
-			if (tocBlockForBlock.containsKey(b)) { // this should always be true
-				if (tocBlocksWithDescendantTocEntry.contains(tocBlockForBlock.get(b))) {
-					continue;
-				}
+			if (tocBlockForBlock.containsKey(b) // this should always be true
+			    && tocBlocksWithDescendantTocEntry.contains(tocBlockForBlock.get(b))) {
+				continue;
 			}
 			i.remove();
 		}
