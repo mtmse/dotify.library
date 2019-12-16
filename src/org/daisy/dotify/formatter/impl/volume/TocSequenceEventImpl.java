@@ -121,7 +121,12 @@ class TocSequenceEventImpl implements VolumeSequence {
 					getSequenceProperties());
 			fsm.appendGroup(getTocStart(vars));
 			if (getRange()==TocProperties.TocRange.VOLUME) {
-				fsm.appendGroup(data.filter(refToVolume(vars.getCurrentVolume(), crh)));
+				Collection<Block> volumeToc = data.filter(refToVolume(vars.getCurrentVolume(), crh));
+				if (!volumeToc.isEmpty()) {
+					fsm.appendGroup(volumeToc);
+				} else {
+					return null;
+				}
 			} else if (getRange()==TocProperties.TocRange.DOCUMENT) {
 				for (int vol = 1; vol <= crh.getVolumeCount(); vol++) {
 					Collection<Block> volumeToc = data.filter(refToVolume(vol, crh));

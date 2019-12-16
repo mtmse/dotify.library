@@ -33,7 +33,7 @@
 			<toc-entry ref-id="block6">Entry 6</toc-entry>
 		</toc-block>
 	</table-of-contents>
-	<volume-template sheets-in-volume-max="50"  use-when="(= 1 1)">
+	<volume-template sheets-in-volume-max="50"  use-when="(= $volume 1)">
 		<pre-content>
 		<toc-sequence toc="toc" range="document" master="main">
 			<on-toc-start>
@@ -52,9 +52,24 @@
 		</pre-content>
 		<post-content></post-content>
 	</volume-template>
+	<volume-template sheets-in-volume-max="50"  use-when="(! (= $volume 1))">
+		<pre-content>
+		<toc-sequence toc="toc" range="volume" master="main">
+			<on-toc-start>
+				<block>Toc Start</block>
+			</on-toc-start>
+		</toc-sequence>
+		</pre-content>
+		<post-content></post-content>
+	</volume-template>
 	<sequence master="main">
 		<block id="block1">Text text text</block>
 		<block id="block2">Text text text</block>
+	</sequence>
+	<sequence master="main" break-before="volume">
+		<block>Text text text</block>
+	</sequence>
+	<sequence master="main" break-before="volume">
 		<block id="block3">Text text text</block>
 		<block id="block4">Text text text</block>
 		<block id="block5">Text text text</block>
