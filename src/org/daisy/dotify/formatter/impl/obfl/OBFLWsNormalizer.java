@@ -184,6 +184,11 @@ public class OBFLWsNormalizer extends XMLParserBase implements XMLEventIterator 
 		}
 	}
 
+	// Note that there could in principle be some leading or trailing white space inside a toc-entry
+	// that is moved outside of the toc-entry, and because toc-entry are conditional, this could
+	// lead to unwanted white space. Because at the moment it is forbidden by the implementation
+	// (not by OBFL) that two toc-entry's are contained in the same block, this is not an actual
+	// issue.
 	private List<XMLEvent> modifyWhitespace(List<XMLEvent> events)  {
 		List<XMLEvent> modified = new ArrayList<>();
 		// process
@@ -204,7 +209,7 @@ public class OBFLWsNormalizer extends XMLParserBase implements XMLEventIterator 
 					XMLEvent preceedingEvent = events.get(i - 1);
 					if (preceedingEvent.isEndElement() && beginWSMatch && isPreserveElement(preceedingEvent.asEndElement().getName())) {
 						pre = " ";
-					} else if (equalsEnd(preceedingEvent, ObflQName.SPAN, ObflQName.STYLE) && beginWSMatch) {
+					} else if (equalsEnd(preceedingEvent, ObflQName.SPAN, ObflQName.STYLE, ObflQName.TOC_ENTRY) && beginWSMatch) {
 						pre = " ";
 					} else if (equalsEnd(preceedingEvent, ObflQName.MARKER, ObflQName.ANCHOR)) {
 						if (beginWSMatch) {
@@ -239,7 +244,7 @@ public class OBFLWsNormalizer extends XMLParserBase implements XMLEventIterator 
 						}
 					} else if (followingEvent.isStartElement() && endWSMatch && isPreserveElement(followingEvent.asStartElement().getName())) {
 						post = " ";
-					} else if (equalsStart(followingEvent, ObflQName.SPAN, ObflQName.STYLE) && endWSMatch) {
+					} else if (equalsStart(followingEvent, ObflQName.SPAN, ObflQName.STYLE, ObflQName.TOC_ENTRY) && endWSMatch) {
 						post = " ";
 					} else if (followingEvent.isStartElement()) {
 						int j = untilEventIsNotForward(events, i + 1, XMLStreamConstants.START_ELEMENT);
@@ -257,7 +262,7 @@ public class OBFLWsNormalizer extends XMLParserBase implements XMLEventIterator 
 				if (!"".equals(chars)) {
 					modified.add(eventFactory.createCharacters(chars));
 				}
-			} else if (equalsStart(event, ObflQName.SPAN, ObflQName.STYLE)) {
+			} else if (equalsStart(event, ObflQName.SPAN, ObflQName.STYLE, ObflQName.TOC_ENTRY)) {
 
 				if (i > 0) {
 					int j = untilEventIsNotBackward(events, i - 1, ObflQName.MARKER, ObflQName.ANCHOR);
@@ -274,7 +279,7 @@ public class OBFLWsNormalizer extends XMLParserBase implements XMLEventIterator 
 
 				modified.add(event);
 
-			} else if (equalsEnd(event, ObflQName.SPAN, ObflQName.STYLE)) {
+			} else if (equalsEnd(event, ObflQName.SPAN, ObflQName.STYLE, ObflQName.TOC_ENTRY)) {
 				modified.add(event);
 				if (i < events.size() - 1) {
 					int j = untilEventIsNotForward(events, i + 1, XMLStreamConstants.START_ELEMENT);
@@ -328,12 +333,12 @@ public class OBFLWsNormalizer extends XMLParserBase implements XMLEventIterator 
 	}
 	
 	private boolean beginsMixedContent(XMLEvent event) {
-		return equalsStart(event, ObflQName.BLOCK, ObflQName.TOC_ENTRY, ObflQName.ITEM, ObflQName.BEFORE, ObflQName.AFTER, ObflQName.TD);
+		return equalsStart(event, ObflQName.BLOCK, ObflQName.TOC_BLOCK, ObflQName.ITEM, ObflQName.BEFORE, ObflQName.AFTER, ObflQName.TD);
 			   
 	}
 	
 	private boolean endsMixedContent(XMLEvent event) {
-		return equalsEnd(event, ObflQName.BLOCK, ObflQName.TOC_ENTRY, ObflQName.ITEM, ObflQName.BEFORE, ObflQName.AFTER, ObflQName.TD);
+		return equalsEnd(event, ObflQName.BLOCK, ObflQName.TOC_BLOCK, ObflQName.ITEM, ObflQName.BEFORE, ObflQName.AFTER, ObflQName.TD);
 	}
 
 	/**

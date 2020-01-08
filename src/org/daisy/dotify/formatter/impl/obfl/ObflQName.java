@@ -24,6 +24,7 @@ interface ObflQName {
 	 static final QName BLOCK = new QName(OBFL_NS, "block");
 	 static final QName SPAN = new QName(OBFL_NS, "span");
 	static final QName STYLE = new QName(OBFL_NS, "style");
+	 static final QName TOC_BLOCK = new QName(OBFL_NS, "toc-block");
 	 static final QName TOC_ENTRY = new QName(OBFL_NS, "toc-entry");
 	 static final QName LEADER = new QName(OBFL_NS, "leader");
 	 static final QName MARKER = new QName(OBFL_NS, "marker");
