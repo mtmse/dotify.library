@@ -23,6 +23,7 @@ import org.daisy.dotify.formatter.impl.search.AnchorData;
 import org.daisy.dotify.formatter.impl.search.CrossReferenceHandler;
 import org.daisy.dotify.formatter.impl.search.DefaultContext;
 import org.daisy.dotify.formatter.impl.search.Space;
+import org.daisy.dotify.formatter.impl.search.VolumeData;
 import org.daisy.dotify.formatter.impl.search.VolumeKeepPriority;
 import org.daisy.dotify.formatter.impl.sheet.PageCounter;
 import org.daisy.dotify.formatter.impl.sheet.SectionBuilder;
@@ -74,8 +75,8 @@ public class VolumeProvider {
 	private int j = 1;
 	
 	private final SplitterLimit splitterLimit;
-    private final Stack<VolumeTemplate> volumeTemplates;
-    private final LazyFormatterContext context;
+	private final Stack<VolumeTemplate> volumeTemplates;
+	private final LazyFormatterContext context;
 
 	/**
 	 * Creates a new volume provider with the specifed parameters
@@ -87,17 +88,17 @@ public class VolumeProvider {
 		this.blocks = blocks;
 		this.crh = new CrossReferenceHandler();
 		this.splitterLimit = volumeNumber -> {
-            final DefaultContext c = new DefaultContext.Builder(crh)
-                    .currentVolume(volumeNumber)
-                    .build();
-            Optional<VolumeTemplate> ot = volumeTemplates.stream().filter(t -> t.appliesTo(c)).findFirst();
-            if (ot.isPresent()) {
-                return ot.get().getVolumeMaxSize();
-            } else {
-                logger.fine("Found no applicable volume template.");
-                return DEFAULT_SPLITTER_MAX;                
-            }
-        };
+			final DefaultContext c = new DefaultContext.Builder(crh)
+					.currentVolume(volumeNumber)
+					.build();
+			Optional<VolumeTemplate> ot = volumeTemplates.stream().filter(t -> t.appliesTo(c)).findFirst();
+			if (ot.isPresent()) {
+				return ot.get().getVolumeMaxSize();
+			} else {
+				logger.fine("Found no applicable volume template.");
+				return DEFAULT_SPLITTER_MAX;				
+			}
+		};
 		this.volumeTemplates = volumeTemplates;
 		this.context = context;
 		this.volSplitter = new SplitPointHandler<>();
@@ -224,14 +225,16 @@ public class VolumeProvider {
 
 		pageIndex += pageCount;
 		SectionBuilder sb = new SectionBuilder();
+		boolean atFirstPageOfContents = true;
 		for (Sheet sheet : contents) {
 			for (PageImpl p : sheet.getPages()) {
 				for (String id : p.getIdentifiers()) {
-					crh.setVolumeNumber(id, volumeNumber);
+					crh.setVolumeData(id, new VolumeData(volumeNumber, atFirstPageOfContents));
 				}
 				if (p.getAnchors().size()>0) {
 					ad.add(new AnchorData(p.getAnchors(), p.getPageNumber()));
 				}
+				atFirstPageOfContents = false;
 			}
 			sb.addSheet(sheet);
 		}
@@ -263,7 +266,7 @@ public class VolumeProvider {
 			for (Sheet ps : ret) {
 				for (PageImpl p : ps.getPages()) {
 					for (String id : p.getIdentifiers()) {
-						crh.setVolumeNumber(id, volumeNumber);
+						crh.setVolumeData(id, new VolumeData(volumeNumber, false));
 					}
 					if (p.getAnchors().size()>0) {
 						ad.add(new AnchorData(p.getAnchors(), p.getPageNumber()));
@@ -303,7 +306,7 @@ public class VolumeProvider {
 			currentGroup.add(bs);
 		}
 		PageCounter pageCounter = new PageCounter();
-        crh.resetUniqueChecks();
+		crh.resetUniqueChecks();
 		return new Iterable<SheetDataSource>(){
 			@Override
 			public Iterator<SheetDataSource> iterator() {

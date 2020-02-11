@@ -3,6 +3,7 @@ package org.daisy.dotify.formatter.impl.volume;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -11,6 +12,7 @@ import org.daisy.dotify.api.formatter.Condition;
 import org.daisy.dotify.api.formatter.Context;
 import org.daisy.dotify.api.formatter.FormatterCore;
 import org.daisy.dotify.api.formatter.SequenceProperties;
+import org.daisy.dotify.api.formatter.TocEntryOnResumedRange;
 import org.daisy.dotify.api.formatter.TocProperties;
 import org.daisy.dotify.formatter.impl.common.FormatterCoreContext;
 import org.daisy.dotify.formatter.impl.core.Block;
@@ -21,6 +23,7 @@ import org.daisy.dotify.formatter.impl.page.BlockSequence;
 import org.daisy.dotify.formatter.impl.search.BlockAddress;
 import org.daisy.dotify.formatter.impl.search.CrossReferenceHandler;
 import org.daisy.dotify.formatter.impl.search.DefaultContext;
+import org.daisy.dotify.formatter.impl.search.VolumeData;
 
 class TocSequenceEventImpl implements VolumeSequence {
 	private final TocProperties props;
@@ -121,15 +124,15 @@ class TocSequenceEventImpl implements VolumeSequence {
 					getSequenceProperties());
 			fsm.appendGroup(getTocStart(vars));
 			if (getRange()==TocProperties.TocRange.VOLUME) {
-				Collection<Block> volumeToc = data.filter(refToVolume(vars.getCurrentVolume(), crh));
-				if (!volumeToc.isEmpty()) {
-					fsm.appendGroup(volumeToc);
-				} else {
+				int currentVolume = vars.getCurrentVolume();
+				Collection<Block> volumeToc = data.filter(refToVolume(currentVolume, crh), rangeToVolume(currentVolume, crh));
+				if (volumeToc.isEmpty()) {
 					return null;
 				}
+				fsm.appendGroup(volumeToc);
 			} else if (getRange()==TocProperties.TocRange.DOCUMENT) {
 				for (int vol = 1; vol <= crh.getVolumeCount(); vol++) {
-					Collection<Block> volumeToc = data.filter(refToVolume(vol, crh));
+					Collection<Block> volumeToc = data.filter(refToVolume(vol, crh), rangeToVolume(vol, crh));
 					if (!volumeToc.isEmpty()) {
 						Context varsWithVolume = DefaultContext.from(vars).metaVolume(vol).build();
 						Iterable<Block> volumeStart = getVolumeStart(varsWithVolume);
@@ -146,7 +149,7 @@ class TocSequenceEventImpl implements VolumeSequence {
 					}
 				}
 				{
-					Collection<Block> volumeToc = data.filter(refToVolume(null, crh));
+					Collection<Block> volumeToc = data.filter(refToVolume(null, crh), range -> false);
 					if (!volumeToc.isEmpty()) {
 						fsm.appendGroup(volumeToc);
 					}
@@ -164,8 +167,49 @@ class TocSequenceEventImpl implements VolumeSequence {
 
 	private Predicate<String> refToVolume(Integer vol, CrossReferenceHandler crh) {
 		return refId -> {
-			Integer volNo = crh.getVolumeNumber(refId);
-			return vol == null ? volNo == null : vol.equals(volNo);
+			VolumeData volumeData = crh.getVolumeData(refId);
+			if (vol == null || volumeData == null) {
+				return vol == null && volumeData == null;
+			} else {
+				return vol.equals(volumeData.getVolumeNumber());
+			}
 		};
 	}
+	
+	/**
+	 * Determines whether a range is part of a volume
+	 * 
+	 * @param vol volume
+	 * @param crh cross-reference handler
+	 * @return 
+	 */
+	private Predicate<TocEntryOnResumedRange> rangeToVolume(int vol, CrossReferenceHandler crh) {
+		return range -> {
+			/* startVolumeData refers to the location where the range starts */
+			VolumeData startVolumeData = crh.getVolumeData(range.getStartRefId());
+			if (startVolumeData == null) {
+				return false;
+			}
+			if (startVolumeData.getVolumeNumber() >= vol) {
+				return false;
+			}
+			
+			Optional<String> endRefId = range.getEndRefId();
+			if (!endRefId.isPresent()) {
+				return true;
+			}
+			
+			/* endVolumeData refers to the location where the last block of the range starts */
+			VolumeData endVolumeData = crh.getVolumeData(endRefId.get());
+			if (endVolumeData == null) {
+				return false;
+			}
+			if (endVolumeData.isAtStartOfVolumeContents()) {
+				return vol < endVolumeData.getVolumeNumber();
+			} else {
+				return vol <= endVolumeData.getVolumeNumber();
+			}
+		};
+	}
+	
 }

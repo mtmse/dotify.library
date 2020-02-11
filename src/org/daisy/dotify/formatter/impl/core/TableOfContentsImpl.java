@@ -19,6 +19,7 @@ import org.daisy.dotify.api.formatter.Marker;
 import org.daisy.dotify.api.formatter.NumeralStyle;
 import org.daisy.dotify.api.formatter.SpanProperties;
 import org.daisy.dotify.api.formatter.TableOfContents;
+import org.daisy.dotify.api.formatter.TocEntryOnResumedRange;
 import org.daisy.dotify.api.formatter.TextProperties;
 import org.daisy.dotify.formatter.impl.common.FormatterCoreContext;
 import org.daisy.dotify.formatter.impl.row.RowDataProperties;
@@ -37,19 +38,22 @@ public class TableOfContentsImpl extends FormatterCoreImpl implements TableOfCon
 	private final Set<String> refIds;
 	/* every toc-entry maps exactly to one block in the resulting sequence of blocks */
 	private final Map<Block,String> refIdForBlock;
+	/* every toc-entry-on-resumed maps exactly to one block in the resulting sequence of blocks */
+	private final Map<Block,TocEntryOnResumedRange> rangeForBlock;
 	/* mapping from block in the resulting sequence of blocks to the toc-block element that it came from */
-	private final Map<Block,Object> tocBlockForBlock;
+	private final Map<Block,TocBlock> tocBlockForBlock;
 	/* parent-child relationships of toc-block elements */
-	private final Map<Object,Object> parentTocBlockForTocBlock;
+	private final Map<TocBlock,TocBlock> parentTocBlockForTocBlock;
 	/* current stack of ancestor toc-block elements */
-	private final Stack<Object> currentAncestorTocBlocks;
-	/* whether we are currently inside a toc-entry */
-	private boolean inTocEntry = false;
+	private final Stack<TocBlock> currentAncestorTocBlocks;
+	/* whether we are currently inside an entry */
+	private boolean inEntry = false;
 
 	public TableOfContentsImpl(FormatterCoreContext fc) {
 		super(fc);
 		this.refIds = new HashSet<>();
 		this.refIdForBlock = new IdentityHashMap<>();
+		this.rangeForBlock = new IdentityHashMap<>();
 		this.tocBlockForBlock = new IdentityHashMap<>();
 		this.parentTocBlockForTocBlock = new LinkedHashMap<>();
 		this.currentAncestorTocBlocks = new Stack<>();
@@ -57,11 +61,12 @@ public class TableOfContentsImpl extends FormatterCoreImpl implements TableOfCon
 
 	@Override
 	public void startBlock(BlockProperties p, String blockId) {
-		Object tocBlock = new Object();
+		TocBlock tocBlock = new TocBlock();
 		if (!currentAncestorTocBlocks.isEmpty()) {
 			parentTocBlockForTocBlock.put(tocBlock, currentAncestorTocBlocks.peek());
 		}
 		currentAncestorTocBlocks.push(tocBlock);
+		
 		super.startBlock(p, blockId);
 	}
 
@@ -82,45 +87,68 @@ public class TableOfContentsImpl extends FormatterCoreImpl implements TableOfCon
 
 	@Override
 	public void startEntry(String refId) {
-		if (inTocEntry) {
-			throw new RuntimeException("toc-entry may not be nested");
+		if (inEntry) {
+			throw new RuntimeException("Entries may not be nested");
 		}
-		inTocEntry = true;
+		inEntry = true;
 		if (!refIds.add(refId)) {
 			throw new RuntimeException("ref-id is not unique: " + refId);
 		}
-		if (refIdForBlock.put(getCurrentBlock(), refId) != null) {
+		Block currentBlock = getCurrentBlock();
+		if (refIdForBlock.put(currentBlock, refId) != null || rangeForBlock.containsKey(currentBlock)) {
 			// note that this is not strictly forbidden by OBFL, but it simplifies the implementation
-			throw new RuntimeException("No two toc-entry's may be contained in the same block");
+			throw new RuntimeException("No two entries may be contained in the same block");
+		}
+	}
+	
+	@Override
+	public void startEntryOnResumed(TocEntryOnResumedRange range) {
+		if (inEntry) {
+			throw new RuntimeException("Entries may not be nested");
+		}
+		inEntry = true;
+		Block currentBlock = getCurrentBlock();
+		if (rangeForBlock.put(currentBlock, range) != null || refIdForBlock.containsKey(currentBlock)) {
+			// note that this is not strictly forbidden by OBFL, but it simplifies the implementation
+			throw new RuntimeException("No two entries may be contained in the same block");
 		}
 	}
 	
 	@Override
 	public void endEntry() {
-		inTocEntry = false;
+		if (!inEntry) {
+			throw new RuntimeException("Unexpected end of entry");
+		}
+		inEntry = false;
 	}
 
 	/**
-	 * Filter out the toc-entry with a ref-id that does not satisfy the predicate. This is used to
-	 * create the volume range toc. toc-block that have all their descendant toc-entry filtered out
-	 * are also omitted.
-	 */
-	/*
-	 * Note that, because this is implemented by filtering a fixed sequence of blocks, and because
+	 * <p>Filter out the toc-entry with an identification that does not satisfy the corresponding
+	 * predicate. This is used to create the volume range toc. toc-block that have all their
+	 * descendant toc-entry filtered out are also omitted.</p>
+	 *
+	 * <p>Note that, because this is implemented by filtering a fixed sequence of blocks, and because
 	 * of the way the sequence of blocks is constructed, we are potentially throwing away borders
 	 * and margins that should be kept. That said, the previous implementation did not handle
-	 * borders and margins correctly either, so fixing this issue can be seen as an optimization.
+	 * borders and margins correctly either, so fixing this issue can be seen as an optimization.</p>
+	 * 
+	 * @param refIdFilter predicate that takes as argument a ref-id
+	 * @param rangeFilter predicate that takes as argument a range
+	 * @return collection of blocks
 	 */
-	public Collection<Block> filter(Predicate<String> filter) {
+	public Collection<Block> filter(Predicate<String> refIdFilter, Predicate<TocEntryOnResumedRange> rangeFilter) {
 		List<Block> filtered = new ArrayList<>();
-		Set<Object> tocBlocksWithDescendantTocEntry = new HashSet<>();
+		Set<TocBlock> tocBlocksWithDescendantTocEntry = new HashSet<>();
 		for (Block b : this) {
-			if (refIdForBlock.containsKey(b)) {
-				if (!filter.test(refIdForBlock.get(b))) {
+			if (refIdForBlock.containsKey(b) || rangeForBlock.containsKey(b)) {
+				if (refIdForBlock.containsKey(b) && !refIdFilter.test(refIdForBlock.get(b))) {
+					continue;
+				}
+				if (rangeForBlock.containsKey(b) && !rangeFilter.test(rangeForBlock.get(b))) {
 					continue;
 				}
 				if (tocBlockForBlock.containsKey(b)) {
-					Object tocBlock = tocBlockForBlock.get(b);
+					TocBlock tocBlock = tocBlockForBlock.get(b);
 					tocBlocksWithDescendantTocEntry.add(tocBlock);
 					while (parentTocBlockForTocBlock.containsKey(tocBlock)) {
 						tocBlock = parentTocBlockForTocBlock.get(tocBlock);
@@ -133,11 +161,11 @@ public class TableOfContentsImpl extends FormatterCoreImpl implements TableOfCon
 		Iterator<Block> i = filtered.iterator();
 		while (i.hasNext()) {
 			Block b = i.next();
-			if (refIdForBlock.containsKey(b)) {
+			if (refIdForBlock.containsKey(b) || rangeForBlock.containsKey(b)) {
 				continue;
 			}
 			if (tocBlockForBlock.containsKey(b) // this should always be true
-			    && tocBlocksWithDescendantTocEntry.contains(tocBlockForBlock.get(b))) {
+				&& tocBlocksWithDescendantTocEntry.contains(tocBlockForBlock.get(b))) {
 				continue;
 			}
 			i.remove();
@@ -145,75 +173,79 @@ public class TableOfContentsImpl extends FormatterCoreImpl implements TableOfCon
 		return filtered;
 	}
 
-	private void assertInTocEntry() {
-		if (!inTocEntry) {
-			throw new RuntimeException("Inline content only allowed within toc-entry");
+	private void assertInEntry() {
+		if (!inEntry) {
+			throw new RuntimeException("Inline content is only allowed within an entry");
 		}
 	}
 
 	@Override
 	public void insertMarker(Marker marker) {
-		assertInTocEntry();
+		assertInEntry();
 		super.insertMarker(marker);
 	}
 
 	@Override
 	public void insertAnchor(String ref) {
-		assertInTocEntry();
+		assertInEntry();
 		super.insertAnchor(ref);
 	}
 
 	@Override
 	public void insertLeader(Leader leader) {
-		assertInTocEntry();
+		assertInEntry();
 		super.insertLeader(leader);
 	}
 
 	@Override
 	public void addChars(CharSequence chars, TextProperties props) {
-		assertInTocEntry();
+		assertInEntry();
 		super.addChars(chars, props);
 	}
 
 	@Override
 	public void startStyle(String style) {
-		assertInTocEntry();
+		assertInEntry();
 		super.startStyle(style);
 	}
 
 	@Override
 	public void endStyle() {
-		assertInTocEntry();
+		assertInEntry();
 		super.endStyle();
 	}
 
 	@Override
 	public void startSpan(SpanProperties props) {
-		assertInTocEntry();
+		assertInEntry();
 		super.startSpan(props);
 	}
 
 	@Override
 	public void endSpan() {
-		assertInTocEntry();
+		assertInEntry();
 		super.endSpan();
 	}
 
 	@Override
 	public void newLine() {
-		assertInTocEntry();
+		assertInEntry();
 		super.newLine();
 	}
 
 	@Override
 	public void insertReference(String identifier, NumeralStyle numeralStyle) {
-		assertInTocEntry();
+		assertInEntry();
 		super.insertReference(identifier, numeralStyle);
 	}
 
 	@Override
 	public void insertEvaluate(DynamicContent exp, TextProperties t) {
-		assertInTocEntry();
+		assertInEntry();
 		super.insertEvaluate(exp, t);
+	}
+	
+	private class TocBlock {
+		// empty class
 	}
 }
