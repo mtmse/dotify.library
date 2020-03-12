@@ -4,10 +4,11 @@ import org.daisy.braille.utils.impl.tools.embosser.InternalEmbosserWriterPropert
 
 interface IndexHeader extends InternalEmbosserWriterProperties {
 
-	static interface Builder {
-		Builder transparentMode(boolean transparentMode);
-		IndexHeader build();
-	}
+    static interface Builder {
+        Builder transparentMode(boolean transparentMode);
 
-	byte[] getIndexHeader();
+        IndexHeader build();
+    }
+
+    byte[] getIndexHeader();
 }

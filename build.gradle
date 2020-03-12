@@ -12,6 +12,7 @@ plugins {
 	id 'java'
 	id 'maven-publish'
 	id 'signing'
+    id 'checkstyle'
 }
 
 apply plugin: 'biz.aQute.bnd.builder'
@@ -147,4 +148,19 @@ publishing {
 
 wrapper {
 	distributionType = Wrapper.DistributionType.ALL
+}
+
+checkstyle {
+    toolVersion '7.8.1'
+    configFile file("checkstyle.xml")
+}
+checkstyleMain {
+    source = 'src'
+}
+checkstyleTest {
+    source = ['test']
+}
+
+tasks.withType(Checkstyle) {
+    exclude '**/resource-files/**'
 }
