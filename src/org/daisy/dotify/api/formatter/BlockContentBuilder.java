@@ -75,7 +75,15 @@ public interface BlockContentBuilder {
 	 * @param numeralStyle the numeral style
 	 * @throws IllegalStateException if the current state does not allow this call to be made
 	 */
-	public void insertReference(String identifier, NumeralStyle numeralStyle);
+	public void insertPageReference(String identifier, NumeralStyle numeralStyle);
+
+	/**
+	 * Inserts a marker reference
+	 *
+	 * @param ref the reference
+	 * @param t the text properties
+	 */
+	public void insertMarkerReference(MarkerReference ref, TextProperties t);
 	
 	/**
 	 * Inserts an expression to evaluate.
