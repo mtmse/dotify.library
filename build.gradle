@@ -264,6 +264,8 @@ tasks.withType(Checkstyle) {
     exclude '**/resource-files/**'
 }
 
+checkstyleMain.dependsOn javadoc
+
 pmd.ruleSets = [
 	// New rule sets:
 	//'category/java/bestpractices.xml',
