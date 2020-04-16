@@ -166,3 +166,5 @@ checkstyleTest {
 tasks.withType(Checkstyle) {
     exclude '**/resource-files/**'
 }
+
+checkstyleMain.dependsOn javadoc
