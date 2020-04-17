@@ -358,7 +358,7 @@ public class PageSequenceBuilder2 {
                 force = false;
             }
             BlockContext bc = BlockContext.from(data.getContext())
-                .currentPage(current.getDetails().getPageNumber())
+                .currentPage(current.getDetails().getPageId(), current.getDetails().getPageNumber())
                 .flowWidth(
                     master.getFlowWidth() -
                     master.getTemplate(current.getPageNumber()).getTotalMarginRegionWidth()
@@ -879,7 +879,7 @@ public class PageSequenceBuilder2 {
     }
 
     /**
-     * Returns the provided value of <code>pageOffset</code> in {@link #PageSequenceBuilder2(int,
+     * Returns the provided value of <code>fromIndex</code> in {@link #PageSequenceBuilder2(int,
      * LayoutMaster, int, BlockSequence, FormatterContext, DefaultContext, SequenceId,
      * BlockLineLocation)}.
      *
