@@ -45,20 +45,34 @@ public interface Context {
 		return null;
 	}
 
-	/**
-	 * Gets the page number (one based) of the context described the current context,
-	 * or null if not available.
-	 *  
-	 * For example, an entry in a table of contents or an end note are examples
-	 * where this method can be used to retrieve the original context.
-	 * 
+    /**
+     * Gets the page number (one based) of the context described in the current
+     * context, or null if not available.
+     * 
+     * <p>For example,</p>
+     * <ul>
+     *   <li>In the context of an entry in a table of contents,
+     *   if it is a standard entry (<code>toc-entry</code> in OBFL), this method
+     *   can be used to retrieve the page number of the block the entry is
+     *   connected with. If it is a resumed entry
+     *   (<code>toc-entry-on-resumed</code> in OBFL), this method would be used
+     *   to retrieve the number of the first content page after the volume break
+     *   that corresponds with this entry.</li>
+     *   <li>In the context of an end note (<code>item</code> in OBFL) this
+     *   method can be used to retrieve the page number of the anchor that the
+     *   item is connected with.</li>
+     *   <li>In the context of a group of end notes that are referenced from the
+     *   same page (<code>on-page-start</code> and <code>on-page-end</code> in
+     *   OBFL), this method can be used to retrieve the number of that
+     *   page.</li>
+     * </ul>
 	 * 
 	 * @return returns the meta page number
-	 */
+     */
 	public default Integer getMetaPage() {
 		return null;
 	}
-	
+    
 	/**
 	 * Gets the total number of pages contained in the current volume, or null if not
 	 * known. This should include the volume's pre- and post-content.
