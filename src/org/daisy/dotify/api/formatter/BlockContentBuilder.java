@@ -92,4 +92,12 @@ public interface BlockContentBuilder {
 	 */
 	public void insertEvaluate(DynamicContent exp, TextProperties t);
 
+
+    /**
+     * Inserts a reference element that could be used to add information required for
+     * external systems.
+     *
+     * @param reference Reference data.
+     */
+    public void insertExternalReference(Object reference);
 }
