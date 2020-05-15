@@ -124,7 +124,11 @@ class Table extends Block {
         //columnWidth = columnWidth / columnCount;
         int[] currentColumnWidth = new int[columnCount];
         Arrays.fill(currentColumnWidth, columnWidth);
-        DefaultContext dc = DefaultContext.from(context).metaVolume(metaVolume).metaPage(metaPage).build();
+        DefaultContext dc = DefaultContext
+                .from(context)
+                .metaVolume(metaVolume)
+                .metaPage(metaPage)
+                .build();
         resultCache = new HashMap<>();
         Result r = minimizeCost(
             maxWidth,

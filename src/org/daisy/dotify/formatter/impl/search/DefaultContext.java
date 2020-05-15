@@ -16,10 +16,8 @@ public class DefaultContext implements Context {
      * TODO: Write java doc.
      */
     public static class Builder {
-        private Integer currentVolume = null,
-                currentPage = null,
-                metaVolume = null,
-                metaPage = null;
+        private Integer currentVolume = null, currentPage = null,
+                metaVolume = null, metaPage = null;
         private PageId currentPageId = null;
         private Space space = null;
         private final CrossReferenceHandler crh;
@@ -154,8 +152,8 @@ public class DefaultContext implements Context {
         result = prime * result + ((currentPage == null) ? 0 : currentPage.hashCode());
         result = prime * result + ((currentPageId == null) ? 0 : currentPageId.hashCode());
         result = prime * result + ((currentVolume == null) ? 0 : currentVolume.hashCode());
-        result = prime * result + ((metaPage == null) ? 0 : metaPage.hashCode());
         result = prime * result + ((metaVolume == null) ? 0 : metaVolume.hashCode());
+        result = prime * result + ((metaPage == null) ? 0 : metaPage.hashCode());
         return result;
     }
 
@@ -199,18 +197,18 @@ public class DefaultContext implements Context {
         } else if (!currentVolume.equals(other.currentVolume)) {
             return false;
         }
-        if (metaPage == null) {
-            if (other.metaPage != null) {
-                return false;
-            }
-        } else if (!metaPage.equals(other.metaPage)) {
-            return false;
-        }
         if (metaVolume == null) {
             if (other.metaVolume != null) {
                 return false;
             }
         } else if (!metaVolume.equals(other.metaVolume)) {
+            return false;
+        }
+        if (metaPage == null) {
+            if (other.metaPage != null) {
+                return false;
+            }
+        } else if (!metaPage.equals(other.metaPage)) {
             return false;
         }
         return true;

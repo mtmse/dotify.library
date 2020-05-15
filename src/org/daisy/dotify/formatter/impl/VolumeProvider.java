@@ -239,6 +239,7 @@ public class VolumeProvider {
         for (Sheet sheet : contents) {
             for (PageImpl p : sheet.getPages()) {
                 if (atFirstPageOfContents) {
+                    crh.setPageNumberOfFirstContentPageOfVolume(volumeNumber, p.getPageNumber());
                     List<String> contentIdentifiers = p.getContentIdentifiers();
                     for (String id : p.getIdentifiers()) {
                         boolean atStartOfPage = !contentIdentifiers.contains(id);

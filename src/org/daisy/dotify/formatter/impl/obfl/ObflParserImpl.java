@@ -264,8 +264,13 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
         return (line > -1 ? " (at line: " + line + (col > -1 ? ", column: " + col : "") + ") " : "");
     }
 
-    //TODO: parse page-number-variable
     private void parseLayoutMaster(XMLEvent event, XMLEventIterator input) throws XMLStreamException {
+        // TODO: This check can be removed after the concept of an alternative variable name
+        // has been removed from the OBFL specification.
+        // See https://github.com/mtmse/obfl/issues/13
+        if (getAttr(event, "page-number-variable") != null) {
+            throw new UnsupportedOperationException("Alternative variable names are not supported");
+        }
         @SuppressWarnings("unchecked")
         Iterator<Attribute> i = event.asStartElement().getAttributes();
         int width = Integer.parseInt(getAttr(event, ObflQName.ATTR_PAGE_WIDTH));
@@ -413,7 +418,7 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
                 fc.addChars(event.asCharacters().getData(), tp);
             } else if (equalsStart(event, ObflQName.BLOCK)) {
                 parseBlock(event, input, fc, tp);
-            } else if (processAsBlockContents(fc, event, input, tp)) {
+            } else if (processAsBlockContents(fc, event, input, tp, false)) {
                 //done!
             } else if (equalsEnd(event, ObflQName.BEFORE, ObflQName.AFTER)) {
                 fc.endBlock();
@@ -435,7 +440,11 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
                 new OBFLCondition(
                     getAttr(event, ObflQName.ATTR_USE_WHEN),
                     fm.getExpressionFactory(),
-                    false
+                    OBFLVariable.PAGE_NUMBER,
+                    OBFLVariable.VOLUME_NUMBER,
+                    OBFLVariable.VOLUME_COUNT,
+                    OBFLVariable.SHEET_COUNT,
+                    OBFLVariable.VOLUME_SHEET_COUNT
                 )
             );
         } else {
@@ -886,7 +895,7 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
                 parseXMLData(fc, event, input, tp);
             } else if (equalsStart(event, ObflQName.TABLE)) {
                 parseTable(event, input, fc, tp);
-            } else if (processAsBlockContents(fc, event, input, tp)) {
+            } else if (processAsBlockContents(fc, event, input, tp, false)) {
                 //done
             } else if (equalsEnd(event, ObflQName.BLOCK)) {
                 fc.endBlock();
@@ -911,7 +920,7 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
                 fc.addChars(event.asCharacters().getData(), tp);
             } else if (equalsStart(event, ObflQName.BLOCK)) {
                 parseBlock(event, input, fc, tp);
-            } else if (processAsBlockContents(fc, event, input, tp)) {
+            } else if (processAsBlockContents(fc, event, input, tp, false)) {
                 //done
             } else if (equalsEnd(event, ObflQName.BLOCK)) {
                 fc.endBlock();
@@ -926,7 +935,8 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
         XMLEvent event,
         XMLEventIterator input,
         BlockContentBuilder fc,
-        TextProperties tp
+        TextProperties tp,
+        boolean inTocEntryOnResumed
     ) throws XMLStreamException {
         tp = getTextProperties(event, tp);
         String id = getAttr(event, ObflQName.ATTR_ID);
@@ -940,7 +950,7 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
             if (event.isCharacters()) {
                 fc.addChars(event.asCharacters().getData(), tp);
             } else if (equalsStart(event, ObflQName.STYLE)) {
-                parseStyle(event, input, fc, tp);
+                parseStyle(event, input, fc, tp, inTocEntryOnResumed);
             } else if (equalsStart(event, ObflQName.LEADER)) {
                 parseLeader(fc, event, input);
             } else if (equalsStart(event, ObflQName.MARKER)) {
@@ -963,7 +973,8 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
         XMLEvent event,
         XMLEventIterator input,
         BlockContentBuilder fc,
-        TextProperties tp
+        TextProperties tp,
+        boolean inTocEntryOnResumed
     ) throws XMLStreamException {
         String name = getAttr(event, "name");
         boolean ignore = formatter.getConfiguration().getIgnoredStyles().contains(name);
@@ -976,7 +987,7 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
             if (event.isCharacters()) {
                 fc.addChars(event.asCharacters().getData(), tp);
             } else if (equalsStart(event, ObflQName.STYLE)) {
-                parseStyle(event, input, fc, tp);
+                parseStyle(event, input, fc, tp, inTocEntryOnResumed);
             } else if (equalsStart(event, ObflQName.MARKER)) {
                 parseMarker(fc, event);
             } else if (equalsStart(event, ObflQName.BR)) {
@@ -985,7 +996,7 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
             } else if (equalsStart(event, ObflQName.ANCHOR)) {
                 fc.insertAnchor(parseAnchor(event));
             } else if (equalsStart(event, ObflQName.EVALUATE)) {
-                parseEvaluate(fc, event, input, tp);
+                parseEvaluate(fc, event, input, tp, inTocEntryOnResumed);
             } else if (equalsStart(event, ObflQName.PAGE_NUMBER)) {
                 parsePageNumber(fc, event, input);
             } else if (equalsStart(event, ObflQName.MARKER_REFERENCE)) {
@@ -1287,7 +1298,7 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
                 fc.addChars(event.asCharacters().getData(), tp);
             } else if (equalsStart(event, ObflQName.BLOCK)) {
                 parseBlock(event, input, fc, tp);
-            } else if (processAsBlockContents(fc, event, input, tp)) {
+            } else if (processAsBlockContents(fc, event, input, tp, false)) {
                 //done
             } else if (equalsEnd(event, ObflQName.TD)) {
                 break;
@@ -1374,7 +1385,7 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
             event = input.nextEvent();
             if (event.isCharacters()) {
                 toc.addChars(event.asCharacters().getData(), tp);
-            } else if (processAsBlockContents(toc, event, input, tp)) {
+            } else if (processAsBlockContents(toc, event, input, tp, false)) {
                 //done!
             } else if (equalsEnd(event, ObflQName.TOC_ENTRY)) {
                 toc.endEntry();
@@ -1398,7 +1409,7 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
             event = input.nextEvent();
             if (event.isCharacters()) {
                 toc.addChars(event.asCharacters().getData(), tp);
-            } else if (processAsBlockContents(toc, event, input, tp)) {
+            } else if (processAsBlockContents(toc, event, input, tp, true)) {
                 //done!
             } else if (equalsEnd(event, ObflQName.TOC_ENTRY_ON_RESUMED)) {
                 toc.endEntry();
@@ -1426,7 +1437,7 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
                 Logger.getLogger(this.getClass().getCanonicalName()).warning("Nested collection items.");
             } else if (equalsStart(event, ObflQName.BLOCK)) {
                 parseBlock(event, input, coll, tp);
-            } else if (processAsBlockContents(coll, event, input, tp)) {
+            } else if (processAsBlockContents(coll, event, input, tp, false)) {
                 //done!
             } else if (equalsEnd(event, ObflQName.ITEM)) {
                 coll.endItem();
@@ -1441,7 +1452,8 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
         BlockContentBuilder fc,
         XMLEvent event,
         XMLEventIterator input,
-        TextProperties tp
+        TextProperties tp,
+        boolean inTocEntryOnResumed
     ) throws XMLStreamException {
         if (equalsStart(event, ObflQName.LEADER)) {
             parseLeader(fc, event, input);
@@ -1454,13 +1466,13 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
             scanEmptyElement(input, ObflQName.BR);
             return true;
         } else if (equalsStart(event, ObflQName.EVALUATE)) {
-            parseEvaluate(fc, event, input, tp);
+            parseEvaluate(fc, event, input, tp, inTocEntryOnResumed);
             return true;
         } else if (equalsStart(event, ObflQName.STYLE)) {
-            parseStyle(event, input, fc, tp);
+            parseStyle(event, input, fc, tp, inTocEntryOnResumed);
             return true;
         } else if (equalsStart(event, ObflQName.SPAN)) {
-            parseSpan(event, input, fc, tp);
+            parseSpan(event, input, fc, tp, inTocEntryOnResumed);
             return true;
         } else if (equalsStart(event, ObflQName.ANCHOR)) {
             fc.insertAnchor(parseAnchor(event));
@@ -1591,11 +1603,31 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
     private void parseEvaluate(
         BlockContentBuilder fc,
         XMLEvent event, XMLEventIterator input,
-        TextProperties tp
+        TextProperties tp,
+        boolean inTocEntryOnResumed
     ) throws XMLStreamException {
         String expr = getAttr(event, "expression");
         scanEmptyElement(input, ObflQName.EVALUATE);
-        OBFLDynamicContent dynamic = new OBFLDynamicContent(expr, fm.getExpressionFactory(), true);
+        final OBFLDynamicContent dynamic;
+        if (inTocEntryOnResumed) {
+            dynamic = new OBFLDynamicContent(expr, fm.getExpressionFactory(),
+                    OBFLVariable.PAGE_NUMBER,
+                    OBFLVariable.VOLUME_NUMBER,
+                    OBFLVariable.VOLUME_COUNT,
+                    OBFLVariable.SHEET_COUNT,
+                    OBFLVariable.VOLUME_SHEET_COUNT,
+                    OBFLVariable.STARTED_VOLUME_NUMBER,
+                    OBFLVariable.STARTED_VOLUME_FIRST_CONTENT_PAGE_NUMBER);
+        } else {
+            dynamic = new OBFLDynamicContent(expr, fm.getExpressionFactory(),
+                    OBFLVariable.PAGE_NUMBER,
+                    OBFLVariable.VOLUME_NUMBER,
+                    OBFLVariable.VOLUME_COUNT,
+                    OBFLVariable.SHEET_COUNT,
+                    OBFLVariable.VOLUME_SHEET_COUNT,
+                    OBFLVariable.STARTED_VOLUME_NUMBER,
+                    OBFLVariable.STARTED_PAGE_NUMBER);
+        }
         fc.insertEvaluate(dynamic, tp);
     }
 
@@ -1604,11 +1636,22 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
         XMLEventIterator input,
         TextProperties tp
     ) throws XMLStreamException {
+        // TODO: This check can be removed after the concept of an alternative variable name
+        // has been removed from the OBFL specification.
+        // See https://github.com/mtmse/obfl/issues/13
+        if (getAttr(event, "volume-count-variable") != null || getAttr(event, "volume-number-variable") != null) {
+            throw new UnsupportedOperationException("Alternative variable names are not supported");
+        }
         String useWhen = getAttr(event, ObflQName.ATTR_USE_WHEN);
         String splitterMax = getAttr(event, "sheets-in-volume-max");
-        OBFLCondition condition = new OBFLCondition(useWhen, fm.getExpressionFactory(), false);
-        condition.setVolumeCountVariable(getAttr(event, "volume-count-variable"));
-        condition.setVolumeNumberVariable(getAttr(event, "volume-number-variable"));
+        OBFLCondition condition = new OBFLCondition(
+            useWhen,
+            fm.getExpressionFactory(),
+            OBFLVariable.PAGE_NUMBER,
+            OBFLVariable.VOLUME_NUMBER,
+            OBFLVariable.VOLUME_COUNT,
+            OBFLVariable.SHEET_COUNT,
+            OBFLVariable.VOLUME_SHEET_COUNT);
         VolumeTemplateProperties vtp = new VolumeTemplateProperties.Builder(Integer.parseInt(splitterMax))
                 .condition(condition)
                 .build();
@@ -1797,7 +1840,13 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
                     new OBFLCondition(
                         getAttr(event, ObflQName.ATTR_USE_WHEN),
                         fm.getExpressionFactory(),
-                        true
+                        OBFLVariable.STARTED_VOLUME_NUMBER,
+                        OBFLVariable.STARTED_PAGE_NUMBER,
+                        OBFLVariable.PAGE_NUMBER,
+                        OBFLVariable.VOLUME_NUMBER,
+                        OBFLVariable.VOLUME_COUNT,
+                        OBFLVariable.SHEET_COUNT,
+                        OBFLVariable.VOLUME_SHEET_COUNT
                     )
                 );
                 parseOnEvent(event, input, template, ObflQName.ON_TOC_START, tp);
@@ -1806,7 +1855,13 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
                     new OBFLCondition(
                         getAttr(event, ObflQName.ATTR_USE_WHEN),
                         fm.getExpressionFactory(),
-                        true
+                        OBFLVariable.STARTED_VOLUME_NUMBER,
+                        OBFLVariable.STARTED_PAGE_NUMBER,
+                        OBFLVariable.PAGE_NUMBER,
+                        OBFLVariable.VOLUME_NUMBER,
+                        OBFLVariable.VOLUME_COUNT,
+                        OBFLVariable.SHEET_COUNT,
+                        OBFLVariable.VOLUME_SHEET_COUNT
                     )
                 );
                 parseOnEvent(event, input, template, ObflQName.ON_VOLUME_START, tp);
@@ -1815,7 +1870,13 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
                     new OBFLCondition(
                         getAttr(event, ObflQName.ATTR_USE_WHEN),
                         fm.getExpressionFactory(),
-                        true
+                        OBFLVariable.STARTED_VOLUME_NUMBER,
+                        OBFLVariable.STARTED_PAGE_NUMBER,
+                        OBFLVariable.PAGE_NUMBER,
+                        OBFLVariable.VOLUME_NUMBER,
+                        OBFLVariable.VOLUME_COUNT,
+                        OBFLVariable.SHEET_COUNT,
+                        OBFLVariable.VOLUME_SHEET_COUNT
                     )
                 );
                 parseOnEvent(event, input, template, ObflQName.ON_VOLUME_END, tp);
@@ -1824,7 +1885,13 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
                     new OBFLCondition(
                         getAttr(event, ObflQName.ATTR_USE_WHEN),
                         fm.getExpressionFactory(),
-                        true
+                        OBFLVariable.STARTED_VOLUME_NUMBER,
+                        OBFLVariable.STARTED_PAGE_NUMBER,
+                        OBFLVariable.PAGE_NUMBER,
+                        OBFLVariable.VOLUME_NUMBER,
+                        OBFLVariable.VOLUME_COUNT,
+                        OBFLVariable.SHEET_COUNT,
+                        OBFLVariable.VOLUME_SHEET_COUNT
                     )
                 );
                 parseOnEvent(event, input, template, ObflQName.ON_TOC_END, tp);

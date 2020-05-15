@@ -227,7 +227,11 @@ public abstract class Block {
     }
 
     public DefaultContext contextWithMeta(DefaultContext dc) {
-        return DefaultContext.from(dc).metaVolume(metaVolume).metaPage(metaPage).build();
+        return DefaultContext
+                .from(dc)
+                .metaVolume(metaVolume)
+                .metaPage(metaPage)
+                .build();
     }
 
     public RowDataProperties getRowDataProperties() {
