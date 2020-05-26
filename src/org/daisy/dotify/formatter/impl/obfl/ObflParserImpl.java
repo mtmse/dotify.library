@@ -102,7 +102,11 @@ import javax.xml.xpath.XPathExpressionException;
  */
 public class ObflParserImpl extends XMLParserBase implements ObflParser {
 
-    //private HashMap<String, LayoutMaster> masters;
+    /*
+     * List<MetaDataItem> objects are not only used to pass meta elements from OBFL to PEF but also
+     * to pass along namespace binding information to make it easier for PEFMediaWriter to declare
+     * namespace prefixes on the root element.
+     */
     private List<MetaDataItem> meta;
 
     private Formatter formatter;
@@ -116,6 +120,7 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
     Map<String, Node> xslts = new HashMap<>();
     Map<String, Node> fileRefs = new HashMap<>();
     Map<String, List<RendererInfo>> renderers = new HashMap<>();
+    private Map<QName, String> externalReferenceObject = null;
 
     /**
      * Creates a new obfl parser with the specified factory manager.
@@ -883,6 +888,8 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
         FormatterCore fc,
         TextProperties tp
     ) throws XMLStreamException {
+        externalReferenceObject = null;
+
         tp = getTextProperties(event, tp);
         fc.startBlock(blockBuilder(event.asStartElement()));
         while (input.hasNext()) {
@@ -1480,6 +1487,9 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
         } else if (equalsStart(event, ObflQName.PAGE_NUMBER)) {
             parsePageNumber(fc, event, input);
             return true;
+        } else if (equalsStart(event, ObflQName.EXTERNAL_REFERENCE)) {
+            parseExternalReference(fc, event, input);
+            return true;
         } else if (equalsStart(event, ObflQName.MARKER_REFERENCE)) {
             parseMarkerReference(fc, event, input, tp);
             return true;
@@ -1590,6 +1600,44 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
         scanEmptyElement(input, ObflQName.PAGE_NUMBER);
         fc.insertPageReference(refId, style);
     }
+
+    private void parseExternalReference(
+            BlockContentBuilder fc,
+            XMLEvent event,
+            XMLEventIterator input
+    ) throws XMLStreamException {
+        Iterator<Attribute> it = event.asStartElement().getAttributes();
+        if (externalReferenceObject == null) {
+            externalReferenceObject = new HashMap<>();
+        }
+        while (it.hasNext()) {
+            Attribute a = it.next();
+
+            if (a.getName().getPrefix() == null || a.getName().getPrefix().isEmpty()) {
+                continue;
+            }
+
+            MetaDataItem newItem = new MetaDataItem(
+                new QName("http://www.w3.org/2000/xmlns/", a.getName().getPrefix(), "xmlns"),
+                a.getName().getNamespaceURI()
+            );
+            if (!checkIfAlreadyContainsPrefix(meta, newItem)) {
+                meta.add(newItem);
+            }
+            externalReferenceObject.put(a.getName(), a.getValue());
+        }
+        fc.insertExternalReference(externalReferenceObject);
+    }
+
+    private boolean checkIfAlreadyContainsPrefix(List<MetaDataItem> meta, MetaDataItem newItem) {
+        for (MetaDataItem metaItem : meta) {
+            if (metaItem.getKey().getPrefix().equalsIgnoreCase(newItem.getKey().getPrefix())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     private void parseMarkerReference(
         BlockContentBuilder fc,

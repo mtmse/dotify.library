@@ -25,6 +25,7 @@ public final class RowImpl implements Row {
     private final boolean adjustedForMargin;
     private final boolean allowsBreakAfter;
     private final int leaderSpace;
+    private final Object externalReference;
 
     /**
      * TODO: Write java doc.
@@ -42,6 +43,7 @@ public final class RowImpl implements Row {
         private boolean allowsBreakAfter = true;
         private int leaderSpace = 0;
         private boolean built = false;
+        private Object externalReference;
 
         public Builder(String chars) {
             this.chars = chars;
@@ -59,6 +61,7 @@ public final class RowImpl implements Row {
             this.adjustedForMargin = template.adjustedForMargin;
             this.allowsBreakAfter = template.allowsBreakAfter;
             this.leaderSpace = template.leaderSpace;
+            this.externalReference = template.externalReference;
         }
 
         Builder(RowImpl.Builder template) {
@@ -73,6 +76,7 @@ public final class RowImpl implements Row {
             this.adjustedForMargin = template.adjustedForMargin;
             this.allowsBreakAfter = template.allowsBreakAfter;
             this.leaderSpace = template.leaderSpace;
+            this.externalReference = template.externalReference;
         }
 
         public Builder text(String value) {
@@ -202,6 +206,17 @@ public final class RowImpl implements Row {
         }
 
         /**
+         * Add an external reference object that will flow though the framework to the PEF file.
+         *
+         * @param externalReference External reference object
+         * @return returns this builder
+         */
+        public Builder addExternalReference(Object externalReference) {
+            this.externalReference = externalReference;
+            return this;
+        }
+
+        /**
          * Add an identifier to the Row.
          *
          * @param id the identifier
@@ -253,6 +268,7 @@ public final class RowImpl implements Row {
         this.adjustedForMargin = builder.adjustedForMargin;
         this.allowsBreakAfter = builder.allowsBreakAfter;
         this.leaderSpace = builder.leaderSpace;
+        this.externalReference = builder.externalReference;
     }
 
     /**
@@ -276,6 +292,7 @@ public final class RowImpl implements Row {
         this.adjustedForMargin = false;
         this.allowsBreakAfter = true;
         this.leaderSpace = 0;
+        this.externalReference = null;
     }
 
     /**
@@ -372,6 +389,15 @@ public final class RowImpl implements Row {
 
     public boolean allowsBreakAfter() {
         return allowsBreakAfter;
+    }
+
+    /**
+     * Get the current external reference information tagged for this row.
+     *
+     * @return  Object of the external reference.
+     */
+    public Object getExternalReference() {
+        return externalReference;
     }
 
     @Override

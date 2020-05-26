@@ -34,6 +34,7 @@ import org.daisy.dotify.formatter.impl.search.CrossReferenceHandler;
 import org.daisy.dotify.formatter.impl.search.DefaultContext;
 import org.daisy.dotify.formatter.impl.segment.AnchorSegment;
 import org.daisy.dotify.formatter.impl.segment.Evaluate;
+import org.daisy.dotify.formatter.impl.segment.ExternalReferenceSegment;
 import org.daisy.dotify.formatter.impl.segment.IdentifierSegment;
 import org.daisy.dotify.formatter.impl.segment.LeaderSegment;
 import org.daisy.dotify.formatter.impl.segment.MarkerReferenceSegment;
@@ -360,6 +361,21 @@ public class FormatterCoreImpl extends Stack<Block> implements FormatterCore, Bl
             throw new IllegalStateException("A table is open.");
         }
         getCurrentBlock().addSegment(new NewLineSegment());
+    }
+
+    @Override
+    public void insertExternalReference(Object reference) {
+        if (table != null) {
+            throw new IllegalStateException("A table is open.");
+        }
+        if (!getCurrentBlock().isEmpty()) {
+            throw new IllegalStateException(
+                "Unsupported usage. Currently external-reference tags is only allowed at the beginning of a block."
+            );
+        }
+
+        ExternalReferenceSegment r = new ExternalReferenceSegment(reference);
+        getCurrentBlock().addSegment(r);
     }
 
     @Override

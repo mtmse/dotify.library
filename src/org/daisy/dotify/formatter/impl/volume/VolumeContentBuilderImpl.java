@@ -152,6 +152,11 @@ class VolumeContentBuilderImpl extends Stack<VolumeSequence> implements VolumeCo
     }
 
     @Override
+    public void insertExternalReference(Object reference) {
+        current().insertExternalReference(reference);
+    }
+
+    @Override
     public DynamicSequenceBuilder newDynamicSequence(SequenceProperties props) {
         DynamicSequenceEventImpl dsb = new DynamicSequenceEventImpl(fc, props);
         add(dsb);

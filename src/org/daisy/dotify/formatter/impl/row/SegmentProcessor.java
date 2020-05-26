@@ -15,6 +15,7 @@ import org.daisy.dotify.formatter.impl.search.CrossReferenceHandler;
 import org.daisy.dotify.formatter.impl.search.DefaultContext;
 import org.daisy.dotify.formatter.impl.segment.AnchorSegment;
 import org.daisy.dotify.formatter.impl.segment.Evaluate;
+import org.daisy.dotify.formatter.impl.segment.ExternalReferenceSegment;
 import org.daisy.dotify.formatter.impl.segment.IdentifierSegment;
 import org.daisy.dotify.formatter.impl.segment.LeaderSegment;
 import org.daisy.dotify.formatter.impl.segment.MarkerReferenceSegment;
@@ -51,6 +52,7 @@ class SegmentProcessor implements SegmentProcessing {
     private final ArrayList<Marker> groupMarkers;
     private final ArrayList<String> groupAnchors;
     private final ArrayList<String> groupIdentifiers;
+    private Object externalReference = null;
     private AggregatedBrailleTranslatorResult.Builder layoutOrApplyAfterLeader;
     private String currentLeaderMode;
     private boolean seenSegmentAfterLeader;
@@ -88,6 +90,7 @@ class SegmentProcessor implements SegmentProcessing {
         this.groupMarkers = new ArrayList<>();
         this.groupAnchors = new ArrayList<>();
         this.groupIdentifiers = new ArrayList<>();
+        this.externalReference = null;
         this.leaderManager = new LeaderManager();
         this.significantContent = calculateSignificantContent(this.segments, context, rdp);
         this.spc = new SegmentProcessorContext(fcontext, rdp, margins, flowWidth, available);
@@ -116,6 +119,7 @@ class SegmentProcessor implements SegmentProcessing {
         this.groupMarkers = new ArrayList<>(template.groupMarkers);
         this.groupIdentifiers = new ArrayList<>(template.groupIdentifiers);
         this.leaderManager = new LeaderManager(template.leaderManager);
+        this.externalReference = template.externalReference;
         this.layoutOrApplyAfterLeader =
                 template.layoutOrApplyAfterLeader == null ?
                 null :
@@ -467,6 +471,9 @@ class SegmentProcessor implements SegmentProcessing {
             case Identifier:
                 applyAfterLeader((IdentifierSegment) s);
                 return Optional.empty();
+            case ExternalReference:
+                externalReference = ((ExternalReferenceSegment) s).getExternalReference();
+                return Optional.empty();
             default:
                 return Optional.empty();
         }
@@ -482,6 +489,8 @@ class SegmentProcessor implements SegmentProcessing {
             groupMarkers.clear();
             currentRow.addIdentifiers(0, groupIdentifiers);
             groupIdentifiers.clear();
+            currentRow.addExternalReference(externalReference);
+            externalReference = null;
         }
         RowImpl r = currentRow.build();
         empty = false;
@@ -723,6 +732,7 @@ class SegmentProcessor implements SegmentProcessing {
         groupAnchors.clear();
         groupMarkers.clear();
         groupIdentifiers.clear();
+        externalReference = null;
         initFields();
     }
 

@@ -28,5 +28,4 @@ public class OBFLParserImplTest {
         NumeralStyle st = ObflParserImpl.parseNumeralStyle("A");
         assertEquals(NumeralStyle.UPPER_ALPHA, st);
     }
-
 }

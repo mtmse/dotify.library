@@ -29,6 +29,8 @@ public final class RowDataProperties {
     private final SingleLineDecoration leadingDecoration;
     private final SingleLineDecoration trailingDecoration;
     private final String underlineStyle;
+    private final Object externalReference;
+
 
     /**
      * TODO: Write java doc.
@@ -57,6 +59,7 @@ public final class RowDataProperties {
         private String underlineStyle = null;
 
         private ListItem listProps = null;
+        private Object externalReference = null;
 
         public Builder() {
         }
@@ -79,6 +82,7 @@ public final class RowDataProperties {
             this.orphans = template.orphans;
             this.widows = template.widows;
             this.underlineStyle = template.underlineStyle;
+            this.externalReference = template.externalReference;
         }
 
         public Builder blockIndent(int value) {
@@ -161,6 +165,11 @@ public final class RowDataProperties {
             return this;
         }
 
+        public Builder externalReference(Object externalReference) {
+            this.externalReference = externalReference;
+            return this;
+        }
+
         public Builder underlineStyle(String value) {
             if (value != null && value.length() != 1) {
                 throw new IllegalArgumentException(
@@ -194,12 +203,14 @@ public final class RowDataProperties {
         this.orphans = builder.orphans;
         this.widows = builder.widows;
         this.underlineStyle = builder.underlineStyle;
+        this.externalReference = builder.externalReference;
     }
 
     RowImpl.Builder configureNewEmptyRowBuilder(MarginProperties left, MarginProperties right) {
         return new RowImpl.Builder("").leftMargin(left).rightMargin(right)
                 .alignment(getAlignment())
                 .rowSpacing(getRowSpacing())
+                .addExternalReference(getExternalReference())
                 .adjustedForMargin(true);
     }
 
@@ -237,6 +248,10 @@ public final class RowDataProperties {
 
     ListItem getListItem() {
         return listProps;
+    }
+
+    public Object getExternalReference() {
+        return externalReference;
     }
 
     public int getOuterSpaceBefore() {
