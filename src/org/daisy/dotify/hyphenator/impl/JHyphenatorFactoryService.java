@@ -28,7 +28,7 @@ public class JHyphenatorFactoryService implements HyphenatorFactoryService {
         locales = new ArrayList<>();
 
         String operSys = System.getProperty("os.name").toLowerCase();
-        if (operSys.contains("win")) return;
+        if (!operSys.contains("linux")) return;
 
         ResourceBundle p = PropertyResourceBundle.getBundle("org/daisy/dotify/hyphenator/impl/JHyphenator");
         Enumeration<String> keyEnum = p.getKeys();
