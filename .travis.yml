@@ -1,7 +1,8 @@
 language: java
 jdk: openjdk11
 before_script:
-- sudo apt install myspell-sv-se
+- sudo apt update
+- sudo apt install libhyphen0 hyphen-sv
 after_success:
 - ./upload.sh
 before_install:
