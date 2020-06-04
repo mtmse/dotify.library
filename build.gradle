@@ -26,6 +26,13 @@ sourceSets {
 	test {	java { srcDir 'test' }	resources { srcDir 'test' } }
 }
 
+test {
+    testLogging {
+        events "failed"
+        exceptionFormat "full"
+    }
+}
+
 compileJava {
     options.encoding = 'UTF-8'
 }
