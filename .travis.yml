@@ -1,8 +1,7 @@
-sudo: true
 language: java
 jdk: openjdk11
 before_script:
-    - apt install libhyphen0 hyphen-sv
+- sudo apt install libhyphen0 hyphen-sv
 after_success:
 - ./upload.sh
 before_install:
