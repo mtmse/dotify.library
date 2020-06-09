@@ -179,6 +179,35 @@ public class BlockProperties implements Cloneable {
 		}
 		
 		/**
+		 * Set the right text indent for the block, in characters. The
+		 * right text indent controls the right indent of all text rows
+		 * except the last one, see {@link
+		 * #rightLastLineIndent(int)}. The indent is applied to text
+		 * directly within the block, but is not inherited to block
+		 * children.
+		 * @param rightTextIndent the indent, in characters
+		 * @return returns "this" object
+		 */
+		public Builder rightTextIndent(int rightTextIndent) {
+			this.textBlockPropsBuilder.rightTextIndent(rightTextIndent);
+			return this;
+		}
+		
+		/**
+		 * Set the right last line indent for the block, in characters.
+		 * The right last line indent controls the right indent of the
+		 * last text row in a block. The indent is applied to text
+		 * directly within the block, but is not inherited to block
+		 * children.
+		 * @param rightLastLineIndent the indent, in characters.
+		 * @return returns "this" object
+		 */
+		public Builder rightLastLineIndent(int rightLastLineIndent) {
+			this.textBlockPropsBuilder.rightLastLineIndent(rightLastLineIndent);
+			return this;
+		}
+		
+		/**
 		 * Set the list type for the block. The list type is
 		 * applied to block's children.
 		 * @param listType the type of list

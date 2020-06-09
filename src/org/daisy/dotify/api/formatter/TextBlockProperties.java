@@ -10,6 +10,8 @@ import org.daisy.dotify.api.formatter.FormattingTypes.Alignment;
 public final class TextBlockProperties {
 	private final int textIndent;
 	private final int firstLineIndent;
+	private final int rightTextIndent;
+	private final int rightLastLineIndent;
 	private final Float rowSpacing;
 	private final Alignment align;
 	private final String identifier;
@@ -20,6 +22,8 @@ public final class TextBlockProperties {
 	public static class Builder {
 		private int textIndent = 0;
 		private int firstLineIndent = 0;
+		private int rightTextIndent = 0;
+		private int rightLastLineIndent = 0;
 		private Float rowSpacing = null;
 		private Alignment align = Alignment.LEFT;
 		private String identifier = "";
@@ -49,6 +53,35 @@ public final class TextBlockProperties {
 		 */
 		public Builder firstLineIndent(int firstLineIndent) {
 			this.firstLineIndent = firstLineIndent;
+			return this;
+		}
+		
+		/**
+		 * Set the right text indent for the block, in characters. The
+		 * right text indent controls the right indent of all text rows
+		 * except the last one, see {@link
+		 * #rightLastLineIndent(int)}. The indent is applied to text
+		 * directly within the block, but is not inherited to block
+		 * children.
+		 * @param rightTextIndent the indent, in characters
+		 * @return returns "this" object
+		 */
+		public Builder rightTextIndent(int rightTextIndent) {
+			this.rightTextIndent = rightTextIndent;
+			return this;
+		}
+		
+		/**
+		 * Set the right last line indent for the block, in characters.
+		 * The right last line indent controls the right indent of the
+		 * last text row in a block. The indent is applied to text
+		 * directly within the block, but is not inherited to block
+		 * children.
+		 * @param rightLastLineIndent the indent, in characters.
+		 * @return returns "this" object
+		 */
+		public Builder rightLastLineIndent(int rightLastLineIndent) {
+			this.rightLastLineIndent = rightLastLineIndent;
 			return this;
 		}
 		
@@ -94,6 +127,8 @@ public final class TextBlockProperties {
 	private TextBlockProperties(Builder builder) {
 		this.textIndent = builder.textIndent;
 		this.firstLineIndent = builder.firstLineIndent;
+		this.rightTextIndent = builder.rightTextIndent;
+		this.rightLastLineIndent = builder.rightLastLineIndent;
 		this.rowSpacing = builder.rowSpacing;
 		this.align = builder.align;
 		this.identifier = builder.identifier;
@@ -113,6 +148,22 @@ public final class TextBlockProperties {
 	 */
 	public int getFirstLineIndent() {
 		return firstLineIndent;
+	}
+	
+	/**
+	 * Get right text indent, in characters
+	 * @return returns the right text indent
+	 */
+	public int getRightTextIndent() {
+		return rightTextIndent;
+	}
+	
+	/**
+	 * Get right last line indent, in characters
+	 * @return returns the right last line indent
+	 */
+	public int getRightLastLineIndent() {
+		return rightLastLineIndent;
 	}
 	
 	/**
