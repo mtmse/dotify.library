@@ -24,12 +24,12 @@ public class JHypenatorTest {
     public void testBeginEndHandling() throws HyphenatorConfigurationException {
         JHyphenator jHyphenator = new JHyphenator("sv");
 
-        assertEquals("test\u00ADar", jHyphenator.ensureStartAndEnd("t\u00ADest\u00ADa\u00ADr"));
-        assertEquals("test", jHyphenator.ensureStartAndEnd("t\u00ADest"));
-        assertEquals("in", jHyphenator.ensureStartAndEnd("i\u00ADn"));
-        assertEquals(
-            "testar i do\u00ADtify",
-            jHyphenator.ensureStartAndEnd("test\u00ADar i do\u00ADtif\u00ADy")
+        assertEquals("i", jHyphenator.handleWord("i", new byte[] {}));
+        assertEquals("in", jHyphenator.handleWord("in", new byte[] {1}));
+        assertEquals("test", jHyphenator.handleWord("test", new byte[] {1,0,0}));
+        assertEquals("test", jHyphenator.handleWord("test", new byte[] {0,0,1}));
+        assertEquals("test\u00ADar",
+                jHyphenator.handleWord("testar", new byte[] {1,0,0,1,0,1})
         );
     }
 
@@ -37,13 +37,11 @@ public class JHypenatorTest {
     public void testHyphenate() throws HyphenatorConfigurationException {
         JHyphenator jHyphenator = new JHyphenator("sv");
 
-        //System.out.println(bytesToHex(jHyphenator.hyphenate("testar").getBytes()));
-
-        assertEquals("tes\u00ADtar", jHyphenator.hyphenate("testar"));
-        assertEquals("test", jHyphenator.hyphenate("test"));
         assertEquals("in", jHyphenator.hyphenate("in"));
+        assertEquals("test", jHyphenator.hyphenate("test"));
+        assertEquals("tes\u00ADtar", jHyphenator.hyphenate("testar"));
         assertEquals(
-                "tes\u00ADtar i do\u00ADtify",
+                "tes\u00ADtar i dotify",
                 jHyphenator.hyphenate("testar i dotify")
         );
     }
