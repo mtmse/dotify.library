@@ -41,7 +41,7 @@ public class JHypenatorTest {
         assertEquals("test", jHyphenator.hyphenate("test"));
         assertEquals("tes\u00ADtar", jHyphenator.hyphenate("testar"));
         assertEquals(
-                "tes\u00ADtar i dotify",
+                "tes\u00ADtar i do\u00ADti\u00ADfy",
                 jHyphenator.hyphenate("testar i dotify")
         );
     }

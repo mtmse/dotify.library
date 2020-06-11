@@ -12,7 +12,6 @@ import java.util.ResourceBundle;
 
 class JHyphenator extends AbstractHyphenator {
     public static final byte SHY = 1;
-    public static final byte ZWSP = 2;
 
     private Hyphenator instance;
     private final Map<String, String> hyphCache = new HashMap<>();
@@ -58,11 +57,11 @@ class JHyphenator extends AbstractHyphenator {
         }
 
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < getBeginLimit(); i++) {
+        for (int i = 0; i < getBeginLimit() - 1; i++) {
             arr[i] = 0;
         }
 
-        for (int i = len - getEndLimit(); i < len; i++) {
+        for (int i = len - getEndLimit() + 1; i < len; i++) {
             arr[i] = 0;
         }
         for (int i = 0; i < s.length(); i++) {
