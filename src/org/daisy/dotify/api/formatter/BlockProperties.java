@@ -31,6 +31,7 @@ public class BlockProperties implements Cloneable {
 	private final TextBorderStyle textBorderStyle;
 	private final TextBlockProperties textBlockProps;
 	private final String underlineStyle;
+	private final Condition displayWhen;
 
 	/**
 	 * The Builder is used when creating a BlockProperties instance.
@@ -64,7 +65,8 @@ public class BlockProperties implements Cloneable {
 		private TextBorderStyle textBorderStyle = null;
 		private String underlineStyle = null;
 		private TextBlockProperties.Builder textBlockPropsBuilder = new TextBlockProperties.Builder();
-		
+		private Condition displayWhen = null;
+
 		/**
 		 * Create a new Builder
 		 */
@@ -431,7 +433,18 @@ public class BlockProperties implements Cloneable {
 			this.widows = value;
 			return this;
 		}
-		
+
+		/**
+		 * Sets the display-when expression
+		 *
+		 * @param value     Expression to decide if the block should be shown
+		 * @return returns this object
+		 */
+		public Builder displayWhen(Condition value) {
+			this.displayWhen = value;
+			return this;
+		}
+
 		/**
 		 * Build BlockProperties using the current state of the Builder.
 		 * @return returns a new BlockProperties instance
@@ -461,6 +474,7 @@ public class BlockProperties implements Cloneable {
 		keep = builder.keep;
 		orphans = builder.orphans;
 		widows = builder.widows;
+		displayWhen = builder.displayWhen;
 		keepWithNext = builder.keepWithNext;
 		keepWithPreviousSheets = builder.keepWithPreviousSheets;
 		keepWithNextSheets = builder.keepWithNextSheets;
@@ -620,9 +634,19 @@ public class BlockProperties implements Cloneable {
 	 * @return returns the widows
 	 */
 	public int getWidows() {
-		return widows;
+	    return widows;
 	}
-	
+
+
+	/**
+	 * Gets the expression when a block should be shown.
+	 *
+	 * @return returns the display when expression.
+	 */
+	public Condition getDisplayWhen() {
+	    return displayWhen;
+	}
+
 	/**
 	 * Gets the text block properties for this block
 	 * @return returns the text block properties
