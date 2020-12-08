@@ -292,7 +292,7 @@ public class VolumeProvider {
             }
             return sb;
         } catch (PaginatorException e) {
-            return null;
+            throw new RuntimeException(e);
         }
     }
 
