@@ -3,8 +3,6 @@ package org.daisy.dotify.text.impl;
 import static org.junit.Assert.assertEquals;
 
 import org.daisy.dotify.api.text.IntegerOutOfRange;
-import org.daisy.dotify.text.impl.BasicInteger2Text;
-import org.daisy.dotify.text.impl.EnInt2TextLocalization;
 import org.junit.Test;
 
 @SuppressWarnings("javadoc")

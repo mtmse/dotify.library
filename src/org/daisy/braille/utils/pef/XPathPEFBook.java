@@ -60,17 +60,19 @@ class XPathPEFBook {
             NodeList nl = d.getDocumentElement().getElementsByTagName("meta").item(0).getChildNodes();
             for (int i = 0; i < nl.getLength(); i++) {
                 Node n = nl.item(i);
-                if (n != null && n.getNodeType() == Node.ELEMENT_NODE) {
-                    if ("http://purl.org/dc/elements/1.1/".equals(n.getNamespaceURI())) {
-                        String name = n.getLocalName();
-                        if (metadata.containsKey(name)) {
-                            al = metadata.remove(name);
-                        } else {
-                            al = new ArrayList<>();
-                        }
-                        al.add(n.getTextContent());
-                        metadata.put(name, al);
+                if (
+                    n != null &&
+                    n.getNodeType() == Node.ELEMENT_NODE &&
+                    "http://purl.org/dc/elements/1.1/".equals(n.getNamespaceURI())
+                ) {
+                    String name = n.getLocalName();
+                    if (metadata.containsKey(name)) {
+                        al = metadata.remove(name);
+                    } else {
+                        al = new ArrayList<>();
                     }
+                    al.add(n.getTextContent());
+                    metadata.put(name, al);
                 }
             }
         } catch (ParserConfigurationException e) {

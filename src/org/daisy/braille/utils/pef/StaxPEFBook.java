@@ -153,11 +153,12 @@ class StaxPEFBook {
                         event = reader.nextEvent();
                         if (event.getEventType() == XMLStreamConstants.CHARACTERS) {
                             s += event.asCharacters().getData();
-                        } else if (event.getEventType() == XMLStreamConstants.END_ELEMENT) {
-                            if (event.asEndElement().getName().equals(start)) {
-                                level--;
-                                break;
-                            }
+                        } else if (
+                            event.getEventType() == XMLStreamConstants.END_ELEMENT &&
+                            event.asEndElement().getName().equals(start)
+                        ) {
+                            level--;
+                            break;
                         }
                     }
                     //set

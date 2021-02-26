@@ -155,7 +155,7 @@ public class InternalContract {
         this.rowGaps = Collections.unmodifiableSet(new HashSet<>(builder.rowGaps));
         this.simpleRowGaps = (range == BrailleRange.SIX_DOT) ?
                 rowGaps.stream().allMatch(v -> v % 4 == 0) :
-                ((range == BrailleRange.EIGHT_DOT) ? rowGaps.stream().allMatch(v -> (v - 1) % 5 == 0) : false);
+                (range == BrailleRange.EIGHT_DOT && rowGaps.stream().allMatch(v -> (v - 1) % 5 == 0));
     }
 
     /**

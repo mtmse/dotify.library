@@ -1,7 +1,6 @@
 package org.daisy.dotify.hyphenator.impl;
 
 import org.daisy.dotify.api.hyphenator.HyphenatorConfigurationException;
-import org.daisy.dotify.api.hyphenator.HyphenatorInterface;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

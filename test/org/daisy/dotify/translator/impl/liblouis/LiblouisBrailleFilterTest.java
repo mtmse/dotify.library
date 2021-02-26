@@ -4,11 +4,6 @@ package org.daisy.dotify.translator.impl.liblouis;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.daisy.dotify.api.translator.DefaultTextAttribute;
-import org.daisy.dotify.api.translator.TextAttribute;
 import org.junit.Test;
 
 @SuppressWarnings("javadoc")

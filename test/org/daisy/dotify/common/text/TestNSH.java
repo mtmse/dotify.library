@@ -1,9 +1,5 @@
 package org.daisy.dotify.common.text;
 
-import org.daisy.dotify.common.text.BreakPoint;
-import org.daisy.dotify.common.text.BreakPointHandler;
-
-
 @SuppressWarnings("javadoc")
 public class TestNSH {
 

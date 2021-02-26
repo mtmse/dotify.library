@@ -2,7 +2,6 @@ package org.daisy.dotify.common.text;
 
 import static org.junit.Assert.assertEquals;
 
-import org.daisy.dotify.common.text.StringTools;
 import org.junit.Test;
 
 @SuppressWarnings("javadoc")

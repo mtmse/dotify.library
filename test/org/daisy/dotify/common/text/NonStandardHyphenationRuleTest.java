@@ -1,9 +1,6 @@
 package org.daisy.dotify.common.text;
 import static org.junit.Assert.assertEquals;
-//import static org.junit.Assert.assertTrue;
 
-
-import org.daisy.dotify.common.text.NonStandardHyphenationInfo;
 import org.junit.Test;
 @SuppressWarnings("javadoc")
 public class NonStandardHyphenationRuleTest {

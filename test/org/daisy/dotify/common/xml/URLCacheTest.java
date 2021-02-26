@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.daisy.dotify.common.xml.URLCache;
 import org.junit.Test;
 @SuppressWarnings("javadoc")
 public class URLCacheTest {

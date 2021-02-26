@@ -7,13 +7,6 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import org.daisy.dotify.common.collection.SplitList;
-import org.daisy.dotify.common.splitter.SplitPoint;
-import org.daisy.dotify.common.splitter.SplitPointCost;
-import org.daisy.dotify.common.splitter.SplitPointDataList;
-import org.daisy.dotify.common.splitter.SplitPointDataSource;
-import org.daisy.dotify.common.splitter.SplitPointHandler;
-import org.daisy.dotify.common.splitter.StandardSplitOption;
-import org.daisy.dotify.common.splitter.Supplements;
 import org.junit.Test;
 
 @SuppressWarnings("javadoc")

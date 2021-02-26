@@ -85,7 +85,7 @@ class URLCache {
 	 */
 	boolean hasEntry(URL url) {
 		File f = toPath(url);
-		return (f!=null ? f.exists() : false);
+		return (f != null && f.exists());
 	}
 	
 	/**

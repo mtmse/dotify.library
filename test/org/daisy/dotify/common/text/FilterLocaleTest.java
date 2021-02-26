@@ -1,7 +1,6 @@
 package org.daisy.dotify.common.text;
 import static org.junit.Assert.assertTrue;
 
-import org.daisy.dotify.common.text.FilterLocale;
 import org.junit.Test;
 
 @SuppressWarnings("javadoc")

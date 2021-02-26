@@ -4,8 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 
-import org.daisy.dotify.translator.impl.liblouis.java.CharClass;
-import org.daisy.dotify.translator.impl.liblouis.java.LiblouisBrailleFilter;
 import org.junit.Test;
 
 @SuppressWarnings("javadoc")
