@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.daisy.dotify.api.text.Integer2TextConfigurationException;
-import org.daisy.dotify.text.impl.Integer2TextFactoryServiceImpl;
 import org.junit.Test;
 
 @SuppressWarnings("javadoc")

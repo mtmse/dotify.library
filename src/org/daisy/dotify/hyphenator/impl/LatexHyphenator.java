@@ -21,14 +21,18 @@ class LatexHyphenator extends AbstractHyphenator {
         StringBuilder sb = new StringBuilder();
         boolean first = true;
         for(String s : phrase.split(" ")) {
-            if(!first) sb.append(" ");
+            if(!first) {
+                sb.append(" ");
+            }
             if(!hyphCache.containsKey(s)) {
                 hyphCache.put(s, hyphenator.getHyphenator().hyphenate(s, getBeginLimit(), getEndLimit()));
             }
             sb.append(hyphCache.get(s));
             first = false;
         }
-        if(phrase.endsWith(" ")) sb.append(" ");
+        if(phrase.endsWith(" ")) {
+            sb.append(" ");
+        }
 
         return sb.toString();
     }

@@ -454,12 +454,10 @@ public class TextHandler {
                         maxCols = p.length();
                     }
                     // don't output if row contains form feeds and this segment equals ""
-                    if (!(pieces.length > 1 && (i == pieces.length || i == 1) && "".equals(p))) {
-                        if (pw != null) {
-                            pw.print("                <row>");
-                            pw.print(converter.toBraille(p));
-                            pw.println("</row>");
-                        }
+                    if (!(pieces.length > 1 && (i == pieces.length || i == 1) && "".equals(p)) && pw != null) {
+                        pw.print("                <row>");
+                        pw.print(converter.toBraille(p));
+                        pw.println("</row>");
                     }
                     i++;
                 }

@@ -37,9 +37,7 @@ public class IndexV4Embosser extends IndexEmbosser {
 
     private static final long serialVersionUID = -3888325825465502071L;
     static final String TABLE6DOT = "org.daisy.braille.impl.table.DefaultTableProvider.TableType.EN_US";
-    static final TableFilter TABLE_FILTER = (object) -> {
-        return object == null ? false : object.getIdentifier().equals(TABLE6DOT);
-    };
+    static final TableFilter TABLE_FILTER = (object) -> object != null && object.getIdentifier().equals(TABLE6DOT);
 
     public IndexV4Embosser(TableCatalogService service, EmbosserType props) {
         super(service, props);

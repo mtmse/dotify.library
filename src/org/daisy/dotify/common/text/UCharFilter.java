@@ -72,13 +72,14 @@ public class UCharFilter extends SimpleUCharReplacer implements StringFilter {
 							add.put(uppercase, substitute);
 						}
 					}
-				} else if (codePointStr.equals((newStr = codePointStr.toLowerCase(autoComplete)).toUpperCase(autoComplete))) {
-					if (newStr.codePointCount(0, newStr.length()) == 1) {
-						int lowercase = newStr.codePointAt(0);
-						if (!map.containsKey(lowercase)) {
-							add.put(lowercase, substitute);
-						}
-					}
+				} else if (
+                    codePointStr.equals((newStr = codePointStr.toLowerCase(autoComplete)).toUpperCase(autoComplete)) &&
+                    newStr.codePointCount(0, newStr.length()) == 1
+                ) {
+                    int lowercase = newStr.codePointAt(0);
+                    if (!map.containsKey(lowercase)) {
+                        add.put(lowercase, substitute);
+                    }
 				}
 			}
 		}

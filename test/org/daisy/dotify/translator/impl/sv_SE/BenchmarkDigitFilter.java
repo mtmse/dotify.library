@@ -1,6 +1,5 @@
 package org.daisy.dotify.translator.impl.sv_SE;
 
-import org.daisy.dotify.translator.impl.sv_SE.DigitFilter;
 import org.daisy.dotify.translator.impl.sv_SE.DigitFilter.Algorithm;
 
 @SuppressWarnings("javadoc")

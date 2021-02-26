@@ -30,7 +30,9 @@ class JHyphenator extends AbstractHyphenator {
         StringBuilder sb = new StringBuilder();
         boolean first = true;
         for(String s : phrase.split(" ")) {
-            if(!first) sb.append(" ");
+            if(!first) {
+                sb.append(" ");
+            }
 
             if(s.isEmpty()) {
                 sb.append(" ");
@@ -44,7 +46,9 @@ class JHyphenator extends AbstractHyphenator {
             first = false;
         }
 
-        if(phrase.endsWith(" ")) sb.append(" ");
+        if(phrase.endsWith(" ")) {
+            sb.append(" ");
+        }
 
         return sb.toString();
     }
@@ -66,7 +70,9 @@ class JHyphenator extends AbstractHyphenator {
         }
         for (int i = 0; i < s.length(); i++) {
             sb.append(s.charAt(i));
-            if (arr.length > i && arr[i] == SHY) sb.append("\u00AD");
+            if (arr.length > i && arr[i] == SHY) {
+                sb.append("\u00AD");
+            }
         }
 
         return sb.toString();

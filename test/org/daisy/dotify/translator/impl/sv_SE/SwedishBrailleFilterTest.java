@@ -3,7 +3,6 @@ package org.daisy.dotify.translator.impl.sv_SE;
 import java.io.FileNotFoundException;
 
 import org.daisy.dotify.translator.impl.DefaultBrailleFinalizer;
-import org.daisy.dotify.translator.impl.sv_SE.SwedishBrailleFilter;
 import org.junit.Ignore;
 import org.junit.Test;
 

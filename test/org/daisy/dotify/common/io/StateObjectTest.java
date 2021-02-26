@@ -1,7 +1,6 @@
 package org.daisy.dotify.common.io;
 import static org.junit.Assert.assertTrue;
 
-import org.daisy.dotify.common.io.StateObject;
 import org.junit.Test;
 
 @SuppressWarnings("javadoc")

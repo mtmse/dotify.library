@@ -2,7 +2,6 @@ package org.daisy.dotify.translator.impl.sv_SE;
 
 import static org.junit.Assert.assertEquals;
 
-import org.daisy.dotify.translator.impl.sv_SE.DigitFilter;
 import org.junit.Test;
 
 @SuppressWarnings("javadoc")
