@@ -242,8 +242,8 @@ checkstyleMain {
 //    source = 'src'
 }
 checkstyleTest {
-    source = []
-//    source = ['test', 'integrationtest']
+    source = ['integrationtest']
+//    source = ['test']
 }
 
 tasks.withType(Checkstyle) {
