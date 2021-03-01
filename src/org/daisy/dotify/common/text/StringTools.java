@@ -5,7 +5,7 @@ import java.util.Arrays;
 /**
  * StringTools is a utility class for simple static operations related
  * to strings.
- *
+ * 
  * @author Joel Håkansson
  */
 public class StringTools {
@@ -25,10 +25,10 @@ public class StringTools {
 	}
 
 	/**
-	 * Fill a String with a single character
+	 * Fill a String with a single character 
 	 * @param c the character to fill with
 	 * @param length the length of the resulting String
-	 * @return returns a String filled with character c
+	 * @return returns a String filled with character c 
 	 */
 	public static String fill(char c, int length) {
 		if (length<1) {
@@ -50,7 +50,7 @@ public class StringTools {
 		if (length<1) {
 			return "";
 		}
-		if (s.isEmpty()) {
+		if (s.length()==0) {
 			throw new IllegalArgumentException("Cannot fill using an empty string.");
 		}
 		StringBuilder sb = new StringBuilder();

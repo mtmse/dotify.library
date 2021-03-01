@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
  * @see URI
  */
 final class URIUtils {
-
+    
     /**
      * URI encoded values 0-255, for convenience
      */
@@ -60,7 +60,7 @@ final class URIUtils {
         "%E7", "%E8", "%E9", "%EA", "%EB", "%EC", "%ED", "%EE", "%EF",
         "%F0", "%F1", "%F2", "%F3", "%F4", "%F5", "%F6", "%F7", "%F8",
         "%F9", "%FA", "%FB", "%FC", "%FD", "%FE", "%FF" };
-
+    
     /**
      * <p>
      * The different parts of a URI.
@@ -287,13 +287,13 @@ final class URIUtils {
                 if (authMatcher.matches()) {
                     userInfo = authMatcher.group(UriPart.USERINFO.mGroup);
                     host = authMatcher.group(UriPart.HOST.mGroup);
-                    if (host == null || host.isEmpty()) {
+                    if (host == null || host.length() == 0) {
                         throw new URISyntaxException(spec, " authority does not specify a host");
                     }
                     isIPHost = host.matches(IPHOST_REGEX);
                     String portStr = authMatcher.group(UriPart.PORT.mGroup);
                     try {
-                        port = ((portStr == null) || portStr.isEmpty()) ? -1 : Integer.parseInt(portStr);
+                        port = ((portStr == null) || portStr.length() == 0) ? -1 : Integer.parseInt(portStr);
                     } catch (NumberFormatException e) {
                         URISyntaxException use = new URISyntaxException(spec, " port part contains non digit chars");
                         use.initCause(e);
@@ -428,13 +428,13 @@ final class URIUtils {
                     // Remove this if clause to also encode characters in the 'other' category
                     sb.append(c);
                 } else if (c <= 0x07FF) { // non-ASCII <= 0x7FF
-                    sb.append(String.valueOf(hex[0xc0 | (c >> 6)] +
+                    sb.append(String.valueOf(hex[0xc0 | (c >> 6)] + 
                             hex[0x80 | (c & 0x3F)]));
                 } else { // 0x7FF < c <= 0xFFFF
-                    sb.append(String.valueOf(hex[0xe0 | (c >> 12)] +
-                            hex[0x80 | ((c >> 6) & 0x3F)] +
+                    sb.append(String.valueOf(hex[0xe0 | (c >> 12)] + 
+                            hex[0x80 | ((c >> 6) & 0x3F)] + 
                             hex[0x80 | (c & 0x3F)]));
-                }
+                }                
             } else {
                 sb.append(c);
             }
@@ -710,7 +710,7 @@ final class URIUtils {
 
 	/**
 	 * Resolves the second URI argument against the first URI argument.
-	 *
+	 * 
 	 * <p>
 	 * This method overrides the {@link URI#resolve(URI)} method only for
 	 * <code>file</code> URIs representing UNC paths (i.e. of the form
@@ -730,7 +730,7 @@ final class URIUtils {
 	 * file URIs with an empty host and a path starting with two slashes (like
 	 * <code>file:////server/path</code>).
 	 * </p>
-	 *
+	 * 
 	 * @param reference
 	 *            the reference URI against which the second argument will be
 	 *            resolved
@@ -757,13 +757,13 @@ final class URIUtils {
 
 	/**
 	 * Resolves the second URI argument against the first URI argument.
-	 *
+	 * 
 	 * <p>
 	 * This method overrides the {@link URI#resolve(URI)} method only for
 	 * <code>file</code> URIs representing UNC paths (i.e. of the form
 	 * <code>file:////server/path</code> or <code>file://server/path</code>).
 	 * </p>
-	 *
+	 * 
 	 * @param the
 	 *            reference URI against which the second argument will be
 	 *            resolved
