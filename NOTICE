@@ -20,6 +20,31 @@ USA
 
 Third-party software
 --------------------
+Jing
+  by James Clark at Google Code (http://code.google.com/p/jing-trang/)
+  under the new BSD License
+
+The Saxon XSLT and XQuery Processor
+  by Saxonica Limited (http://www.saxonica.com/)
+  under the Mozilla Public License (version 2.0)
+  
+Apache XML Commons XML APIs
+  by The Apache Software Foundation (http://www.apache.org/)
+  under the Apache License (version 2.0)
+
+Woodstox
+  at https://github.com/FasterXML/woodstox
+  under the Apache License (version 2.0)
+
+Stax2 API
+  at https://github.com/FasterXML/stax2-api
+  under the 2-Clause BSD License
+
+TeXHyphenator-J
+  by David Tolpin (https://github.com/joeha480/texhyphj)
+  under the GNU Lesser General Public License (version 2.1)
+
+
 Liblouis
   at http://liblouis.org/
   under the GNU Lesser General Public License (version 2.1)

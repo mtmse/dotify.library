@@ -24,7 +24,7 @@ public class TextFileReader implements Closeable {
 	private Pattern pattern;
 	private int limit;
 	private int currentLine;
-
+	
 	/**
 	 * Provides a builder for a text file reader
 	 * @author Joel Håkansson
@@ -35,15 +35,15 @@ public class TextFileReader implements Closeable {
 		private Charset cs = DEFAULT_CHARSET;
 		private String regex = DEFAULT_EXPRESSION;
 		private int limit = DEFAULT_LIMIT;
-
+		
 		/**
-		 * Creates a new builder with the specified input stream
+		 * Creates a new builder with the specified input stream 
 		 * @param value the input stream
 		 */
 		public Builder(InputStream value) {
 			this.is = value;
 		}
-
+		
 		/**
 		 * Sets the charset for this builder
 		 * @param value the charset
@@ -53,7 +53,7 @@ public class TextFileReader implements Closeable {
 			this.cs = value;
 			return this;
 		}
-
+		
 		/**
 		 * Sets the regular expression of this builder.
 		 * @param value the expression to use
@@ -66,10 +66,10 @@ public class TextFileReader implements Closeable {
 			this.regex = value;
 			return this;
 		}
-
+		
 		/**
 		 * Sets the maximum number of times that the specified regular expression is matched
-		 * on a single row
+		 * on a single row 
 		 * @param value the limit
 		 * @return returns this builder
 		 */
@@ -77,7 +77,7 @@ public class TextFileReader implements Closeable {
 			this.limit = value;
 			return this;
 		}
-
+		
 		/**
 		 * Creates a new text file reader with the current configuration
 		 * @return returns a new text file reader
@@ -86,7 +86,7 @@ public class TextFileReader implements Closeable {
 			return new TextFileReader(this);
 		}
 	}
-
+	
 	/**
 	 * Creates a new TextFileReader with the default encoding and field separator.
 	 * @param is the input stream to read.
@@ -94,7 +94,7 @@ public class TextFileReader implements Closeable {
 	public TextFileReader(InputStream is) {
 		this(is, DEFAULT_CHARSET);
 	}
-
+	
 	/**
 	 * Creates a new TextFileReader with the default field separator.
 	 * @param is the input stream to read.
@@ -103,9 +103,9 @@ public class TextFileReader implements Closeable {
 	public TextFileReader(InputStream is, Charset cs) {
 		this(is, cs, DEFAULT_EXPRESSION, DEFAULT_LIMIT);
 	}
-
+	
 	/**
-	 *
+	 * 
 	 * @param is the input stream
 	 * @param cs the encoding
 	 * @param regex field delimiter expression
@@ -120,7 +120,7 @@ public class TextFileReader implements Closeable {
 		this.limit = limit;
 		this.currentLine = 0;
 	}
-
+	
 	private TextFileReader(Builder builder) {
 		this(builder.is, builder.cs, builder.regex, builder.limit);
 	}
@@ -135,22 +135,22 @@ public class TextFileReader implements Closeable {
 		currentLine++;
 		while (line != null) {
 			line = line.trim();
-			if (line.startsWith("#") || line.isEmpty()) {
+			if (line.startsWith("#") || line.length() == 0) {
 				line = lnr.readLine();
 				currentLine++;
 			} else {
-				//line.split(regex, limit)
+				//line.split(regex, limit)				
 				return new LineData(line, pattern.split(line, limit), currentLine);
 			}
 		}
 		return null;
 	}
-
+	
 	@Override
 	public void close() throws IOException {
 		lnr.close();
 	}
-
+	
 	/**
 	 * Provides the data about a single line
 	 * @author Joel Håkansson
@@ -160,7 +160,7 @@ public class TextFileReader implements Closeable {
 		private final String line;
 		private final String[] fields;
 		private final int lineNumber;
-
+		
 		private LineData(String line, String[] fields, int lineNumber) {
 			this.line = line;
 			this.fields = fields;

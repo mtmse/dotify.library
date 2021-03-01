@@ -1,6 +1,5 @@
 package org.daisy.dotify.common.text;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map.Entry;
 import java.util.NavigableMap;
@@ -22,8 +21,7 @@ import java.util.regex.Pattern;
  *
  */
 public class BreakPointHandler {
-    private static final char[] convStr = new char[60];
-    private static final char SOFT_HYPHEN = '\u00ad';
+	private static final char SOFT_HYPHEN = '\u00ad';
 	private static final char ZERO_WIDTH_SPACE = '\u200b';
 	private static final char DASH = '-';
 	private static final char SPACE = ' ';
@@ -173,7 +171,7 @@ public class BreakPointHandler {
 	 * @return returns the next break point
 	 */
 	public BreakPoint nextRow(int breakPoint, boolean force, boolean ignoreHyphens) {
-		if (state.charsStr.isEmpty()) {
+		if (state.charsStr.length()==0) {
 			// pretty simple...
 			return new BreakPoint("", "", false);
 		}
@@ -190,8 +188,7 @@ public class BreakPointHandler {
 	
 	private BreakPoint findBreakpoint(int breakPoint, boolean force, boolean ignoreHyphens) {
 		int strPos = findBreakpointPosition(state.charsStr, breakPoint);
-		int charsStrLen = state.charsStr.length();
-		assert strPos<charsStrLen;
+		assert strPos<state.charsStr.length();
 
 		/*if (strPos>=charsStr.length()-1) {
 			head = charsStr.substring(0, strPos);
@@ -199,7 +196,7 @@ public class BreakPointHandler {
 			tailStart = strPos;
 		} else */
 		// check next character to see if it can be removed.
-		if (strPos==charsStrLen-1) {
+		if (strPos==state.charsStr.length()-1) {
 			String head = state.charsStr.substring(0, strPos+1);
 			int tailStart = strPos+1;
 			return finalizeBreakpointFull(head, tailStart, false);
@@ -262,10 +259,9 @@ public class BreakPointHandler {
 	}
 	
 	private String getTail(int tailStart) {
-	    int charsStrLen = state.charsStr.length();
-		if (charsStrLen>tailStart) {
+		if (state.charsStr.length()>tailStart) {
 			String tail = state.charsStr.substring(tailStart);
-			assert (tail.length()<=charsStrLen);
+			assert (tail.length()<=state.charsStr.length());
 			return tail;
 		} else {
 			return "";
@@ -328,8 +324,8 @@ public class BreakPointHandler {
 	
 	/**
 	 * Finds the break point closest before the starting position.
+	 * @param charsStr
 	 * @param strPos
-     * @param ignoreHyphens
 	 * @return returns the break point, or -1 if none is found
 	 */
 	private int findBreakpointBefore(int strPos, boolean ignoreHyphens) {
@@ -375,25 +371,26 @@ whileLoop: while (i>=0) {
 	}
 	
 	private String finalizeResult(String str) {
-		int i = 0;
+		StringBuilder sb = new StringBuilder();
 		for (char c : str.toCharArray()) {
 			switch (c) {
-				case SOFT_HYPHEN:
-                case ZERO_WIDTH_SPACE:
+				case SOFT_HYPHEN: case ZERO_WIDTH_SPACE:
 					// remove from output
 					break;
 				default:
-                    convStr[i++] = c;
+					sb.append(c);
 			}
 		}
-        return new String(Arrays.copyOfRange(convStr, 0, i));
-    }
+		return sb.toString();
+		/*
+		return str.replaceAll(""+SOFT_HYPHEN, "").replaceAll(""+ZERO_WIDTH_SPACE, "");*/
+	}
 	/**
 	 * Does this BreakPointHandler has any text left to break into rows 
 	 * @return returns true if this BreakPointHandler has any text left to break into rows
 	 */
 	public boolean hasNext() {
-		return (state.charsStr!=null && !state.charsStr.isEmpty());
+		return (state.charsStr!=null && state.charsStr.length()>0);
 	}
 
 }
