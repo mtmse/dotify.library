@@ -1,20 +1,22 @@
 package org.daisy.dotify.common.io;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
 import java.io.IOException;
 
-import org.junit.Test;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-@SuppressWarnings("javadoc")
+/**
+ * TODO: write java doc.
+ */
 public class InterProcessLockTest {
 
-	@Test
-	public void testLock_01() throws IOException {
-		InterProcessLock lock = new InterProcessLock(InterProcessLockTest.class.getCanonicalName());
-		assertTrue(lock.lock()); 
-		assertFalse(lock.lock());
-		lock.unlock();
-	}
+    @Test
+    public void testLock_01() throws IOException {
+        InterProcessLock lock = new InterProcessLock(InterProcessLockTest.class.getCanonicalName());
+        assertTrue(lock.lock());
+        assertFalse(lock.lock());
+        lock.unlock();
+    }
 }
