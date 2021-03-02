@@ -109,13 +109,13 @@ public class TextProperties {
 		return hyphenate;
 	}
 
-    /**
-     * Returns true if the mark capital letters property is true, false otherwise
-     * @return returns true if the mark capital letters property is true
-     */
-    public boolean shouldMarkCapitalLetters() {
-        return markCapitalLetters;
-    }
+	/**
+	 * Returns true if the mark capital letters property is true, false otherwise
+	 * @return returns true if the mark capital letters property is true
+	 */
+	public boolean shouldMarkCapitalLetters() {
+		return markCapitalLetters;
+	}
 
 
 	@Override
