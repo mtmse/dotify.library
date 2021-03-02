@@ -166,6 +166,8 @@ public class LayoutEngineTest extends AbstractFormatterEngineTest {
         String line;
         while((line = br1.readLine()) != null) {
             if(!line.equals(br2.readLine())) {
+                br1.close();
+                br2.close();
                 return linePos;
             }
             linePos++;
