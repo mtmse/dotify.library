@@ -18,7 +18,7 @@ public class TextProperties {
 	private final String locale;
 	private final String translationMode;
 	private final boolean hyphenate;
-    private final boolean markCapitalLetters;
+	private final boolean markCapitalLetters;
 
 	/**
 	 * Provides a builder for creating text properties instances.
@@ -49,15 +49,15 @@ public class TextProperties {
 			return this;
 		}
 
-        /**
-         * Sets the markCapitalLetters value for this builder
-         * @param value the value
-         * @return returns this object
-         */
-        public Builder markCapitalLetters(boolean value) {
-            this.markCapitalLetters = value;
-            return this;
-        }
+		/**
+		 * Sets the markCapitalLetters value for this builder
+		 * @param value the value
+		 * @return returns this object
+		 */
+		public Builder markCapitalLetters(boolean value) {
+			this.markCapitalLetters = value;
+			return this;
+		}
 
 		/**
 		 * Sets the translation mode for the builder
@@ -123,7 +123,7 @@ public class TextProperties {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + (hyphenate ? 1231 : 1237);
-        result = prime * result + (markCapitalLetters ? 1241 : 1247);
+		result = prime * result + (markCapitalLetters ? 1447 : 1471);
 		result = prime * result + ((locale == null) ? 0 : locale.hashCode());
 		result = prime * result + ((translationMode == null) ? 0 : translationMode.hashCode());
 		return result;
@@ -144,9 +144,9 @@ public class TextProperties {
 		if (hyphenate != other.hyphenate) {
 			return false;
 		}
-        if (markCapitalLetters != other.markCapitalLetters) {
-            return false;
-        }
+		if (markCapitalLetters != other.markCapitalLetters) {
+			return false;
+		}
 		if (locale == null) {
 			if (other.locale != null) {
 				return false;
