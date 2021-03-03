@@ -15,6 +15,7 @@
  * <li>{@link org.daisy.dotify.api.obfl.ExpressionFactory}</li>
  * <li>{@link org.daisy.dotify.api.obfl.ObflParserFactoryService}</li>
  * </ul>
+ *
  * @author Joel Håkansson
  */
 package org.daisy.dotify.api.obfl;

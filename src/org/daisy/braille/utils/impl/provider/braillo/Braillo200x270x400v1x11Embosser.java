@@ -24,7 +24,6 @@ import org.daisy.braille.utils.impl.tools.embosser.SimpleEmbosserProperties;
 import org.daisy.dotify.api.embosser.Device;
 import org.daisy.dotify.api.embosser.EmbosserFactoryException;
 import org.daisy.dotify.api.embosser.EmbosserFactoryProperties;
-import org.daisy.dotify.api.embosser.EmbosserFeatures;
 import org.daisy.dotify.api.embosser.EmbosserWriter;
 import org.daisy.dotify.api.embosser.PrintPage;
 import org.daisy.dotify.api.embosser.PrintPage.PrintDirection;
@@ -44,18 +43,13 @@ import java.io.OutputStream;
 
 
 /**
- * Provides an Embosser for Braillo 200/270/400 firmware 12-16.
+ * Provides an Embosser for Braillo 200/270/400 firmware 1-11.
  *
  * @author Joel Håkansson
  */
-public class Braillo200_270_400_v12_16Embosser extends BrailloEmbosser {
+public class Braillo200x270x400v1x11Embosser extends BrailloEmbosser {
 
-    private static final long serialVersionUID = -793439533297371375L;
-
-    private static final byte[] halfInchToSheetLength = new byte[]{'0', '1', '1', '2', '2', '3', '3', '4', '4', '5',
-            '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
-
-    private boolean zFoldingEnabled;
+    private static final long serialVersionUID = -254360539553477980L;
 
     @Override
     public boolean supportsPrintPage(PrintPage dim) {
@@ -65,21 +59,20 @@ public class Braillo200_270_400_v12_16Embosser extends BrailloEmbosser {
         if (width < 27) {
             return false;
         }
-        if (height < 4 || height > 14) {
+        if (height < 10 || height > 14) {
             return false;
         }
         return true;
     }
 
     /**
-     * Creates a new Braillo 200/270/400 embosser having firmware version 12-16.
+     * Creates a new Braillo 200/270/400 embosser having firmware version 1-11.
      *
      * @param service the table catalog
      * @param props   the embosser properties
      */
-    public Braillo200_270_400_v12_16Embosser(TableCatalogService service, EmbosserFactoryProperties props) {
+    public Braillo200x270x400v1x11Embosser(TableCatalogService service, EmbosserFactoryProperties props) {
         super(service, props);
-        zFoldingEnabled = false;
     }
 
     @Override
@@ -126,45 +119,30 @@ public class Braillo200_270_400_v12_16Embosser extends BrailloEmbosser {
 
     // B200, B270, B400
     // Supported paper width (chars): 27 <= width <= 42
-    // Supported paper height (inches): 4 <= height <= 14
+    // Supported paper height (inches): 10 <= height <= 14
     private byte[] getBrailloHeader(int width, Dimensions pageFormat) throws UnsupportedPaperException {
         // Round to the closest possible higher value, so that all characters fit on the page
         int height = (int) Math.ceil(2 * pageFormat.getHeight() / EmbosserTools.INCH_IN_MM);
+
         if (width > 42 || height > 28) {
             throw new UnsupportedPaperException(
                 "Paper too wide or high: " + width + " chars x " + height / 2d + " inches."
             );
         }
-        if (width < 27 || height < 8) {
+        if (width < 27 || height < 20) {
             throw new UnsupportedPaperException(
                 "Paper too narrow or short: " + width + " chars x " + height / 2d + " inches."
             );
         }
         return new byte[]{
                 0x1b, 'E',                    // Normal form feed
-                0x1b, 'S', '1',                // Print format interpoint
                 0x1b, '6',                    // 6 dot
                 0x1b, 0x1F, (byte) Integer.toHexString(width - 27).toUpperCase().charAt(0),
                 // Line length
-                0x1b, 0x1E, halfInchToSheetLength[height - 8],
+                0x1b, 0x1E, (byte) (height - 20 + 48),
                 // Sheet length
                 0x1b, 'A',                    // Single line spacing
-                0x1b, 'Q', (byte) (zFoldingEnabled ? '1' : '0')
-                // Page Layout. n can be 0 or 1, Normal (0) or Z-fold printing (1)
         };
-    }
-
-    @Override
-    public void setFeature(String key, Object value) {
-        if (EmbosserFeatures.Z_FOLDING.equals(key)) {
-            try {
-                zFoldingEnabled = (Boolean) value;
-            } catch (ClassCastException e) {
-                throw new IllegalArgumentException("Unsupported value for z-folding.");
-            }
-        } else {
-            super.setFeature(key, value);
-        }
     }
 
     @Override
@@ -200,7 +178,7 @@ public class Braillo200_270_400_v12_16Embosser extends BrailloEmbosser {
 
     @Override
     public boolean supportsZFolding() {
-        return true;
+        return false;
     }
 
     @Override
@@ -213,7 +191,7 @@ public class Braillo200_270_400_v12_16Embosser extends BrailloEmbosser {
         return pageFormat.getPageFormatType() == PageFormat.Type.TRACTOR
                 && pageFormat.asTractorPaperFormat().getLengthAcrossFeed().asInches() >= 4
                 && pageFormat.asTractorPaperFormat().getLengthAcrossFeed().asInches() <= 14
-                && pageFormat.asTractorPaperFormat().getLengthAlongFeed().asInches() >= 4
+                && pageFormat.asTractorPaperFormat().getLengthAlongFeed().asInches() >= 10
                 && pageFormat.asTractorPaperFormat().getLengthAlongFeed().asInches() <= 14;
     }
 
@@ -222,7 +200,7 @@ public class Braillo200_270_400_v12_16Embosser extends BrailloEmbosser {
         return paper.getType() == Paper.Type.TRACTOR
                 && paper.asTractorPaper().getLengthAcrossFeed().asInches() >= 4
                 && paper.asTractorPaper().getLengthAcrossFeed().asInches() <= 14
-                && paper.asTractorPaper().getLengthAlongFeed().asInches() >= 4
+                && paper.asTractorPaper().getLengthAlongFeed().asInches() >= 10
                 && paper.asTractorPaper().getLengthAlongFeed().asInches() <= 14;
     }
 }

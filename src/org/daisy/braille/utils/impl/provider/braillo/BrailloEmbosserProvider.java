@@ -132,9 +132,9 @@ public class BrailloEmbosserProvider implements EmbosserProvider {
             case BRAILLO_200:
                 return new Braillo200Embosser(tableCatalogService, EmbosserType.BRAILLO_200);
             case BRAILLO_200_FW_11:
-                return new Braillo200_270_400_v1_11Embosser(tableCatalogService, EmbosserType.BRAILLO_200_FW_11);
+                return new Braillo200x270x400v1x11Embosser(tableCatalogService, EmbosserType.BRAILLO_200_FW_11);
             case BRAILLO_270:
-                return new Braillo200_270_400_v12_16Embosser(tableCatalogService, EmbosserType.BRAILLO_270);
+                return new Braillo200x270x400v12x16Embosser(tableCatalogService, EmbosserType.BRAILLO_270);
             case BRAILLO_300:
                 return new Braillo300Embosser(tableCatalogService, EmbosserType.BRAILLO_300);
             case BRAILLO_400_S:

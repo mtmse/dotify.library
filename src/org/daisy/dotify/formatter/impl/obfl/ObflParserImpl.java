@@ -26,7 +26,7 @@ import org.daisy.dotify.api.formatter.MarkerReference.MarkerSearchScope;
 import org.daisy.dotify.api.formatter.MarkerReferenceField;
 import org.daisy.dotify.api.formatter.NoField;
 import org.daisy.dotify.api.formatter.NumeralStyle;
-import org.daisy.dotify.api.formatter.PageAreaBuilder;
+import org.daisy.dotify.api.formatter.PageArea;
 import org.daisy.dotify.api.formatter.PageAreaProperties;
 import org.daisy.dotify.api.formatter.PageTemplateBuilder;
 import org.daisy.dotify.api.formatter.Position;
@@ -348,7 +348,7 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
                 config.align(PageAreaProperties.Alignment.valueOf(value.toUpperCase()));
             }
         }
-        PageAreaBuilder builder = null;
+        PageArea builder = null;
         // Use global values here, because they are not inherited from anywhere
         TextProperties tp = new TextProperties.Builder(
             locale.toString()

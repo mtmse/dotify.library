@@ -2,7 +2,7 @@ package org.daisy.dotify.formatter.impl.page;
 
 import org.daisy.dotify.formatter.impl.core.Block;
 import org.daisy.dotify.formatter.impl.core.BlockContext;
-import org.daisy.dotify.formatter.impl.core.PageAreaBuilderImpl;
+import org.daisy.dotify.formatter.impl.core.PageAreaImpl;
 import org.daisy.dotify.formatter.impl.row.AbstractBlockContentManager;
 import org.daisy.dotify.formatter.impl.row.RowImpl;
 
@@ -15,7 +15,7 @@ class PageAreaContent {
     private final List<RowImpl> before;
     private final List<RowImpl> after;
 
-    PageAreaContent(PageAreaBuilderImpl pab, BlockContext bc) {
+    PageAreaContent(PageAreaImpl pab, BlockContext bc) {
         if (pab != null) {
             //Assumes before is static
             this.before = Collections.unmodifiableList(renderRows(pab.getBeforeArea(), bc));
