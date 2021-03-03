@@ -69,26 +69,26 @@ public class SearchInfoTest {
     }
 
     private static void addPages(
-            SearchInfo si,
-            int count,
-            int offset,
-            int globalStartIndex,
-            int sequenceId,
-            DocumentSpace space,
-            Integer volumeGroup
+        SearchInfo si,
+        int count,
+        int offset,
+        int globalStartIndex,
+        int sequenceId,
+        DocumentSpace space,
+        Integer volumeGroup
     ) {
         addPages(si, count, offset, globalStartIndex, sequenceId, space, volumeGroup, Collections.emptyMap());
     }
 
     private static void addPages(
-            SearchInfo si,
-            int count,
-            int offset,
-            int globalStartIndex,
-            int sequenceId,
-            DocumentSpace space,
-            Integer volumeGroup,
-            Map<Integer, ArrayList<Marker>> marker
+        SearchInfo si,
+        int count,
+        int offset,
+        int globalStartIndex,
+        int sequenceId,
+        DocumentSpace space,
+        Integer volumeGroup,
+        Map<Integer, ArrayList<Marker>> marker
     ) {
         for (int i = 0; i < count; i++) {
             PageDetails pd = new PageDetails(

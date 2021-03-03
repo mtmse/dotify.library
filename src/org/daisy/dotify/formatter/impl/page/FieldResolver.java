@@ -122,10 +122,10 @@ class FieldResolver {
     }
 
     private List<String> resolveField(
-            PageDetails p,
-            FieldList chunks,
-            BrailleTranslator translator,
-            Optional<String> noField
+        PageDetails p,
+        FieldList chunks,
+        BrailleTranslator translator,
+        Optional<String> noField
     ) {
         ArrayList<String> chunkF = new ArrayList<>();
         for (Field f : chunks.getFields()) {
@@ -269,7 +269,7 @@ class FieldResolver {
         List<String> parts = resolveField(
             details,
             list,
-                fcontext.getDefaultTranslator(),
+            fcontext.getDefaultTranslator(),
             Optional.empty()
         );
         int size = parts.stream().mapToInt(str -> str.length()).sum();
