@@ -4,20 +4,16 @@ import org.daisy.dotify.api.writer.PagedMediaWriter;
 import org.daisy.dotify.api.writer.PagedMediaWriterConfigurationException;
 import org.daisy.dotify.api.writer.PagedMediaWriterFactory;
 
-import java.util.Properties;
-
 class PEFMediaWriterFactory implements PagedMediaWriterFactory {
-    private final Properties p;
 
     public PEFMediaWriterFactory() {
         super();
-        p = new Properties();
     }
 
     @Override
     public PagedMediaWriter newPagedMediaWriter()
             throws PagedMediaWriterConfigurationException {
-        return new PEFMediaWriter(p);
+        return new PEFMediaWriter();
     }
 
     @Override

@@ -19,7 +19,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.namespace.QName;
@@ -55,10 +54,8 @@ public class PEFMediaWriter implements PagedMediaWriter {
 
     /**
      * Create a new PEFMediaWriter using the supplied Properties.
-     *
-     * @param p configuration Properties
      */
-    public PEFMediaWriter(Properties p) {
+    public PEFMediaWriter() {
         hasOpenVolume = false;
         hasOpenSection = false;
         hasOpenPage = false;

@@ -2,13 +2,10 @@ package org.daisy.dotify.translator;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -30,9 +27,6 @@ import org.daisy.dotify.common.text.StringFilter;
  *
  */
 public class DefaultBrailleFilter implements BrailleFilter {
-	private static final Logger LOGGER = Logger.getLogger(DefaultBrailleFilter.class.getCanonicalName());	
-	private static final Set<String> HYPH_STYLES = new HashSet<>(Arrays.asList("em", "strong"));
-
 	private final String loc;
 	private final StringFilter filter;
 	private final DefaultMarkerProcessor tap;
