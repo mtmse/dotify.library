@@ -1,14 +1,17 @@
 package org.daisy.dotify.translator.impl.sv;
 
-import java.io.FileNotFoundException;
-
 import org.daisy.dotify.translator.impl.DefaultBrailleFinalizer;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import java.io.FileNotFoundException;
 
-@SuppressWarnings("javadoc")
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+/**
+ * TODO: write java doc.
+ */
 public class SwedishBrailleFilterTest {
     private final SwedishBrailleFilter filter;
 
@@ -45,7 +48,13 @@ public class SwedishBrailleFilterTest {
 
     @Test
     public void testSwedishFilter_Punctuation_ex5() {
-        assertEquals("⠠⠎⠅⠊⠇⠇⠝⠁⠙⠑⠝ ⠍⠑⠇⠇⠁⠝ ⠁⠗⠃⠑⠞⠎- ⠕⠉⠓ ⠧⠊⠇⠕⠙⠁⠛⠁⠗ ⠃⠇⠑⠧ ⠍⠊⠝⠙⠗⠑ ⠎⠅⠁⠗⠏⠆ ⠓⠕⠝ ⠅⠥⠝⠙⠑ ⠞⠊⠇⠇⠡⠞⠁ ⠎⠊⠛ ⠧⠊⠇⠕⠙⠁⠛⠁⠗ ⠍⠊⠞⠞ ⠊ ⠧⠑⠉⠅⠁⠝⠄", filter.filter("Skillnaden mellan arbets- och vilodagar blev mindre skarp; hon kunde tillåta sig vilodagar mitt i veckan."));
+        assertEquals(
+            "⠠⠎⠅⠊⠇⠇⠝⠁⠙⠑⠝ ⠍⠑⠇⠇⠁⠝ ⠁⠗⠃⠑⠞⠎- ⠕⠉⠓ ⠧⠊⠇⠕⠙⠁⠛⠁⠗ ⠃⠇⠑⠧ ⠍⠊⠝⠙⠗⠑ ⠎⠅⠁⠗⠏⠆ ⠓⠕⠝ ⠅⠥⠝⠙⠑ ⠞⠊⠇⠇⠡⠞⠁ " +
+                    "⠎⠊⠛ ⠧⠊⠇⠕⠙⠁⠛⠁⠗ ⠍⠊⠞⠞ ⠊ ⠧⠑⠉⠅⠁⠝⠄",
+            filter.filter(
+                "Skillnaden mellan arbets- och vilodagar blev mindre skarp; hon kunde tillåta " +
+                    "sig vilodagar mitt i veckan."
+            ));
     }
 
     @Test
@@ -75,18 +84,27 @@ public class SwedishBrailleFilterTest {
 
     @Test
     public void testSwedishFilter_Punctuation_ex11() {
-        assertEquals("⠰⠠⠧⠁⠙ ⠃⠑⠞⠽⠙⠑⠗ ⠐⠁⠃⠎⠞⠗⠥⠎⠐⠢⠰ ⠋⠗⠡⠛⠁⠙⠑ ⠓⠁⠝⠄", filter.filter("\"Vad betyder 'abstrus'?\" frågade han."));
+        assertEquals(
+            "⠰⠠⠧⠁⠙ ⠃⠑⠞⠽⠙⠑⠗ ⠐⠁⠃⠎⠞⠗⠥⠎⠐⠢⠰ ⠋⠗⠡⠛⠁⠙⠑ ⠓⠁⠝⠄",
+            filter.filter("\"Vad betyder 'abstrus'?\" frågade han.")
+        );
     }
 
     // 2.2 - Dashes
     @Test
     public void testSwedishFilter_Dashes_ex1() {
-        assertEquals("⠠⠁⠝⠝⠑-⠠⠍⠁⠗⠊⠑ ⠓⠁⠗ ⠛⠥⠇- ⠕⠉⠓ ⠧⠊⠞⠗⠁⠝⠙⠊⠛ ⠅⠚⠕⠇⠄", filter.filter("Anne-Marie har gul- och vitrandig kjol."));
+        assertEquals(
+            "⠠⠁⠝⠝⠑-⠠⠍⠁⠗⠊⠑ ⠓⠁⠗ ⠛⠥⠇- ⠕⠉⠓ ⠧⠊⠞⠗⠁⠝⠙⠊⠛ ⠅⠚⠕⠇⠄",
+            filter.filter("Anne-Marie har gul- och vitrandig kjol.")
+        );
     }
 
     @Test
     public void testSwedishFilter_Dashes_ex2() {
-        assertEquals("⠠⠑⠞⠞ ⠋⠑⠃⠗⠊⠇⠞ ⠎⠽⠎⠎⠇⠁⠝⠙⠑ ⠍⠑⠙ ⠤⠤ ⠊⠝⠛⠑⠝⠞⠊⠝⠛ ⠁⠇⠇⠎⠄", filter.filter("Ett febrilt sysslande med \u2013 ingenting alls."));
+        assertEquals(
+            "⠠⠑⠞⠞ ⠋⠑⠃⠗⠊⠇⠞ ⠎⠽⠎⠎⠇⠁⠝⠙⠑ ⠍⠑⠙ ⠤⠤ ⠊⠝⠛⠑⠝⠞⠊⠝⠛ ⠁⠇⠇⠎⠄",
+            filter.filter("Ett febrilt sysslande med \u2013 ingenting alls.")
+        );
     }
 
     @Test
@@ -96,24 +114,40 @@ public class SwedishBrailleFilterTest {
 
     @Test
     public void testSwedishFilter_Dashes_ex4() {
-        assertEquals("⠠⠓⠁⠝ ⠞⠕⠛ ⠞⠡⠛⠑⠞ ⠠⠎⠞⠕⠉⠅⠓⠕⠇⠍⠤⠤⠠⠛⠪⠞⠑⠃⠕⠗⠛⠄", filter.filter("Han tog tåget Stockholm\u2013Göteborg."));
+        assertEquals(
+            "⠠⠓⠁⠝ ⠞⠕⠛ ⠞⠡⠛⠑⠞ ⠠⠎⠞⠕⠉⠅⠓⠕⠇⠍⠤⠤⠠⠛⠪⠞⠑⠃⠕⠗⠛⠄",
+            filter.filter("Han tog tåget Stockholm\u2013Göteborg.")
+        );
     }
 
     // 2.3.1 - Parentheses
     @Test
     public void testSwedishFilter_Parentheses_ex1() {
-        assertEquals("⠠⠎⠽⠝⠎⠅⠁⠙⠁⠙⠑⠎ ⠠⠗⠊⠅⠎⠋⠪⠗⠃⠥⠝⠙ ⠦⠠⠠⠎⠗⠋⠴", filter.filter("Synskadades Riksförbund (SRF)"));
+        assertEquals(
+            "⠠⠎⠽⠝⠎⠅⠁⠙⠁⠙⠑⠎ ⠠⠗⠊⠅⠎⠋⠪⠗⠃⠥⠝⠙ ⠦⠠⠠⠎⠗⠋⠴",
+            filter.filter("Synskadades Riksförbund (SRF)")
+        );
     }
 
     @Test
     public void testSwedishFilter_Parentheses_ex2() {
-        assertEquals("⠠⠗⠁⠏⠏⠕⠗⠞⠑⠗ ⠁⠴ ⠋⠗⠡⠝ ⠋⠪⠗⠃⠥⠝⠙⠎⠍⠪⠞⠑⠞ ⠃⠴ ⠅⠁⠎⠎⠁⠜⠗⠑⠝⠙⠑⠝", filter.filter("Rapporter a) från förbundsmötet b) kassaärenden"));
+        assertEquals(
+            "⠠⠗⠁⠏⠏⠕⠗⠞⠑⠗ ⠁⠴ ⠋⠗⠡⠝ ⠋⠪⠗⠃⠥⠝⠙⠎⠍⠪⠞⠑⠞ ⠃⠴ ⠅⠁⠎⠎⠁⠜⠗⠑⠝⠙⠑⠝",
+            filter.filter("Rapporter a) från förbundsmötet b) kassaärenden")
+        );
     }
 
     // 2.3.2 - Brackets
     @Test
     public void testSwedishFilter_Brackets_ex1() {
-        assertEquals("⠠⠅⠗⠁⠧⠑⠞ ⠓⠁⠗ ⠎⠞⠜⠇⠇⠞⠎ ⠋⠗⠡⠝ ⠕⠇⠊⠅⠁ ⠛⠗⠥⠏⠏⠑⠗ ⠦⠃⠇⠄⠁⠄ ⠷⠓⠪⠛⠎⠅⠕⠇⠑⠾⠎⠞⠥⠙⠑⠗⠁⠝⠙⠑ ⠕⠉⠓ ⠙⠑⠇⠞⠊⠙⠎⠁⠗⠃⠑⠞⠁⠝⠙⠑⠴ ⠍⠑⠝ ⠙⠑⠞ ⠓⠁⠗ ⠁⠇⠇⠞⠊⠙ ⠁⠧⠧⠊⠎⠁⠞⠎⠄", filter.filter("Kravet har ställts från olika grupper (bl.a. [högskole]studerande och deltidsarbetande) men det har alltid avvisats."));
+        assertEquals(
+            "⠠⠅⠗⠁⠧⠑⠞ ⠓⠁⠗ ⠎⠞⠜⠇⠇⠞⠎ ⠋⠗⠡⠝ ⠕⠇⠊⠅⠁ ⠛⠗⠥⠏⠏⠑⠗ ⠦⠃⠇⠄⠁⠄ ⠷⠓⠪⠛⠎⠅⠕⠇⠑⠾⠎⠞⠥⠙⠑⠗⠁⠝⠙⠑ ⠕⠉⠓ " +
+            "⠙⠑⠇⠞⠊⠙⠎⠁⠗⠃⠑⠞⠁⠝⠙⠑⠴ ⠍⠑⠝ ⠙⠑⠞ ⠓⠁⠗ ⠁⠇⠇⠞⠊⠙ ⠁⠧⠧⠊⠎⠁⠞⠎⠄",
+            filter.filter(
+                "Kravet har ställts från olika grupper (bl.a. [högskole]studerande och " +
+                "deltidsarbetande) men det har alltid avvisats."
+            )
+        );
     }
 
     @Test
@@ -125,7 +159,10 @@ public class SwedishBrailleFilterTest {
     // 2.3.5 - Braces
     @Test
     public void testSwedishFilter_Braces() {
-        assertEquals("⠠⠷⠼⠁⠂ ⠼⠉⠂ ⠼⠑⠠⠾ ⠥⠞⠇⠜⠎⠑⠎ ⠍⠜⠝⠛⠙⠑⠝ ⠁⠧ ⠞⠁⠇⠑⠝ ⠑⠞⠞⠂ ⠞⠗⠑ ⠕⠉⠓ ⠋⠑⠍⠄", filter.filter("{1, 3, 5} utläses mängden av talen ett, tre och fem."));
+        assertEquals(
+            "⠠⠷⠼⠁⠂ ⠼⠉⠂ ⠼⠑⠠⠾ ⠥⠞⠇⠜⠎⠑⠎ ⠍⠜⠝⠛⠙⠑⠝ ⠁⠧ ⠞⠁⠇⠑⠝ ⠑⠞⠞⠂ ⠞⠗⠑ ⠕⠉⠓ ⠋⠑⠍⠄",
+            filter.filter("{1, 3, 5} utläses mängden av talen ett, tre och fem.")
+        );
     }
 
     // 2.4.1 (ex 2) COULDDO ex 1, 3
@@ -161,7 +198,10 @@ public class SwedishBrailleFilterTest {
     // 2.4.6
     @Test
     public void testSwedishFilter_2_4_6() {
-        assertEquals("⠠⠉⠒⠘⠌⠠⠠⠺⠊⠝⠙⠕⠺⠎⠘⠌⠎⠽⠎⠞⠑⠍⠘⠌⠇⠕⠛⠊⠝⠺⠼⠉⠁⠄⠙⠇⠇", filter.filter("C:\\WINDOWS\\system\\loginw31.dll"));
+        assertEquals(
+            "⠠⠉⠒⠘⠌⠠⠠⠺⠊⠝⠙⠕⠺⠎⠘⠌⠎⠽⠎⠞⠑⠍⠘⠌⠇⠕⠛⠊⠝⠺⠼⠉⠁⠄⠙⠇⠇",
+            filter.filter("C:\\WINDOWS\\system\\loginw31.dll")
+        );
     }
 
     // 2.4.8
@@ -187,7 +227,10 @@ public class SwedishBrailleFilterTest {
     // 3.2.1
     @Test
     public void testSwedishFilter_3_2_1() {
-        assertEquals("⠠⠓⠁⠝ ⠓⠑⠞⠑⠗ ⠠⠓⠁⠝⠎ ⠕⠉⠓ ⠃⠗⠕⠗ ⠓⠁⠝⠎ ⠓⠑⠞⠑⠗ ⠠⠃⠗⠕⠗⠄", filter.filter("Han heter Hans och bror hans heter Bror."));
+        assertEquals(
+            "⠠⠓⠁⠝ ⠓⠑⠞⠑⠗ ⠠⠓⠁⠝⠎ ⠕⠉⠓ ⠃⠗⠕⠗ ⠓⠁⠝⠎ ⠓⠑⠞⠑⠗ ⠠⠃⠗⠕⠗⠄",
+            filter.filter("Han heter Hans och bror hans heter Bror.")
+        );
     }
 
     // 3.2.2
@@ -209,7 +252,10 @@ public class SwedishBrailleFilterTest {
     // 3.2.3
     @Test
     public void testSwedishFilter_3_2_3_ex1() {
-        assertEquals("⠠⠠⠠⠇⠕⠌⠞⠉⠕⠌⠎⠁⠉⠕⠱⠒⠎ ⠠⠃⠗⠽⠎⠎⠑⠇⠅⠕⠝⠞⠕⠗", filter.filter("LO/TCO/SACO:s Brysselkontor"));
+        assertEquals(
+            "⠠⠠⠠⠇⠕⠌⠞⠉⠕⠌⠎⠁⠉⠕⠱⠒⠎ ⠠⠃⠗⠽⠎⠎⠑⠇⠅⠕⠝⠞⠕⠗",
+            filter.filter("LO/TCO/SACO:s Brysselkontor")
+        );
     }
 
     @Test
@@ -235,7 +281,10 @@ public class SwedishBrailleFilterTest {
 
     @Test
     public void testSwedishFilter_additional_ex1() throws FileNotFoundException {
-        assertEquals("⠘⠦⠎⠞⠚⠜⠗⠝⠁⠘⠴ ⠘⠦⠃⠇⠊⠭⠞⠘⠴ ⠘⠦⠒⠦⠘⠴ ⠘⠦⠒⠴⠘⠴ ⠬⠕", filter.filter("\u066d \u2607 \u2639 \u263a \u00ba"));
+        assertEquals(
+            "⠘⠦⠎⠞⠚⠜⠗⠝⠁⠘⠴ ⠘⠦⠃⠇⠊⠭⠞⠘⠴ ⠘⠦⠒⠦⠘⠴ ⠘⠦⠒⠴⠘⠴ ⠬⠕",
+            filter.filter("\u066d \u2607 \u2639 \u263a \u00ba")
+        );
     }
 
     @Test
@@ -251,7 +300,11 @@ public class SwedishBrailleFilterTest {
     @Test
     public void testFinalizer_001() {
         DefaultBrailleFinalizer finalizer = new DefaultBrailleFinalizer();
-        assertEquals("This\u2800is\u2800a\u2800test\u2800string\u2800to\u2800finalize\u2800\u2824\u2800nothing\u2800more.", finalizer.finalizeBraille("This is a test string to finalize - nothing more."));
+        assertEquals(
+            "This\u2800is\u2800a\u2800test\u2800string\u2800to\u2800" +
+                    "finalize\u2800\u2824\u2800nothing\u2800more.",
+            finalizer.finalizeBraille("This is a test string to finalize - nothing more.")
+        );
     }
 
     @Test
@@ -267,7 +320,10 @@ public class SwedishBrailleFilterTest {
             f.finalizeBraille(s);
         }
         long actualTime = System.currentTimeMillis() - d;
-        assertTrue("Time exceeded threshold (" + threshold + " ms), was " + actualTime + " ms.", (actualTime < threshold));
+        assertTrue(
+            "Time exceeded threshold (" + threshold + " ms), was " + actualTime + " ms.",
+            (actualTime < threshold)
+        );
     }
 
     @Test
@@ -282,20 +338,47 @@ public class SwedishBrailleFilterTest {
 
     @Test
     public void testExactDiacriticalMarks() {
-        assertEquals("⠷ ⠜⠗ ⠁ ⠍⠑⠙ ⠛⠗⠁⠧ ⠁⠉⠉⠑⠝⠞", filter.filter("à är a med grav accent"));
-        assertEquals("⠠⠷ ⠜⠗ ⠑⠞⠞ ⠧⠑⠗⠎⠁⠇⠞ ⠠⠁ ⠍⠑⠙ ⠛⠗⠁⠧ ⠁⠉⠉⠑⠝⠞", filter.filter("À är ett versalt A med grav accent"));
-        assertEquals("⠿ ⠜⠗ ⠑⠞⠞ ⠑ ⠍⠑⠙ ⠁⠅⠥⠞ ⠁⠉⠉⠑⠝⠞", filter.filter("é är ett e med akut accent"));
-        assertEquals("⠠⠿ ⠜⠗ ⠑⠞⠞ ⠧⠑⠗⠎⠁⠇⠞ ⠠⠑ ⠑ ⠍⠑⠙ ⠁⠅⠥⠞ ⠁⠉⠉⠑⠝⠞", filter.filter("É är ett versalt E e med akut accent"));
-        assertEquals("⠮ ⠜⠗ ⠑⠞⠞ ⠑ ⠍⠑⠙ ⠛⠗⠁⠧ ⠁⠉⠉⠑⠝⠞", filter.filter("è är ett e med grav accent"));
-        assertEquals("⠠⠮ ⠜⠗ ⠑⠞⠞ ⠧⠑⠗⠎⠁⠇⠞ ⠠⠑ ⠑ ⠍⠑⠙ ⠛⠗⠁⠧ ⠁⠉⠉⠑⠝⠞", filter.filter("È är ett versalt E e med grav accent"));
-        assertEquals("⠳ ⠜⠗ ⠑⠞⠞ ⠥ ⠞⠽⠎⠅⠞ ⠽⠂ ⠥ ⠍⠑⠙ ⠞⠗⠑⠍⠁", filter.filter("ü är ett u tyskt y, u med trema"));
-        assertEquals("⠠⠳ ⠜⠗ ⠑⠞⠞ ⠧⠑⠗⠎⠁⠇⠞ ⠠⠥ ⠞⠽⠎⠅⠞ ⠽⠂ ⠥ ⠍⠑⠙ ⠞⠗⠑⠍⠁", filter.filter("Ü är ett versalt U tyskt y, u med trema"));
+        assertEquals(
+            "⠷ ⠜⠗ ⠁ ⠍⠑⠙ ⠛⠗⠁⠧ ⠁⠉⠉⠑⠝⠞",
+            filter.filter("à är a med grav accent")
+        );
+        assertEquals(
+            "⠠⠷ ⠜⠗ ⠑⠞⠞ ⠧⠑⠗⠎⠁⠇⠞ ⠠⠁ ⠍⠑⠙ ⠛⠗⠁⠧ ⠁⠉⠉⠑⠝⠞",
+            filter.filter("À är ett versalt A med grav accent")
+        );
+        assertEquals(
+            "⠿ ⠜⠗ ⠑⠞⠞ ⠑ ⠍⠑⠙ ⠁⠅⠥⠞ ⠁⠉⠉⠑⠝⠞",
+            filter.filter("é är ett e med akut accent")
+        );
+        assertEquals(
+            "⠠⠿ ⠜⠗ ⠑⠞⠞ ⠧⠑⠗⠎⠁⠇⠞ ⠠⠑ ⠑ ⠍⠑⠙ ⠁⠅⠥⠞ ⠁⠉⠉⠑⠝⠞",
+            filter.filter("É är ett versalt E e med akut accent")
+    );
+        assertEquals(
+            "⠮ ⠜⠗ ⠑⠞⠞ ⠑ ⠍⠑⠙ ⠛⠗⠁⠧ ⠁⠉⠉⠑⠝⠞",
+            filter.filter("è är ett e med grav accent")
+        );
+        assertEquals(
+            "⠠⠮ ⠜⠗ ⠑⠞⠞ ⠧⠑⠗⠎⠁⠇⠞ ⠠⠑ ⠑ ⠍⠑⠙ ⠛⠗⠁⠧ ⠁⠉⠉⠑⠝⠞",
+            filter.filter("È är ett versalt E e med grav accent")
+        );
+        assertEquals(
+            "⠳ ⠜⠗ ⠑⠞⠞ ⠥ ⠞⠽⠎⠅⠞ ⠽⠂ ⠥ ⠍⠑⠙ ⠞⠗⠑⠍⠁",
+            filter.filter("ü är ett u tyskt y, u med trema")
+        );
+        assertEquals(
+            "⠠⠳ ⠜⠗ ⠑⠞⠞ ⠧⠑⠗⠎⠁⠇⠞ ⠠⠥ ⠞⠽⠎⠅⠞ ⠽⠂ ⠥ ⠍⠑⠙ ⠞⠗⠑⠍⠁",
+            filter.filter("Ü är ett versalt U tyskt y, u med trema")
+        );
     }
 
     @Test
     public void testGeneralDiacriticalMarksInSentences() {
         String str = "Biff à la Lindström till supé är mitt förslag, sa Irène Blücher.";
-        assertEquals("⠠⠃⠊⠋⠋ ⠷ ⠇⠁ ⠠⠇⠊⠝⠙⠎⠞⠗⠪⠍ ⠞⠊⠇⠇ ⠎⠥⠏⠿ ⠜⠗ ⠍⠊⠞⠞ ⠋⠪⠗⠎⠇⠁⠛⠂ ⠎⠁ ⠠⠊⠗⠮⠝⠑ ⠠⠃⠇⠳⠉⠓⠑⠗⠄", filter.filter(str));
+        assertEquals(
+            "⠠⠃⠊⠋⠋ ⠷ ⠇⠁ ⠠⠇⠊⠝⠙⠎⠞⠗⠪⠍ ⠞⠊⠇⠇ ⠎⠥⠏⠿ ⠜⠗ ⠍⠊⠞⠞ ⠋⠪⠗⠎⠇⠁⠛⠂ ⠎⠁ ⠠⠊⠗⠮⠝⠑ ⠠⠃⠇⠳⠉⠓⠑⠗⠄",
+            filter.filter(str)
+        );
         str = "Rhône, Moçambique, Boëthius, Dvořák";
         assertEquals("⠠⠗⠓⠈⠕⠝⠑⠂ ⠠⠍⠕⠈⠉⠁⠍⠃⠊⠟⠥⠑⠂ ⠠⠃⠕⠈⠑⠞⠓⠊⠥⠎⠂ ⠠⠙⠧⠕⠈⠗⠈⠁⠅", filter.filter(str));
         str = "Jūratė";
@@ -304,7 +387,8 @@ public class SwedishBrailleFilterTest {
 
     @Test
     public void testGeneralDiacriticalMarks() {
-        // This characters are taken from a list of letters with diacritical marks. https://sv.wikipedia.org/wiki/Diakritiskt_tecken
+        // This characters are taken from a list of letters with diacritical marks.
+        // https://sv.wikipedia.org/wiki/Diakritiskt_tecken
         /* acute accent */
         assertEquals("⠈⠁", filter.filter("á"));
         assertEquals("⠈⠉", filter.filter("ć"));
