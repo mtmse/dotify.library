@@ -5,9 +5,12 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * TODO: write java doc.
+ */
 public class JHypenatorTest {
 
-    final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
+    private static final char[] hexArray = "0123456789ABCDEF".toCharArray();
 
     public static String bytesToHex(byte[] bytes) {
         char[] hexChars = new char[bytes.length * 2];
@@ -23,12 +26,12 @@ public class JHypenatorTest {
     public void testBeginEndHandling() throws HyphenatorConfigurationException {
         JHyphenator jHyphenator = new JHyphenator("sv");
 
-        assertEquals("i", jHyphenator.handleWord("i", new byte[] {}));
-        assertEquals("in", jHyphenator.handleWord("in", new byte[] {1}));
-        assertEquals("test", jHyphenator.handleWord("test", new byte[] {1,0,0}));
-        assertEquals("test", jHyphenator.handleWord("test", new byte[] {0,0,1}));
+        assertEquals("i", jHyphenator.handleWord("i", new byte[]{}));
+        assertEquals("in", jHyphenator.handleWord("in", new byte[]{1}));
+        assertEquals("test", jHyphenator.handleWord("test", new byte[]{1, 0, 0}));
+        assertEquals("test", jHyphenator.handleWord("test", new byte[]{0, 0, 1}));
         assertEquals("test\u00ADar",
-                jHyphenator.handleWord("testar", new byte[] {1,0,0,1,0,1})
+                jHyphenator.handleWord("testar", new byte[]{1, 0, 0, 1, 0, 1})
         );
     }
 
