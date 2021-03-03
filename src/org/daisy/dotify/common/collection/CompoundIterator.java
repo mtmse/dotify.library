@@ -5,48 +5,49 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * Provides an iterator for a collection of iterables
- * @author Joel Håkansson
+ * Provides an iterator for a collection of iterables.
  *
  * @param <T> the type of iterator
+ * @author Joel Håkansson
  */
 public class CompoundIterator<T> implements Iterator<T> {
-	ArrayList<Iterator<T>> iterators;
-	
-	/**
-	 * Creates a new compound iterator
-	 * @param iterables the iterables to use in this iterator
-	 */
-	public CompoundIterator(Iterable<? extends Iterable<T>> iterables) {
-		iterators = new ArrayList<>();
-		for (Iterable<T> e : iterables) {
-			iterators.add(e.iterator());
-		}
-	}
+    ArrayList<Iterator<T>> iterators;
 
-	@Override
-	public boolean hasNext() {
-		for (Iterator<T> e : iterators) {
-			if (e.hasNext()) {
-				return true;
-			}
-		}
-		return false;
-	}
+    /**
+     * Creates a new compound iterator.
+     *
+     * @param iterables the iterables to use in this iterator
+     */
+    public CompoundIterator(Iterable<? extends Iterable<T>> iterables) {
+        iterators = new ArrayList<>();
+        for (Iterable<T> e : iterables) {
+            iterators.add(e.iterator());
+        }
+    }
 
-	@Override
-	public T next() {
-		for (Iterator<T> e : iterators) {
-			if (e.hasNext()) {
-				return e.next();
-			}
-		}
-		throw new NoSuchElementException();
-	}
+    @Override
+    public boolean hasNext() {
+        for (Iterator<T> e : iterators) {
+            if (e.hasNext()) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-	@Override
-	public void remove() {
-		throw new UnsupportedOperationException();
-		
-	}
+    @Override
+    public T next() {
+        for (Iterator<T> e : iterators) {
+            if (e.hasNext()) {
+                return e.next();
+            }
+        }
+        throw new NoSuchElementException();
+    }
+
+    @Override
+    public void remove() {
+        throw new UnsupportedOperationException();
+
+    }
 }

@@ -6,21 +6,23 @@ package org.daisy.dotify.api.formatter;
  * at this position.
  */
 public class NoField implements Field {
-	
-	private NoField() {}
-	
-	private static final NoField instance = new NoField();
-	
-	/**
-	 * Gets the singleton instance.
-	 * @return returns the singleton instance
-	 */
-	public static NoField getInstance() {
-		return instance;
-	}
-	
-	@Override
-	public String getTextStyle() {
-		return null;
-	}
+
+    private NoField() {
+    }
+
+    private static final NoField instance = new NoField();
+
+    /**
+     * Gets the singleton instance.
+     *
+     * @return returns the singleton instance
+     */
+    public static NoField getInstance() {
+        return instance;
+    }
+
+    @Override
+    public String getTextStyle() {
+        return null;
+    }
 }

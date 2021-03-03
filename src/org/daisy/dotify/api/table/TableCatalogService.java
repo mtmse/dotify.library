@@ -1,8 +1,8 @@
 package org.daisy.dotify.api.table;
 
-import java.util.Collection;
-
 import org.daisy.dotify.api.factory.FactoryProperties;
+
+import java.util.Collection;
 
 
 /**
@@ -22,24 +22,27 @@ import org.daisy.dotify.api.factory.FactoryProperties;
  */
 public interface TableCatalogService {
 
-	/**
-	 * Creates a new table with the specified identifier.
-	 * @param identifier the identifier
-	 * @return returns a new table
-	 */
-	public Table newTable(String identifier);
+    /**
+     * Creates a new table with the specified identifier.
+     *
+     * @param identifier the identifier
+     * @return returns a new table
+     */
+    public Table newTable(String identifier);
 
-	/**
-	 * Lists the tables
-	 * @return returns a collection of table properties
-	 */
-	public Collection<FactoryProperties> list();
+    /**
+     * Lists the tables.
+     *
+     * @return returns a collection of table properties
+     */
+    public Collection<FactoryProperties> list();
 
-	/**
-	 * Lists the tables that matches the specified filter
-	 * @param filter the filter
-	 * @return returns a collection fo table properties
-	 */
-	public Collection<FactoryProperties> list(TableFilter filter);
+    /**
+     * Lists the tables that matches the specified filter.
+     *
+     * @param filter the filter
+     * @return returns a collection fo table properties
+     */
+    public Collection<FactoryProperties> list(TableFilter filter);
 
 }

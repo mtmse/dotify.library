@@ -1,5 +1,5 @@
 /**
- * Provides common braille functionality 
+ * Provides common braille functionality.
  * 
  * @author Joel Håkansson
  */

@@ -10,37 +10,39 @@ import java.util.ServiceLoader;
  * a single instance of the lower level interface</i> with references populated
  * with SPI. To use in OSGi context, request the lower level service directly
  * from the DS registry.</p>
- * 
+ *
  * @author Joel Håkansson
  */
 //TODO: deprecate or add service layer
 //See: https://github.com/joeha480/dotify/issues/161
 public class ExpressionFactoryMaker {
-	private final ExpressionFactory proxy;
+    private final ExpressionFactory proxy;
 
-	/**
-	 * Creates a new expression factory maker
-	 */
-	public ExpressionFactoryMaker() {
-		// Gets the first formatter engine (assumes there is at least one).
-		proxy = ServiceLoader.load(ExpressionFactory.class).iterator().next();
-		proxy.setCreatedWithSPI();
-	}
+    /**
+     * Creates a new expression factory maker.
+     */
+    public ExpressionFactoryMaker() {
+        // Gets the first formatter engine (assumes there is at least one).
+        proxy = ServiceLoader.load(ExpressionFactory.class).iterator().next();
+        proxy.setCreatedWithSPI();
+    }
 
-	/**
-	 * Creates a new expression factory maker instance
-	 * @return returns a new expression factory maker instance
-	 */
-	public static ExpressionFactoryMaker newInstance() {
-		return new ExpressionFactoryMaker();
-	}
+    /**
+     * Creates a new expression factory maker instance.
+     *
+     * @return returns a new expression factory maker instance
+     */
+    public static ExpressionFactoryMaker newInstance() {
+        return new ExpressionFactoryMaker();
+    }
 
-	/**
-	 * Gets an expression factory.
-	 * @return returns an expression factory
-	 */
-	public ExpressionFactory getFactory() {
-		return proxy;
-	}
+    /**
+     * Gets an expression factory.
+     *
+     * @return returns an expression factory
+     */
+    public ExpressionFactory getFactory() {
+        return proxy;
+    }
 
 }

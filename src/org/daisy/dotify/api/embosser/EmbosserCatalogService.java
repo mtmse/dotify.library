@@ -20,24 +20,27 @@ import java.util.Collection;
  */
 public interface EmbosserCatalogService {
 
-	/**
-	 * Creates a new embosser with the specified identifier.
-	 * @param identifier the identifier
-	 * @return returns a new embosser, or null if not found
-	 */
-	public Embosser newEmbosser(String identifier);
+    /**
+     * Creates a new embosser with the specified identifier.
+     *
+     * @param identifier the identifier
+     * @return returns a new embosser, or null if not found
+     */
+    public Embosser newEmbosser(String identifier);
 
-	/**
-	 * Lists embossers
-	 * @return returns a list of embossers
-	 */
-	public Collection<EmbosserFactoryProperties> listEmbossers();
-	
-	/**
-	 * Lists embossers matching the specified filter
-	 * @param filter the filter
-	 * @return returns a list of embossers
-	 */
-	public Collection<EmbosserFactoryProperties> listEmbossers(EmbosserFilter filter);
+    /**
+     * Lists embossers.
+     *
+     * @return returns a list of embossers
+     */
+    public Collection<EmbosserFactoryProperties> listEmbossers();
+
+    /**
+     * Lists embossers matching the specified filter.
+     *
+     * @param filter the filter
+     * @return returns a list of embossers
+     */
+    public Collection<EmbosserFactoryProperties> listEmbossers(EmbosserFilter filter);
 
 }
