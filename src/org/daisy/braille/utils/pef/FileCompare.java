@@ -38,17 +38,6 @@ public class FileCompare {
     }
 
     /**
-     * Creates a new FileCompare object.
-     *
-     * @param keepTempFiles true if temporary files should be kept, false otherwise
-     * @deprecated this constructor serves no purpose
-     */
-    @Deprecated
-    public FileCompare(boolean keepTempFiles) {
-        super();
-    }
-
-    /**
      * Gets the intermediary file created
      * from the first argument of the latest call to compareXML
      * (as base for the post normalization binary compare).

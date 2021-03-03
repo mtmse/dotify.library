@@ -25,10 +25,6 @@ public class Evaluate implements Segment {
      * @param markCapitalLetters true if capital letters should be marked
      */
     public Evaluate(DynamicContent expression, TextProperties props, boolean markCapitalLetters) {
-        this(expression, props, markCapitalLetters, null);
-    }
-
-    public Evaluate(DynamicContent expression, TextProperties props, boolean markCapitalLetters, MarkerValue marker) {
         this.expression = expression;
         this.props = props;
         this.markCapitalLetters = markCapitalLetters;

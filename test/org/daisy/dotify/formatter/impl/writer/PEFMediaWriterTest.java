@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Properties;
 import javax.xml.namespace.QName;
 
 import static org.junit.Assert.assertEquals;
@@ -23,7 +22,7 @@ public class PEFMediaWriterTest {
 
     @Test
     public void testMetadata() throws PagedMediaWriterException {
-        PEFMediaWriter p = new PEFMediaWriter(new Properties());
+        PEFMediaWriter p = new PEFMediaWriter();
         ArrayList<MetaDataItem> meta = new ArrayList<>();
         meta.add(new MetaDataItem(
             new QName("http://purl.org/dc/elements/1.1/", "identifier"),

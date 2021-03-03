@@ -22,7 +22,6 @@ public class SearchInfoTest {
             si,
             6,
             0,
-            true,
             0,
             0,
             new DocumentSpace(Space.PRE_CONTENT, 0),
@@ -32,7 +31,6 @@ public class SearchInfoTest {
             si,
             3,
             0,
-            true,
             0,
             0,
             DocumentSpace.BODY,
@@ -42,7 +40,6 @@ public class SearchInfoTest {
             si,
             3,
             3,
-            true,
             0,
             0,
             DocumentSpace.BODY,
@@ -52,7 +49,6 @@ public class SearchInfoTest {
             si,
             6,
             0,
-            true,
             0,
             0,
             new DocumentSpace(Space.POST_CONTENT, 0),
@@ -73,28 +69,26 @@ public class SearchInfoTest {
     }
 
     private static void addPages(
-        SearchInfo si,
-        int count,
-        int offset,
-        boolean duplex,
-        int globalStartIndex,
-        int sequenceId,
-        DocumentSpace space,
-        Integer volumeGroup
+            SearchInfo si,
+            int count,
+            int offset,
+            int globalStartIndex,
+            int sequenceId,
+            DocumentSpace space,
+            Integer volumeGroup
     ) {
-        addPages(si, count, offset, duplex, globalStartIndex, sequenceId, space, volumeGroup, Collections.emptyMap());
+        addPages(si, count, offset, globalStartIndex, sequenceId, space, volumeGroup, Collections.emptyMap());
     }
 
     private static void addPages(
-        SearchInfo si,
-        int count,
-        int offset,
-        boolean duplex,
-        int globalStartIndex,
-        int sequenceId,
-        DocumentSpace space,
-        Integer volumeGroup,
-        Map<Integer, ArrayList<Marker>> marker
+            SearchInfo si,
+            int count,
+            int offset,
+            int globalStartIndex,
+            int sequenceId,
+            DocumentSpace space,
+            Integer volumeGroup,
+            Map<Integer, ArrayList<Marker>> marker
     ) {
         for (int i = 0; i < count; i++) {
             PageDetails pd = new PageDetails(
