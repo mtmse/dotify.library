@@ -162,19 +162,19 @@ public class LayoutEngineTest extends AbstractFormatterEngineTest {
         BufferedReader br1 = new BufferedReader(new InputStreamReader(f1));
         BufferedReader br2 = new BufferedReader(new InputStreamReader(f2));
 
-        int linePos = 1;
-        String line;
-        while((line = br1.readLine()) != null) {
-            if(!line.equals(br2.readLine())) {
-                br1.close();
-                br2.close();
-                return linePos;
+        try {
+            int linePos = 1;
+            String line;
+            while ((line = br1.readLine()) != null) {
+                if (!line.equals(br2.readLine())) {
+                    return linePos;
+                }
+                linePos++;
             }
-            linePos++;
+            return -1;
+        } finally {
+            br1.close();
+            br2.close();
         }
-
-        br1.close();
-        br2.close();
-        return -1;
     }
 }
