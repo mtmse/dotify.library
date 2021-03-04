@@ -246,13 +246,12 @@ public class SplitPointHandler<T extends SplitPointUnit, U extends SplitPointDat
         SplitPointCost<T> cost,
         boolean trimTrailing
     ) {
-        Supplements<T> map = data.getSupplements();
         int strPos = forwardSkippable(data, startPos);
         // check next unit to see if it can be removed.
         if (!data.hasElementAt(strPos + 1)) { // last unit?
             return SplitPointSpecification.all();
         } else {
-            return findBreakpointFromPosition(data, strPos, map, force, cost, trimTrailing);
+            return findBreakpointFromPosition(data, strPos, force, cost, trimTrailing);
         }
     }
 
@@ -265,7 +264,6 @@ public class SplitPointHandler<T extends SplitPointUnit, U extends SplitPointDat
     private SplitPointSpecification findBreakpointFromPosition(
         U data,
         int strPos,
-        Supplements<T> map,
         boolean force,
         SplitPointCost<T> cost,
         boolean trimTrailing
