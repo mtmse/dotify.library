@@ -10,7 +10,6 @@ import org.daisy.dotify.api.writer.PagedMediaWriterFactory;
 import org.daisy.dotify.api.writer.PagedMediaWriterFactoryMaker;
 import org.junit.Test;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
