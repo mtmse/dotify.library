@@ -3,7 +3,7 @@ package org.daisy.dotify.formatter.impl.core;
 import org.daisy.dotify.api.formatter.Condition;
 import org.daisy.dotify.api.formatter.LayoutMasterBuilder;
 import org.daisy.dotify.api.formatter.LayoutMasterProperties;
-import org.daisy.dotify.api.formatter.PageAreaBuilder;
+import org.daisy.dotify.api.formatter.PageArea;
 import org.daisy.dotify.api.formatter.PageAreaProperties;
 import org.daisy.dotify.api.formatter.PageTemplateBuilder;
 import org.daisy.dotify.api.translator.TextBorderStyle;
@@ -21,7 +21,7 @@ public class LayoutMaster implements LayoutMasterBuilder, SectionProperties, Bor
     private final LayoutMasterProperties props;
     private final ArrayList<PageTemplate> templates;
     private final PageTemplate defaultPageTemplate;
-    private PageAreaBuilderImpl pageArea;
+    private PageAreaImpl pageArea;
     private final FormatterCoreContext fc;
 
     public LayoutMaster(FormatterCoreContext fc, LayoutMasterProperties props) {
@@ -94,7 +94,7 @@ public class LayoutMaster implements LayoutMasterBuilder, SectionProperties, Bor
         return (pageArea != null ? pageArea.getProperties() : null);
     }
 
-    public PageAreaBuilderImpl getPageAreaBuilder() {
+    public PageAreaImpl getPageAreaBuilder() {
         return pageArea;
     }
 
@@ -156,8 +156,8 @@ public class LayoutMaster implements LayoutMasterBuilder, SectionProperties, Bor
     }
 
     @Override
-    public PageAreaBuilder setPageArea(PageAreaProperties properties) {
-        pageArea = new PageAreaBuilderImpl(fc, properties);
+    public PageArea setPageArea(PageAreaProperties properties) {
+        pageArea = new PageAreaImpl(fc, properties);
         return pageArea;
     }
 

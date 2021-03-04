@@ -20,10 +20,11 @@ import org.daisy.dotify.api.factory.Provider;
  */
 public interface TableProvider extends Provider<FactoryProperties> {
 
-	/**
-	 * Creates a new table with the specified identifier.
-	 * @param identifier the identifier
-	 * @return returns a new table
-	 */
-	public Table newFactory(String identifier);
+    /**
+     * Creates a new table with the specified identifier.
+     *
+     * @param identifier the identifier
+     * @return returns a new table
+     */
+    public Table newFactory(String identifier);
 }

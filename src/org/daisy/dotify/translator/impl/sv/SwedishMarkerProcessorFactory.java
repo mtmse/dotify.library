@@ -1,4 +1,4 @@
-package org.daisy.dotify.translator.impl.sv_SE;
+package org.daisy.dotify.translator.impl.sv;
 
 import org.daisy.dotify.api.translator.TextAttribute;
 import org.daisy.dotify.api.translator.TranslatorType;
@@ -11,25 +11,36 @@ import org.daisy.dotify.translator.SimpleMarkerDictionary;
 import org.daisy.dotify.translator.TextAttributeFilter;
 
 class SwedishMarkerProcessorFactory {
-	private static final String WHITESPACE_REGEX = "\\s+";
-	private static final String ALPHANUM_REGEX = "\\A[a-zA-Z0-9]+\\z";
-	private static final FilterLocale sv_SE = FilterLocale.parse("sv-SE");
-	private static final FilterLocale sv = FilterLocale.parse("sv");
+    private static final String WHITESPACE_REGEX = "\\s+";
+    private static final String ALPHANUM_REGEX = "\\A[a-zA-Z0-9]+\\z";
+    private static final FilterLocale sv_SE = FilterLocale.parse("sv-SE");
+    private static final FilterLocale sv = FilterLocale.parse("sv");
 
-	public DefaultMarkerProcessor newMarkerProcessor(String locale, String mode) throws SwedishMarkerProcessorConfigurationException {
-		if (
-            FilterLocale.parse(locale).equals(sv)||FilterLocale.parse(locale).equals(sv_SE) &&
-            mode.equals(TranslatorType.UNCONTRACTED.toString())
+    public DefaultMarkerProcessor newMarkerProcessor(
+        String locale,
+        String mode
+    ) throws SwedishMarkerProcessorConfigurationException {
+        if (
+                FilterLocale.parse(locale).equals(sv) || FilterLocale.parse(locale).equals(sv_SE) &&
+                        mode.equals(TranslatorType.UNCONTRACTED.toString())
         ) {
 
             // Svenska skrivregler för punktskrift 2009, page 34
             RegexMarkerDictionary strong = new RegexMarkerDictionary.Builder().
-                    addPattern(WHITESPACE_REGEX, new Marker("\u2828\u2828", "\u2831"), new Marker("\u2828", "")).
+                    addPattern(
+                        WHITESPACE_REGEX,
+                        new Marker("\u2828\u2828", "\u2831"),
+                        new Marker("\u2828", "")
+                    ).
                     build();
 
             // Svenska skrivregler för punktskrift 2009, page 34
             RegexMarkerDictionary em = new RegexMarkerDictionary.Builder().
-                    addPattern(WHITESPACE_REGEX, new Marker("\u2820\u2824", "\u2831"), new Marker("\u2820\u2804", "")).
+                    addPattern(
+                        WHITESPACE_REGEX,
+                        new Marker("\u2820\u2824", "\u2831"),
+                        new Marker("\u2820\u2804", "")
+                    ).
                     build();
 
             // Svenska skrivregler för punktskrift 2009, page 32
@@ -67,9 +78,13 @@ class SwedishMarkerProcessorFactory {
                     build();
 
             // Redigering och avskrivning, page 148
-            SimpleMarkerDictionary dd = new SimpleMarkerDictionary(new Marker("\u2820\u2804\u2800", ""));
+            SimpleMarkerDictionary dd = new SimpleMarkerDictionary(
+                new Marker("\u2820\u2804\u2800", "")
+            );
 
-            SimpleMarkerDictionary continuedTableCell = new SimpleMarkerDictionary(new Marker("\u283b\u283b", ""));
+            SimpleMarkerDictionary continuedTableCell = new SimpleMarkerDictionary(
+                new Marker("\u283b\u283b", "")
+            );
 
             DefaultMarkerProcessor sap = new DefaultMarkerProcessor.Builder().
                     addDictionary(MarkerStyleConstants.STRONG, strong).
@@ -81,21 +96,21 @@ class SwedishMarkerProcessorFactory {
                     build();
 
             return sap;
-		}
-		throw new SwedishMarkerProcessorConfigurationException("Factory does not support " + locale + "/" + mode);
-	}
-	
-	class SwedishMarkerProcessorConfigurationException extends Exception {
+        }
+        throw new SwedishMarkerProcessorConfigurationException("Factory does not support " + locale + "/" + mode);
+    }
 
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = -1435286045359670613L;
+    class SwedishMarkerProcessorConfigurationException extends Exception {
 
-		private SwedishMarkerProcessorConfigurationException(String message) {
-			super(message);
-		}
-		
-	}
+        /**
+         *
+         */
+        private static final long serialVersionUID = -1435286045359670613L;
+
+        private SwedishMarkerProcessorConfigurationException(String message) {
+            super(message);
+        }
+
+    }
 
 }

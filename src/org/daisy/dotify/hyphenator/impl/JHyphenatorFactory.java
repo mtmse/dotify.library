@@ -13,22 +13,22 @@ import java.util.Map;
 public class JHyphenatorFactory implements HyphenatorFactory {
     private static Map<String, JHyphenator> hyphenatorMap = new HashMap<>();
 
-	@Override
-	public HyphenatorInterface newHyphenator(String locale) throws HyphenatorConfigurationException {
-	    if(!hyphenatorMap.containsKey(locale)) {
+    @Override
+    public HyphenatorInterface newHyphenator(String locale) throws HyphenatorConfigurationException {
+        if (!hyphenatorMap.containsKey(locale)) {
             hyphenatorMap.put(locale, new JHyphenator(locale));
         }
         return hyphenatorMap.get(locale);
-	}
+    }
 
-	@Override
-	public Object getFeature(String key) {
-		return null;
-	}
+    @Override
+    public Object getFeature(String key) {
+        return null;
+    }
 
-	@Override
-	public void setFeature(String key, Object value) throws HyphenatorConfigurationException {
-		throw new JHyphenatorConfigurationException();
-	}
+    @Override
+    public void setFeature(String key, Object value) throws HyphenatorConfigurationException {
+        throw new JHyphenatorConfigurationException();
+    }
 
 }

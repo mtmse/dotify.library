@@ -238,8 +238,7 @@ checkstyle {
     configFile file("checkstyle.xml")
 }
 checkstyleMain {
-    source = []
-//    source = 'src'
+    source = ['src']
 }
 checkstyleTest {
     source = ['integrationtest']

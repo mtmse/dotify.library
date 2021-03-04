@@ -1,18 +1,18 @@
 package org.daisy.dotify.formatter.impl.core;
 
-import org.daisy.dotify.api.formatter.PageAreaBuilder;
+import org.daisy.dotify.api.formatter.PageArea;
 import org.daisy.dotify.api.formatter.PageAreaProperties;
 import org.daisy.dotify.formatter.impl.common.FormatterCoreContext;
 
 /**
  * TODO: Write java doc.
  */
-public class PageAreaBuilderImpl implements PageAreaBuilder {
+public class PageAreaImpl implements PageArea {
     private final PageAreaProperties properties;
     private final FormatterCoreImpl beforeArea;
     private final FormatterCoreImpl afterArea;
 
-    PageAreaBuilderImpl(FormatterCoreContext fc, PageAreaProperties properties) {
+    PageAreaImpl(FormatterCoreContext fc, PageAreaProperties properties) {
         this.properties = properties;
         this.beforeArea = new FormatterCoreImpl(fc);
         this.afterArea = new FormatterCoreImpl(fc);
