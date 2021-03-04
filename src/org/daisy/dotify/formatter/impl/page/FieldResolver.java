@@ -127,7 +127,7 @@ class FieldResolver {
         BrailleTranslator translator,
         Optional<String> noField
     ) {
-        ArrayList<String> chunkF = new ArrayList<>();
+        List<String> chunkF = new ArrayList<>();
         for (Field f : chunks.getFields()) {
             DefaultTextAttribute.Builder b = new DefaultTextAttribute.Builder(null);
             String resolved = softHyphen.matcher(resolveField(f, p, b, noField)).replaceAll("");

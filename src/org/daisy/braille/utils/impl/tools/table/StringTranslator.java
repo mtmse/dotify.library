@@ -19,6 +19,8 @@ package org.daisy.braille.utils.impl.tools.table;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Provides a string to string translator.
@@ -43,7 +45,7 @@ public class StringTranslator {
     }
 
     ;
-    private final ArrayList<HashMap<String, String>> tokens;
+    private final List<Map<String, String>> tokens;
     private MatchMode mode;
     private int currentMax;
     private int tokenCount;
@@ -164,7 +166,7 @@ public class StringTranslator {
         String ret;
         StringBuilder key = new StringBuilder();
         int i = 0;
-        for (HashMap<String, String> m : tokens) {
+        for (Map<String, String> m : tokens) {
             if (i >= str.length()) {
                 // found nothing, stop processing
                 break;
@@ -191,7 +193,7 @@ public class StringTranslator {
         String val;
         String ret;
         String key;
-        HashMap<String, String> m;
+        Map<String, String> m;
         for (int i = tokens.size() - 1; i >= 0; i--) {
             if (i >= str.length()) {
                 // cannot find anything here, try next map

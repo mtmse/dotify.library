@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -99,7 +100,7 @@ public class ViewPlusTableProvider implements TableProvider {
                     @Override
                     public BrailleConverter newBrailleConverter() {
                         final String sub = String.valueOf((char) 0x1a);
-                        ArrayList<String> a = new ArrayList<>();
+                        List<String> a = new ArrayList<>();
                         for (int i = 0; i < 256; i++) {
                             a.add(sub + (char) i);
                         }

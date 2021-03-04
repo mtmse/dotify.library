@@ -265,10 +265,8 @@ public class PEFGenerator {
      * @throws FileNotFoundException If the given file object does not denote an existing,
      *                               writable regular file and a new regular file of that name cannot be created, or if
      *                               some other error occurs while opening or creating the file
-     * @throws Exception             if an error occurs
      */
-    public void generateTestPages(File output) throws FileNotFoundException,
-            Exception {
+    public void generateTestPages(File output) throws FileNotFoundException {
         PrintWriter pw;
         try {
             pw = new PrintWriter(output, "UTF-8");
@@ -372,7 +370,7 @@ public class PEFGenerator {
         pw.close();
     }
 
-    private List<String> centerAndBorder(List<String> content) throws Exception {
+    private List<String> centerAndBorder(List<String> content) throws IllegalStateException {
 
         int height = content.size();
         int width = 0;
@@ -381,7 +379,7 @@ public class PEFGenerator {
         }
 
         if (rows < height + 4 || cols < width + 4) {
-            throw new Exception("Paper too small");
+            throw new IllegalStateException("Paper too small");
         }
 
         int marginTop = (int) Math.floor((rows - 2 - height) / 2d);

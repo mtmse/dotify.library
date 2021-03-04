@@ -145,8 +145,8 @@ public class PEFMediaWriter implements PagedMediaWriter {
     }
 
     private static List<MetaDataItem> organizeMetadata(List<MetaDataItem> meta) {
-        ArrayList<MetaDataItem> dc = new ArrayList<>();
-        ArrayList<MetaDataItem> other = new ArrayList<>();
+        List<MetaDataItem> dc = new ArrayList<>();
+        List<MetaDataItem> other = new ArrayList<>();
         MetaDataItem identifier = null;
         MetaDataItem date = null;
         for (MetaDataItem item : meta) {
@@ -175,7 +175,7 @@ public class PEFMediaWriter implements PagedMediaWriter {
                     new SimpleDateFormat("yyyy-MM-dd").format(new Date())
             );
         }
-        ArrayList<MetaDataItem> ret = new ArrayList<>();
+        List<MetaDataItem> ret = new ArrayList<>();
         ret.add(new MetaDataItem(new QName(DC_NAMESPACE_URI, "format", "dc"), "application/x-pef+xml"));
         ret.add(identifier);
         ret.add(date);
@@ -185,8 +185,8 @@ public class PEFMediaWriter implements PagedMediaWriter {
     }
 
     private static Map<String, String> getNamespaces(List<MetaDataItem> meta) {
-        HashMap<String, String> ret = new HashMap<>();
-        HashMap<String, String> prefixes = new HashMap<>();
+        Map<String, String> ret = new HashMap<>();
+        Map<String, String> prefixes = new HashMap<>();
         // Go through all items to check if named prefixes are used
         for (MetaDataItem item : meta) {
             String value = item.getKey().getPrefix();

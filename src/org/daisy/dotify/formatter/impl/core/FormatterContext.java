@@ -18,7 +18,7 @@ import java.util.Map;
 public class FormatterContext extends FormatterCoreContext {
     private final Map<String, LayoutMaster> masters;
     private final Map<String, ContentCollectionImpl> collections;
-    private final HashMap<String, TableOfContentsImpl> tocs;
+    private final Map<String, TableOfContentsImpl> tocs;
     private final TransitionBuilderImpl transitionBuilder;
 
 

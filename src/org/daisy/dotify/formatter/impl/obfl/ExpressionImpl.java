@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -58,7 +59,7 @@ class ExpressionImpl implements Expression {
     private static final Logger logger = Logger.getLogger(ExpressionImpl.class.getCanonicalName());
     private static final Map<String, Instant> CONFIGURATION_WARNING_ISSUED =
             Collections.synchronizedMap(new HashMap<>());
-    private HashMap<String, Object> localVars;
+    private Map<String, Object> localVars;
     private Map<String, Object> globalVars;
     private final Integer2TextFactoryMakerService integer2textFactoryMaker;
 
@@ -435,7 +436,7 @@ class ExpressionImpl implements Expression {
 
     private static String[] getArgs(String expr) {
         expr = expr.trim();
-        ArrayList<String> ret = new ArrayList<>();
+        List<String> ret = new ArrayList<>();
         int ci = 0;
         int level = 0;
         boolean str = false;

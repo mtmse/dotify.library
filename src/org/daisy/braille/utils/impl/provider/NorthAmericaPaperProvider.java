@@ -26,6 +26,7 @@ import org.osgi.service.component.annotations.Component;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * TODO: write java doc.
@@ -60,7 +61,7 @@ public class NorthAmericaPaperProvider implements PaperProvider {
     private final Collection<Paper> papers;
 
     public NorthAmericaPaperProvider() {
-        ArrayList<Paper> tmp = new ArrayList<Paper>();
+        List<Paper> tmp = new ArrayList<Paper>();
         tmp.add(
             new SheetPaper(
                 "Letter",

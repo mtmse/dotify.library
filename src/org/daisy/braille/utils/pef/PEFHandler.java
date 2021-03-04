@@ -24,6 +24,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
 /*
@@ -254,7 +255,7 @@ public class PEFHandler extends DefaultHandler {
     // count(//section[count(descendant::page) mod 2 = 1][ancestor-or-self::*[@duplex][1][@duplex='true']])
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-        HashMap<String, String> atts = new HashMap<>();
+        Map<String, String> atts = new HashMap<>();
         if (PEF_NS.equals(uri)) {
             if (!elements.isEmpty()) {
                 for (int i = 0; i < attributes.getLength(); i++) {
@@ -416,7 +417,7 @@ public class PEFHandler extends DefaultHandler {
         return uri + ">" + localName;
     }
 
-    private void inheritKey(HashMap<String, String> to, String uri, String localName) {
+    private void inheritKey(Map<String, String> to, String uri, String localName) {
         String key = toKey(uri, localName);
         if (!to.containsKey(key)) {
             Element e = elements.peek();
@@ -426,11 +427,11 @@ public class PEFHandler extends DefaultHandler {
         }
     }
 
-    private void addKey(HashMap<String, String> map, String uri, String localName, String value) {
+    private void addKey(Map<String, String> map, String uri, String localName, String value) {
         map.put(toKey(uri, localName), value);
     }
 
-    private String getKey(HashMap<String, String> map, String uri, String localName) {
+    private String getKey(Map<String, String> map, String uri, String localName) {
         return map.get(toKey(uri, localName));
     }
 

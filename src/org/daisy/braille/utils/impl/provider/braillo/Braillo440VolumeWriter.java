@@ -95,7 +95,7 @@ class Braillo440VolumeWriter extends BrailloVolumeWriter {
                         r[pos] = pages.get(i - 1);
                     }
                 }
-                ArrayList<List<Byte>> ret = new ArrayList<>();
+                List<List<Byte>> ret = new ArrayList<>();
                 for (List<Byte> r2 : r) {
                     ret.add(r2);
                 }
@@ -114,7 +114,7 @@ class Braillo440VolumeWriter extends BrailloVolumeWriter {
                         r[i] = pages.get(i);
                     }
                 }
-                ArrayList<List<Byte>> ret = new ArrayList<>();
+                List<List<Byte>> ret = new ArrayList<>();
                 for (List<Byte> r2 : r) {
                     ret.add(r2);
                 }

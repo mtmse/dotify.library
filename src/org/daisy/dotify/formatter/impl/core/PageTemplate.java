@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -26,7 +27,7 @@ public class PageTemplate implements PageTemplateBuilder {
     private final List<FieldList> footer;
     private final List<MarginRegion> leftMarginRegion;
     private final List<MarginRegion> rightMarginRegion;
-    private final HashMap<Integer, Boolean> appliesTo;
+    private final Map<Integer, Boolean> appliesTo;
     private final float defaultRowSpacing;
     private Float headerHeight;
     private Float footerHeight;

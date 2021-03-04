@@ -23,6 +23,7 @@ import org.daisy.dotify.api.table.BrailleConverter;
 import org.daisy.dotify.api.table.TableProperties;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Provides an embosser table implementation. This implementation
@@ -36,7 +37,7 @@ public abstract class EmbosserTable extends AbstractTable {
      *
      */
     private static final long serialVersionUID = -3902130832797155793L;
-    private final HashMap<String, Object> props;
+    private final Map<String, Object> props;
 
     protected EightDotFallbackMethod fallback;
     protected char replacement;

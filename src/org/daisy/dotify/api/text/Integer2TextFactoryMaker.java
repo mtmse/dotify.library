@@ -142,7 +142,7 @@ public class Integer2TextFactoryMaker implements
 
     @Override
     public Collection<String> listLocales() {
-        ArrayList<String> ret = new ArrayList<>();
+        List<String> ret = new ArrayList<>();
         for (Integer2TextFactoryService s : filters) {
             ret.addAll(s.listLocales());
         }

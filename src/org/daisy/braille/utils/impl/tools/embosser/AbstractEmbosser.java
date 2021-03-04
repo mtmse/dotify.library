@@ -29,6 +29,7 @@ import org.daisy.dotify.api.table.Table;
 import org.daisy.dotify.api.table.TableCatalogService;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Provides an abstract base for Embossers, implementing basic features
@@ -43,8 +44,8 @@ public abstract class AbstractEmbosser extends AbstractFactory implements Emboss
     private static final long serialVersionUID = 374888389077716688L;
     private final String make;
     private final String model;
-    private final HashMap<String, Object> props;
-    private final HashMap<String, String> settings;
+    private final Map<String, Object> props;
+    private final Map<String, String> settings;
     protected final TableCatalogService tableCatalogService;
     protected final Table defaultTable;
     private PageFormat pageFormat;

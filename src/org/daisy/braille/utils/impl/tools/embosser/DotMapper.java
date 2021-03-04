@@ -19,6 +19,7 @@ package org.daisy.braille.utils.impl.tools.embosser;
 
 import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.List;
 
 /**
  * <p>Provides a utility to map unicode braille patterns to a braille
@@ -39,7 +40,7 @@ public class DotMapper {
     static final int[] UNICODE_BIT_MAP = {0x01, 0x08, 0x02, 0x10, 0x04, 0x20, 0x40, 0x80};
     private final int width;
     private final DotMapperConfiguration config;
-    private ArrayList<BitSet> bs;
+    private List<BitSet> bs;
     private StringBuilder sb;
 
     /**

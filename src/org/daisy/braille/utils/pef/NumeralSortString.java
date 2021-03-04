@@ -18,6 +18,7 @@
 package org.daisy.braille.utils.pef;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Provides a sorting algorithm that splits groups of digits and sorts these
@@ -27,7 +28,7 @@ import java.util.ArrayList;
  * @author Joel Håkansson
  */
 public class NumeralSortString implements Comparable<NumeralSortString> {
-    private ArrayList<Part> parts;
+    private List<Part> parts;
     private String str;
 
     private static class Part implements Comparable<Part> {

@@ -20,6 +20,7 @@ package org.daisy.braille.utils.pef;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import javax.xml.namespace.NamespaceContext;
 
 /**
@@ -33,8 +34,8 @@ import javax.xml.namespace.NamespaceContext;
  * @author Joel Håkansson
  */
 public class PEFNamespaceContext implements NamespaceContext {
-    private HashMap<String, String> namespaces;
-    private HashMap<String, String> prefixes;
+    private Map<String, String> namespaces;
+    private Map<String, String> prefixes;
 
     /**
      * Creates a new PEFNamespaceContext using the prefixes
