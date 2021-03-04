@@ -20,17 +20,17 @@ class LatexHyphenator extends AbstractHyphenator {
     public String hyphenate(String phrase) {
         StringBuilder sb = new StringBuilder();
         boolean first = true;
-        for(String s : phrase.split(" ")) {
-            if(!first) {
+        for (String s : phrase.split(" ")) {
+            if (!first) {
                 sb.append(" ");
             }
-            if(!hyphCache.containsKey(s)) {
+            if (!hyphCache.containsKey(s)) {
                 hyphCache.put(s, hyphenator.getHyphenator().hyphenate(s, getBeginLimit(), getEndLimit()));
             }
             sb.append(hyphCache.get(s));
             first = false;
         }
-        if(phrase.endsWith(" ")) {
+        if (phrase.endsWith(" ")) {
             sb.append(" ");
         }
 

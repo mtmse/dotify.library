@@ -29,24 +29,24 @@ class JHyphenator extends AbstractHyphenator {
     public String hyphenate(String phrase) throws StandardHyphenationException {
         StringBuilder sb = new StringBuilder();
         boolean first = true;
-        for(String s : phrase.split(" ")) {
-            if(!first) {
+        for (String s : phrase.split(" ")) {
+            if (!first) {
                 sb.append(" ");
             }
 
-            if(s.isEmpty()) {
+            if (s.isEmpty()) {
                 sb.append(" ");
                 continue;
             }
 
-            if(!hyphCache.containsKey(s)) {
+            if (!hyphCache.containsKey(s)) {
                 hyphCache.put(s, handleWord(s, instance.hyphenate(s)));
             }
             sb.append(hyphCache.get(s));
             first = false;
         }
 
-        if(phrase.endsWith(" ")) {
+        if (phrase.endsWith(" ")) {
             sb.append(" ");
         }
 

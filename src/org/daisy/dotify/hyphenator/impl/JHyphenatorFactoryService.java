@@ -14,17 +14,17 @@ import java.util.ResourceBundle;
 
 /**
  * Provides a hyphenator factory service for latex hyphenation rules.
- * 
+ *
  * @author Joel Håkansson
  */
 @Component
 public class JHyphenatorFactoryService implements HyphenatorFactoryService {
-	private final List<String> locales;
+    private final List<String> locales;
 
-	/**
-	 * Creates a new instance.
-	 */
-	public JHyphenatorFactoryService() {
+    /**
+     * Creates a new instance.
+     */
+    public JHyphenatorFactoryService() {
         locales = new ArrayList<>();
 
         String operSys = System.getProperty("os.name").toLowerCase();
@@ -41,21 +41,21 @@ public class JHyphenatorFactoryService implements HyphenatorFactoryService {
                 locales.add(key);
             }
         }
-	}
+    }
 
-	@Override
-	public boolean supportsLocale(String locale) {
+    @Override
+    public boolean supportsLocale(String locale) {
         return locales.contains(locale);
-	}
+    }
 
-	@Override
-	public HyphenatorFactory newFactory() {
-		return new JHyphenatorFactory();
-	}
+    @Override
+    public HyphenatorFactory newFactory() {
+        return new JHyphenatorFactory();
+    }
 
-	@Override
-	public Collection<String> listLocales() {
-		return locales;
-	}
+    @Override
+    public Collection<String> listLocales() {
+        return locales;
+    }
 
 }

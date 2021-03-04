@@ -1,14 +1,5 @@
 package org.daisy.dotify.translator;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import org.daisy.dotify.api.hyphenator.HyphenatorConfigurationException;
 import org.daisy.dotify.api.hyphenator.HyphenatorFactoryMakerService;
 import org.daisy.dotify.api.hyphenator.HyphenatorInterface;
@@ -19,12 +10,21 @@ import org.daisy.dotify.api.translator.TranslatableWithContext;
 import org.daisy.dotify.api.translator.TranslationException;
 import org.daisy.dotify.common.text.StringFilter;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 /**
  * Provides a configurable braille filter, in cases where a full implementation
  * is not needed. This implementation first translates the markers, then hyphenates
  * the text, and then sends the result to the supplied string filter.
- * @author Joel Håkansson
  *
+ * @author Joel Håkansson
  */
 public class DefaultBrailleFilter implements BrailleFilter {
 	private final String loc;
@@ -169,5 +169,4 @@ public class DefaultBrailleFilter implements BrailleFilter {
 		}
 		
 	}
-
 }

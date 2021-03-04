@@ -145,37 +145,34 @@ enum UserPapersCollection {
         return ID_PREFIX + "_" + index;
     }
 
-    @SuppressWarnings("unchecked")
     private void syncWithFile() throws IOException {
         if (f == null) {
             throw new FileNotFoundException();
         }
-        if (sync == null || new Date(f.lastModified()).after(sync)) {
-            if (f.exists()) {
-                ObjectInputStream ois = null;
-                //FileLock lock = null;
-                try {
-                    FileInputStream is = new FileInputStream(f);
-                    //lock = is.getChannel().tryLock();
-                    ois = new ObjectInputStream(is);
-                    index = (Integer) ois.readObject();
-                    papers = new LinkedHashMap<>(((ArrayList<Paper>) ois.readObject()).stream()
-                            .collect(Collectors.toMap(p -> p.getIdentifier(), p -> p, (p1, p2) -> p2)));
-                    sync = new Date(f.lastModified());
-                } catch (IOException e) {
-                    throw e;
-                } catch (Exception e) {
-                    logger.throwing(UserPapersCollection.class.getCanonicalName(), "syncWithFile", e);
-                    if (!f.delete()) {
-                        f.deleteOnExit();
-                    }
-                    sync = null;
-                } finally {
-                    if (ois != null) {
-                        try {
-                            ois.close();
-                        } catch (IOException e) {
-                        }
+        if ((sync == null || new Date(f.lastModified()).after(sync)) && f.exists()) {
+            ObjectInputStream ois = null;
+            //FileLock lock = null;
+            try {
+                FileInputStream is = new FileInputStream(f);
+                //lock = is.getChannel().tryLock();
+                ois = new ObjectInputStream(is);
+                index = (Integer) ois.readObject();
+                papers = new LinkedHashMap<>(((ArrayList<Paper>) ois.readObject()).stream()
+                        .collect(Collectors.toMap(p -> p.getIdentifier(), p -> p, (p1, p2) -> p2)));
+                sync = new Date(f.lastModified());
+            } catch (IOException e) {
+                throw e;
+            } catch (Exception e) {
+                logger.throwing(UserPapersCollection.class.getCanonicalName(), "syncWithFile", e);
+                if (!f.delete()) {
+                    f.deleteOnExit();
+                }
+                sync = null;
+            } finally {
+                if (ois != null) {
+                    try {
+                        ois.close();
+                    } catch (IOException e) {
                     }
                 }
             }

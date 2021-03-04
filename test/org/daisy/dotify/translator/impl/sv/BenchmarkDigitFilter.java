@@ -1,6 +1,6 @@
-package org.daisy.dotify.translator.impl.sv_SE;
+package org.daisy.dotify.translator.impl.sv;
 
-import org.daisy.dotify.translator.impl.sv_SE.DigitFilter.Algorithm;
+import org.daisy.dotify.translator.impl.sv.DigitFilter.Algorithm;
 
 @SuppressWarnings("javadoc")
 public class BenchmarkDigitFilter {

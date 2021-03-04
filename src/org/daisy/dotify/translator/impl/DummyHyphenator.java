@@ -1,5 +1,8 @@
 package org.daisy.dotify.translator.impl;
 
+/**
+ * TODO: add java doc.
+ */
 public class DummyHyphenator implements org.daisy.dotify.api.hyphenator.HyphenatorInterface {
     @Override
     public String hyphenate(String phrase) {
