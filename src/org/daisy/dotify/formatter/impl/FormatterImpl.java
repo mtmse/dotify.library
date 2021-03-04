@@ -23,6 +23,7 @@ import org.daisy.dotify.formatter.impl.volume.VolumeTemplate;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -160,7 +161,7 @@ class FormatterImpl implements Formatter {
     private Iterable<? extends Volume> getVolumes() {
         VolumeProvider volumeProvider = new VolumeProvider(blocks, volumeTemplates, context);
 
-        ArrayList<VolumeImpl> ret;
+        List<VolumeImpl> ret;
 
         /*
          * Inside this loop a result is created. The volume provider does all the work, and this loop

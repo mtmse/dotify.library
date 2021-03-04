@@ -54,7 +54,7 @@ class PaginatorTools {
                     );
                 }
             }
-            ArrayList<String> ret = new ArrayList<String>();
+            List<String> ret = new ArrayList<String>();
             ret.add(unit);
             return ret;
         }
@@ -96,7 +96,7 @@ class PaginatorTools {
         double target = totalSpace / (double) parts;
         int used = 0;
         int length = 0;
-        ArrayList<String> ret = new ArrayList<String>();
+        List<String> ret = new ArrayList<String>();
         for (int i = 0; i < units.size(); i++) {
             String unit = units.get(i);
             if (i > 0) {

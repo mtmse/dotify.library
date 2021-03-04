@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -150,9 +151,9 @@ public class PEFFileBatchCompare {
             throw new IllegalArgumentException("Path is not a directory: " + path2);
         }
 
-        final HashMap<String, Integer> x = new HashMap<>();
-        final HashMap<String, File> files1 = new HashMap<>();
-        final HashMap<String, File> files2 = new HashMap<>();
+        final Map<String, Integer> x = new HashMap<>();
+        final Map<String, File> files1 = new HashMap<>();
+        final Map<String, File> files2 = new HashMap<>();
         PefFileFilter dir1Matches = new PefFileFilter(filter);
         PefFileFilter dir2Matches = new PefFileFilter(filter);
         for (File f : dir1.listFiles(dir1Matches)) {
@@ -302,7 +303,7 @@ public class PEFFileBatchCompare {
 
     private class PefFileFilter implements FileFilter {
         private final FileFilter filter;
-        private ArrayList<File> noMatch;
+        private List<File> noMatch;
 
         public PefFileFilter(FileFilter filter) {
             this.filter = filter;

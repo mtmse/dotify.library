@@ -21,6 +21,7 @@ import org.daisy.dotify.formatter.impl.search.VolumeData;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.logging.Level;
@@ -29,10 +30,10 @@ import java.util.logging.Logger;
 class TocSequenceEventImpl implements VolumeSequence, BlockCloner {
     private final TocProperties props;
 
-    private final ArrayList<ConditionalBlock> tocStartEvents;
-    private final ArrayList<ConditionalBlock> volumeStartEvents;
-    private final ArrayList<ConditionalBlock> volumeEndEvents;
-    private final ArrayList<ConditionalBlock> tocEndEvents;
+    private final List<ConditionalBlock> tocStartEvents;
+    private final List<ConditionalBlock> volumeStartEvents;
+    private final List<ConditionalBlock> volumeEndEvents;
+    private final List<ConditionalBlock> tocEndEvents;
     private final FormatterCoreContext fc;
     private final long groupNumber;
     private BlockAddress currentBlockAddress;
@@ -78,7 +79,7 @@ class TocSequenceEventImpl implements VolumeSequence, BlockCloner {
     }
 
     private Iterable<Block> getCompoundIterableB(Iterable<ConditionalBlock> events, Context vars) {
-        ArrayList<Block> it = new ArrayList<>();
+        List<Block> it = new ArrayList<>();
         for (ConditionalBlock ev : events) {
             if (ev.appliesTo(vars)) {
                 Iterable<Block> tmp = ev.getSequence();

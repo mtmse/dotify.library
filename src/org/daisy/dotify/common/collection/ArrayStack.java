@@ -72,7 +72,7 @@ public class ArrayStack<E> extends ArrayList<E> {
      * object as the value of this function.
      *
      * @return The object at the top of this stack (the last item
-     * of the <code>ArrayList</code> object).
+     * of the <code>List</code> object).
      * @throws EmptyStackException if this stack is empty.
      */
     public E pop() {
@@ -93,7 +93,7 @@ public class ArrayStack<E> extends ArrayList<E> {
      * from the stack.
      *
      * @return the object at the top of this stack (the last item
-     * of the <code>ArrayList</code> object).
+     * of the <code>List</code> object).
      * @throws EmptyStackException if this stack is empty.
      */
     public E peek() {

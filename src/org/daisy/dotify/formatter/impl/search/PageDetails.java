@@ -17,8 +17,8 @@ public class PageDetails {
     private int contentMarkersBegin;
     private int contentIdentifiersBegin;
 
-    private final ArrayList<Marker> markers;
-    private final ArrayList<String> identifiers;
+    private final List<Marker> markers;
+    private final List<String> identifiers;
 
     /**
      * @param duplex Double sided output.

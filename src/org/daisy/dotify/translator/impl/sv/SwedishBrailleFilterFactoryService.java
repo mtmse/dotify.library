@@ -13,6 +13,7 @@ import org.osgi.service.component.annotations.ReferenceCardinality;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -30,7 +31,7 @@ public class SwedishBrailleFilterFactoryService implements
         Locale.getDefault()
     );
     private HyphenatorFactoryMakerService hyphenator = null;
-    private final ArrayList<TranslatorSpecification> specs;
+    private final List<TranslatorSpecification> specs;
 
     /**
      * Creates a new Swedish braille filter factory service.

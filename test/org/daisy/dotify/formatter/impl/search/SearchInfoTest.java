@@ -3,8 +3,8 @@ package org.daisy.dotify.formatter.impl.search;
 import org.daisy.dotify.api.formatter.Marker;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
@@ -88,7 +88,7 @@ public class SearchInfoTest {
         int sequenceId,
         DocumentSpace space,
         Integer volumeGroup,
-        Map<Integer, ArrayList<Marker>> marker
+        Map<Integer, List<Marker>> marker
     ) {
         for (int i = 0; i < count; i++) {
             PageDetails pd = new PageDetails(
@@ -98,7 +98,7 @@ public class SearchInfoTest {
                 null,
                 i + offset
             );
-            ArrayList<Marker> m = marker.get(i + offset);
+            List<Marker> m = marker.get(i + offset);
             if (m != null) {
                 pd.getMarkers().addAll(m);
             }

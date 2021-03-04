@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 class URLCache {
@@ -131,7 +132,7 @@ class URLCache {
                 url.getProtocol().equals("") || url.getHost().equals("") || url.getPath().equals("")) {
             return null;
         }
-        ArrayList<String> list = new ArrayList<>();
+        List<String> list = new ArrayList<>();
         list.add(url.getProtocol());
         list.add(url.getHost());
         list.add(url.getPath());

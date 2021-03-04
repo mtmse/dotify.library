@@ -144,7 +144,7 @@ public class SearchIndex<E> {
 
     private List<String> normalizeString(String str) {
         String[] t = str.replaceAll(REGEX, " ").split("\\s");
-        ArrayList<String> ret = new ArrayList<>();
+        List<String> ret = new ArrayList<>();
         for (String s : t) {
             if (!"".equals(s) && s != null) {
                 ret.add(s);

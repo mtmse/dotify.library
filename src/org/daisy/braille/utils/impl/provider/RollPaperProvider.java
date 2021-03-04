@@ -26,6 +26,7 @@ import org.osgi.service.component.annotations.Component;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * TODO: write java doc.
@@ -52,7 +53,7 @@ public class RollPaperProvider implements PaperProvider {
     private final Collection<Paper> papers;
 
     public RollPaperProvider() {
-        ArrayList<Paper> tmp = new ArrayList<Paper>();
+        List<Paper> tmp = new ArrayList<Paper>();
         tmp.add(new RollPaper("21 cm wide", "", PaperSize.W21CM.getIdentifier(), Length.newCentimeterValue(21)));
         tmp.add(new RollPaper("24 cm wide", "", PaperSize.W24CM.getIdentifier(), Length.newCentimeterValue(24)));
         tmp.add(new RollPaper("28 cm wide", "", PaperSize.W28CM.getIdentifier(), Length.newCentimeterValue(28)));

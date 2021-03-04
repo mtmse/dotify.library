@@ -148,7 +148,7 @@ public class VolumeProvider {
     VolumeImpl nextVolume() {
         currentVolumeNumber++;
         VolumeImpl volume = new VolumeImpl(crh.getOverhead(currentVolumeNumber));
-        ArrayList<AnchorData> ad = new ArrayList<>();
+        List<AnchorData> ad = new ArrayList<>();
         volume.setPreVolData(updateVolumeContents(currentVolumeNumber, ad, true));
         volume.setBody(nextBodyContents(currentVolumeNumber, volume.getOverhead().total(), ad));
 
@@ -173,7 +173,7 @@ public class VolumeProvider {
      * @param ad       the anchor data
      * @return returns the contents of the next volume
      */
-    private SectionBuilder nextBodyContents(int volumeNumber, final int overhead, ArrayList<AnchorData> ad) {
+    private SectionBuilder nextBodyContents(int volumeNumber, final int overhead, List<AnchorData> ad) {
         groups.currentGroup().setOverheadCount(groups.currentGroup().getOverheadCount() + overhead);
         final int targetSheetsInVolume = splitterLimit.getSplitterLimit(volumeNumber);
         //Not using lambda for now, because it's noticeably slower.
@@ -259,13 +259,13 @@ public class VolumeProvider {
         return sb;
     }
 
-    private SectionBuilder updateVolumeContents(int volumeNumber, ArrayList<AnchorData> ad, boolean pre) {
+    private SectionBuilder updateVolumeContents(int volumeNumber, List<AnchorData> ad, boolean pre) {
         DefaultContext c = new DefaultContext.Builder(crh)
                 .currentVolume(volumeNumber)
                 .space(pre ? Space.PRE_CONTENT : Space.POST_CONTENT)
                 .build();
         try {
-            ArrayList<BlockSequence> ib = new ArrayList<>();
+            List<BlockSequence> ib = new ArrayList<>();
             for (VolumeTemplate t : volumeTemplates) {
                 if (t.appliesTo(c)) {
                     for (VolumeSequence seq : (pre ? t.getPreVolumeContent() : t.getPostVolumeContent())) {

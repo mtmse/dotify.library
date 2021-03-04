@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 import javax.print.PrintException;
 
@@ -42,7 +43,7 @@ public class BufferedVolumeEmbosser extends AbstractEmbosserWriter {
     private Padding padNewline;
     private Device pd;
     private BrailleConverter bf;
-    private Stack<ArrayList<Byte>> pages;
+    private Stack<List<Byte>> pages;
     private VolumeWriter vw;
     private final boolean lineFeedOnEmptySheet;
 
@@ -185,7 +186,7 @@ public class BufferedVolumeEmbosser extends AbstractEmbosserWriter {
 
     @Override
     protected void addAll(byte[] bytes) {
-        ArrayList<Byte> page = pages.peek();
+        List<Byte> page = pages.peek();
         for (byte b : bytes) {
             page.add(b);
         }

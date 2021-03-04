@@ -31,6 +31,7 @@ import java.util.BitSet;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -87,9 +88,9 @@ public class TextInputDetector {
         return inputThumbprint;
     }
 
-    private HashMap<BitSet, HashMap<String, Table>> analyzeTableCatalog(boolean eightDot) {
+    private Map<BitSet, Map<String, Table>> analyzeTableCatalog(boolean eightDot) {
         Logger logger = Logger.getLogger(TextHandler.class.getCanonicalName());
-        HashMap<BitSet, HashMap<String, Table>> tables = new HashMap<BitSet, HashMap<String, Table>>();
+        Map<BitSet, Map<String, Table>> tables = new HashMap<>();
         BitSet tableThumbprint;
         for (FactoryProperties fp : factory.list()) {
             try {
@@ -99,10 +100,10 @@ public class TextInputDetector {
                     continue;
                 }
                 tableThumbprint = getTableThumbprint(c);
-                HashMap<String, Table> t = tables.get(tableThumbprint);
+                Map<String, Table> t = tables.get(tableThumbprint);
                 String sample = c.toText(BrailleConstants.BRAILLE_PATTERNS_256);
                 if (t == null) {
-                    t = new HashMap<String, Table>();
+                    t = new HashMap<>();
                     t.put(sample, type);
                     tables.put(tableThumbprint, t);
                 } else {
@@ -135,20 +136,20 @@ public class TextInputDetector {
      */
     public List<Table> detect(InputStream is) throws IOException {
         BitSet inputThumbprint = readInput(is, true);
-        ArrayList<Table> res = new ArrayList<Table>();
+        List<Table> res = new ArrayList<Table>();
         //BitSet tableThumbprint;
         int size = 0;
         for (int i = inputThumbprint.nextSetBit(0); i >= 0; i = inputThumbprint.nextSetBit(i + 1)) {
             size++;
         }
         Logger logger = Logger.getLogger(TextHandler.class.getCanonicalName());
-        HashMap<BitSet, HashMap<String, Table>> tables = analyzeTableCatalog(size > (64 - 4));
+        Map<BitSet, Map<String, Table>> tables = analyzeTableCatalog(size > (64 - 4));
         // 6-dot minus cleared codes
         for (BitSet key : tables.keySet()) {
             BitSet tableThumbprint = (BitSet) key.clone();
             tableThumbprint.and(inputThumbprint);
             if (tableThumbprint.equals(inputThumbprint)) {
-                HashMap<String, Table> yy = tables.get(key);
+                Map<String, Table> yy = tables.get(key);
                 if (yy != null) {
                     Collection<Table> coll = yy.values();
                     StringBuilder sb = new StringBuilder();

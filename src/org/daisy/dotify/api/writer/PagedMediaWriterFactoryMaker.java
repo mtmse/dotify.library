@@ -147,7 +147,7 @@ public class PagedMediaWriterFactoryMaker implements
 
     @Override
     public Collection<String> listMediaTypes() {
-        ArrayList<String> ret = new ArrayList<>();
+        List<String> ret = new ArrayList<>();
         for (PagedMediaWriterFactoryService s : filters) {
             ret.addAll(s.listMediaTypes());
         }

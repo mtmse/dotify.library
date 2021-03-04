@@ -105,7 +105,7 @@ public abstract class OBFLExpressionBase {
     }
 
     protected Map<String, String> buildArgs(Context context) {
-        HashMap<String, String> variables = new HashMap<>();
+        Map<String, String> variables = new HashMap<>();
         if (pageNumberVariableName != null) {
             variables.put(pageNumberVariableName, "" + context.getCurrentPage());
         }

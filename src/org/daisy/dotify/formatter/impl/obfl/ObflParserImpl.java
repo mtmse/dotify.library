@@ -283,7 +283,7 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
         String masterName = getAttr(event, ObflQName.ATTR_NAME);
         //LayoutMasterImpl.Builder masterConfig = new LayoutMasterImpl.Builder(width, height, ef);
         LayoutMasterProperties.Builder masterConfig = new LayoutMasterProperties.Builder(width, height);
-        HashMap<String, Object> border = new HashMap<>();
+        Map<String, Object> border = new HashMap<>();
         while (i.hasNext()) {
             Attribute atts = i.next();
             String name = atts.getName().getLocalPart();
@@ -502,13 +502,13 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
                 rowSpacing = Float.parseFloat(value);
             }
         }
-        ArrayList<Field> fields = new ArrayList<>();
+        List<Field> fields = new ArrayList<>();
         while (input.hasNext()) {
             event = input.nextEvent();
             if (equalsStart(event, ObflQName.FIELD)) {
                 String textStyle = getAttr(event, ObflQName.ATTR_TEXT_STYLE);
                 String allowTextFlow = getAttr(event, ObflQName.ATTR_ALLOW_TEXT_FLOW);
-                ArrayList<Field> compound = parseField(event, input);
+                List<Field> compound = parseField(event, input);
                 if ("true".equals(allowTextFlow)) {
                     if (!compound.isEmpty()) {
                         throw new RuntimeException("No content supported in " + ObflQName.FIELD
@@ -536,8 +536,8 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
         }
     }
 
-    private ArrayList<Field> parseField(XMLEvent event, XMLEventIterator input) throws XMLStreamException {
-        ArrayList<Field> compound = new ArrayList<>();
+    private List<Field> parseField(XMLEvent event, XMLEventIterator input) throws XMLStreamException {
+        List<Field> compound = new ArrayList<>();
         while (input.hasNext()) {
             event = input.nextEvent();
             if (equalsStart(event, ObflQName.STRING)) {
@@ -1033,9 +1033,9 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
     private BlockProperties blockBuilder(StartElement el) {
         Iterator<?> atts = el.getAttributes();
         BlockProperties.Builder builder = new BlockProperties.Builder();
-        HashMap<String, Object> border = new HashMap<>();
+        Map<String, Object> border = new HashMap<>();
         String underlinePattern = null;
-        HashMap<String, Object> underline = new HashMap<>();
+        Map<String, Object> underline = new HashMap<>();
         while (atts.hasNext()) {
             Attribute att = (Attribute) atts.next();
             String name = att.getName().getLocalPart();
