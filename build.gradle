@@ -277,7 +277,7 @@ pmd.ruleSets = [
         //'java-optimizations',
         //->'java-strictexception',
         //'java-strings',
-        //->'java-typeresolution',
+        'java-typeresolution',
         //'java-unnecessary',
         'java-unusedcode'
 ]

@@ -42,7 +42,7 @@ class StaxPEFBook {
     private int sectionNumber;
     private int pages;
     private int pageTags;
-    private HashMap<String, List<String>> metadata;
+    private Map<String, List<String>> metadata;
     private Map<SectionIdentifier, Integer> started;
     private List<Integer> sectionsInVolume;
     private int maxWidth;

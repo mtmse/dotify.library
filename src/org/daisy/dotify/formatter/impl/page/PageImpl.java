@@ -42,8 +42,8 @@ public class PageImpl implements Page {
     private final LayoutMaster master;
     private final FormatterContext fcontext;
     private final PageAreaContent pageAreaTemplate;
-    private final ArrayList<RowImpl> pageArea;
-    private final ArrayList<String> anchors;
+    private final List<RowImpl> pageArea;
+    private final List<String> anchors;
     private final int flowHeight;
     private final PageTemplate template;
     private final BorderManager finalRows;

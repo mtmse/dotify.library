@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 
 /**
@@ -17,7 +18,7 @@ import java.util.Stack;
  * @author Joel Håkansson
  */
 class BlockSequenceManipulator {
-    private HashMap<String, Integer> taggedEntries;
+    private Map<String, Integer> taggedEntries;
     private final Stack<Block> sequence;
     private final SequenceProperties props;
     private final LayoutMaster master;
@@ -51,7 +52,7 @@ class BlockSequenceManipulator {
     }
 
     void insertGroup(Iterable<Block> blocks, String beforeId) {
-        ArrayList<Block> call = new ArrayList<>();
+        List<Block> call = new ArrayList<>();
         for (Block b : blocks) {
             call.add(b);
         }
@@ -59,7 +60,7 @@ class BlockSequenceManipulator {
     }
 
     void appendGroup(Iterable<Block> blocks) {
-        ArrayList<Block> call = new ArrayList<>();
+        List<Block> call = new ArrayList<>();
         for (Block b : blocks) {
             call.add(b);
         }
@@ -107,8 +108,8 @@ class BlockSequenceManipulator {
         taggedEntries = tagSequence(sequence);
     }
 
-    private static HashMap<String, Integer> tagSequence(List<Block> seq) {
-        HashMap<String, Integer> entries = new HashMap<>();
+    private static Map<String, Integer> tagSequence(List<Block> seq) {
+        Map<String, Integer> entries = new HashMap<>();
         int i = 0;
         for (Block group : seq) {
             if (

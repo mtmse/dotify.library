@@ -33,8 +33,8 @@ import java.util.Map;
  */
 public class EmbosserBrailleConverter implements BrailleConverter {
 
-    private HashMap<Character, Character> b2t;
-    private HashMap<Character, Character> t2b;
+    private Map<Character, Character> b2t;
+    private Map<Character, Character> t2b;
     private Charset charset;
     private EightDotFallbackMethod fallback;
     private char replacement;

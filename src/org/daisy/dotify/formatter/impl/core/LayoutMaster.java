@@ -11,6 +11,7 @@ import org.daisy.dotify.api.writer.SectionProperties;
 import org.daisy.dotify.formatter.impl.common.FormatterCoreContext;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Specifies the layout of a paged media.
@@ -19,7 +20,7 @@ import java.util.ArrayList;
  */
 public class LayoutMaster implements LayoutMasterBuilder, SectionProperties, BorderManagerProperties {
     private final LayoutMasterProperties props;
-    private final ArrayList<PageTemplate> templates;
+    private final List<PageTemplate> templates;
     private final PageTemplate defaultPageTemplate;
     private PageAreaImpl pageArea;
     private final FormatterCoreContext fc;

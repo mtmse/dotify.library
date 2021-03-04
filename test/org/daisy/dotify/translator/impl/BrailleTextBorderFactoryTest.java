@@ -109,7 +109,7 @@ public class BrailleTextBorderFactoryTest {
 	}
 	
 	private List<String> styleToStrings(TextBorderStyle s) {
-		ArrayList<String> ret = new ArrayList<>();
+        List<String> ret = new ArrayList<>();
 		ret.add(s.getTopLeftCorner()+s.getTopBorder()+s.getTopRightCorner());
 		ret.add(s.getLeftBorder()+"⠀"+s.getRightBorder());
 		ret.add(s.getBottomLeftCorner()+s.getBottomBorder()+s.getBottomRightCorner());

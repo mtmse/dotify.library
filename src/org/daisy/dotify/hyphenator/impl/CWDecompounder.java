@@ -16,7 +16,7 @@ import java.util.Map;
  */
 class CWDecompounder {
     static final String SOFT_HYPHEN = "\u00ad";
-    private final HashMap<String, CWHyphenationUnit> stems;
+    private final Map<String, CWHyphenationUnit> stems;
     private final int decompoundLimit;
 
     /**

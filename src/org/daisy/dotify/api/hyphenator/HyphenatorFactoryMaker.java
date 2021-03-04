@@ -143,7 +143,7 @@ public class HyphenatorFactoryMaker implements HyphenatorFactoryMakerService {
 
     @Override
     public Collection<String> listLocales() {
-        ArrayList<String> ret = new ArrayList<>();
+        List<String> ret = new ArrayList<>();
         for (HyphenatorFactoryService s : filters) {
             ret.addAll(s.listLocales());
         }

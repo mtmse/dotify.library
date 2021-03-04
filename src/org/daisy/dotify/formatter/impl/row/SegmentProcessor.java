@@ -68,9 +68,9 @@ class SegmentProcessor {
     /*
      * Markers, anchors and identifiers that are not associated with a particular row.
      */
-    private final ArrayList<Marker> groupMarkers;
-    private final ArrayList<String> groupAnchors;
-    private final ArrayList<String> groupIdentifiers;
+    private final List<Marker> groupMarkers;
+    private final List<String> groupAnchors;
+    private final List<String> groupIdentifiers;
     private Object externalReference = null;
     /*
      * Buffers a number of evaluated segments that follow a leader (contained in `leaderManager') in

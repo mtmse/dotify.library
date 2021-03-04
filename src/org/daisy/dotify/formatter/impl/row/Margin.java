@@ -45,7 +45,7 @@ public final class Margin {
 
     private MarginProperties buildMarginProperties(char spaceCharacter, boolean parent) {
         boolean isSpace = true;
-        ArrayList<String> inp = new ArrayList<>();
+        List<String> inp = new ArrayList<>();
         int j = 0;
         for (MarginComponent c : components) {
             inp.add(StringTools.fill(spaceCharacter, c.getOuterOffset()));

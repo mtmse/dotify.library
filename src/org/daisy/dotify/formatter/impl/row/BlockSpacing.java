@@ -99,7 +99,7 @@ class BlockSpacing {
         int flowWidth,
         BlockMargin margins
     ) {
-        ArrayList<RowImpl> ret = new ArrayList<>();
+        List<RowImpl> ret = new ArrayList<>();
         if (rdp.getLeadingDecoration() != null) {
             ret.add(makeDecorationRow(
                 rdp,

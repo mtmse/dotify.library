@@ -2,6 +2,7 @@ package org.daisy.dotify.common.collection;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
@@ -11,7 +12,7 @@ import java.util.NoSuchElementException;
  * @author Joel Håkansson
  */
 public class CompoundIterator<T> implements Iterator<T> {
-    ArrayList<Iterator<T>> iterators;
+    List<Iterator<T>> iterators;
 
     /**
      * Creates a new compound iterator.
