@@ -12,44 +12,44 @@ import org.daisy.dotify.translator.SimpleBrailleTranslator;
 import org.daisy.dotify.translator.impl.DefaultBypassMarkerProcessorFactory.DefaultBypassMarkerProcessorConfigurationException;
 
 class DefaultBypassTranslatorFactory implements BrailleTranslatorFactory {
-	private final HyphenatorFactoryMakerService hyphenatorService;
+    private final HyphenatorFactoryMakerService hyphenatorService;
 
-	DefaultBypassTranslatorFactory(HyphenatorFactoryMakerService hyphenatorService) {
-		this.hyphenatorService = hyphenatorService;
-	}
+    DefaultBypassTranslatorFactory(HyphenatorFactoryMakerService hyphenatorService) {
+        this.hyphenatorService = hyphenatorService;
+    }
 
-	@Override
-	public BrailleTranslator newTranslator(String locale, String mode) throws TranslatorConfigurationException {
-		if (hyphenatorService == null) {
-			throw new DefaultBypassTranslatorConfigurationException("HyphenatorFactoryMakerService not set.");
-		} else if (mode.equals(TranslatorType.BYPASS.toString())) {
-			DefaultMarkerProcessor sap;
-			try {
-				sap = new DefaultBypassMarkerProcessorFactory().newMarkerProcessor(locale, mode);
-			} catch (DefaultBypassMarkerProcessorConfigurationException e) {
-				throw new DefaultBypassTranslatorConfigurationException(e);
-			}
-			return new SimpleBrailleTranslator(
-					new DefaultBrailleFilter(new IdentityFilter(), locale, sap, hyphenatorService),
-					mode);
-		}
-		throw new DefaultBypassTranslatorConfigurationException("Factory does not support " + locale + "/" + mode);
-	}
-	
-	private class DefaultBypassTranslatorConfigurationException extends TranslatorConfigurationException {
+    @Override
+    public BrailleTranslator newTranslator(String locale, String mode) throws TranslatorConfigurationException {
+        if (hyphenatorService == null) {
+            throw new DefaultBypassTranslatorConfigurationException("HyphenatorFactoryMakerService not set.");
+        } else if (mode.equals(TranslatorType.BYPASS.toString())) {
+            DefaultMarkerProcessor sap;
+            try {
+                sap = new DefaultBypassMarkerProcessorFactory().newMarkerProcessor(locale, mode);
+            } catch (DefaultBypassMarkerProcessorConfigurationException e) {
+                throw new DefaultBypassTranslatorConfigurationException(e);
+            }
+            return new SimpleBrailleTranslator(
+                    new DefaultBrailleFilter(new IdentityFilter(), locale, sap, hyphenatorService),
+                    mode);
+        }
+        throw new DefaultBypassTranslatorConfigurationException("Factory does not support " + locale + "/" + mode);
+    }
 
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = -7094151522287723445L;
+    private class DefaultBypassTranslatorConfigurationException extends TranslatorConfigurationException {
 
-		private DefaultBypassTranslatorConfigurationException(String message) {
-			super(message);
-		}
-		
-		DefaultBypassTranslatorConfigurationException(Throwable cause) {
-			super(cause);
-		}
-	}
+        /**
+         *
+         */
+        private static final long serialVersionUID = -7094151522287723445L;
+
+        private DefaultBypassTranslatorConfigurationException(String message) {
+            super(message);
+        }
+
+        DefaultBypassTranslatorConfigurationException(Throwable cause) {
+            super(cause);
+        }
+    }
 
 }

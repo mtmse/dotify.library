@@ -1,4 +1,4 @@
-package org.daisy.dotify.translator.impl.sv_SE;
+package org.daisy.dotify.translator.impl.sv;
 
 import java.io.FileNotFoundException;
 

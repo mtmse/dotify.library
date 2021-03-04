@@ -7,30 +7,30 @@ import org.daisy.dotify.api.hyphenator.HyphenatorInterface;
  * provides getters and setters for simple properties of the hyphenator
  * interface, reducing the amount of code in the concrete implementation
  * with a few lines.
- * @author Joel Håkansson
  *
+ * @author Joel Håkansson
  */
 public abstract class AbstractHyphenator implements HyphenatorInterface {
-	protected int beginLimit = 2, endLimit = 2; 
+    protected int beginLimit = 2, endLimit = 2;
 
-	@Override
-	public int getBeginLimit() {
-		return beginLimit;
-	}
+    @Override
+    public int getBeginLimit() {
+        return beginLimit;
+    }
 
-	@Override
-	public void setBeginLimit(int beginLimit) {
-		this.beginLimit = beginLimit;
-	}
+    @Override
+    public void setBeginLimit(int beginLimit) {
+        this.beginLimit = beginLimit;
+    }
 
-	@Override
-	public int getEndLimit() {
-		return endLimit;
-	}
+    @Override
+    public int getEndLimit() {
+        return endLimit;
+    }
 
-	@Override
-	public void setEndLimit(int endLimit) {
-		this.endLimit = endLimit;
-	}
+    @Override
+    public void setEndLimit(int endLimit) {
+        this.endLimit = endLimit;
+    }
 
 }

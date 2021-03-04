@@ -6,19 +6,20 @@ import org.osgi.service.component.annotations.Component;
 
 /**
  * Provides a braille text border factory service.
+ *
  * @author Joel Håkansson
  */
 @Component
 public class BrailleTextBorderFactoryService implements
-		TextBorderFactoryService {
+        TextBorderFactoryService {
 
-	@Override
-	public TextBorderFactory newFactory() {
-		return new BrailleTextBorderFactory();
-	}
+    @Override
+    public TextBorderFactory newFactory() {
+        return new BrailleTextBorderFactory();
+    }
 
-	@Override
-	public void setCreatedWithSPI() {
-	}
+    @Override
+    public void setCreatedWithSPI() {
+    }
 
 }
