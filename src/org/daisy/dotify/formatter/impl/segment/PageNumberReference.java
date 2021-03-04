@@ -18,10 +18,6 @@ public class PageNumberReference implements Segment {
     private String resolved;
 
     public PageNumberReference(String refid, NumeralStyle style, boolean markCapitalLetters) {
-        this(refid, style, null, markCapitalLetters);
-    }
-
-    public PageNumberReference(String refid, NumeralStyle style, MarkerValue marker, boolean markCapitalLetters) {
         this.refid = refid;
         this.style = style;
         this.markCapitalLetters = markCapitalLetters;

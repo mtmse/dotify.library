@@ -38,12 +38,7 @@ import java.util.function.Function;
  * @author Joel Håkansson
  */
 class RowGroupDataSource implements SplitPointDataSource<RowGroup, RowGroupDataSource> {
-    private static final Supplements<RowGroup> EMPTY_SUPPLEMENTS = new Supplements<RowGroup>() {
-        @Override
-        public RowGroup get(String id) {
-            return null;
-        }
-    };
+    private static final Supplements<RowGroup> EMPTY_SUPPLEMENTS = id -> null;
     private final BlockProcessor blockProcessor;
     private final LayoutMaster master;
     private final Supplements<RowGroup> supplements;
@@ -240,7 +235,7 @@ class RowGroupDataSource implements SplitPointDataSource<RowGroup, RowGroupDataS
         return this;
     }
 
-    private void newRowGroupSequence(BreakBefore breakBefore, VerticalSpacing vs) {
+    protected void newRowGroupSequence(BreakBefore breakBefore, VerticalSpacing vs) {
         // Vertical spacing isn't used at this stage.
         if (data.getGroup() != null) {
             // this means the return values of ScenarioData.hasSequence() and

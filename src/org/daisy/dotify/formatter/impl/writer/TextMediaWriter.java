@@ -51,10 +51,6 @@ class TextMediaWriter implements PagedMediaWriter {
 
     @Override
     public void open(OutputStream os) throws PagedMediaWriterException {
-        open(os, null);
-    }
-
-    private void open(OutputStream os, List<MetaDataItem> meta) throws PagedMediaWriterException {
         state.assertUnopened();
         state.open();
         try {
