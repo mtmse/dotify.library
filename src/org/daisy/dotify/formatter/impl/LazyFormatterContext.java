@@ -27,11 +27,13 @@ public class LazyFormatterContext {
         this.config = config;
     }
 
-    public synchronized FormatterContext getFormatterContext() {
-        if (context == null) {
-            context = new FormatterContext(translatorFactory, tbf, config);
+    public FormatterContext getFormatterContext() {
+        synchronized (this) {
+            if (context == null) {
+                context = new FormatterContext(translatorFactory, tbf, config);
+            }
+            return context;
         }
-        return context;
     }
 
     public void setConfiguration(FormatterConfiguration config) {

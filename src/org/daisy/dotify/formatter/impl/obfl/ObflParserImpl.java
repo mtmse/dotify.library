@@ -65,6 +65,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.namespace.NamespaceContext;
@@ -117,9 +118,9 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
     private final FactoryManager fm;
     private boolean normalizeSpace = true;
 
-    Map<String, Node> xslts = new HashMap<>();
-    Map<String, Node> fileRefs = new HashMap<>();
-    Map<String, List<RendererInfo>> renderers = new HashMap<>();
+    Map<String, Node> xslts = new ConcurrentHashMap<>();
+    Map<String, Node> fileRefs = new ConcurrentHashMap<>();
+    Map<String, List<RendererInfo>> renderers = new ConcurrentHashMap<>();
     private Map<QName, String> externalReferenceObject = null;
 
     /**
@@ -283,7 +284,7 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
         String masterName = getAttr(event, ObflQName.ATTR_NAME);
         //LayoutMasterImpl.Builder masterConfig = new LayoutMasterImpl.Builder(width, height, ef);
         LayoutMasterProperties.Builder masterConfig = new LayoutMasterProperties.Builder(width, height);
-        Map<String, Object> border = new HashMap<>();
+        Map<String, Object> border = new ConcurrentHashMap<>();
         while (i.hasNext()) {
             Attribute atts = i.next();
             String name = atts.getName().getLocalPart();
@@ -1033,9 +1034,9 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
     private BlockProperties blockBuilder(StartElement el) {
         Iterator<?> atts = el.getAttributes();
         BlockProperties.Builder builder = new BlockProperties.Builder();
-        Map<String, Object> border = new HashMap<>();
+        Map<String, Object> border = new ConcurrentHashMap<>();
         String underlinePattern = null;
-        Map<String, Object> underline = new HashMap<>();
+        Map<String, Object> underline = new ConcurrentHashMap<>();
         while (atts.hasNext()) {
             Attribute att = (Attribute) atts.next();
             String name = att.getName().getLocalPart();

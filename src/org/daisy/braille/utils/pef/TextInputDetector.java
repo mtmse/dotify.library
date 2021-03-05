@@ -32,6 +32,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -90,7 +91,7 @@ public class TextInputDetector {
 
     private Map<BitSet, Map<String, Table>> analyzeTableCatalog(boolean eightDot) {
         Logger logger = Logger.getLogger(TextHandler.class.getCanonicalName());
-        Map<BitSet, Map<String, Table>> tables = new HashMap<>();
+        Map<BitSet, Map<String, Table>> tables = new ConcurrentHashMap<>();
         BitSet tableThumbprint;
         for (FactoryProperties fp : factory.list()) {
             try {

@@ -23,9 +23,9 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
+import java.util.concurrent.ConcurrentHashMap;
 
 /*
  * NOTE: Always use upper case in enum values.
@@ -255,7 +255,7 @@ public class PEFHandler extends DefaultHandler {
     // count(//section[count(descendant::page) mod 2 = 1][ancestor-or-self::*[@duplex][1][@duplex='true']])
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-        Map<String, String> atts = new HashMap<>();
+        Map<String, String> atts = new ConcurrentHashMap<>();
         if (PEF_NS.equals(uri)) {
             if (!elements.isEmpty()) {
                 for (int i = 0; i < attributes.getLength(); i++) {

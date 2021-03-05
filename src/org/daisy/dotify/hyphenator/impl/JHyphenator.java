@@ -5,16 +5,16 @@ import ch.sbs.jhyphen.StandardHyphenationException;
 import org.daisy.dotify.api.hyphenator.HyphenatorConfigurationException;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
+import java.util.concurrent.ConcurrentHashMap;
 
 class JHyphenator extends AbstractHyphenator {
     public static final byte SHY = 1;
 
     private Hyphenator instance;
-    private final Map<String, String> hyphCache = new HashMap<>();
+    private final Map<String, String> hyphCache = new ConcurrentHashMap<>();
 
     JHyphenator(String locale) throws HyphenatorConfigurationException {
         try {

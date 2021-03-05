@@ -2,13 +2,13 @@ package org.daisy.dotify.hyphenator.impl;
 
 import org.daisy.dotify.api.hyphenator.HyphenatorConfigurationException;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 class LatexHyphenator extends AbstractHyphenator {
     private final HyphenationConfig hyphenator;
 
-    private final Map<String, String> hyphCache = new HashMap<>();
+    private final Map<String, String> hyphCache = new ConcurrentHashMap<>();
 
     LatexHyphenator(HyphenationConfig hyphenator) throws HyphenatorConfigurationException {
         this.hyphenator = hyphenator;

@@ -4,10 +4,10 @@ import org.daisy.dotify.api.formatter.Context;
 import org.daisy.dotify.api.obfl.ExpressionFactory;
 import org.daisy.dotify.formatter.impl.core.BlockContext;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * TODO: Write java doc.
@@ -105,7 +105,7 @@ public abstract class OBFLExpressionBase {
     }
 
     protected Map<String, String> buildArgs(Context context) {
-        Map<String, String> variables = new HashMap<>();
+        Map<String, String> variables = new ConcurrentHashMap<>();
         if (pageNumberVariableName != null) {
             variables.put(pageNumberVariableName, "" + context.getCurrentPage());
         }

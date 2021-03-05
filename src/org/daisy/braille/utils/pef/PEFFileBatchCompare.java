@@ -5,12 +5,9 @@ import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
 
@@ -151,9 +148,9 @@ public class PEFFileBatchCompare {
             throw new IllegalArgumentException("Path is not a directory: " + path2);
         }
 
-        final Map<String, Integer> x = new HashMap<>();
-        final Map<String, File> files1 = new HashMap<>();
-        final Map<String, File> files2 = new HashMap<>();
+        final Map<String, Integer> x = new ConcurrentHashMap<>();
+        final Map<String, File> files1 = new ConcurrentHashMap<>();
+        final Map<String, File> files2 = new ConcurrentHashMap<>();
         PefFileFilter dir1Matches = new PefFileFilter(filter);
         PefFileFilter dir2Matches = new PefFileFilter(filter);
         for (File f : dir1.listFiles(dir1Matches)) {
@@ -181,55 +178,40 @@ public class PEFFileBatchCompare {
 
         checked += Math.min(files1.size(), files2.size());
 
-        ExecutorService e = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         int i2 = 1;
         for (final String key : x.keySet()) {
             final int i = i2;
             i2++;
-            e.execute(new Runnable() {
-                @Override
-                public void run() {
+            logger.info(
+                "Comparing file " + key + " in " + dir1 + " and " + dir2 + " (" + i + "/" + x.size() + ")"
+            );
 
-                    logger.info(
-                        "Comparing file " + key + " in " + dir1 + " and " + dir2 + " (" + i + "/" + x.size() + ")"
-                    );
+            int v = x.get(key);
+            if (v != 0) {
+                notice("Unmatched file '" + key + "' in " + (v == 1 ? dir1 : dir2));
+            } else {
+                File f1 = files1.get(key);
+                File f2 = files2.get(key);
 
-                    int v = x.get(key);
-                    if (v != 0) {
-                        notice("Unmatched file '" + key + "' in " + (v == 1 ? dir1 : dir2));
+                try {
+                    PEFFileCompare fcc;
+                    if (nr == null) {
+                        fcc = new PEFFileCompare();
                     } else {
-                        File f1 = files1.get(key);
-                        File f2 = files2.get(key);
-
-                        try {
-                            PEFFileCompare fcc;
-                            if (nr == null) {
-                                fcc = new PEFFileCompare();
-                            } else {
-                                fcc = new PEFFileCompare(nr);
-                            }
-                            boolean ok = fcc.compare(f1, f2);
-                            if (!ok) {
-                                diff(key, fcc.getPos());
-                            } else {
-                                ok(key);
-                            }
-                        } catch (PEFFileCompareException e) {
-                            warning("An exception was thrown.");
-                            logger.throwing("PEFFileBatchCompare", e.getMessage(), e);
-                        }
+                        fcc = new PEFFileCompare(nr);
                     }
+                    boolean ok = fcc.compare(f1, f2);
+                    if (!ok) {
+                        diff(key, fcc.getPos());
+                    } else {
+                        ok(key);
+                    }
+                } catch (PEFFileCompareException e) {
+                    warning("An exception was thrown.");
+                    logger.throwing("PEFFileBatchCompare", e.getMessage(), e);
                 }
-            });
-
+            }
         }
-        e.shutdown();
-        try {
-            e.awaitTermination(10 * 60, TimeUnit.SECONDS);
-        } catch (InterruptedException e1) {
-            logger.throwing("PEFFileBatchCompare", e1.getMessage(), e1);
-        }
-
     }
 
     private void notice(String msg) {

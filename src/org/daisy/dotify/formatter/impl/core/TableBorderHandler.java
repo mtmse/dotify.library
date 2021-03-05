@@ -11,6 +11,7 @@ import org.daisy.dotify.common.text.StringTools;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -176,7 +177,7 @@ class TableBorderHandler {
         TextBorderStyle style = null;
         if (!cache.containsKey(k)) { //use containsKey to avoid recreating a failed border time and time again
             try {
-                Map<String, Object> features = new HashMap<>();
+                Map<String, Object> features = new ConcurrentHashMap<>();
                 features.put(TextBorderFactory.FEATURE_MODE, mode);
                 features.put("border", new Border.Builder().getDefault()
                         .style(Style.SOLID)

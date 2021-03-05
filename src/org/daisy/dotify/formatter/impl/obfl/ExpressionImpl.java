@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
@@ -58,7 +59,7 @@ import java.util.regex.Pattern;
 class ExpressionImpl implements Expression {
     private static final Logger logger = Logger.getLogger(ExpressionImpl.class.getCanonicalName());
     private static final Map<String, Instant> CONFIGURATION_WARNING_ISSUED =
-            Collections.synchronizedMap(new HashMap<>());
+            Collections.synchronizedMap(new ConcurrentHashMap<>());
     private Map<String, Object> localVars;
     private Map<String, Object> globalVars;
     private final Integer2TextFactoryMakerService integer2textFactoryMaker;

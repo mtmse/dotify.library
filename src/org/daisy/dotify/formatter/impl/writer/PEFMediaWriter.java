@@ -14,11 +14,11 @@ import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.namespace.QName;
@@ -49,7 +49,7 @@ public class PEFMediaWriter implements PagedMediaWriter {
      * namespace prefixes on the root element.
      */
     private final List<MetaDataItem> metadata;
-    private Map<String, String> namespaces = new HashMap<>();
+    private Map<String, String> namespaces = new ConcurrentHashMap<>();
     private int namespaceCounter = 0;
 
     /**
@@ -185,8 +185,8 @@ public class PEFMediaWriter implements PagedMediaWriter {
     }
 
     private static Map<String, String> getNamespaces(List<MetaDataItem> meta) {
-        Map<String, String> ret = new HashMap<>();
-        Map<String, String> prefixes = new HashMap<>();
+        Map<String, String> ret = new ConcurrentHashMap<>();
+        Map<String, String> prefixes = new ConcurrentHashMap<>();
         // Go through all items to check if named prefixes are used
         for (MetaDataItem item : meta) {
             String value = item.getKey().getPrefix();

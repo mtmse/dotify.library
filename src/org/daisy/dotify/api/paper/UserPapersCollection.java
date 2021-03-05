@@ -28,6 +28,7 @@ enum UserPapersCollection {
     private Map<String, Paper> papers;
     private Integer index;
     private Date sync;
+    private Object syncObj = new Object();
 
     private static final Logger logger = Logger.getLogger(UserPapersCollection.class.getCanonicalName());
 
@@ -54,12 +55,14 @@ enum UserPapersCollection {
      *
      * @return returns the instance
      */
-    static synchronized UserPapersCollection getInstance() {
+    public static UserPapersCollection getInstance() {
         return INSTANCE;
     }
 
-    synchronized Paper get(String identifier) {
-        return papers.get(identifier);
+    public Paper get(String identifier) {
+        synchronized (syncObj) {
+            return papers.get(identifier);
+        }
     }
 
     /**
@@ -67,12 +70,16 @@ enum UserPapersCollection {
      *
      * @return returns a collection of papers
      */
-    synchronized Collection<Paper> list() {
-        return papers.values();
+    public Collection<Paper> list() {
+        synchronized (syncObj) {
+            return papers.values();
+        }
     }
 
-    synchronized Map<String, Paper> getMap() {
-        return Collections.unmodifiableMap(papers);
+    public Map<String, Paper> getMap() {
+        synchronized (syncObj) {
+            return Collections.unmodifiableMap(papers);
+        }
     }
 
     /**
@@ -85,7 +92,7 @@ enum UserPapersCollection {
      * @return returns the new sheet paper
      * @throws IOException if an I/O error occurs
      */
-    synchronized SheetPaper addNewSheetPaper(String name, String desc, Length width, Length height) throws IOException {
+    public SheetPaper addNewSheetPaper(String name, String desc, Length width, Length height) throws IOException {
         return (SheetPaper) add(new SheetPaper(name, desc, nextIdentifier(), width, height));
     }
 
@@ -99,7 +106,7 @@ enum UserPapersCollection {
      * @return returns the new tractor paper
      * @throws IOException if an I/O error occurs
      */
-    synchronized TractorPaper addNewTractorPaper(
+    public TractorPaper addNewTractorPaper(
         String name,
         String desc,
         Length across,
@@ -117,15 +124,17 @@ enum UserPapersCollection {
      * @return returns the new roll paper
      * @throws IOException if an I/O error occurs
      */
-    synchronized RollPaper addNewRollPaper(String name, String desc, Length across) throws IOException {
+    public RollPaper addNewRollPaper(String name, String desc, Length across) throws IOException {
         return (RollPaper) add(new RollPaper(name, desc, nextIdentifier(), across));
     }
 
     private Paper add(Paper p) throws IOException {
-        syncWithFile();
-        papers.put(p.getIdentifier(), p);
-        updateFile();
-        return p;
+        synchronized (syncObj) {
+            syncWithFile();
+            papers.put(p.getIdentifier(), p);
+            updateFile();
+            return p;
+        }
     }
 
     /**
@@ -134,10 +143,12 @@ enum UserPapersCollection {
      * @param p the paper to remove
      * @throws IOException if an I/O error occurs
      */
-    synchronized void remove(Paper p) throws IOException {
-        syncWithFile();
-        papers.remove(p.getIdentifier());
-        updateFile();
+    public void remove(Paper p) throws IOException {
+        synchronized (syncObj) {
+            syncWithFile();
+            papers.remove(p.getIdentifier());
+            updateFile();
+        }
     }
 
     private String nextIdentifier() {

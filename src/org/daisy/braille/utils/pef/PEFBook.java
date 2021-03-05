@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
@@ -131,7 +132,7 @@ public class PEFBook implements Serializable {
     }
 
     private static Map<SectionIdentifier, Integer> getLocations(int[] startPages) {
-        Map<SectionIdentifier, Integer> locations = new HashMap<>();
+        Map<SectionIdentifier, Integer> locations = new ConcurrentHashMap<>();
         for (int i = 0; i < startPages.length; i++) {
             locations.put(new SectionIdentifier(i + 1), startPages[i]);
         }

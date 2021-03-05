@@ -6,10 +6,10 @@ import org.daisy.dotify.api.text.Integer2TextFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 class Integer2TextFactoryImpl implements Integer2TextFactory {
     /**
@@ -40,7 +40,7 @@ class Integer2TextFactoryImpl implements Integer2TextFactory {
 
     static {
         List<String> localeNames = new ArrayList<>();
-        Map<String, Class<? extends Integer2Text>> locales = new HashMap<>();
+        Map<String, Class<? extends Integer2Text>> locales = new ConcurrentHashMap<>();
         for (Implementation impl : Implementation.values()) {
             //Only use lower case keys
             String name = impl.name().replace('_', '-');

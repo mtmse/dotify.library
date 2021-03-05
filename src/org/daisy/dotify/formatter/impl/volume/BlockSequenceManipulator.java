@@ -7,10 +7,10 @@ import org.daisy.dotify.formatter.impl.page.BlockSequence;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Provides methods for manipulating a flow sequence.
@@ -109,7 +109,7 @@ class BlockSequenceManipulator {
     }
 
     private static Map<String, Integer> tagSequence(List<Block> seq) {
-        Map<String, Integer> entries = new HashMap<>();
+        Map<String, Integer> entries = new ConcurrentHashMap<>();
         int i = 0;
         for (Block group : seq) {
             if (

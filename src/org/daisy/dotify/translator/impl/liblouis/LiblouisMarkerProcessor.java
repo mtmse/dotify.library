@@ -6,8 +6,8 @@ import org.daisy.dotify.translator.MarkerStyleConstants;
 import org.daisy.dotify.translator.SimpleMarkerDictionary;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * <p>Provides marker processor definitions for the {@link LiblouisBrailleFilter}.
@@ -56,7 +56,7 @@ class LiblouisMarkerProcessor {
     }
 
     private static Map<String, Integer> makeMarkersMap() {
-        Map<String, Integer> ret = new HashMap<>();
+        Map<String, Integer> ret = new ConcurrentHashMap<>();
         ret.put("em", 1);
         ret.put("strong", 4);
         return Collections.unmodifiableMap(ret);

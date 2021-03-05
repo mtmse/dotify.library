@@ -43,10 +43,10 @@ import org.daisy.dotify.formatter.impl.segment.NewLineSegment;
 import org.daisy.dotify.formatter.impl.segment.PageNumberReference;
 import org.daisy.dotify.formatter.impl.segment.TextSegment;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -479,7 +479,7 @@ public class FormatterCoreImpl extends Stack<Block> implements FormatterCore, Bl
         if (props.getBorder() != null) {
             Border b = props.getBorder();
             TextBorderFactoryMakerService tbf = fc.getTextBorderFactoryMakerService();
-            Map<String, Object> features = new HashMap<String, Object>();
+            Map<String, Object> features = new ConcurrentHashMap<>();
             features.put(TextBorderFactory.FEATURE_MODE, fc.getTranslatorMode());
             features.put("border", b);
             try {

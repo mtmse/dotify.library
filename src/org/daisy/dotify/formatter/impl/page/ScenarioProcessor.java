@@ -8,6 +8,7 @@ import org.daisy.dotify.formatter.impl.core.LayoutMaster;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Processes scenarios and selects the best one. The decision is based on the cost
@@ -167,7 +168,7 @@ class ScenarioProcessor {
     }
 
     private static Map<String, Double> setParams(double height, double minBlockWidth, double forceCount) {
-        Map<String, Double> params = new HashMap<>();
+        Map<String, Double> params = new ConcurrentHashMap<>();
         params.put("total-height", height);
         params.put("min-block-width", minBlockWidth);
         params.put("forced-break-count", forceCount);

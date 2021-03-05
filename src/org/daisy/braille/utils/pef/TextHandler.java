@@ -45,7 +45,7 @@ public class TextHandler {
     /**
      * Defines a date format (yyyy-MM-dd).
      */
-    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
     /**
      * Key for parseTextFile setting,
      * corresponding settings value should contain the title of the publication.
@@ -158,7 +158,9 @@ public class TextHandler {
                     duplex("true".equals(value.toLowerCase()));
                 } else if (KEY_DATE.equals(key)) {
                     try {
-                        date(DATE_FORMAT.parse(value));
+                        synchronized (DATE_FORMAT) {
+                            date(DATE_FORMAT.parse(value));
+                        }
                     } catch (ParseException e) {
                         throw new IllegalArgumentException(e);
                     }
@@ -375,7 +377,9 @@ public class TextHandler {
         if (!"".equals(language)) {
             pw.println("            <dc:language>" + language + "</dc:language>");
         }
-        pw.println("            <dc:date>" + DATE_FORMAT.format(date) + "</dc:date>");
+        synchronized (DATE_FORMAT) {
+            pw.println("            <dc:date>" + DATE_FORMAT.format(date) + "</dc:date>");
+        }
         pw.println("            <dc:format>application/x-pef+xml</dc:format>");
         if (!"".equals(identifier)) {
             pw.println("            <dc:identifier>" + identifier + "</dc:identifier>");

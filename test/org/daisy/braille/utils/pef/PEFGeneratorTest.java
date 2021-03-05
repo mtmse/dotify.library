@@ -2,9 +2,9 @@ package org.daisy.braille.utils.pef;
 
 import org.junit.Test;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
 import static org.junit.Assert.assertEquals;
@@ -19,7 +19,7 @@ public class PEFGeneratorTest {
 
     @Test
     public void testSectionDivisor_01() {
-        Map<String, String> defaults = new HashMap<>();
+        Map<String, String> defaults = new ConcurrentHashMap<>();
         defaults.put(PEFGenerator.KEY_VOLUMES, "3");
         defaults.put(PEFGenerator.KEY_SPV, "5");
         defaults.put(PEFGenerator.KEY_PPV, "21");
@@ -48,7 +48,7 @@ public class PEFGeneratorTest {
 
     @Test
     public void testSectionDivisor_02() {
-        Map<String, String> defaults = new HashMap<>();
+        Map<String, String> defaults = new ConcurrentHashMap<>();
         defaults.put(PEFGenerator.KEY_VOLUMES, "3");
         defaults.put(PEFGenerator.KEY_SPV, "1");
         defaults.put(PEFGenerator.KEY_PPV, "20");
@@ -63,7 +63,7 @@ public class PEFGeneratorTest {
 
     @Test
     public void testSectionDivisor_03() {
-        Map<String, String> defaults = new HashMap<>();
+        Map<String, String> defaults = new ConcurrentHashMap<>();
         defaults.put(PEFGenerator.KEY_VOLUMES, "3");
         defaults.put(PEFGenerator.KEY_SPV, "2");
         defaults.put(PEFGenerator.KEY_PPV, "20");
@@ -78,7 +78,7 @@ public class PEFGeneratorTest {
 
     @Test
     public void testSectionDivisor_04() {
-        Map<String, String> defaults = new HashMap<>();
+        Map<String, String> defaults = new ConcurrentHashMap<>();
         defaults.put(PEFGenerator.KEY_VOLUMES, "3");
         defaults.put(PEFGenerator.KEY_SPV, "4");
         defaults.put(PEFGenerator.KEY_PPV, "4");

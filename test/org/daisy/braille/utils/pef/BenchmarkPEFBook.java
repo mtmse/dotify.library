@@ -2,8 +2,8 @@ package org.daisy.braille.utils.pef;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
 /**
@@ -19,7 +19,7 @@ class BenchmarkPEFBook {
         final int x = 100;
         try {
             for (int i = 0; i < x; i++) {
-                Map<String, String> defaults = new HashMap<>();
+                Map<String, String> defaults = new ConcurrentHashMap<>();
                 defaults.put(PEFGenerator.KEY_VOLUMES, "" + (3 + (int) (Math.random() * 10)));
                 defaults.put(PEFGenerator.KEY_SPV, "" + (1 + (int) (Math.random() * 5)));
                 defaults.put(PEFGenerator.KEY_PPV, "" + (20 + (int) (Math.random() * 20)));

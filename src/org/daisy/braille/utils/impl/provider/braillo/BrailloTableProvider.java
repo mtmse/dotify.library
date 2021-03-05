@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * TODO: write java doc.
@@ -124,7 +125,7 @@ public class BrailloTableProvider implements TableProvider {
 
                     @Override
                     public BrailleConverter newBrailleConverter() {
-                        Map<Character, Character> supplements = new HashMap<>();
+                        Map<Character, Character> supplements = new ConcurrentHashMap<>();
                         supplements.put('`', (char) 0x2808);
                         supplements.put('~', (char) 0x2818);
                         supplements.put('{', (char) 0x282a);
@@ -146,7 +147,7 @@ public class BrailloTableProvider implements TableProvider {
                     // nl-NL
                     @Override
                     public BrailleConverter newBrailleConverter() {
-                        Map<Character, Character> supplements = new HashMap<>();
+                        Map<Character, Character> supplements = new ConcurrentHashMap<>();
                         supplements.put('1', (char) 0x2801);
                         supplements.put('2', (char) 0x2803);
                         supplements.put('3', (char) 0x2809);

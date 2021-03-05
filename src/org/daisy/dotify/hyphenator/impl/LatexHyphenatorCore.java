@@ -23,11 +23,13 @@ class LatexHyphenatorCore {
         locator = new LatexRulesLocator();
     }
 
-    static synchronized LatexHyphenatorCore getInstance() {
-        if (instance == null) {
-            instance = new LatexHyphenatorCore();
+    static LatexHyphenatorCore getInstance() {
+        synchronized (LatexHyphenatorCore.class) {
+            if (instance == null) {
+                instance = new LatexHyphenatorCore();
+            }
+            return instance;
         }
-        return instance;
     }
 
     boolean supportsLocale(String locale) {

@@ -25,11 +25,13 @@ class CWHyphenatorCore {
         return tables.getProperty(locale) != null;
     }
 
-    static synchronized CWHyphenatorCore getInstance() {
-        if (instance == null) {
-            instance = new CWHyphenatorCore();
+    static CWHyphenatorCore getInstance() {
+        synchronized (CWHyphenatorCore.class) {
+            if (instance == null) {
+                instance = new CWHyphenatorCore();
+            }
+            return instance;
         }
-        return instance;
     }
 
     private Properties loadProperties(String path) {

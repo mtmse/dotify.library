@@ -1,9 +1,9 @@
 package org.daisy.dotify.common.text;
 
 import java.net.URL;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
 
@@ -62,7 +62,7 @@ public class UCharFilter extends SimpleUCharReplacer implements StringFilter {
     }
 
     private static Map<Integer, String> fillInCase(Map<Integer, String> map, Locale autoComplete) {
-        Map<Integer, String> add = new HashMap<>();
+        Map<Integer, String> add = new ConcurrentHashMap<>();
         String substitute;
         String codePointStr;
         String newStr;
