@@ -111,12 +111,12 @@ public class BrailleTextBorderFactoryTest {
         assertEquals("⠿⠀⠿", str.get(1));
         assertEquals("⠛⠛⠛", str.get(2));
     }
-	
-	private List<String> styleToStrings(TextBorderStyle s) {
+
+    private List<String> styleToStrings(TextBorderStyle s) {
         List<String> ret = new ArrayList<>();
-		ret.add(s.getTopLeftCorner()+s.getTopBorder()+s.getTopRightCorner());
-		ret.add(s.getLeftBorder()+"⠀"+s.getRightBorder());
-		ret.add(s.getBottomLeftCorner()+s.getBottomBorder()+s.getBottomRightCorner());
-		return ret;
-	}
+        ret.add(s.getTopLeftCorner() + s.getTopBorder() + s.getTopRightCorner());
+        ret.add(s.getLeftBorder() + "⠀" + s.getRightBorder());
+        ret.add(s.getBottomLeftCorner() + s.getBottomBorder() + s.getBottomRightCorner());
+        return ret;
+    }
 }
