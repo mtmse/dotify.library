@@ -1,7 +1,12 @@
 /bin/
+/bin_test/
 /build/
 /.settings/
 /.gradle/
-.idea/
+/.idea/
+*.iml
 .classpath
 .project
+/.nb-gradle/
+.nb-gradle-properties
+local.properties
