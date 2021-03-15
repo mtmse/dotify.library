@@ -54,12 +54,11 @@ public class SwedishBrailleFilterFactoryService implements
 
     @Override
     public boolean supportsSpecification(String locale, String mode) {
-        return
-            (
-                "sv".equalsIgnoreCase(locale) ||
-                "sv-SE".equalsIgnoreCase(locale)
-            ) &&
-            mode.equals(TranslatorType.UNCONTRACTED.toString());
+        return (
+            "sv".equalsIgnoreCase(locale) ||
+            "sv-SE".equalsIgnoreCase(locale)
+        ) &&
+        mode.equals(TranslatorType.UNCONTRACTED.toString());
     }
 
     @Override

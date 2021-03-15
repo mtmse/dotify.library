@@ -28,18 +28,18 @@ class SwedishMarkerProcessorFactory {
             // Svenska skrivregler för punktskrift 2009, page 34
             RegexMarkerDictionary strong = new RegexMarkerDictionary.Builder().
                     addPattern(
-                        WHITESPACE_REGEX,
-                        new Marker("\u2828\u2828", "\u2831"),
-                        new Marker("\u2828", "")
+                            WHITESPACE_REGEX,
+                            new Marker("\u2828\u2828", "\u2831"),
+                            new Marker("\u2828", "")
                     ).
                     build();
 
             // Svenska skrivregler för punktskrift 2009, page 34
             RegexMarkerDictionary em = new RegexMarkerDictionary.Builder().
                     addPattern(
-                        WHITESPACE_REGEX,
-                        new Marker("\u2820\u2824", "\u2831"),
-                        new Marker("\u2820\u2804", "")
+                            WHITESPACE_REGEX,
+                            new Marker("\u2820\u2824", "\u2831"),
+                            new Marker("\u2820\u2804", "")
                     ).
                     build();
 
@@ -79,11 +79,11 @@ class SwedishMarkerProcessorFactory {
 
             // Redigering och avskrivning, page 148
             SimpleMarkerDictionary dd = new SimpleMarkerDictionary(
-                new Marker("\u2820\u2804\u2800", "")
+                    new Marker("\u2820\u2804\u2800", "")
             );
 
             SimpleMarkerDictionary continuedTableCell = new SimpleMarkerDictionary(
-                new Marker("\u283b\u283b", "")
+                    new Marker("\u283b\u283b", "")
             );
 
             DefaultMarkerProcessor sap = new DefaultMarkerProcessor.Builder().

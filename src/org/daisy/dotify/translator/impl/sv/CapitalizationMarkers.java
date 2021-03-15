@@ -20,10 +20,9 @@ class CapitalizationMarkers implements StringFilter {
     private static final String SEQ_PREFIX_MARKER = "\u2820\u2820\u2820";
     private static final String SEQ_POSTFIX_MARKER = "\u2831";
     /**
-     * Matches sequences of upper case letters and soft hyphens with white spaces, dashes and forward
-     * slashes in between, starting at the beginning of input or after a non-letter character
-     * and ending at the end of input or before any character that isn't a letter, the braille number symbol (⠼)
-     * or a digit.
+     * Matches sequences of upper case letters and soft hyphens with white spaces, dashes and forward slashes in
+     * between, starting at the beginning of input or after a non-letter character and ending at the end of input
+     * or before any character that isn't a letter, the braille number symbol (⠼)  or a digit.
      */
     private static final Pattern UPPERCASE_LETTER_SEQUENCE_SPACE_DASH_SLASH = Pattern.compile(
         "(?<=[^\\p{L}]|\\A)(((\\p{Lu}(\u00ad)?)+[\\s\\-/]+)+(\\p{Lu}(\u00ad)?)+)(?=[^\\p{L}^\u283c^\\d]|\\z)"
