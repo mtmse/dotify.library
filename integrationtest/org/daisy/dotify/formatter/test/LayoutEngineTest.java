@@ -10,12 +10,13 @@ import org.daisy.dotify.api.writer.PagedMediaWriterFactory;
 import org.daisy.dotify.api.writer.PagedMediaWriterFactoryMaker;
 import org.junit.Test;
 
-import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.logging.Logger;
 
 import static org.junit.Assert.assertEquals;
@@ -46,7 +47,7 @@ public class LayoutEngineTest extends AbstractFormatterEngineTest {
         );
 
         try {
-            int ret = compareBinary(
+            int ret = compareText(
                 this.getClass().getResourceAsStream("resource-files/obfl-expected.txt"), new FileInputStream(res)
             );
             assertEquals("Binary compare is equal", -1, ret);
@@ -156,24 +157,23 @@ public class LayoutEngineTest extends AbstractFormatterEngineTest {
         );
     }
 
-    public int compareBinary(InputStream f1, InputStream f2) throws IOException {
-        InputStream bf1 = new BufferedInputStream(f1);
-        InputStream bf2 = new BufferedInputStream(f2);
-        int pos = 0;
+    public int compareText(InputStream f1, InputStream f2) throws IOException {
+        BufferedReader br1 = new BufferedReader(new InputStreamReader(f1));
+        BufferedReader br2 = new BufferedReader(new InputStreamReader(f2));
+
         try {
-            int b1;
-            int b2;
-            while ((b1 = bf1.read()) != -1 & b1 == (b2 = bf2.read())) {
-                pos++;
-                // continue
-            }
-            if (b1 != -1 || b2 != -1) {
-                return pos;
+            int linePos = 1;
+            String line;
+            while ((line = br1.readLine()) != null) {
+                if (!line.equals(br2.readLine())) {
+                    return linePos;
+                }
+                linePos++;
             }
             return -1;
         } finally {
-            bf1.close();
-            bf2.close();
+            br1.close();
+            br2.close();
         }
     }
 }
