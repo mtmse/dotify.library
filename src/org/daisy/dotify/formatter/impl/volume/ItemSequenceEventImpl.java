@@ -80,7 +80,7 @@ class ItemSequenceEventImpl implements ReferenceListBuilder, BlockGroup {
     @Override
     public List<Block> getBlocks(FormatterContext context, DefaultContext vars, CrossReferenceHandler crh) {
         ContentCollectionImpl c = context.getCollections().get(collectionID);
-        ArrayList<Block> ret = new ArrayList<>();
+        List<Block> ret = new ArrayList<>();
         if (c == null) {
             return ret;
         }
@@ -90,10 +90,10 @@ class ItemSequenceEventImpl implements ReferenceListBuilder, BlockGroup {
         for (int i = 0; i < crh.getVolumeCount(); i++) {
             Iterable<AnchorData> v = crh.getAnchorData(i + 1);
             if (v != null) {
-                ArrayList<Block> volume =
+                List<Block> volume =
                         (range == ItemSequenceProperties.Range.DOCUMENT) ? new ArrayList<Block>() : ret;
                 for (AnchorData ad : v) {
-                    ArrayList<String> refs = new ArrayList<>();
+                    List<String> refs = new ArrayList<>();
                     for (String a : ad.getAnchors()) {
                         if (c.containsItemID(a) && !refs.contains(a)) {
                             refs.add(a);
@@ -105,7 +105,7 @@ class ItemSequenceEventImpl implements ReferenceListBuilder, BlockGroup {
                     ) {
                         hasContents = true;
                         {
-                            ArrayList<Block> b = new ArrayList<>();
+                            List<Block> b = new ArrayList<>();
                             for (Block blk : pageStartEvents) {
                                 Block bl = blk.copy();
                                 currentBlockAddress = new BlockAddress(
@@ -123,7 +123,7 @@ class ItemSequenceEventImpl implements ReferenceListBuilder, BlockGroup {
                             volume.addAll(c.getBlocks(key));
                         }
                         {
-                            ArrayList<Block> b = new ArrayList<>();
+                            List<Block> b = new ArrayList<>();
                             for (Block blk : pageEndEvents) {
                                 Block bl = blk.copy();
                                 currentBlockAddress = new BlockAddress(

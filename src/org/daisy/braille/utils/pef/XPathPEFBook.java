@@ -11,6 +11,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javax.xml.parsers.DocumentBuilder;
@@ -35,7 +36,7 @@ class XPathPEFBook {
         URI uri,
         boolean continueOnError
     ) throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
-        HashMap<String, List<String>> metadata;
+        Map<String, List<String>> metadata;
         // Book properties
         int volumes;
         int pageTags;

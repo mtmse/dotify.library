@@ -1,6 +1,7 @@
 package org.daisy.dotify.common.text;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,7 +35,7 @@ public class StringSplitter {
      * @return returns an array of SplitResults that, if put together, contain all the characters from the input.
      */
     public static SplitResult[] split(CharSequence input, Pattern pattern) {
-        ArrayList<SplitResult> ret = new ArrayList<>();
+        List<SplitResult> ret = new ArrayList<>();
         Matcher m = pattern.matcher(input);
 
         int index = 0;

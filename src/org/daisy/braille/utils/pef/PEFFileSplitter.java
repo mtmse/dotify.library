@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Stack;
 import java.util.function.Predicate;
@@ -144,7 +145,7 @@ public class PEFFileSplitter implements ErrorHandler {
             XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
             XMLEventReader reader = inFactory.createXMLEventReader(is);
             XMLEventFactory eventFactory = XMLEventFactory.newInstance();
-            ArrayList<XMLEvent> header = new ArrayList<>();
+            List<XMLEvent> header = new ArrayList<>();
             Stack<File> files = new Stack<>();
             Stack<XMLEventWriter> writers = new Stack<>();
             Stack<FileOutputStream> os = new Stack<>();

@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -19,7 +20,7 @@ public class TranslatorSpecificationTest {
 		TranslatorSpecification s1 = new TranslatorSpecification("sv", "uncontracted");
 		TranslatorSpecification s2 = new TranslatorSpecification("en", "bypass");
 		TranslatorSpecification s3 = new TranslatorSpecification("sv", "bypass");
-		ArrayList<TranslatorSpecification> a = new ArrayList<>();
+        List<TranslatorSpecification> a = new ArrayList<>();
 		a.add(s1);
 		a.add(s2);
 		a.add(s3);

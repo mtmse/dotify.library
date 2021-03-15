@@ -13,6 +13,7 @@ import org.osgi.service.component.annotations.ReferenceCardinality;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Provides a pass through translator factory service.
@@ -56,7 +57,7 @@ public class DefaultBypassTranslatorFactoryService implements
 
     @Override
     public Collection<TranslatorSpecification> listSpecifications() {
-        ArrayList<TranslatorSpecification> ret = new ArrayList<>();
+        List<TranslatorSpecification> ret = new ArrayList<>();
         for (String loc : hyphenator.listLocales()) {
             ret.add(new TranslatorSpecification(loc, TranslatorMode.Builder.withType(TranslatorType.BYPASS)
                     .displayName("Hyphenator: " + loc)

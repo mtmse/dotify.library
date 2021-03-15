@@ -26,6 +26,7 @@ import org.osgi.service.component.annotations.Component;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * TODO: write java doc.
@@ -55,7 +56,7 @@ public class FA44PaperProvider implements PaperProvider {
     private final Collection<Paper> papers;
 
     public FA44PaperProvider() {
-        ArrayList<Paper> tmp = new ArrayList<Paper>();
+        List<Paper> tmp = new ArrayList<Paper>();
         tmp.add(new SheetPaper("FA44", "261 mm x 297 mm", PaperSize.FA44.getIdentifier(),
                 Length.newMillimeterValue(261d),
                 Length.newMillimeterValue(297d)));

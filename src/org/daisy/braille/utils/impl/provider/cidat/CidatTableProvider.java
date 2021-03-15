@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -124,7 +125,7 @@ public class CidatTableProvider implements TableProvider {
 
                     @Override
                     public BrailleConverter newBrailleConverter() {
-                        ArrayList<String> al = new ArrayList<>();
+                        List<String> al = new ArrayList<>();
                         for (int i = 0; i < 0x1b; i++) {
                             al.add(String.valueOf((char) i));
                         }
@@ -152,7 +153,7 @@ public class CidatTableProvider implements TableProvider {
 
                     @Override
                     public BrailleConverter newBrailleConverter() {
-                        ArrayList<String> al = new ArrayList<>();
+                        List<String> al = new ArrayList<>();
                         for (int i = 0; i < 0x1b; i++) {
                             al.add(String.valueOf((char) i));
                         }

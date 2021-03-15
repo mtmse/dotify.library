@@ -164,7 +164,7 @@ public class FileIO {
      * @return returns a list of files
      */
     public static Collection<File> listFilesRecursive(File dir, String ext) {
-        ArrayList<File> files = new ArrayList<>();
+        List<File> files = new ArrayList<>();
         listFilesRecursive(files, dir, pathname -> pathname.isDirectory() || pathname.getName().endsWith(ext));
         return files;
     }
@@ -198,7 +198,7 @@ public class FileIO {
      * @return returns an array of URL's
      */
     public static URL[] toURL(File[] files) {
-        ArrayList<URL> urls = new ArrayList<>();
+        List<URL> urls = new ArrayList<>();
         if (files != null && files.length > 0) {
             for (File f : files) {
                 try {

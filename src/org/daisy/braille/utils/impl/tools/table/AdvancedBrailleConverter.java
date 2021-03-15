@@ -23,6 +23,7 @@ import org.daisy.dotify.api.table.BrailleConverter;
 
 import java.nio.charset.Charset;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Provides an advanced Braille converter mapping each braille character to a string.
@@ -32,7 +33,7 @@ import java.util.HashMap;
  */
 public class AdvancedBrailleConverter implements BrailleConverter {
 
-    private HashMap<Character, String> b2t;
+    private Map<Character, String> b2t;
     private StringTranslator t2b;
     private final Charset charset;
     private final EightDotFallbackMethod fallback;
