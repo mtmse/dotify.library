@@ -1,11 +1,11 @@
-package org.daisy.dotify.translator.impl.sv_SE;
+package org.daisy.dotify.translator.impl.sv;
 
 import static org.junit.Assert.assertEquals;
 
 import org.daisy.dotify.api.translator.DefaultTextAttribute;
 import org.daisy.dotify.api.translator.TranslatorType;
 import org.daisy.dotify.translator.DefaultMarkerProcessor;
-import org.daisy.dotify.translator.impl.sv_SE.SwedishMarkerProcessorFactory.SwedishMarkerProcessorConfigurationException;
+import org.daisy.dotify.translator.impl.sv.SwedishMarkerProcessorFactory.SwedishMarkerProcessorConfigurationException;
 import org.junit.Test;
 
 @SuppressWarnings("javadoc")

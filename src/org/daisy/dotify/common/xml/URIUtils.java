@@ -27,40 +27,40 @@ import java.util.regex.Pattern;
  * @see URI
  */
 final class URIUtils {
-    
+
     /**
-     * URI encoded values 0-255, for convenience
+     * URI encoded values 0-255, for convenience.
      */
-    private static final String[] hex = { "%00", "%01", "%02", "%03", "%04", "%05",
-        "%06", "%07", "%08", "%09", "%0A", "%0B", "%0C", "%0D", "%0E",
-        "%0F", "%10", "%11", "%12", "%13", "%14", "%15", "%16", "%17",
-        "%18", "%19", "%1A", "%1B", "%1C", "%1D", "%1E", "%1F", "%20",
-        "%21", "%22", "%23", "%24", "%25", "%26", "%27", "%28", "%29",
-        "%2A", "%2B", "%2C", "%2D", "%2E", "%2F", "%30", "%31", "%32",
-        "%33", "%34", "%35", "%36", "%37", "%38", "%39", "%3A", "%3B",
-        "%3C", "%3D", "%3E", "%3F", "%40", "%41", "%42", "%43", "%44",
-        "%45", "%46", "%47", "%48", "%49", "%4A", "%4B", "%4C", "%4D",
-        "%4E", "%4F", "%50", "%51", "%52", "%53", "%54", "%55", "%56",
-        "%57", "%58", "%59", "%5A", "%5B", "%5C", "%5D", "%5E", "%5F",
-        "%60", "%61", "%62", "%63", "%64", "%65", "%66", "%67", "%68",
-        "%69", "%6A", "%6B", "%6C", "%6D", "%6E", "%6F", "%70", "%71",
-        "%72", "%73", "%74", "%75", "%76", "%77", "%78", "%79", "%7A",
-        "%7B", "%7C", "%7D", "%7E", "%7F", "%80", "%81", "%82", "%83",
-        "%84", "%85", "%86", "%87", "%88", "%89", "%8A", "%8B", "%8C",
-        "%8D", "%8E", "%8F", "%90", "%91", "%92", "%93", "%94", "%95",
-        "%96", "%97", "%98", "%99", "%9A", "%9B", "%9C", "%9D", "%9E",
-        "%9F", "%A0", "%A1", "%A2", "%A3", "%A4", "%A5", "%A6", "%A7",
-        "%A8", "%A9", "%AA", "%AB", "%AC", "%AD", "%AE", "%AF", "%B0",
-        "%B1", "%B2", "%B3", "%B4", "%B5", "%B6", "%B7", "%B8", "%B9",
-        "%BA", "%BB", "%BC", "%BD", "%BE", "%BF", "%C0", "%C1", "%C2",
-        "%C3", "%C4", "%C5", "%C6", "%C7", "%C8", "%C9", "%CA", "%CB",
-        "%CC", "%CD", "%CE", "%CF", "%D0", "%D1", "%D2", "%D3", "%D4",
-        "%D5", "%D6", "%D7", "%D8", "%D9", "%DA", "%DB", "%DC", "%DD",
-        "%DE", "%DF", "%E0", "%E1", "%E2", "%E3", "%E4", "%E5", "%E6",
-        "%E7", "%E8", "%E9", "%EA", "%EB", "%EC", "%ED", "%EE", "%EF",
-        "%F0", "%F1", "%F2", "%F3", "%F4", "%F5", "%F6", "%F7", "%F8",
-        "%F9", "%FA", "%FB", "%FC", "%FD", "%FE", "%FF" };
-    
+    private static final String[] hex = {"%00", "%01", "%02", "%03", "%04", "%05",
+            "%06", "%07", "%08", "%09", "%0A", "%0B", "%0C", "%0D", "%0E",
+            "%0F", "%10", "%11", "%12", "%13", "%14", "%15", "%16", "%17",
+            "%18", "%19", "%1A", "%1B", "%1C", "%1D", "%1E", "%1F", "%20",
+            "%21", "%22", "%23", "%24", "%25", "%26", "%27", "%28", "%29",
+            "%2A", "%2B", "%2C", "%2D", "%2E", "%2F", "%30", "%31", "%32",
+            "%33", "%34", "%35", "%36", "%37", "%38", "%39", "%3A", "%3B",
+            "%3C", "%3D", "%3E", "%3F", "%40", "%41", "%42", "%43", "%44",
+            "%45", "%46", "%47", "%48", "%49", "%4A", "%4B", "%4C", "%4D",
+            "%4E", "%4F", "%50", "%51", "%52", "%53", "%54", "%55", "%56",
+            "%57", "%58", "%59", "%5A", "%5B", "%5C", "%5D", "%5E", "%5F",
+            "%60", "%61", "%62", "%63", "%64", "%65", "%66", "%67", "%68",
+            "%69", "%6A", "%6B", "%6C", "%6D", "%6E", "%6F", "%70", "%71",
+            "%72", "%73", "%74", "%75", "%76", "%77", "%78", "%79", "%7A",
+            "%7B", "%7C", "%7D", "%7E", "%7F", "%80", "%81", "%82", "%83",
+            "%84", "%85", "%86", "%87", "%88", "%89", "%8A", "%8B", "%8C",
+            "%8D", "%8E", "%8F", "%90", "%91", "%92", "%93", "%94", "%95",
+            "%96", "%97", "%98", "%99", "%9A", "%9B", "%9C", "%9D", "%9E",
+            "%9F", "%A0", "%A1", "%A2", "%A3", "%A4", "%A5", "%A6", "%A7",
+            "%A8", "%A9", "%AA", "%AB", "%AC", "%AD", "%AE", "%AF", "%B0",
+            "%B1", "%B2", "%B3", "%B4", "%B5", "%B6", "%B7", "%B8", "%B9",
+            "%BA", "%BB", "%BC", "%BD", "%BE", "%BF", "%C0", "%C1", "%C2",
+            "%C3", "%C4", "%C5", "%C6", "%C7", "%C8", "%C9", "%CA", "%CB",
+            "%CC", "%CD", "%CE", "%CF", "%D0", "%D1", "%D2", "%D3", "%D4",
+            "%D5", "%D6", "%D7", "%D8", "%D9", "%DA", "%DB", "%DC", "%DD",
+            "%DE", "%DF", "%E0", "%E1", "%E2", "%E3", "%E4", "%E5", "%E6",
+            "%E7", "%E8", "%E9", "%EA", "%EB", "%EC", "%ED", "%EE", "%EF",
+            "%F0", "%F1", "%F2", "%F3", "%F4", "%F5", "%F6", "%F7", "%F8",
+            "%F9", "%FA", "%FB", "%FC", "%FD", "%FE", "%FF"};
+
     /**
      * <p>
      * The different parts of a URI.
@@ -114,7 +114,7 @@ final class URIUtils {
          *
          * @param str the string to test
          * @return <code>true</code> if and only if <code>str</code> is equal to this scheme's string
-         *         (case insensitive)
+         * (case insensitive)
          */
         boolean isSchemeFor(String str) {
             return toString().equalsIgnoreCase(str);
@@ -129,7 +129,7 @@ final class URIUtils {
          * @return the lowercase name of this enum constant
          */
         @Override
-		public String toString() {
+        public String toString() {
             return super.toString().toLowerCase();
         }
 
@@ -140,7 +140,7 @@ final class URIUtils {
          *
          * @param str The string to test.
          * @return the scheme represented by <code>str</code> (ignoring case) or <code>null</code>
-         *         if not found.
+         * if not found.
          */
         static Scheme getScheme(String str) {
             for (Scheme scheme : EnumSet.allOf(Scheme.class)) {
@@ -155,11 +155,15 @@ final class URIUtils {
     /**
      * The URI regular expression (taken from <a href="http://www.ietf.org/rfc/rfc3986.txt">RFC3986</a>).
      */
-    private static final Pattern URI_PATTERN = Pattern.compile("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?");
+    private static final Pattern URI_PATTERN = Pattern.compile(
+            "^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?"
+    );
     /**
      * The URI Authority regular expression.
      */
-    private static final Pattern AUTHORITY_PATTERN = Pattern.compile("(([^?#]*)@)?((\\[[^?#]*\\])|([^?#:]*))(:([0-9]*))?");
+    private static final Pattern AUTHORITY_PATTERN = Pattern.compile(
+            "(([^?#]*)@)?((\\[[^?#]*\\])|([^?#:]*))(:([0-9]*))?"
+    );
     /**
      * The regular expression matching IP Hosts (syntax only, not validating illegal characters).
      */
@@ -181,39 +185,48 @@ final class URIUtils {
      */
     private static final String SUB_DELIMS = "!$&'()*+,;=";
     /**
-     * The set of characters allowed in the user info of a URI (as specified in <a href="http://www.ietf.org/rfc/rfc3986.txt">RFC3986</a>).
+     * The set of characters allowed in the user info of a URI
+     * (as specified in <a href="http://www.ietf.org/rfc/rfc3986.txt">RFC3986</a>).
      */
     private static final String SCHEME_CHAR = ALPHA + DIGIT + "+-.";
     /**
-     * The set of characters allowed in the scheme specific part of a URI (as specified in <a href="http://www.ietf.org/rfc/rfc3986.txt">RFC3986</a>).
+     * The set of characters allowed in the scheme specific part of a URI
+     * (as specified in <a href="http://www.ietf.org/rfc/rfc3986.txt">RFC3986</a>).
      */
     private static final String SSP_CHAR = UNRESERVED + '%' + SUB_DELIMS + ":@/?";
     /**
-     * The set of characters allowed in the authority of a URI (as specified in <a href="http://www.ietf.org/rfc/rfc3986.txt">RFC3986</a>).
+     * The set of characters allowed in the authority of a URI
+     * (as specified in <a href="http://www.ietf.org/rfc/rfc3986.txt">RFC3986</a>).
      */
     private static final String AUTHORITY_CHAR = UNRESERVED + '%' + SUB_DELIMS + ":@[]";
     /**
-     * The set of characters allowed in the user info of a URI (as specified in <a href="http://www.ietf.org/rfc/rfc3986.txt">RFC3986</a>).
+     * The set of characters allowed in the user info of a URI
+     * (as specified in <a href="http://www.ietf.org/rfc/rfc3986.txt">RFC3986</a>).
      */
     private static final String USERINFO_CHAR = UNRESERVED + '%' + SUB_DELIMS + ':';
     /**
-     * The set of characters allowed in the reg-name host of a URI (as specified in <a href="http://www.ietf.org/rfc/rfc3986.txt">RFC3986</a>).
+     * The set of characters allowed in the reg-name host of a URI
+     * (as specified in <a href="http://www.ietf.org/rfc/rfc3986.txt">RFC3986</a>).
      */
     private static final String REG_HOST_CHAR = UNRESERVED + '%' + SUB_DELIMS;
     /**
-     * The set of characters allowed in the port of a URI (as specified in <a href="http://www.ietf.org/rfc/rfc3986.txt">RFC3986</a>).
+     * The set of characters allowed in the port of a URI
+     * (as specified in <a href="http://www.ietf.org/rfc/rfc3986.txt">RFC3986</a>).
      */
     private static final String PORT_CHAR = DIGIT;
     /**
-     * The set of characters allowed in the path of a URI (as specified in <a href="http://www.ietf.org/rfc/rfc3986.txt">RFC3986</a>).
+     * The set of characters allowed in the path of a URI
+     * (as specified in <a href="http://www.ietf.org/rfc/rfc3986.txt">RFC3986</a>).
      */
     private static final String PATH_CHAR = UNRESERVED + '%' + SUB_DELIMS + ":@/";
     /**
-     * The set of characters allowed in the query of a URI (as specified in <a href="http://www.ietf.org/rfc/rfc3986.txt">RFC3986</a>).
+     * The set of characters allowed in the query of a URI
+     * (as specified in <a href="http://www.ietf.org/rfc/rfc3986.txt">RFC3986</a>).
      */
     private static final String QUERY_CHAR = PATH_CHAR + '?';
     /**
-     * The set of characters allowed in the fragment of a URI (as specified in <a href="http://www.ietf.org/rfc/rfc3986.txt">RFC3986</a>).
+     * The set of characters allowed in the fragment of a URI
+     * (as specified in <a href="http://www.ietf.org/rfc/rfc3986.txt">RFC3986</a>).
      */
     private static final String FRAGMENT_CHAR = PATH_CHAR + '?';
 
@@ -281,8 +294,8 @@ final class URIUtils {
             query = uriMatcher.group(UriPart.QUERY.mGroup);
             fragment = uriMatcher.group(UriPart.FRAGMENT.mGroup);
             isHierarchical = (scheme == null) || (authority != null) || ((path != null) && (path.startsWith("/")));
-            if (isHierarchical && authority != null && authority.length() != 0)
-            { // We parse the authority to conform the modification in RFC 3986.
+            if (isHierarchical && authority != null && authority.length() != 0) {
+                // We parse the authority to conform the modification in RFC 3986.
                 Matcher authMatcher = AUTHORITY_PATTERN.matcher(authority);
                 if (authMatcher.matches()) {
                     userInfo = authMatcher.group(UriPart.USERINFO.mGroup);
@@ -371,34 +384,34 @@ final class URIUtils {
      * @return the decoded string or <code>null</code> if the specified string was <code>null</code>.
      * @throws IllegalArgumentException if the specified string contains invalid percent-encoded characters.
      */
-	static String decode(String str, String skipChars) {
-		// LE 2008-10-01: rewritten to support multi byte characters
-		if (str == null) {
-			return null;
-		}
-		try {
-			// We first encode '+' to ensure it won't be decoded as a space
-			String res = URLDecoder.decode(str.replace("+", "%2B"), "UTF-8");
-			if (skipChars != null && skipChars.length() > 0) {
-				StringBuilder sb = new StringBuilder();
-				for (int i = 0; i < res.length(); i++) {
-					char c = res.charAt(i);
-					if (skipChars.indexOf(c) != -1) {
-						sb
-								.append(URLEncoder.encode(String.valueOf(c),
-										"UTF-8"));
-					} else {
-						sb.append(c);
-					}
-				}
-				return sb.toString();
-			} else {
-				return res;
-			}
-		} catch (UnsupportedEncodingException e) {
-			throw new IllegalStateException("shoudn't happen", e);
-		}
-	}
+    static String decode(String str, String skipChars) {
+        // LE 2008-10-01: rewritten to support multi byte characters
+        if (str == null) {
+            return null;
+        }
+        try {
+            // We first encode '+' to ensure it won't be decoded as a space
+            String res = URLDecoder.decode(str.replace("+", "%2B"), "UTF-8");
+            if (skipChars != null && skipChars.length() > 0) {
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < res.length(); i++) {
+                    char c = res.charAt(i);
+                    if (skipChars.indexOf(c) != -1) {
+                        sb
+                                .append(URLEncoder.encode(String.valueOf(c),
+                                        "UTF-8"));
+                    } else {
+                        sb.append(c);
+                    }
+                }
+                return sb.toString();
+            } else {
+                return res;
+            }
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalStateException("shoudn't happen", e);
+        }
+    }
 
     /**
      * <p>
@@ -411,7 +424,8 @@ final class URIUtils {
      *
      * @param str  the string to percent-encode.
      * @param part the URI part reference.
-     * @return the encoded string (for URI part illegal characters) or <code>null</code> if the specified string was <code>null</code>.
+     * @return the encoded string (for URI part illegal characters) or <code>null</code>
+     * if the specified string was <code>null</code>.
      */
     private static String encode(String str, UriPart part) {
         // LE 2008-10-01: support for non us-ascii chars added
@@ -428,13 +442,13 @@ final class URIUtils {
                     // Remove this if clause to also encode characters in the 'other' category
                     sb.append(c);
                 } else if (c <= 0x07FF) { // non-ASCII <= 0x7FF
-                    sb.append(String.valueOf(hex[0xc0 | (c >> 6)] + 
+                    sb.append(String.valueOf(hex[0xc0 | (c >> 6)] +
                             hex[0x80 | (c & 0x3F)]));
                 } else { // 0x7FF < c <= 0xFFFF
-                    sb.append(String.valueOf(hex[0xe0 | (c >> 12)] + 
-                            hex[0x80 | ((c >> 6) & 0x3F)] + 
+                    sb.append(String.valueOf(hex[0xe0 | (c >> 12)] +
+                            hex[0x80 | ((c >> 6) & 0x3F)] +
                             hex[0x80 | (c & 0x3F)]));
-                }                
+                }
             } else {
                 sb.append(c);
             }
@@ -460,7 +474,7 @@ final class URIUtils {
      *
      * @param path the path to encode
      * @return a new string where the colons of the first segment are percent-encoded,
-     *         or <code>null</code> if the specified path is null.
+     * or <code>null</code> if the specified path is null.
      */
     static String encodeColon(CharSequence path) {
         if (path == null) {
@@ -492,7 +506,7 @@ final class URIUtils {
      *
      * @param path the path to encode
      * @return a new string where the colons of the first segment and other illegal characters
-     *         are percent-encoded or <code>null</code> if the specified path is null.
+     * are percent-encoded or <code>null</code> if the specified path is null.
      */
     static String encodePath(String path) {
         return encodeColon(encode(path, UriPart.PATH));
@@ -534,12 +548,14 @@ final class URIUtils {
      * <code>&lt;file:/dir/path&gt;</code> is rewritten as <code>&lt;file:///dir/path&gt;</code><br/>
      * <code>&lt;file:c:/dir/file.tmp&gt;</code> is rewritten as <code>&lt;file:///c:/dir/file.tmp&gt;</code><br/>
      * <code>&lt;file:/c:/dir/file.tmp&gt;</code> is rewritten as <code>&lt;file:///c:/dir/file.tmp&gt;</code><br/>
-     * <code>&lt;file://localhost/c:/dir/file.tmp&gt;</code> is rewritten as <code>&lt;file:///c:/dir/file.tmp&gt;</code><br/>
+     * <code>&lt;file://localhost/c:/dir/file.tmp&gt;</code> is rewritten as
+     * <code>&lt;file:///c:/dir/file.tmp&gt;</code><br/>
      * <code>&lt;file://c:/dir/file.tmp&gt;</code> is rewritten as <code>&lt;file:///c:/dir/file.tmp&gt;</code><br/>
      * <code>&lt;file:////&gt;</code> is rewritten as <code>&lt;file:///&gt;</code>
      * </blockquote>
      * </li>
      * </ul>
+     * <ul>
      * <li>If the URI specifies a relative file path, the resulting URI will have the form:
      * <blockquote><pre>rel-path</pre></blockquote>
      * <p>Note that colon charachters (<code>':'</code>) possibly present in the first segment
@@ -593,7 +609,7 @@ final class URIUtils {
         while (!stop && i < ssp.length()) {
             char c = ssp.charAt(i);
             if (ssp.length() > i + 2 && c == '%' && ssp.charAt(i + 1) == '2' && (ssp.charAt(i + 2) == 'F'
-                                                                                 || ssp.charAt(i + 2) == 'f')) {
+                    || ssp.charAt(i + 2) == 'f')) {
                 isNormal = false;
                 i += 2;
                 c = '/';
@@ -608,7 +624,7 @@ final class URIUtils {
                 }
             } else if (c == '?') {
                 stop = true;
-                if (slashCount == 0) {// the query must be stored as it is not recognized by this opaque URI
+                if (slashCount == 0) { // the query must be stored as it is not recognized by this opaque URI
                     query = ssp.substring(i + 1);
                 }
             } else {
@@ -632,53 +648,53 @@ final class URIUtils {
             i++;
         }
         // Remove possible "localhost" host
-        if (slashCount == 2 && pathSb.length() > 10 && "localhost".equals(pathSb.substring(2, 11))) {//
+        if (slashCount == 2 && pathSb.length() > 10 && "localhost".equals(pathSb.substring(2, 11))) {
             isNormal = false;
             pathSb.delete(2, 11);
-            if (pathSb.length() == 2) {// add trailing slash if the uri jsut contained the host <file://localhost>
+            if (pathSb.length() == 2) { // add trailing slash if the uri jsut contained the host <file://localhost>
                 pathSb.append('/');
             }
             slashCount = 3;
         }
         // Process possible drive letter
         if (pathSb.length() >= slashCount + 4
-            && (pathSb.charAt(slashCount + 3) == 'A' || pathSb.charAt(slashCount + 3) == 'a')
-            && pathSb.charAt(slashCount + 2) == '3'
-            && pathSb.charAt(slashCount + 1) == '%'
-            && Character.isLetter(pathSb.charAt(slashCount))) {// decode colon if any
+                && (pathSb.charAt(slashCount + 3) == 'A' || pathSb.charAt(slashCount + 3) == 'a')
+                && pathSb.charAt(slashCount + 2) == '3'
+                && pathSb.charAt(slashCount + 1) == '%'
+                && Character.isLetter(pathSb.charAt(slashCount))) { // decode colon if any
             isNormal = false;
             pathSb.replace(slashCount + 1, slashCount + 4, ":");
         }
         if (pathSb.length() >= slashCount + 2
-            && pathSb.charAt(slashCount + 1) == ':'
-            && Character.isLetter(pathSb.charAt(slashCount))) {// a drive letter has been found
+                && pathSb.charAt(slashCount + 1) == ':'
+                && Character.isLetter(pathSb.charAt(slashCount))) { // a drive letter has been found
             char driveLetter = pathSb.charAt(slashCount);
-            if (Character.isUpperCase(driveLetter)) {// upper case drive letter made lower case
+            if (Character.isUpperCase(driveLetter)) { // upper case drive letter made lower case
                 isNormal = false;
                 pathSb.setCharAt(slashCount, Character.toLowerCase(driveLetter));
             }
-            if (pathSb.length() < slashCount + 3 || pathSb.charAt(slashCount + 2) != '/')
-            {// relative path with drive letter
+            if (pathSb.length() < slashCount + 3 || pathSb.charAt(slashCount + 2) != '/') {
+                // relative path with drive letter
                 isNormal = false;
-                pathSb.delete(0, slashCount);//remove starting slashes
+                pathSb.delete(0, slashCount); //remove starting slashes
                 slashCount = 0;
-            } else if (slashCount != 3) {// <file:c:/path> or <file://c:/path> form
+            } else if (slashCount != 3) { // <file:c:/path> or <file://c:/path> form
                 isNormal = false;
                 pathSb.replace(0, slashCount, "///");
                 slashCount = 3;
             }
         }
         // Process the different slashCount values
-        if (slashCount == 0) {// <file:rel-path> form
+        if (slashCount == 0) { // <file:rel-path> form
             isNormal = false;
         }
-        if (slashCount == 2) {// <file://host/path> or <file://c:path> form
-            if (pathSb.length() == 2) {// the path is empty - same result as empty path with three slashes <file:///>
+        if (slashCount == 2) { // <file://host/path> or <file://c:path> form
+            if (pathSb.length() == 2) { // the path is empty - same result as empty path with three slashes <file:///>
                 isNormal = false;
                 pathSb.append('/');
                 slashCount = 3;
-            } else {// UNC file (<file://unc-path> or <file://host/path> form)
-                if (pathSb.substring(2).lastIndexOf('/') == -1) {// host <file://host> is made <file://host/>
+            } else { // UNC file (<file://unc-path> or <file://host/path> form)
+                if (pathSb.substring(2).lastIndexOf('/') == -1) { // host <file://host> is made <file://host/>
                     isNormal = false;
                     pathSb.append('/');
                 }
@@ -708,83 +724,78 @@ final class URIUtils {
         }
     }
 
-	/**
-	 * Resolves the second URI argument against the first URI argument.
-	 * 
-	 * <p>
-	 * This method overrides the {@link URI#resolve(URI)} method only for
-	 * <code>file</code> URIs representing UNC paths (i.e. of the form
-	 * <code>file:////server/path</code> or <code>file://server/path</code>).
-	 * </p>
-	 * <p>
-	 * The problem with the {@link URI#resolve(URI)} method was for
-	 * round-tripping with {@link File} objects: for a file at the UNC Location
-	 * <code>//server/file</code>, the {@link File#toURI()} method returns
-	 * <code>file:////server/file</code>. Now, if this latter URI is used for
-	 * resolution or is normalized, it results in <code>file:/server/file</code>
-	 * , which doesn't give the original file object with the constructor
-	 * {@link File#File(URI)}.
-	 * </p>
-	 * <p>
-	 * To circumvent this round-tripping problem, this method resolves UNC-like
-	 * file URIs with an empty host and a path starting with two slashes (like
-	 * <code>file:////server/path</code>).
-	 * </p>
-	 * 
-	 * @param reference
-	 *            the reference URI against which the second argument will be
-	 *            resolved
-	 * @param uri
-	 *            the URI to resolve
-	 * @return the resulting URI
-	 */
-	static URI resolve(URI reference, URI uri) {
-		if (Scheme.FILE.isSchemeFor(reference.getScheme())
-				&& (reference.getHost() != null || reference.getPath()
-						.startsWith("//"))) {
-			URI resolved = normalizeFileURI(reference).resolve(uri);
-			try {
-				return new URI("file://" + resolved.toString().substring(5));
-			} catch (URISyntaxException e) {
-				throw new IllegalStateException("shouldn't happen: "
-						+ e.getMessage(), e);
-			}
+    /**
+     * Resolves the second URI argument against the first URI argument.
+     *
+     * <p>
+     * This method overrides the {@link URI#resolve(URI)} method only for
+     * <code>file</code> URIs representing UNC paths (i.e. of the form
+     * <code>file:////server/path</code> or <code>file://server/path</code>).
+     * </p>
+     * <p>
+     * The problem with the {@link URI#resolve(URI)} method was for
+     * round-tripping with {@link File} objects: for a file at the UNC Location
+     * <code>//server/file</code>, the {@link File#toURI()} method returns
+     * <code>file:////server/file</code>. Now, if this latter URI is used for
+     * resolution or is normalized, it results in <code>file:/server/file</code>
+     * , which doesn't give the original file object with the constructor
+     * {@link File#File(URI)}.
+     * </p>
+     * <p>
+     * To circumvent this round-tripping problem, this method resolves UNC-like
+     * file URIs with an empty host and a path starting with two slashes (like
+     * <code>file:////server/path</code>).
+     * </p>
+     *
+     * @param reference the reference URI against which the second argument will be
+     *                  resolved
+     * @param uri       the URI to resolve
+     * @return the resulting URI
+     */
+    static URI resolve(URI reference, URI uri) {
+        if (Scheme.FILE.isSchemeFor(reference.getScheme())
+                && (reference.getHost() != null || reference.getPath()
+                .startsWith("//"))) {
+            URI resolved = normalizeFileURI(reference).resolve(uri);
+            try {
+                return new URI("file://" + resolved.toString().substring(5));
+            } catch (URISyntaxException e) {
+                throw new IllegalStateException("shouldn't happen: "
+                        + e.getMessage(), e);
+            }
 
-		} else {
-			return reference.resolve(uri);
-		}
-	}
+        } else {
+            return reference.resolve(uri);
+        }
+    }
 
-	/**
-	 * Resolves the second URI argument against the first URI argument.
-	 * 
-	 * <p>
-	 * This method overrides the {@link URI#resolve(URI)} method only for
-	 * <code>file</code> URIs representing UNC paths (i.e. of the form
-	 * <code>file:////server/path</code> or <code>file://server/path</code>).
-	 * </p>
-	 * 
-	 * @param the
-	 *            reference URI against which the second argument will be
-	 *            resolved
-	 * @param str
-	 *            the URI to resolve
-	 * @return the resulting URI
-	 * @see #resolve(URI, URI)
-	 */
-	static URI resolve(URI ref, String str) {
-		if (Scheme.FILE.isSchemeFor(ref.getScheme())
-				&& (ref.getHost() != null || ref.getPath().startsWith("//"))) {
-			URI resolved = normalizeFileURI(ref).resolve(str);
-			try {
-				return new URI("file://" + resolved.toString().substring(5));
-			} catch (URISyntaxException e) {
-				throw new IllegalStateException("shouldn't happen: "
-						+ e.getMessage(), e);
-			}
+    /**
+     * Resolves the second URI argument against the first URI argument.
+     *
+     * <p>
+     * This method overrides the {@link URI#resolve(URI)} method only for
+     * <code>file</code> URIs representing UNC paths (i.e. of the form
+     * <code>file:////server/path</code> or <code>file://server/path</code>).
+     * </p>
+     *
+     * @param the reference URI against which the second argument will be
+     *            resolved
+     * @param str the URI to resolve
+     * @return the resulting URI
+     * @see #resolve(URI, URI)
+     */
+    static URI resolve(URI ref, String str) {
+        if (Scheme.FILE.isSchemeFor(ref.getScheme())
+                && (ref.getHost() != null || ref.getPath().startsWith("//"))) {
+            URI resolved = normalizeFileURI(ref).resolve(str);
+            try {
+                return new URI("file://" + resolved.toString().substring(5));
+            } catch (URISyntaxException e) {
+                throw new IllegalStateException("shouldn't happen: " + e.getMessage(), e);
+            }
 
-		} else {
-			return ref.resolve(str);
-		}
-	}
+        } else {
+            return ref.resolve(str);
+        }
+    }
 }

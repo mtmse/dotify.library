@@ -1,2 +1,2 @@
-org.daisy.dotify.translator.impl.sv_SE.SwedishBrailleFilterFactoryService
+org.daisy.dotify.translator.impl.sv.SwedishBrailleFilterFactoryService
 org.daisy.dotify.translator.impl.liblouis.LiblouisBrailleFilterFactoryService

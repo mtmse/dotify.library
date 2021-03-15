@@ -2,14 +2,15 @@ package org.daisy.dotify.api.formatter;
 
 /**
  * Provides an interface for a dynamic renderer.
- * @author Joel Håkansson
  *
+ * @author Joel Håkansson
  */
 public interface DynamicRenderer {
 
-	/**
-	 * Gets the rendering scenarios in this renderer.
-	 * @return returns a list of renderers
-	 */
-	public Iterable<RenderingScenario> getScenarios();
+    /**
+     * Gets the rendering scenarios in this renderer.
+     *
+     * @return returns a list of renderers
+     */
+    public Iterable<RenderingScenario> getScenarios();
 }

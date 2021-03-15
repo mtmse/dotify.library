@@ -399,6 +399,8 @@ page at http://checkstyle.sourceforge.net/config.html -->
             <property name="format" value="e\.printStackTrace\(\)" />
             <property name="illegalPattern" value="true" />
         </module>
+
+        <module name="SuppressWarningsHolder"/>
     </module>
 
     <!--module name="SuppressionFilter">
@@ -412,4 +414,5 @@ page at http://checkstyle.sourceforge.net/config.html -->
         <property name="messageFormat" value="$1" />
     </module>
 
+    <module name="SuppressWarningsFilter"/>
 </module>
