@@ -136,27 +136,11 @@ public class CrossReferenceHandler {
         variables.put(SHEETS_IN_DOCUMENT, value);
     }
 
-    private void setPagesInVolume(int volume, int value) {
-        if (readOnly) {
-            return;
-        }
-        //TODO: use this method
-        variables.put(PAGES_IN_VOLUME + volume, value);
-    }
-
     public void setPageNumberOfFirstContentPageOfVolume(int volume, int value) {
         if (readOnly) {
             return;
         }
         variables.put(PAGE_NUMBER_OF_FIRST_CONTENT_PAGE_OF_VOLUME + volume, value);
-    }
-
-    private void setPagesInDocument(int value) {
-        if (readOnly) {
-            return;
-        }
-        //TODO: use this method
-        variables.put(PAGES_IN_DOCUMENT, value);
     }
 
     public void keepBreakable(SheetIdentity ident, boolean value) {

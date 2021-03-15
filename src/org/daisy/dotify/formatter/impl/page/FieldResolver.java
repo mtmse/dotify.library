@@ -55,7 +55,7 @@ class FieldResolver {
         try {
             int mr = r.isPresent() ? master.getTemplate(p.getPageNumber()).getTotalMarginRegionWidth() : 0;
             BorderManagerProperties mp = new SimpleBorderManagerProperties(
-                getAvailableForNoField(p, master.getFlowWidth() - mr, field)
+                getAvailableForNoField(p, field)
             );
 
             Optional<String> x =
@@ -124,8 +124,6 @@ class FieldResolver {
     private List<String> resolveField(
         PageDetails p,
         FieldList chunks,
-        int width,
-        String padding,
         BrailleTranslator translator,
         Optional<String> noField
     ) {
@@ -159,7 +157,7 @@ class FieldResolver {
         BrailleTranslator translator,
         Optional<String> noField
     ) throws PaginatorToolsException {
-        List<String> chunkF = resolveField(p, chunks, width, padding, translator, noField);
+        List<String> chunkF = resolveField(p, chunks, translator, noField);
         return PaginatorTools.distribute(
             chunkF,
             width,
@@ -250,7 +248,6 @@ class FieldResolver {
                 int start = p.getHeader().size() - flowHeader;
                 return getAvailableForNoField(
                     details,
-                    master.getFlowWidth() - p.getTotalMarginRegionWidth(),
                     p.getHeader().get(start + rowOffset)
                 );
             } else if (rowOffset >= flowHeight - flowFooter) {
@@ -258,7 +255,6 @@ class FieldResolver {
                 int rowsLeftOnPage = flowHeight - rowOffset;
                 return getAvailableForNoField(
                     details,
-                    master.getFlowWidth() - p.getTotalMarginRegionWidth(),
                     p.getFooter().get(flowFooter - rowsLeftOnPage)
                 );
             } else {
@@ -269,12 +265,10 @@ class FieldResolver {
         }
     }
 
-    private int getAvailableForNoField(PageDetails details, int flowWidth, FieldList list) {
+    private int getAvailableForNoField(PageDetails details, FieldList list) {
         List<String> parts = resolveField(
             details,
             list,
-            flowWidth,
-            fcontext.getSpaceCharacter() + "",
             fcontext.getDefaultTranslator(),
             Optional.empty()
         );

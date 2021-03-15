@@ -1523,7 +1523,7 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
             parsePageNumber(fc, event, input);
             return true;
         } else if (equalsStart(event, ObflQName.EXTERNAL_REFERENCE)) {
-            parseExternalReference(fc, event, input);
+            parseExternalReference(fc, event);
             return true;
         } else if (equalsStart(event, ObflQName.MARKER_REFERENCE)) {
             parseMarkerReference(fc, event, input, tp);
@@ -1638,8 +1638,7 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
 
     private void parseExternalReference(
             BlockContentBuilder fc,
-            XMLEvent event,
-            XMLEventIterator input
+            XMLEvent event
     ) throws XMLStreamException {
         Iterator<Attribute> it = event.asStartElement().getAttributes();
         if (externalReferenceObject == null) {
