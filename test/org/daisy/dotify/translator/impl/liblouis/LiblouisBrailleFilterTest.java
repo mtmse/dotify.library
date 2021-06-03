@@ -91,6 +91,6 @@ public class LiblouisBrailleFilterTest {
 
     @Test
     public void testToBrailleFilterStringShouldNotCrash() {
-        LiblouisTranslatable hp = LiblouisBrailleFilter.toLiblouisSpecification("", "");
+        LiblouisBrailleFilter.toLiblouisSpecification("", "");
     }
 }
