@@ -297,6 +297,10 @@ class LiblouisBrailleFilter implements BrailleFilter {
             throw new IllegalArgumentException("The hyphenated string cannot be shorter than the input string");
         }
 
+        if (inputStr.isEmpty()) {
+            return new LiblouisTranslatable(inputStr, new int[0], new int[0]);
+        }
+
         int[] cpHyph = hyphStr.codePoints().toArray();
         int[] cpInput = inputStr.codePoints().toArray();
         int j = 0;
