@@ -46,5 +46,8 @@ public class JHypenatorTest {
                 "tes\u00ADtar i do\u00ADti\u00ADfy",
                 jHyphenator.hyphenate("testar i dotify")
         );
+
+        assertEquals("  Note   36  ", jHyphenator.hyphenate("  Note   36  "));
+
     }
 }
