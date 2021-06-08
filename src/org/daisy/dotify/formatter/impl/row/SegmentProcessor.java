@@ -1125,11 +1125,12 @@ class SegmentProcessor {
             }
             String tabSpace = ""; // leader content
             boolean hasLeader = leaderManager.hasLeader();
+            int leaderPos = -1; // tab stop position
 
             // if a leader is pending lay it out first
             if (hasLeader) {
                 int preTabPos = row.getPreTabPosition(currentRow); // start position of leader
-                int leaderPos = leaderManager.getLeaderPosition( // tab stop position
+                leaderPos = leaderManager.getLeaderPosition(
                     processorContext.getAvailable() - lineProps.getReservedWidth()
                 );
                 int align = leaderManager.getLeaderAlign(btr.countRemaining()); // space after leader before tab stop
@@ -1185,27 +1186,89 @@ class SegmentProcessor {
                     }
                 }
             }
+            int rightIndent = onLastRow ? 0 : rightIndentIfNotLastRow;
             // space available for putting text
-            int available = availableIfLastRow;
-            if (!onLastRow) {
-                available -= rightIndentIfNotLastRow;
-            }
+            int available = availableIfLastRow - rightIndent;
             // break line
             String next = btr.nextTranslatedRow(available, force, lineProps.suppressHyphenation());
             // don't know if soft hyphens need to be replaced, but we'll keep it for now
             next = softHyphenPattern.matcher(next).replaceAll("");
-            // If there is a leader, insert it if the content that follows it fits on the line or if
-            // there is no following content. If there is no leader, just insert any content that
-            // fits on the line.
-            if (!next.isEmpty() || (!tabSpace.isEmpty() && !btr.hasNext())) {
-                currentRow.text(row.getLeftIndent() + currentRow.getText() + tabSpace + next);
-                if (hasLeader) {
-                    if (!tabSpace.isEmpty()) {
-                        currentRow.leaderSpace(currentRow.getLeaderSpace() + tabSpace.length());
+            if (hasLeader) {
+
+                // If there is a leader, insert it if the content that follows it fits on the line
+                // or if there is no following content. It is an error if the leader alignment is
+                // right or center and the content that follows it does not fit. If the leader
+                // alignment is left just insert any text that fits. If no text fits just insert the
+                // leader. It is an error if the leader does not even fit.
+                switch (leaderManager.getCurrentLeader().getAlignment()) {
+                case CENTER:
+                case RIGHT:
+                    if (available < 0 || btr.hasNext()) {
+                        if (lineProps.getReservedWidth() > 0) {
+                            // if width is temporarily reduced try the next line
+                            return Optional.ofNullable(flushCurrentRow());
+                        }
+                        int rightMargin = currentRow.getRightMargin().getContent().length();
+                        throw new RuntimeException(
+                            "Block is too narrow to fit the leader with the text after it ("
+                            + "total available width: " + (processorContext.getAvailable() + rightMargin)
+                            + ", leader position: " + leaderPos
+                            + ", leader alignment: " + leaderManager.getCurrentLeader().getAlignment()
+                            + ", text after leader: \"" + next + btr.getTranslatedRemainder() + "\""
+                            + (rightIndent > 0 ? ", right text indent: " + rightIndent : "")
+                            + (rightMargin > 0 ? ", right margin: " + rightMargin : "")
+                            + ")"
+                        );
                     }
-                    // tabSpace has been inserted, discard the leader now
-                    leaderManager.removeLeader();
+                    break;
+                case LEFT:
+                    if (available < 0) {
+                        if (lineProps.getReservedWidth() > 0) {
+                            // if width is temporarily reduced try the next line
+                            return Optional.ofNullable(flushCurrentRow());
+                        }
+                        int rightMargin = currentRow.getRightMargin().getContent().length();
+                        throw new RuntimeException(
+                            "Block is too narrow to fit the leader ("
+                            + "total available width: " + (processorContext.getAvailable() + rightMargin)
+                            + ", leader position: " + leaderPos
+                            + (rightIndent > 0 ? ", right text indent: " + rightIndent : "")
+                            + (rightMargin > 0 ? ", right margin: " + rightMargin : "")
+                            + ")"
+                        );
+                    }
                 }
+                currentRow.text(row.getLeftIndent() + currentRow.getText() + tabSpace + next);
+                if (!tabSpace.isEmpty()) {
+                    currentRow.leaderSpace(currentRow.getLeaderSpace() + tabSpace.length());
+                }
+                // tabSpace has been inserted, discard the leader now
+                leaderManager.removeLeader();
+            } else if (!next.isEmpty()) {
+
+                // If there is no leader, just insert any content that fits on the line.
+                currentRow.text(row.getLeftIndent() + currentRow.getText() + next);
+            } else if (available < 0 || (available == 0 && contentLen == 0 && btr.hasNext())) {
+
+                // If no text fits on the line because there is no available space, this is either
+                // because the previous segment filled up the row completely, in which case the row
+                // will be flushed next, or if a new row was started it's because there is no space
+                // between the left and right margin edges for text and left and right text indent,
+                // in which case we need to abort in order to avoid an endless loop.
+                int leftMargin = currentRow.getLeftMargin().getContent().length();
+                int leftIndent = row.getLeftIndent().length();
+                int rightMargin = currentRow.getRightMargin().getContent().length();
+                int reservedCells = lineProps.getReservedWidth();
+                throw new RuntimeException(
+                    "Block is too narrow to contain any text ("
+                    + "total available width: " + (processorContext.getAvailable() + rightMargin)
+                    + (leftMargin > 0 ? ", left margin: " + leftMargin : "")
+                    + (leftIndent > 0 ? ", left text indent: " + leftIndent : "")
+                    + (rightIndent > 0 ? ", right text indent: " + rightIndent : "")
+                    + (rightMargin > 0 ? ", right margin: " + rightMargin : "")
+                    + (reservedCells > 0 ? ", reserved cells: " + reservedCells : "")
+                    + ")"
+                );
             } else {
                 currentRow.text(
                     row.getLeftIndent() + trailingWsBraillePattern.matcher(currentRow.getText()).replaceAll(""));
