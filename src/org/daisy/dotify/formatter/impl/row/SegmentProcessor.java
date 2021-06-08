@@ -116,6 +116,10 @@ class SegmentProcessor {
     private Function<MarkerReference, String> markerRefResolver;
     private Function<Evaluate, String> expressionResolver;
 
+    /**
+     * @param available The total space available in rows for left margin, content, left and right
+     *                  text indent, and reserved cells.
+     */
     SegmentProcessor(
         String blockId,
         List<Segment> segments,
@@ -1094,10 +1098,6 @@ class SegmentProcessor {
             );
         }
 
-        private String getLeftIndent(int indent) {
-            return getLeftIndentWithLabel("", indent);
-        }
-
         private String getLeftIndentWithLabel(String listLabel, int indent) {
             indent = Math.max(
                 // There is one known cause for this calculation to become < 0. That is when an ordered list is so long
@@ -1123,37 +1123,32 @@ class SegmentProcessor {
                 // row, or after having created a new one.
                 throw new RuntimeException("Error in code.");
             }
-            // [margin][preContent][preTabText][tab][postTabText]
-            //      preContentPos ^
-            String tabSpace = "";
+            String tabSpace = ""; // leader content
             boolean hasLeader = leaderManager.hasLeader();
 
             // if a leader is pending lay it out first
             if (hasLeader) {
-                int preTabPos = row.getPreTabPosition(currentRow);
-                int leaderPos = leaderManager.getLeaderPosition(
+                int preTabPos = row.getPreTabPosition(currentRow); // start position of leader
+                int leaderPos = leaderManager.getLeaderPosition( // tab stop position
                     processorContext.getAvailable() - lineProps.getReservedWidth()
                 );
-                int offset = leaderPos - preTabPos;
-                int align = leaderManager.getLeaderAlign(btr.countRemaining());
-                if (
-                    preTabPos > leaderPos ||
-                    offset - align < 0
-                ) { // if tab position has been passed or if text does not fit within row, try on a new row
+                int align = leaderManager.getLeaderAlign(btr.countRemaining()); // space after leader before tab stop
+                if (leaderPos - align < preTabPos) {
+                    // if tab position has been passed try on a new row
                     return Optional.ofNullable(flushCurrentRow());
                 } else {
                     tabSpace = leaderManager.getLeaderPattern(
                         processorContext.getFormatterContext().getTranslator(mode),
-                        offset - align
+                        leaderPos - preTabPos - align // leader length
                     );
                 }
             }
 
-            // get next row from BrailleTranslatorResult
+            // Size of content already present in row. If called from startNewRow() currentRow does
+            // not include the left text indent, otherwise it does.
             int contentLen = StringTools.length(tabSpace) + StringTools.length(currentRow.getText());
             boolean force = contentLen == 0;
             int availableIfLastRow = row.getMaxLength(currentRow) - contentLen;
-            String next = null;
             // check whether we are on the last row of the block (only matters if there is a
             // right-text-indent)
             boolean onLastRow = false;
@@ -1190,12 +1185,13 @@ class SegmentProcessor {
                     }
                 }
             }
+            // space available for putting text
             int available = availableIfLastRow;
             if (!onLastRow) {
                 available -= rightIndentIfNotLastRow;
             }
             // break line
-            next = btr.nextTranslatedRow(available, force, lineProps.suppressHyphenation());
+            String next = btr.nextTranslatedRow(available, force, lineProps.suppressHyphenation());
             // don't know if soft hyphens need to be replaced, but we'll keep it for now
             next = softHyphenPattern.matcher(next).replaceAll("");
             // If there is a leader, insert it if the content that follows it fits on the line or if
@@ -1232,6 +1228,8 @@ class SegmentProcessor {
             ) {
                 return Optional.ofNullable(flushCurrentRow());
             }
+            // Returning empty value means that currentRow has been updated but we don't want to
+            // flush it yet because a next segment might add to the same row.
             return Optional.empty();
         }
     }
