@@ -1,7 +1,10 @@
 package org.daisy.dotify.hyphenator.impl;
 
 import org.daisy.dotify.api.hyphenator.HyphenatorConfigurationException;
+import org.junit.Assume;
 import org.junit.Test;
+
+import java.io.File;
 
 import static org.junit.Assert.assertEquals;
 
@@ -24,6 +27,8 @@ public class JHypenatorTest {
 
     @Test
     public void testBeginEndHandling() throws HyphenatorConfigurationException {
+        Assume.assumeTrue(new File("/usr/share/hyphen/hyph_sv_SE.dic").exists());
+
         JHyphenator jHyphenator = new JHyphenator("sv");
 
         assertEquals("i", jHyphenator.handleWord("i", new byte[]{}));
@@ -37,6 +42,8 @@ public class JHypenatorTest {
 
     @Test
     public void testHyphenate() throws HyphenatorConfigurationException {
+        Assume.assumeTrue(new File("/usr/share/hyphen/hyph_sv_SE.dic").exists());
+
         JHyphenator jHyphenator = new JHyphenator("sv");
 
         assertEquals("in", jHyphenator.hyphenate("in"));
