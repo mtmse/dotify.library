@@ -2143,6 +2143,19 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
         return hyphenate;
     }
 
+    /**
+     * This function will return the result of the attribute mark-capital-letters on the OBFL element.
+     * There is a global value that might be set to something else, and this can only be changed by the
+     * implementing program. If the formatter is initialized with a configuration, it could have another
+     * default value than true for this parameter.
+     *
+     * This attribute is up for change in the future as this is not the final implementation for these
+     * kinds of configuration values.
+     *
+     * @param event                 Event to read attribute from
+     * @param markCapitalLetters    Default value true.
+     * @return                      False if the attribute is set to the string false otherwise true
+     */
     private boolean getMarkCapitalLetters(XMLEvent event, boolean markCapitalLetters) {
         String markCL = getAttr(event, ObflQName.ATTR_MARK_CAPITAL_LETTERS);
         if (markCL != null) {

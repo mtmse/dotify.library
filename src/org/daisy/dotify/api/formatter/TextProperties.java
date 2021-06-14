@@ -54,7 +54,15 @@ public class TextProperties {
         /**
          * Sets the markCapitalLetters value for this builder.
          *
-         * @param value the value
+         * Mark capital letters are a method for some languages to add marks for the reader to read upper
+         * case letters. For instance, the beginning of a sentence could start with an upper case mark
+         * before the first word indicating that the first letter is upper case.
+         *
+         * In some productions, these marks are not appreciated. For instance, new readers might not
+         * have learned how to interpret these marks, making the reading experience harder. This field
+         * could be changed to false to make all text lower cases to ensure no marks are added.
+         *
+         * @param value the value, default value is true
          * @return returns this object
          */
         public Builder markCapitalLetters(boolean value) {
