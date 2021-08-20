@@ -764,6 +764,7 @@ public class PageSequenceBuilder2 {
 
             List<RowImpl> rows = rg.getRows();
             int j = rows.size();
+            boolean visibleRowAdded = false;
             for (RowImpl r : rows) {
                 j--;
                 if ((i == 0 && j == 0)) {
@@ -775,12 +776,17 @@ public class PageSequenceBuilder2 {
                 } else {
                     p.newRow(r);
                 }
+                if (!r.isInvisible()) {
+                    visibleRowAdded = true;
+                }
             }
 
-            // After we have written the row we are no longer at the top of the page so the mutable
+            // After we have written one or more rows we are no longer at the top of the page so the mutable
             // value topOfPage needs to change so we will rebuild an object in order to change this context
             // to false.
-            blockContext = new BlockContext.Builder(blockContext).topOfPage(false).build();
+            if (visibleRowAdded) {
+                blockContext = new BlockContext.Builder(blockContext).topOfPage(false).build();
+            }
         }
 
         return blockContext;
