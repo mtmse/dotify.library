@@ -822,7 +822,6 @@ public class PageSequenceBuilder2 {
     private void addProperties(PageImpl p, RowGroup rg) {
         p.addIdentifiers(rg);
         p.addMarkers(rg);
-        //TODO: addGroupAnchors
         keepNextSheets = Math.max(rg.getKeepWithNextSheets(), keepNextSheets);
         if (keepNextSheets > 0) {
             p.setAllowsVolumeBreak(false);
