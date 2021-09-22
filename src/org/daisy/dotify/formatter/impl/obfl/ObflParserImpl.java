@@ -425,8 +425,8 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
             if (event.isCharacters()) {
                 fc.addChars(event.asCharacters().getData(), tp);
             } else if (equalsStart(event, ObflQName.BLOCK)) {
-                parseBlock(event, input, fc, tp);
-            } else if (processAsBlockContents(fc, event, input, tp, false)) {
+                parseBlock(event, input, fc, tp, false);
+            } else if (processAsBlockContents(fc, event, input, tp, false, false)) {
                 //done!
             } else if (equalsEnd(event, ObflQName.BEFORE, ObflQName.AFTER)) {
                 fc.endBlock();
@@ -681,9 +681,9 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
         while (input.hasNext()) {
             event = input.nextEvent();
             if (equalsStart(event, ObflQName.BLOCK)) {
-                parseBlock(event, input, seq, tp);
+                parseBlock(event, input, seq, tp, false);
             } else if (equalsStart(event, ObflQName.TABLE)) {
-                parseTable(event, input, seq, tp);
+                parseTable(event, input, seq, tp, false);
             } else if (equalsStart(event, ObflQName.XML_DATA)) {
                 parseXMLData(seq, event, input, tp);
             } else if (equalsEnd(event, ObflQName.SEQUENCE)) {
@@ -896,7 +896,8 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
         XMLEvent event,
         XMLEventIterator input,
         FormatterCore fc,
-        TextProperties tp
+        TextProperties tp,
+        boolean inTransitionSequence
     ) throws XMLStreamException {
         externalReferenceObject = null;
 
@@ -907,12 +908,12 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
             if (event.isCharacters()) {
                 fc.addChars(event.asCharacters().getData(), tp);
             } else if (equalsStart(event, ObflQName.BLOCK)) {
-                parseBlock(event, input, fc, tp);
+                parseBlock(event, input, fc, tp, inTransitionSequence);
             } else if (equalsStart(event, ObflQName.XML_DATA)) {
                 parseXMLData(fc, event, input, tp);
             } else if (equalsStart(event, ObflQName.TABLE)) {
-                parseTable(event, input, fc, tp);
-            } else if (processAsBlockContents(fc, event, input, tp, false)) {
+                parseTable(event, input, fc, tp, inTransitionSequence);
+            } else if (processAsBlockContents(fc, event, input, tp, false, inTransitionSequence)) {
                 //done
             } else if (equalsEnd(event, ObflQName.BLOCK)) {
                 fc.endBlock();
@@ -927,7 +928,8 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
         XMLEvent event,
         XMLEventIterator input,
         BlockBuilder fc,
-        TextProperties tp
+        TextProperties tp,
+        boolean inTransitionSequence
     ) throws XMLStreamException {
         tp = getTextProperties(event, tp);
         fc.startBlock(blockBuilder(event.asStartElement()));
@@ -936,8 +938,8 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
             if (event.isCharacters()) {
                 fc.addChars(event.asCharacters().getData(), tp);
             } else if (equalsStart(event, ObflQName.BLOCK)) {
-                parseBlock(event, input, fc, tp);
-            } else if (processAsBlockContents(fc, event, input, tp, false)) {
+                parseBlock(event, input, fc, tp, inTransitionSequence);
+            } else if (processAsBlockContents(fc, event, input, tp, false, inTransitionSequence)) {
                 //done
             } else if (equalsEnd(event, ObflQName.BLOCK)) {
                 fc.endBlock();
@@ -953,7 +955,8 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
         XMLEventIterator input,
         BlockContentBuilder fc,
         TextProperties tp,
-        boolean inTocEntryOnResumed
+        boolean inTocEntryOnResumed,
+        boolean inTransitionSequence
     ) throws XMLStreamException {
         tp = getTextProperties(event, tp);
         String id = getAttr(event, ObflQName.ATTR_ID);
@@ -967,11 +970,11 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
             if (event.isCharacters()) {
                 fc.addChars(event.asCharacters().getData(), tp);
             } else if (equalsStart(event, ObflQName.STYLE)) {
-                parseStyle(event, input, fc, tp, inTocEntryOnResumed);
+                parseStyle(event, input, fc, tp, inTocEntryOnResumed, inTransitionSequence);
             } else if (equalsStart(event, ObflQName.LEADER)) {
                 parseLeader(fc, event, input);
             } else if (equalsStart(event, ObflQName.MARKER)) {
-                parseMarker(fc, event);
+                parseMarker(fc, event, inTransitionSequence);
             } else if (equalsStart(event, ObflQName.BR)) {
                 fc.newLine();
                 scanEmptyElement(input, ObflQName.BR);
@@ -991,7 +994,8 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
         XMLEventIterator input,
         BlockContentBuilder fc,
         TextProperties tp,
-        boolean inTocEntryOnResumed
+        boolean inTocEntryOnResumed,
+        boolean inTransitionSequence
     ) throws XMLStreamException {
         String name = getAttr(event, "name");
         boolean ignore = formatter.getConfiguration().getIgnoredStyles().contains(name);
@@ -1004,9 +1008,9 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
             if (event.isCharacters()) {
                 fc.addChars(event.asCharacters().getData(), tp);
             } else if (equalsStart(event, ObflQName.STYLE)) {
-                parseStyle(event, input, fc, tp, inTocEntryOnResumed);
+                parseStyle(event, input, fc, tp, inTocEntryOnResumed, inTransitionSequence);
             } else if (equalsStart(event, ObflQName.MARKER)) {
-                parseMarker(fc, event);
+                parseMarker(fc, event, inTransitionSequence);
             } else if (equalsStart(event, ObflQName.BR)) {
                 fc.newLine();
                 scanEmptyElement(input, ObflQName.BR);
@@ -1223,7 +1227,14 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
         fc.insertLeader(builder.build());
     }
 
-    private static void parseMarker(BlockContentBuilder fc, XMLEvent event) throws XMLStreamException {
+    private static void parseMarker(
+        BlockContentBuilder fc,
+        XMLEvent event,
+        boolean inTransitionSequence
+    ) throws XMLStreamException {
+        if (inTransitionSequence) {
+            throw new UnsupportedOperationException("Markers are not supported within a volume-transition");
+        }
         String markerName = getAttr(event, "class");
         String markerValue = getAttr(event, "value");
         fc.insertMarker(new Marker(markerName, markerValue));
@@ -1237,7 +1248,8 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
         XMLEvent event,
         XMLEventIterator input,
         FormatterCore fc,
-        TextProperties tp
+        TextProperties tp,
+        boolean inTransitionSequence
     ) throws XMLStreamException {
         int tableColSpacing = toInt(getAttr(event, ObflQName.ATTR_TABLE_COL_SPACING), 0);
         int tableRowSpacing = toInt(getAttr(event, ObflQName.ATTR_TABLE_ROW_SPACING), 0);
@@ -1262,11 +1274,11 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
         while (input.hasNext()) {
             event = input.nextEvent();
             if (equalsStart(event, ObflQName.THEAD)) {
-                parseTHeadTBody(event, input, fc, tp);
+                parseTHeadTBody(event, input, fc, tp, inTransitionSequence);
             } else if (equalsStart(event, ObflQName.TBODY)) {
-                parseTHeadTBody(event, input, fc, tp);
+                parseTHeadTBody(event, input, fc, tp, inTransitionSequence);
             } else if (equalsStart(event, ObflQName.TR)) {
-                parseTR(event, input, fc, tp);
+                parseTR(event, input, fc, tp, inTransitionSequence);
             } else if (equalsEnd(event, ObflQName.TABLE)) {
                 fc.endTable();
                 break;
@@ -1280,7 +1292,8 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
         XMLEvent event,
         XMLEventIterator input,
         FormatterCore fc,
-        TextProperties tp
+        TextProperties tp,
+        boolean inTransitionSequence
     ) throws XMLStreamException {
         if (equalsStart(event, ObflQName.THEAD)) {
             fc.beginsTableHeader();
@@ -1290,7 +1303,7 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
         while (input.hasNext()) {
             event = input.nextEvent();
             if (equalsStart(event, ObflQName.TR)) {
-                parseTR(event, input, fc, tp);
+                parseTR(event, input, fc, tp, inTransitionSequence);
             } else if (equalsEnd(event, ObflQName.THEAD, ObflQName.TBODY)) {
                 break;
             } else {
@@ -1303,13 +1316,14 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
         XMLEvent event,
         XMLEventIterator input,
         FormatterCore fc,
-        TextProperties tp
+        TextProperties tp,
+        boolean inTransitionSequence
     ) throws XMLStreamException {
         fc.beginsTableRow();
         while (input.hasNext()) {
             event = input.nextEvent();
             if (equalsStart(event, ObflQName.TD)) {
-                parseTD(event, input, fc, tp);
+                parseTD(event, input, fc, tp, inTransitionSequence);
             } else if (equalsEnd(event, ObflQName.TR)) {
                 break;
             } else {
@@ -1322,7 +1336,8 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
         XMLEvent event,
         XMLEventIterator input,
         FormatterCore fs,
-        TextProperties tp
+        TextProperties tp,
+        boolean inTransitionSequence
     ) throws XMLStreamException {
         tp = getTextProperties(event, tp);
         int colSpan = toInt(getAttr(event, ObflQName.ATTR_COL_SPAN), 1);
@@ -1342,8 +1357,8 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
             if (event.isCharacters()) {
                 fc.addChars(event.asCharacters().getData(), tp);
             } else if (equalsStart(event, ObflQName.BLOCK)) {
-                parseBlock(event, input, fc, tp);
-            } else if (processAsBlockContents(fc, event, input, tp, false)) {
+                parseBlock(event, input, fc, tp, inTransitionSequence);
+            } else if (processAsBlockContents(fc, event, input, tp, false, inTransitionSequence)) {
                 //done
             } else if (equalsEnd(event, ObflQName.TD)) {
                 break;
@@ -1430,7 +1445,7 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
             event = input.nextEvent();
             if (event.isCharacters()) {
                 toc.addChars(event.asCharacters().getData(), tp);
-            } else if (processAsBlockContents(toc, event, input, tp, false)) {
+            } else if (processAsBlockContents(toc, event, input, tp, false, false)) {
                 //done!
             } else if (equalsEnd(event, ObflQName.TOC_ENTRY)) {
                 toc.endEntry();
@@ -1454,7 +1469,7 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
             event = input.nextEvent();
             if (event.isCharacters()) {
                 toc.addChars(event.asCharacters().getData(), tp);
-            } else if (processAsBlockContents(toc, event, input, tp, true)) {
+            } else if (processAsBlockContents(toc, event, input, tp, true, false)) {
                 //done!
             } else if (equalsEnd(event, ObflQName.TOC_ENTRY_ON_RESUMED)) {
                 toc.endEntry();
@@ -1481,8 +1496,8 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
                 parseCollectionItem(event, input, coll, tp);
                 Logger.getLogger(this.getClass().getCanonicalName()).warning("Nested collection items.");
             } else if (equalsStart(event, ObflQName.BLOCK)) {
-                parseBlock(event, input, coll, tp);
-            } else if (processAsBlockContents(coll, event, input, tp, false)) {
+                parseBlock(event, input, coll, tp, false);
+            } else if (processAsBlockContents(coll, event, input, tp, false, false)) {
                 //done!
             } else if (equalsEnd(event, ObflQName.ITEM)) {
                 coll.endItem();
@@ -1498,13 +1513,14 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
         XMLEvent event,
         XMLEventIterator input,
         TextProperties tp,
-        boolean inTocEntryOnResumed
+        boolean inTocEntryOnResumed,
+        boolean inTransitionSequence
     ) throws XMLStreamException {
         if (equalsStart(event, ObflQName.LEADER)) {
             parseLeader(fc, event, input);
             return true;
         } else if (equalsStart(event, ObflQName.MARKER)) {
-            parseMarker(fc, event);
+            parseMarker(fc, event, inTransitionSequence);
             return true;
         } else if (equalsStart(event, ObflQName.BR)) {
             fc.newLine();
@@ -1514,10 +1530,10 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
             parseEvaluate(fc, event, input, tp, inTocEntryOnResumed);
             return true;
         } else if (equalsStart(event, ObflQName.STYLE)) {
-            parseStyle(event, input, fc, tp, inTocEntryOnResumed);
+            parseStyle(event, input, fc, tp, inTocEntryOnResumed, inTransitionSequence);
             return true;
         } else if (equalsStart(event, ObflQName.SPAN)) {
-            parseSpan(event, input, fc, tp, inTocEntryOnResumed);
+            parseSpan(event, input, fc, tp, inTocEntryOnResumed, inTransitionSequence);
             return true;
         } else if (equalsStart(event, ObflQName.ANCHOR)) {
             fc.insertAnchor(parseAnchor(event));
@@ -1825,7 +1841,7 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
         while (input.hasNext()) {
             event = input.nextEvent();
             if (equalsStart(event, ObflQName.BLOCK)) {
-                parseBlock(event, input, builder, tp);
+                parseBlock(event, input, builder, tp, true);
             } else if (
                 equalsEnd(
                     event,
@@ -1885,9 +1901,9 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
         while (input.hasNext()) {
             event = input.nextEvent();
             if (equalsStart(event, ObflQName.BLOCK)) {
-                parseBlock(event, input, template, tp);
+                parseBlock(event, input, template, tp, false);
             } else if (equalsStart(event, ObflQName.TABLE)) {
-                parseTable(event, input, template, tp);
+                parseTable(event, input, template, tp, false);
             } else if (equalsStart(event, ObflQName.XML_DATA)) {
                 parseXMLData(template, event, input, tp);
             } else if (equalsEnd(event, ObflQName.SEQUENCE)) {
@@ -2016,7 +2032,7 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
                 if (context == null) {
                     context = dsb.newStaticContext();
                 }
-                parseBlock(event, input, context, tp);
+                parseBlock(event, input, context, tp, false);
             } else if (equalsEnd(event, ObflQName.DYNAMIC_SEQUENCE)) {
                 break;
             } else {
@@ -2071,7 +2087,7 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
         while (input.hasNext()) {
             event = input.nextEvent();
             if (equalsStart(event, ObflQName.BLOCK)) {
-                parseBlock(event, input, fc, tp);
+                parseBlock(event, input, fc, tp, false);
             } else if (equalsEnd(event, end)) {
                 break;
             } else {
