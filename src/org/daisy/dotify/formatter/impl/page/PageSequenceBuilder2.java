@@ -588,7 +588,9 @@ public class PageSequenceBuilder2 {
                 if (firstPageContentRow > 0) {
                     bc = addRows(head.subList(0, firstPageContentRow), current, bc, false);
                     if (!current.getDetails().getMarkers().isEmpty()) {
-                        throw new RuntimeException();
+                        // this means that there were markers in any-resumed or sequence-resumed,
+                        // which is disallowed by the OBFL parser (so should in theory not happen)
+                        throw new RuntimeException("Markers in any-resumed or sequence-resumed are not supported");
                     }
                     bc = addRows(head.subList(firstPageContentRow, head.size()), current, bc, true);
                 } else {
