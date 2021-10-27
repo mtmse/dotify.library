@@ -122,8 +122,8 @@ class VolumeContentBuilderImpl extends Stack<VolumeSequence> implements VolumeCo
     }
 
     @Override
-    public void insertLeader(Leader leader) {
-        current().insertLeader(leader);
+    public void insertLeader(Leader leader, TextProperties props) {
+        current().insertLeader(leader, props);
     }
 
     @Override
