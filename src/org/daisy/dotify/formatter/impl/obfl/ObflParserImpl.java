@@ -972,7 +972,7 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
             } else if (equalsStart(event, ObflQName.STYLE)) {
                 parseStyle(event, input, fc, tp, inTocEntryOnResumed, inTransitionSequence);
             } else if (equalsStart(event, ObflQName.LEADER)) {
-                parseLeader(fc, event, input);
+                parseLeader(fc, event, input, tp);
             } else if (equalsStart(event, ObflQName.MARKER)) {
                 parseMarker(fc, event, inTransitionSequence);
             } else if (equalsStart(event, ObflQName.BR)) {
@@ -1205,7 +1205,8 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
     private void parseLeader(
         BlockContentBuilder fc,
         XMLEvent event,
-        XMLEventIterator input
+        XMLEventIterator input,
+        TextProperties tp
     ) throws XMLStreamException {
         Leader.Builder builder = new Leader.Builder();
         @SuppressWarnings("unchecked")
@@ -1224,7 +1225,7 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
             }
         }
         scanEmptyElement(input, ObflQName.LEADER);
-        fc.insertLeader(builder.build());
+        fc.insertLeader(builder.build(), tp);
     }
 
     private static void parseMarker(
@@ -1517,7 +1518,7 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
         boolean inTransitionSequence
     ) throws XMLStreamException {
         if (equalsStart(event, ObflQName.LEADER)) {
-            parseLeader(fc, event, input);
+            parseLeader(fc, event, input, tp);
             return true;
         } else if (equalsStart(event, ObflQName.MARKER)) {
             parseMarker(fc, event, inTransitionSequence);

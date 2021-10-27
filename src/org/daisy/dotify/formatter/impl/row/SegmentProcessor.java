@@ -78,11 +78,6 @@ class SegmentProcessor {
      */
     private AggregatedBrailleTranslatorResult.Builder layoutOrApplyAfterLeader;
     /*
-     * Mode to be used to translate the segments contained in layoutOrApplyAfterLeader.
-     */
-    private String currentLeaderMode;
-    private boolean seenSegmentAfterLeader;
-    /*
      * Contains zero, one of two leader segments. If not empty, the first leader comes before
      * `layoutOrApplyAfterLeader' or `current'. If there is a second leader it comes after `current'
      * (`layoutOrApplyAfterLeader' is null).
@@ -178,8 +173,6 @@ class SegmentProcessor {
                 template.layoutOrApplyAfterLeader == null ?
                 null :
                 new AggregatedBrailleTranslatorResult.Builder(template.layoutOrApplyAfterLeader);
-        this.currentLeaderMode = template.currentLeaderMode;
-        this.seenSegmentAfterLeader = template.seenSegmentAfterLeader;
         this.item = template.item;
         this.forceCount = template.forceCount;
         this.unusedLeft = template.unusedLeft;
@@ -343,8 +336,6 @@ class SegmentProcessor {
         currentRow = null;
         leaderManager.discardAllLeaders();
         layoutOrApplyAfterLeader = null;
-        currentLeaderMode = null;
-        seenSegmentAfterLeader = false;
         item = processorContext.getRowDataProps().getListItem();
         unusedLeft = processorContext.getFlowWidth();
         unusedRight = processorContext.getFlowWidth();
@@ -604,7 +595,7 @@ class SegmentProcessor {
             btr = ts.newResult();
         }
         if (leaderManager.hasLeader()) {
-            layoutAfterLeader(btr, mode);
+            layoutAfterLeader(btr);
         } else {
             CurrentResult current = new CurrentResultImpl(btr, mode);
             return Optional.of(current);
@@ -623,7 +614,7 @@ class SegmentProcessor {
             }
             return Optional.empty();
         } finally {
-            leaderManager.addLeader(ls);
+            leaderManager.addLeader(ls, ls.getTextProperties().getTranslationMode());
         }
     }
 
@@ -642,7 +633,7 @@ class SegmentProcessor {
         if (leaderManager.hasLeader()) {
             layoutAfterLeader(spec, null);
         } else {
-            String mode = null;
+            String mode = null; // use default translator to translate list label
             BrailleTranslatorResult btr = toResult(spec, null);
             CurrentResult current = new CurrentResultImpl(btr, mode);
             return Optional.of(current);
@@ -665,7 +656,7 @@ class SegmentProcessor {
             if (leaderManager.hasLeader()) {
                 layoutAfterLeader(spec, null);
             } else {
-                String mode = null;
+                String mode = null; // use default translator to translate list label
                 BrailleTranslatorResult btr = toResult(spec, null);
                 if (btr.hasNext()) { // Don't create a new row if the evaluated reference is empty
                                      // after applying the style
@@ -692,7 +683,7 @@ class SegmentProcessor {
             if (leaderManager.hasLeader()) {
                 layoutAfterLeader(spec, null);
             } else {
-                String mode = null;
+                String mode = null; // use default translator to translate list label
                 BrailleTranslatorResult btr = toResult(spec, mode);
                 CurrentResult current = new CurrentResultImpl(btr, mode);
                 return Optional.of(current);
@@ -702,22 +693,16 @@ class SegmentProcessor {
     }
 
     private void layoutAfterLeader(TranslatableWithContext spec, String mode) {
-        layoutAfterLeader(toResult(spec, mode), mode);
+        layoutAfterLeader(toResult(spec, mode));
     }
 
     /*
      * Buffer an evaluated segment (BrailleTranslatorResult) in `layoutOrApplyAfterLeader'.
      */
-    private void layoutAfterLeader(BrailleTranslatorResult result, String mode) {
+    private void layoutAfterLeader(BrailleTranslatorResult result) {
         if (leaderManager.hasLeader()) {
             if (layoutOrApplyAfterLeader == null) {
                 layoutOrApplyAfterLeader = new AggregatedBrailleTranslatorResult.Builder();
-                // use the mode of the first following segment to translate the leader pattern (or
-                // the mode of the first preceding segment)
-                if (!seenSegmentAfterLeader) {
-                    currentLeaderMode = mode;
-                    seenSegmentAfterLeader = true;
-                }
             }
             layoutOrApplyAfterLeader.add(result);
         } else {
@@ -797,9 +782,8 @@ class SegmentProcessor {
                 mode = null;
             } else {
                 btr = layoutOrApplyAfterLeader.build();
-                mode = currentLeaderMode;
+                mode = leaderManager.getCurrentLeaderMode(); // use mode of leader to translate list label
                 layoutOrApplyAfterLeader = null;
-                seenSegmentAfterLeader = false;
             }
             CurrentResult current = new CurrentResultImpl(btr, mode);
             return Optional.of(current);
@@ -954,6 +938,7 @@ class SegmentProcessor {
     private class CurrentResultImpl implements CurrentResult {
 
         private final BrailleTranslatorResult btr;
+        /* mode to translate list label */
         private final String mode;
         private boolean first;
 
@@ -991,7 +976,6 @@ class SegmentProcessor {
                         processorContext.getRowDataProps().getBlockIndent()
                             + processorContext.getRowDataProps().getTextIndent(),
                         processorContext.getRowDataProps().getRightTextIndent(),
-                        mode,
                         lineProps
                     );
                 }
@@ -1028,7 +1012,6 @@ class SegmentProcessor {
                                 listLabel,
                                 processorContext.getRowDataProps().getBlockIndentParent(),
                                 processorContext.getRowDataProps().getRightTextIndent(),
-                                mode,
                                 lineProps
                             );
                         } else {
@@ -1038,7 +1021,6 @@ class SegmentProcessor {
                                 processorContext.getRowDataProps().getBlockIndent()
                                     + processorContext.getRowDataProps().getFirstLineIndent(),
                                 processorContext.getRowDataProps().getRightTextIndent(),
-                                mode,
                                 lineProps
                             );
                         }
@@ -1052,7 +1034,6 @@ class SegmentProcessor {
                         processorContext.getRowDataProps().getBlockIndent()
                             + processorContext.getRowDataProps().getFirstLineIndent(),
                         processorContext.getRowDataProps().getRightTextIndent(),
-                        mode,
                         lineProps
                     );
                 }
@@ -1061,7 +1042,6 @@ class SegmentProcessor {
                     new RowInfo("", processorContext.getAvailable() - lineProps.getReservedWidth()),
                     btr,
                     processorContext.getRowDataProps().getRightTextIndent(),
-                    mode,
                     lineProps
                 );
             }
@@ -1076,7 +1056,6 @@ class SegmentProcessor {
             String listLabel,
             int leftIndent,
             int rightIndentIfNotLastRow,
-            String mode,
             LineProperties lineProps
         ) {
             if (hasCurrentRow()) {
@@ -1093,7 +1072,6 @@ class SegmentProcessor {
                 ),
                 btr,
                 rightIndentIfNotLastRow,
-                mode,
                 lineProps
             );
         }
@@ -1115,7 +1093,6 @@ class SegmentProcessor {
             RowInfo row,
             BrailleTranslatorResult btr,
             int rightIndentIfNotLastRow,
-            String mode,
             LineProperties lineProps
         ) {
             if (!hasCurrentRow()) {
@@ -1139,7 +1116,7 @@ class SegmentProcessor {
                     return Optional.ofNullable(flushCurrentRow());
                 } else {
                     tabSpace = leaderManager.getLeaderPattern(
-                        processorContext.getFormatterContext().getTranslator(mode),
+                        processorContext.getFormatterContext().getTranslator(leaderManager.getCurrentLeaderMode()),
                         leaderPos - preTabPos - align // leader length
                     );
                 }

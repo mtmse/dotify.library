@@ -9,6 +9,7 @@ import org.daisy.dotify.common.text.StringTools;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.logging.Logger;
+import java.util.Optional;
 
 /**
  * TODO: Write java doc.
@@ -16,17 +17,21 @@ import java.util.logging.Logger;
 class LeaderManager {
     private static final Logger logger = Logger.getLogger(LeaderManager.class.getCanonicalName());
     private Deque<Leader> leaders;
+    private Deque<Optional<String>> leaderModes;
 
     LeaderManager() {
         this.leaders = new ArrayDeque<>();
+        this.leaderModes = new ArrayDeque<>();
     }
 
     LeaderManager(LeaderManager template) {
         this.leaders = new ArrayDeque<>(template.leaders);
+        this.leaderModes = new ArrayDeque<>(template.leaderModes);
     }
 
-    void addLeader(Leader leader) {
+    void addLeader(Leader leader, String mode) {
         this.leaders.addLast(leader);
+        this.leaderModes.addLast(Optional.ofNullable(mode));
     }
 
     boolean hasLeader() {
@@ -35,14 +40,20 @@ class LeaderManager {
 
     void removeLeader() {
         leaders.pollFirst();
+        leaderModes.pollFirst();
     }
 
     void discardAllLeaders() {
         leaders.clear();
+        leaderModes.clear();
     }
 
     Leader getCurrentLeader() {
         return leaders.getFirst();
+    }
+
+    String getCurrentLeaderMode() {
+        return leaderModes.getFirst().orElse(null);
     }
 
     int getLeaderPosition(int width) {
