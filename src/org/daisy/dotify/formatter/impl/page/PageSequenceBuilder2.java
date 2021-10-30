@@ -638,7 +638,9 @@ public class PageSequenceBuilder2 {
                 // break-before="sheet" we insert an empty page if needed. If there is no next block
                 // we are also finished (the while loop will end).
                 if (!data.isEmpty()) {
-                    return current;
+                    if (current.hasRows()) {
+                        return current;
+                    }
                 } else if (current != null && dataGroupsIndex < dataGroups.size()) {
                     BreakBefore nextStart = dataGroups.get(dataGroupsIndex).getBreakBefore();
                     switch (nextStart) {
