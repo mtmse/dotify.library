@@ -614,7 +614,23 @@ class SegmentProcessor {
             }
             return Optional.empty();
         } finally {
-            leaderManager.addLeader(ls, ls.getTextProperties().getTranslationMode());
+            // translate pattern
+            String pattern = ls.getPattern();
+            try {
+                pattern = processorContext
+                    .getFormatterContext()
+                    .getTranslator(ls.getTextProperties().getTranslationMode())
+                    .translate(Translatable.text(pattern).build()).getTranslatedRemainder();
+            } catch (TranslationException e) {
+                throw new RuntimeException(e);
+            }
+            // add to leader manager
+            leaderManager.addLeader(
+                new Leader.Builder()
+                          .pattern(pattern)
+                          .position(ls.getPosition())
+                          .align(ls.getAlignment())
+                          .build());
         }
     }
 
@@ -776,13 +792,11 @@ class SegmentProcessor {
     private Optional<CurrentResult> layoutLeader() {
         if (leaderManager.hasLeader()) {
             BrailleTranslatorResult btr;
-            String mode;
+            String mode = null; // use default translator to translate list label
             if (layoutOrApplyAfterLeader == null) {
                 btr = toResult("");
-                mode = null;
             } else {
                 btr = layoutOrApplyAfterLeader.build();
-                mode = leaderManager.getCurrentLeaderMode(); // use mode of leader to translate list label
                 layoutOrApplyAfterLeader = null;
             }
             CurrentResult current = new CurrentResultImpl(btr, mode);
@@ -1115,10 +1129,7 @@ class SegmentProcessor {
                     // if tab position has been passed try on a new row
                     return Optional.ofNullable(flushCurrentRow());
                 } else {
-                    tabSpace = leaderManager.getLeaderPattern(
-                        processorContext.getFormatterContext().getTranslator(leaderManager.getCurrentLeaderMode()),
-                        leaderPos - preTabPos - align // leader length
-                    );
+                    tabSpace = leaderManager.getLeaderPattern(leaderPos - preTabPos - align); // leader length
                 }
             }
 
