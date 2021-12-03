@@ -396,7 +396,7 @@ public class FormatterCoreImpl extends Stack<Block> implements FormatterCore, Bl
     }
 
     @Override
-    public void insertMarkerReference(MarkerReference ref, TextProperties t) {
+    public void insertMarkerReference(Iterable<? extends MarkerReference> ref, TextProperties t) {
         if (table != null) {
             throw new IllegalStateException("A table is open.");
         }
