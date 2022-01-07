@@ -3,7 +3,7 @@
 <properties>		
 	<comment>Configuration for Norwegian (bokmål).</comment>
 
-	<entry key="patternPath">resource-files/utf8/hyph-nb.tex</entry>
+    <entry key="patternPath">resource-files/aoo/hyph_nb_NO.dic</entry>
 	<entry key="mode">character</entry>
 	<entry key="encoding">UTF-8</entry>
 	<entry key="beginLimit">2</entry>

@@ -10,3 +10,4 @@
 /.nb-gradle/
 .nb-gradle-properties
 local.properties
+/out

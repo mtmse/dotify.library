@@ -83,6 +83,7 @@
     <entry key="mr">resource-files/mr.xml</entry>
 
     <entry key="nb">resource-files/nb.xml</entry>
+    <entry key="nb-NO">resource-files/nb.xml</entry>
 
     <entry key="nn">resource-files/nn.xml</entry>
 
