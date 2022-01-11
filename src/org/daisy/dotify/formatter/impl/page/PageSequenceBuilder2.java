@@ -347,14 +347,12 @@ public class PageSequenceBuilder2 {
         );
 
         // At the beginning here before we start printing the page for this iteration we will set
-        // the value topOfPage and because this is a mutable context value we need to build a
-        // new object. This value will be changed later on when we aren't at the top of
-        // the page anymore. This is signified by that we have written a full row group.
-        // Setting .topOfPage(true) here will in the general case NOT be correct
-        // (according to the definition of the OBFL variable $starts-at-top-of-page),
-        // however in the specific case when the value is read (when evaluating a
-        // display-when="(! $starts-at-top-of-page)", refer to addRows() below) it WILL be
-        // correct under all the assumptions made.
+        // the value topOfPage. This value will be changed later on when we aren't at the top of the
+        // page anymore (when we have written one or more rows). Setting .topOfPage(true) here would
+        // in the general case NOT be correct (according to the definition of the OBFL variable
+        // $starts-at-top-of-page), however in the specific case when the value is read (when
+        // evaluating the getDisplayWhen() condition - refer to addRows() below) it WILL be correct
+        // under all the assumptions made.
         blockContext = new BlockContext.Builder(blockContext).topOfPage(true).build();
 
         // while there are more rows in the current RowGroupSequence, or there are more RowGroupSequences
@@ -734,27 +732,28 @@ public class PageSequenceBuilder2 {
         for (RowGroup rg : head) {
 
             /*
-                At this point we expect keep="page" is set when the condition evaluates to false, which means that
-                each block should not be spanning multiple pages. This is required so we don't print just a part
-                of the block when the display-when attribute is set to false.
-                We expect display-when is either set to "true" (or missing, which is the same) or
-                "(! $starts-at-top-of-page)". Other values are not permitted.
-                These restrictions are added in the OBFL Parser and will lead to exceptions being thrown.
-
-                Above assumption deserves some more explanation for a good understanding:
-                we need it because we evaluate display-when for each RowGroup while normally
-                it should be evaluated only once per block.
-
-                This is fine in the two mentioned cases:
-                    - display-when="true": trivial.
-                    - display-when="(! $starts-at-top-of-page)":
-                        - if this evaluates to true, it means the page must already contain a RowImpl(*),
-                          so regardless of whether the current RowGroup belongs to the same block or a new
-                          block, it must be rendered.
-                        - if it evaluates to false, it means the page does not already contain a RowImpl,
-                          so we know it must be the start of a new page and block (because keep="page" in
-                          this case).
-                (*) Refer to the line below where we set .topOfPage(false).
+             * At this point we expect keep="page" is set when the getDisplayWhen() condition
+             * evaluates to false, which means that each block should not be spanning multiple
+             * pages. This is required so we don't print just a part of the block when the
+             * display-when attribute is set to false. We expect display-when is either set to
+             * "true" (or missing, which is the same) or "(! $starts-at-top-of-page)". Other values
+             * are not permitted. These restrictions are added in the OBFL Parser and will lead to
+             * exceptions being thrown.
+             *
+             * Above assumption deserves some more explanation for a good understanding:
+             * we need it because we evaluate display-when for each RowGroup while normally
+             * it should be evaluated only once per block.
+             *
+             * This is fine in the two mentioned cases:
+             *  - display-when="true": trivial.
+             *  - display-when="(! $starts-at-top-of-page)":
+             *     - if this evaluates to true, it means the page must already contain a RowImpl
+             *       (refer to the line below where we set .topOfPage(false)), so regardless of
+             *       whether the current RowGroup belongs to the same block or a new block, it must
+             *       be rendered.
+             *     - if it evaluates to false, it means the page does not already contain a RowImpl,
+             *       so we know it must be the start of a new page and block (because keep="page" in
+             *       this case).
              */
             Condition dc = rg.getDisplayWhen();
             if (dc != null && !dc.evaluate(blockContext)) {
@@ -794,9 +793,7 @@ public class PageSequenceBuilder2 {
                 }
             }
 
-            // After we have written one or more rows we are no longer at the top of the page so the mutable
-            // value topOfPage needs to change so we will rebuild an object in order to change this context
-            // to false.
+            // After we have written one or more rows we are no longer at the top of the page.
             if (visibleRowAdded) {
                 blockContext = new BlockContext.Builder(blockContext).topOfPage(false).build();
             }

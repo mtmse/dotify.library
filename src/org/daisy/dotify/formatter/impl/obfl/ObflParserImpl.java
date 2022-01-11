@@ -1133,6 +1133,8 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
                 if (!att.getValue().replaceAll(" ", "")
                         .equalsIgnoreCase("(!$starts-at-top-of-page)")
                 ) {
+                // this check should ideally be done in FormatterImpl because in theory a document
+                // may be constructed directly through the Formatter API rather than through an OBFL
                     throw new IllegalArgumentException(
                         "At the moment we only support the condition '(! $starts-at-top-of-page)'"
                     );
@@ -1181,6 +1183,8 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
 
         BlockProperties bp = builder.build();
         if (bp.getDisplayWhen() != null && bp.getKeepType() != FormattingTypes.Keep.PAGE) {
+            // this check should ideally be done in FormatterImpl because in theory a document
+            // may be constructed directly through the Formatter API rather than through an OBFL
             throw new IllegalArgumentException(
                 "When a display-when condition is supplied you need to use the keep='page' attribute as well."
             );
