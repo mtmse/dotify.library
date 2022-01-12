@@ -1133,8 +1133,16 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
                 if (!att.getValue().replaceAll(" ", "")
                         .equalsIgnoreCase("(!$starts-at-top-of-page)")
                 ) {
-                // this check should ideally be done in FormatterImpl because in theory a document
-                // may be constructed directly through the Formatter API rather than through an OBFL
+                    // This check should ideally be done in FormatterImpl because in theory a document
+                    // may be constructed directly through the Formatter API rather than through an
+                    // OBFL. Note that, unlike before when we had the original implementation, we could
+                    // support any condition. In fact any condition that is allowed by the OBFL spec is
+                    // already supported (because "starts-at-top-of-page" is the only variable that is
+                    // allowed in display-when). To validate the condition we should ideally parse it
+                    // and check that no other variables are used. However because no other condition
+                    // than "(! $starts-at-top-of-page)" actually makes sense, we stuck with the easy
+                    // way (the string comparison). Note that the OBFL parser also does not validate the
+                    // "use-when" and "expression" attributes. Ideally that should happen too.
                     throw new IllegalArgumentException(
                         "At the moment we only support the condition '(! $starts-at-top-of-page)'"
                     );
@@ -1181,16 +1189,7 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
             builder.underlineStyle(underlinePattern);
         }
 
-        BlockProperties bp = builder.build();
-        if (bp.getDisplayWhen() != null && bp.getKeepType() != FormattingTypes.Keep.PAGE) {
-            // this check should ideally be done in FormatterImpl because in theory a document
-            // may be constructed directly through the Formatter API rather than through an OBFL
-            throw new IllegalArgumentException(
-                "When a display-when condition is supplied you need to use the keep='page' attribute as well."
-            );
-        }
-
-        return bp;
+        return builder.build();
     }
 
     private Border borderBuilder(Iterator<?> atts) {

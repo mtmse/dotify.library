@@ -46,6 +46,7 @@ class RowGroupDataSource implements SplitPointDataSource<RowGroup, RowGroupDataS
     private final RowGroupSequence data;
     private BlockContext bc;
     private Function<Integer, Integer> reservedWidths = x -> 0;
+    private static final Function<Integer, Boolean> topOfPage = x -> x == 0;
     private int blockIndex;
     private boolean allowHyphenateLastLine;
     private int offsetInBlock;
@@ -184,6 +185,7 @@ class RowGroupDataSource implements SplitPointDataSource<RowGroup, RowGroupDataS
                 Block b = data.getBlocks().get(blockIndex);
                 blockIndex++;
                 offsetInBlock = 0;
+                modifyContext(c -> c.topOfPage(topOfPage.apply(position())));
                 blockProcessor.loadBlock(master, b, getContext(), hasSequence(), hasResult(),
                                          this::newRowGroupSequence, v -> { });
             }

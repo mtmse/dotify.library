@@ -1,7 +1,6 @@
 package org.daisy.dotify.formatter.impl.page;
 
 import org.daisy.dotify.api.formatter.BlockPosition;
-import org.daisy.dotify.api.formatter.Condition;
 import org.daisy.dotify.api.formatter.FallbackRule;
 import org.daisy.dotify.api.formatter.FormattingTypes.BreakBefore;
 import org.daisy.dotify.api.formatter.PageAreaProperties;
@@ -364,11 +363,8 @@ public class PageSequenceBuilder2 {
 
         // At the beginning here before we start printing the page for this iteration we will set
         // the value topOfPage. This value will be changed later on when we aren't at the top of the
-        // page anymore (when we have written one or more rows). Setting .topOfPage(true) here would
-        // in the general case NOT be correct (according to the definition of the OBFL variable
-        // $starts-at-top-of-page), however in the specific case when the value is read (when
-        // evaluating the getDisplayWhen() condition - refer to addRows() below) it WILL be correct
-        // under all the assumptions made.
+        // page anymore (when we have written one or more visible rows - refer to
+        // RowGroupDataSource#ensureBuffer).
         modifyContext(c -> c.topOfPage(true));
 
         // while there are more rows in the current RowGroupSequence, or there are more RowGroupSequences
@@ -747,49 +743,11 @@ public class PageSequenceBuilder2 {
     private void addRows(List<RowGroup> head, PageImpl p, boolean resetPageContent) {
         int i = head.size();
         for (RowGroup rg : head) {
-
-            /*
-             * At this point we expect keep="page" is set when the getDisplayWhen() condition
-             * evaluates to false, which means that each block should not be spanning multiple
-             * pages. This is required so we don't print just a part of the block when the
-             * display-when attribute is set to false. We expect display-when is either set to
-             * "true" (or missing, which is the same) or "(! $starts-at-top-of-page)". Other values
-             * are not permitted. These restrictions are added in the OBFL Parser and will lead to
-             * exceptions being thrown.
-             *
-             * Above assumption deserves some more explanation for a good understanding:
-             * we need it because we evaluate display-when for each RowGroup while normally
-             * it should be evaluated only once per block.
-             *
-             * This is fine in the two mentioned cases:
-             *  - display-when="true": trivial.
-             *  - display-when="(! $starts-at-top-of-page)":
-             *     - if this evaluates to true, it means the page must already contain a RowImpl
-             *       (refer to the line below where we set .topOfPage(false)), so regardless of
-             *       whether the current RowGroup belongs to the same block or a new block, it must
-             *       be rendered.
-             *     - if it evaluates to false, it means the page does not already contain a RowImpl,
-             *       so we know it must be the start of a new page and block (because keep="page" in
-             *       this case).
-             */
-            Condition dc = rg.getDisplayWhen();
-            if (dc != null && !dc.evaluate(getContext())) {
-                List<RowImpl> newRows = new ArrayList<>();
-                for (RowImpl row : rg.getRows()) {
-                    RowImpl newRow = new RowImpl.Builder(row)
-                            .invisible(true)
-                            .build();
-                    newRows.add(newRow);
-                }
-                rg = new RowGroup.Builder(master.getRowSpacing(), newRows).build();
-            }
-
             i--;
             addProperties(p, rg);
 
             List<RowImpl> rows = rg.getRows();
             int j = rows.size();
-            boolean visibleRowAdded = false;
             for (RowImpl r : rows) {
                 if (resetPageContent) {
                     p.getDetails().startsContentMarkers();
@@ -805,14 +763,6 @@ public class PageSequenceBuilder2 {
                 } else {
                     p.newRow(r);
                 }
-                if (!r.isInvisible()) {
-                    visibleRowAdded = true;
-                }
-            }
-
-            // After we have written one or more rows we are no longer at the top of the page.
-            if (visibleRowAdded) {
-                modifyContext(c -> c.topOfPage(false));
             }
         }
     }
