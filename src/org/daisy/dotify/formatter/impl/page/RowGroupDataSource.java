@@ -193,7 +193,7 @@ class RowGroupDataSource implements SplitPointDataSource<RowGroup, RowGroupDataS
             // if the line produced below is the last line or not, until after the call has already been made.
             Optional<RowGroup> added = blockProcessor.getNextRowGroup(getContext(), new LineProperties.Builder()
                     .suppressHyphenation(!allowHyphenateLastLine && index > -1 && groupSize() >= index - 1)
-                    .reservedWidth(reservedWidths.apply(countRows()))
+                    .reservedWidth(reservedWidths.apply(position()))
                     .lineBlockLocation(new BlockLineLocation(blockProcessor.getBlockAddress(), offsetInBlock))
                     .build());
             added.ifPresent(rg -> data.getGroup().add(rg));
@@ -262,7 +262,13 @@ class RowGroupDataSource implements SplitPointDataSource<RowGroup, RowGroupDataS
         return data.getGroup() == null ? 0 : data.getGroup().size();
     }
 
-    private int countRows() {
-        return data.getGroup() == null ? 0 : data.getGroup().stream().mapToInt(v -> v.getRows().size()).sum();
+    /**
+     * Vertical position of the next row measured from the top of the data source in terms of
+     * rows with normal row spacing.
+     */
+    private int position() {
+        // FIX ME: this is not totally accurate if non-integer row spacings are used
+        return data.getGroup() == null ? 0 : (int) Math.floor(
+            data.getGroup().stream().mapToDouble(v -> (int) v.getUnitSize()).sum());
     }
 }
