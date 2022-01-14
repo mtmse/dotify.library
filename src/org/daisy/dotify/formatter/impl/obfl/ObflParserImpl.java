@@ -628,6 +628,7 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
             if (equalsStart(event, ObflQName.MARKER_INDICATOR)) {
                 String markers = getAttr(event, "markers");
                 String indicator = getAttr(event, "indicator");
+                String textStyle = getAttr(event, ObflQName.ATTR_TEXT_STYLE);
                 if (markers == null || "".equals(markers)) {
                     warning(event, "@markers missing / has no value");
                 } else {
@@ -637,7 +638,7 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
                         String[] names = markers.split("\\s+");
                         for (String name : names) {
                             if (!"".equals(name)) {
-                                builder.addIndicator(name, indicator);
+                                builder.addIndicator(name, indicator, textStyle);
                             }
                         }
                     }
