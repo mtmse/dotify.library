@@ -28,7 +28,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 //TODO: scope spread is currently implemented using document wide scope, i.e. across volume boundaries.
 // This is wrong, but is better than the previous sequence scope.
@@ -39,6 +40,9 @@ import java.util.Optional;
  * @author Joel Håkansson
  */
 public class PageImpl implements Page {
+
+    private static final Logger logger = Logger.getLogger(PageImpl.class.getCanonicalName());
+
     private final FieldResolver fieldResolver;
     private final PageDetails details;
     private final LayoutMaster master;
@@ -238,7 +242,15 @@ public class PageImpl implements Page {
                 }
                 ret = sb.toString();
             } else if (ret.length() > w) {
-                throw new PaginatorException("Cannot fit " + ret + " into a margin-region of size " + mr.getWidth());
+                if (fcontext.getConfiguration().isAllowingTextOverflowTrimming()) {
+                    String trimmed = ret.substring(0, mr.getWidth());
+                    logger.log(Level.WARNING, "Cannot fit \"" + ret + "\" into a margin-region of size " + mr.getWidth()
+                               + ", trimming to \"" + trimmed + "\"");
+                    ret = trimmed;
+                } else {
+                    throw new PaginatorException(
+                        "Cannot fit \"" + ret + "\" into a margin-region of size " + mr.getWidth());
+                }
             }
             return new MarginProperties(ret, spaceOnly);
         } else {
