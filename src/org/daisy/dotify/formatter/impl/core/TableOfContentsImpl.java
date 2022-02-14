@@ -274,7 +274,7 @@ public class TableOfContentsImpl extends FormatterCoreImpl implements TableOfCon
     }
 
     @Override
-    public void insertMarkerReference(MarkerReference ref, TextProperties t) {
+    public void insertMarkerReference(Iterable<? extends MarkerReference> ref, TextProperties t) {
         assertInEntry();
         super.insertMarkerReference(ref, t);
     }

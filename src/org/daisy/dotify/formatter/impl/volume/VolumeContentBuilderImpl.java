@@ -142,7 +142,7 @@ class VolumeContentBuilderImpl extends Stack<VolumeSequence> implements VolumeCo
     }
 
     @Override
-    public void insertMarkerReference(MarkerReference ref, TextProperties t) {
+    public void insertMarkerReference(Iterable<? extends MarkerReference> ref, TextProperties t) {
         current().insertMarkerReference(ref, t);
     }
 

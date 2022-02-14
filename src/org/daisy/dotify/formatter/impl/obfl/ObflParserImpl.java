@@ -5,6 +5,7 @@ import org.daisy.dotify.api.formatter.BlockContentBuilder;
 import org.daisy.dotify.api.formatter.BlockPosition.VerticalAlignment;
 import org.daisy.dotify.api.formatter.BlockProperties;
 import org.daisy.dotify.api.formatter.CompoundField;
+import org.daisy.dotify.api.formatter.CompoundMarkerReferenceField;
 import org.daisy.dotify.api.formatter.ContentCollection;
 import org.daisy.dotify.api.formatter.CurrentPageField;
 import org.daisy.dotify.api.formatter.DynamicSequenceBuilder;
@@ -61,6 +62,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -559,6 +561,8 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
                 compound.add(new CurrentPageField(getNumeralStyle(event), getAttr(event, ObflQName.ATTR_TEXT_STYLE)));
             } else if (equalsStart(event, ObflQName.MARKER_REFERENCE)) {
                 compound.add(parseMarkerReferenceField(event, true));
+            } else if (equalsStart(event, ObflQName.COMPOUND_MARKER_REFERENCE)) {
+                compound.add(parseCompoundMarkerReferenceField(event, true, input));
             } else if (equalsEnd(event, ObflQName.FIELD)) {
                 break;
             } else {
@@ -587,6 +591,25 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
             allowTextStyle ? textStyle : null,
             toInt(getAttr(event, ObflQName.ATTR_START_OFFSET), 0)
         );
+    }
+
+    private CompoundMarkerReferenceField parseCompoundMarkerReferenceField(
+        XMLEvent event,
+        boolean allowTextStyle,
+        XMLEventIterator input
+    ) throws XMLStreamException {
+        List<MarkerReferenceField> compound = new ArrayList<>();
+        while (input.hasNext()) {
+            event = input.nextEvent();
+            if (equalsStart(event, ObflQName.MARKER_REFERENCE)) {
+                compound.add(parseMarkerReferenceField(event, allowTextStyle));
+            } else if (equalsEnd(event, ObflQName.COMPOUND_MARKER_REFERENCE)) {
+                break;
+            } else {
+                report(event);
+            }
+        }
+        return new CompoundMarkerReferenceField(compound);
     }
 
     private MarginRegion parseMarginRegion(XMLEvent event, XMLEventIterator input) throws XMLStreamException {
@@ -1023,6 +1046,8 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
                 parsePageNumber(fc, event, input);
             } else if (equalsStart(event, ObflQName.MARKER_REFERENCE)) {
                 parseMarkerReference(fc, event, input, tp);
+            } else if (equalsStart(event, ObflQName.COMPOUND_MARKER_REFERENCE)) {
+                parseCompoundMarkerReference(fc, event, input, tp);
             } else if (equalsEnd(event, ObflQName.STYLE)) {
                 if (!ignore) {
                     if (!hasEvents) {
@@ -1549,6 +1574,9 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
         } else if (equalsStart(event, ObflQName.MARKER_REFERENCE)) {
             parseMarkerReference(fc, event, input, tp);
             return true;
+        } else if (equalsStart(event, ObflQName.COMPOUND_MARKER_REFERENCE)) {
+            parseCompoundMarkerReference(fc, event, input, tp);
+            return true;
         } else {
             return false;
         }
@@ -1693,14 +1721,21 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
         return false;
     }
 
-
     private void parseMarkerReference(
         BlockContentBuilder fc,
         XMLEvent event, XMLEventIterator input,
         TextProperties tp
     ) throws XMLStreamException {
-        fc.insertMarkerReference(parseMarkerReferenceField(event, false), tp);
+        fc.insertMarkerReference(Collections.singleton(parseMarkerReferenceField(event, false)), tp);
         scanEmptyElement(input, ObflQName.MARKER_REFERENCE);
+    }
+
+    private void parseCompoundMarkerReference(
+        BlockContentBuilder fc,
+        XMLEvent event, XMLEventIterator input,
+        TextProperties tp
+    ) throws XMLStreamException {
+        fc.insertMarkerReference(parseCompoundMarkerReferenceField(event, false, input), tp);
     }
 
     private void parseEvaluate(

@@ -108,7 +108,7 @@ class SegmentProcessor {
     private boolean closed;
     private String blockId;
     private Function<PageNumberReference, String> pagenumResolver;
-    private Function<MarkerReference, String> markerRefResolver;
+    private Function<Iterable<? extends MarkerReference>, String> markerRefResolver;
     private Function<Evaluate, String> expressionResolver;
 
     /**
@@ -152,7 +152,15 @@ class SegmentProcessor {
                 return "" + rs.getNumeralStyle().format(page);
             }
         };
-        this.markerRefResolver = (ref) -> refs.findMarker(getContext().getCurrentPageId(), ref);
+        this.markerRefResolver = (ref) -> {
+            for (MarkerReference r : ref) {
+                String marker = refs.findMarker(getContext().getCurrentPageId(), r);
+                if (!"".equals(marker)) {
+                    return marker;
+                }
+            }
+            return "";
+        };
         this.expressionResolver = (e) -> e.getExpression().render(getContext());
         initFields();
     }
@@ -188,7 +196,15 @@ class SegmentProcessor {
         this.blockId = template.blockId;
         this.pagenumResolver = template.pagenumResolver;
         // can't simply copy because getContext() of template would be used
-        this.markerRefResolver = (ref) -> refs.findMarker(getContext().getCurrentPageId(), ref);
+        this.markerRefResolver = (ref) -> {
+            for (MarkerReference r : ref) {
+                String marker = refs.findMarker(getContext().getCurrentPageId(), r);
+                if (!"".equals(marker)) {
+                    return marker;
+                }
+            }
+            return "";
+        };
         this.expressionResolver = (e) -> e.getExpression().render(getContext());
     }
 

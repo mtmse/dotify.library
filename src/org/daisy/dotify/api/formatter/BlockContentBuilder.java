@@ -88,12 +88,12 @@ public interface BlockContentBuilder {
     public void insertPageReference(String identifier, NumeralStyle numeralStyle);
 
     /**
-     * Inserts a marker reference.
+     * Inserts a (compound) marker reference.
      *
-     * @param ref the reference
+     * @param ref the reference(s)
      * @param t   the text properties
      */
-    public void insertMarkerReference(MarkerReference ref, TextProperties t);
+    public void insertMarkerReference(Iterable<? extends MarkerReference> ref, TextProperties t);
 
     /**
      * Inserts an expression to evaluate.
