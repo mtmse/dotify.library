@@ -151,13 +151,18 @@ public class VolumeProvider {
         List<AnchorData> ad = new ArrayList<>();
         volume.setPreVolData(updateVolumeContents(currentVolumeNumber, ad, true));
         volume.setBody(nextBodyContents(currentVolumeNumber, volume.getOverhead().total(), ad));
-
-        if (logger.isLoggable(Level.FINE)) {
-            logger.fine("Sheets  in volume " + currentVolumeNumber + ": " + (volume.getVolumeSize()) +
-                    ", content:" + volume.getBodySize() +
-                    ", overhead:" + volume.getOverhead());
-        }
         volume.setPostVolData(updateVolumeContents(currentVolumeNumber, ad, false));
+        if (logger.isLoggable(Level.FINE)) {
+            logger.fine("Sheets in volume " + currentVolumeNumber + ": " + (volume.getVolumeSize()) +
+                    " (content:" + volume.getBodySize() +
+                    ", overhead:" + volume.getOverhead().total() + ")");
+        }
+
+        // Calling getSheetsInVolume() before setting the new value because
+        // otherwise the number of sheets in the volume might exceed the maximum
+        // (because the overhead increases) and it will remain unnoticed because
+        // getOverhead() does not change the "dirty" state.
+        crh.getSheetsInVolume(currentVolumeNumber);
         crh.setSheetsInVolume(currentVolumeNumber, volume.getBodySize() + volume.getOverhead().total());
         //crh.setPagesInVolume(i, value);
         crh.setAnchorData(currentVolumeNumber, ad);
