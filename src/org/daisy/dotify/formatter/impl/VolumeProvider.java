@@ -155,9 +155,9 @@ public class VolumeProvider {
         if (logger.isLoggable(Level.FINE)) {
             logger.fine("Sheets in volume " + currentVolumeNumber + ": " + (volume.getVolumeSize()) +
                     " (content:" + volume.getBodySize() +
-                    ", overhead:" + volume.getOverhead().total() + ")");
+                    ", overhead (allocated):" + volume.getOverhead().total() + ")");
         }
-        crh.setSheetsInVolume(currentVolumeNumber, volume.getBodySize() + volume.getOverhead().total());
+        crh.setSheetsInVolume(currentVolumeNumber, volume.getVolumeSize());
         //crh.setPagesInVolume(i, value);
         crh.setAnchorData(currentVolumeNumber, ad);
         crh.setOverhead(currentVolumeNumber, volume.getOverhead());
