@@ -108,8 +108,7 @@
         <entry key="ô">&#x2808;&#x2815;</entry>
         <entry key="õ">&#x2808;&#x2815;</entry>
         <entry key="ō">&#x2808;&#x2815;</entry>
-        <!-- TODO: Duplicate key -->
-        <!--<entry key="ø">&#x2808;&#x2815;</entry>-->
+        <entry key="ø">&#x2808;&#x2815;</entry>
         <entry key="ő">&#x2808;&#x2815;</entry>                                         <!-- LATIN SMALL LETTER O WITH DOUBLE ACUTE, 0151 -->
         <entry key="ǒ">&#x2808;&#x2815;</entry>                                         <!-- LATIN SMALL LETTER O WITH CARON, U+01D2-->
 
@@ -169,12 +168,10 @@
 
         <entry key="å">&#x2821;</entry>
         <entry key="ä">&#x281C;</entry>
-        <!-- TODO: Duplicate key -->
-        <!--<entry key="æ">&#x2808;&#x281C;</entry>-->
+        <entry key="æ">&#x2808;&#x281C;</entry>
 
         <entry key="ö">&#x282A;</entry>
-        <!-- TODO: Duplicate key -->
-        <!--<entry key="œ">&#x2808;&#x282A;</entry>-->
+        <entry key="œ">&#x2808;&#x282A;</entry>
 
         <!-- Symbols and punctuation -->
         <entry key=",">&#x2802;</entry>
@@ -278,15 +275,21 @@
         <entry key="→"> &#x2812;&#x2815; </entry>                                       <!-- RIGHTWARDS ARROW, 2192 -->
         <entry key="↓"> &#x2823;&#x2815; </entry>                                       <!-- DOWNWARDS ARROW, 2193 -->
 
+        <!-- TODO: -->
+        <!--<entry key="■">&#x2818;&#x283f;</entry>-->                                  <!-- BLACK SQUARE, 25a0 -->
+        <!--<entry key="01C1">&#x2838;&#x2838;</entry>-->                               <!-- LATIN LETTER LATERAL CLICK, 01C1 -->
+
         <!-- Extra phonetic characters from "Fonetik och punkskrift 2005-12-06" -->
         <entry key="ɑ">&#x2821;</entry>
-        <entry key="æ">&#x2829;</entry>
+        <!-- TODO: Duplicate key -->
+        <!--<entry key="æ">&#x2829;</entry>-->
         <entry key="ə">&#x2822;</entry>
         <entry key="ɛ">&#x281C;</entry>
         <entry key="ɪ">&#x280C;</entry>
         <entry key="ɵ">&#x2834;&#x2815;</entry>
-        <entry key="ø">&#x2833;</entry>
-        <entry key="œ">&#x282A;</entry>
+        <!-- TODO: Duplicate keys -->
+        <!--<entry key="ø">&#x2833;</entry>-->
+        <!--<entry key="œ">&#x282A;</entry>-->
         <entry key="ɶ">&#x2814;&#x282A;</entry>
         <entry key="ɔ">&#x2823;</entry>
         <entry key="ʉ">&#x2834;&#x2825;</entry>
@@ -305,10 +308,11 @@
         <entry key="ʂ">&#x2832;&#x280E;</entry>
         <entry key="ʈ">&#x2832;&#x281E;</entry>
 
-        <!-- TODO: -->
         <!--
-        <entry key="■">&#x2818;&#x283f;</entry>                 -->                             <!-- BLACK SQUARE, 25a0 -->
-        <!--
-        <entry key="01C1">&#x2838;&#x2838;</entry>                      -->                             <!-- LATIN LETTER LATERAL CLICK, 01C1 -->
+             TODO: Duplicate keys & ambiguous specification. The string "[]" should be translated to "⠆⠶⠿⠆⠶",
+             but which bracket the '⠿' belong to is not specified.
+         -->
+        <!--<entry key="[">&#x2806;&#x2836;&#x283F;</entry>-->
+        <!--<entry key="]">&#x2806;&#x2836;</entry>-->
 
 </properties>
