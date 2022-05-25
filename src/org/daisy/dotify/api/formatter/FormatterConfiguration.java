@@ -28,8 +28,8 @@ public class FormatterConfiguration {
         private final String translationMode;
         private final String locale;
         private boolean allowsTextOverflowTrimming = false;
-        private boolean allowsEndingPageOnHyphen = true;
-        private boolean allowsEndingVolumeOnHyphen = true;
+        private boolean allowsEndingPageOnHyphen = false;
+        private boolean allowsEndingVolumeOnHyphen = false;
         private boolean hyphenating = true;
         private boolean marksCapitalLetters = true;
         private Set<String> ignoredStyles = new HashSet<String>();
