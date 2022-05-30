@@ -6,6 +6,7 @@ import org.daisy.dotify.api.writer.PagedMediaWriterException;
 import org.daisy.dotify.api.writer.Row;
 import org.daisy.dotify.api.writer.SectionProperties;
 import org.daisy.dotify.common.io.StateObject;
+import org.daisy.dotify.formatter.impl.common.Page;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -64,7 +65,7 @@ class TextMediaWriter implements PagedMediaWriter {
     }
 
     @Override
-    public void newPage() {
+    public void newPage(Page page) {
         state.assertOpen();
         closeOpenPage();
         hasOpenPage = true;

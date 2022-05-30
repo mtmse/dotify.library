@@ -25,6 +25,7 @@ import org.daisy.dotify.api.writer.PagedMediaWriterException;
 import org.daisy.dotify.api.writer.Row;
 import org.daisy.dotify.api.writer.SectionProperties;
 import org.daisy.dotify.common.text.IdentityFilter;
+import org.daisy.dotify.formatter.impl.common.Page;
 import org.daisy.dotify.formatter.impl.obfl.OBFLCondition;
 import org.daisy.dotify.formatter.impl.obfl.OBFLVariable;
 import org.daisy.dotify.formatter.impl.row.RowImpl;
@@ -109,7 +110,7 @@ public class FormatterImplTest {
             }
 
             @Override
-            public void newPage() { }
+            public void newPage(Page page) { }
         });
         return sb.toString();
     }

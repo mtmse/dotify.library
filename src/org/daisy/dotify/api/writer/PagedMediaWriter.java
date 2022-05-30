@@ -1,5 +1,7 @@
 package org.daisy.dotify.api.writer;
 
+import org.daisy.dotify.formatter.impl.common.Page;
+
 import java.io.Closeable;
 import java.io.OutputStream;
 import java.util.List;
@@ -13,7 +15,7 @@ import java.util.List;
  *
  * <p>The PagedMediaWriter must not alter the input structure.
  * For example, an implementation of PagedMediaWriter must not break
- * a page unless instructed via {@link #newPage()}.</p>
+ * a page unless instructed via {@link #newPage(Page page)}.</p>
  *
  * @author Joel Håkansson
  */
@@ -41,9 +43,10 @@ public interface PagedMediaWriter extends Closeable {
      * Inserts a new page in the output format,
      * if applicable.
      *
+     * @param page the page to write
      * @throws IllegalStateException if writer is not opened or if writer has been closed
      */
-    public void newPage();
+    public void newPage(Page page);
 
     /**
      * Add a new row to the current page.

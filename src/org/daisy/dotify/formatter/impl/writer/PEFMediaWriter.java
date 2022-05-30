@@ -7,6 +7,7 @@ import org.daisy.dotify.api.writer.PagedMediaWriterException;
 import org.daisy.dotify.api.writer.Row;
 import org.daisy.dotify.api.writer.SectionProperties;
 import org.daisy.dotify.common.io.StateObject;
+import org.daisy.dotify.formatter.impl.common.Page;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -211,7 +212,7 @@ public class PEFMediaWriter implements PagedMediaWriter {
     }
 
     @Override
-    public void newPage() {
+    public void newPage(Page page) {
         state.assertOpen();
         closeOpenPage();
         if (!hasOpenSection) {

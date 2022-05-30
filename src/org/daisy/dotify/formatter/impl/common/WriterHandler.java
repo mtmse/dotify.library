@@ -54,7 +54,7 @@ public class WriterHandler implements Closeable {
     }
 
     private void writePage(Page p) {
-        writer.newPage();
+        writer.newPage(p);
         for (Row r : p.getRows()) {
             /*
             This implementation is specific for the RowImpl. If someone would create an another
