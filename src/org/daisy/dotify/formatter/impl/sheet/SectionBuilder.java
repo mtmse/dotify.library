@@ -1,7 +1,7 @@
 package org.daisy.dotify.formatter.impl.sheet;
 
 import org.daisy.dotify.api.writer.SectionProperties;
-import org.daisy.dotify.formatter.impl.common.Section;
+import org.daisy.dotify.api.formatter.Section;
 import org.daisy.dotify.formatter.impl.page.PageImpl;
 
 import java.util.List;

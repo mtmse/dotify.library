@@ -1,6 +1,6 @@
 /**
  * <p>Provides functionality for laying out a {@link BlockSequence} into {@link
- * org.daisy.dotify.formatter.impl.common.Page}s.</p>
+ * org.daisy.dotify.api.formatter.Page}s.</p>
  *
  * <p>The main class is {@link org.daisy.dotify.formatter.impl.page.PageSequenceBuilder2}.</p>
  *

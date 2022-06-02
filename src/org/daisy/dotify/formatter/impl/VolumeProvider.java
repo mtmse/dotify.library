@@ -1,6 +1,7 @@
 package org.daisy.dotify.formatter.impl;
 
 import org.daisy.dotify.api.formatter.SequenceProperties.SequenceBreakBefore;
+import org.daisy.dotify.api.formatter.Volume;
 import org.daisy.dotify.common.splitter.SplitPoint;
 import org.daisy.dotify.common.splitter.SplitPointCost;
 import org.daisy.dotify.common.splitter.SplitPointDataSource;
@@ -38,7 +39,7 @@ import java.util.logging.Logger;
 
 /**
  * <p>Given a list of {@link BlockSequence}s, produces {@link
- * org.daisy.dotify.formatter.impl.common.Volume} objects one by one. The volumes are obtained
+ * Volume} objects one by one. The volumes are obtained
  * through a {@link #nextVolume() "iterator" interface}.</p>
  *
  * <p>The input is a list of {@link BlockSequence}s, which are first converted to a sequence of

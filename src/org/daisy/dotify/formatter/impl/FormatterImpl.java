@@ -14,7 +14,7 @@ import org.daisy.dotify.api.formatter.VolumeTemplateProperties;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactoryMakerService;
 import org.daisy.dotify.api.translator.TextBorderFactoryMakerService;
 import org.daisy.dotify.api.writer.PagedMediaWriter;
-import org.daisy.dotify.formatter.impl.common.Volume;
+import org.daisy.dotify.api.formatter.Volume;
 import org.daisy.dotify.formatter.impl.common.WriterHandler;
 import org.daisy.dotify.formatter.impl.page.BlockSequence;
 import org.daisy.dotify.formatter.impl.page.RestartPaginationException;
@@ -34,7 +34,7 @@ import java.util.logging.Logger;
  *
  * <p>Is used for creating a paged document. Uses {@link
  * org.daisy.dotify.formatter.impl.VolumeProvider} to produce {@link
- * org.daisy.dotify.formatter.impl.common.Volume} objects from a list of {@link BlockSequence},
+ * Volume} objects from a list of {@link BlockSequence},
  * which are provided through {@link #newSequence(SequenceProperties)}, and populated through
  * methods like {@link BlockSequence#startBlock(BlockProperties)}, {@link
  * BlockSequence#addChars(CharSequence, TextProperties)}, etc. The resuling paged document is

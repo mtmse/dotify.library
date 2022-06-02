@@ -1,5 +1,8 @@
 package org.daisy.dotify.formatter.impl.common;
 
+import org.daisy.dotify.api.formatter.Page;
+import org.daisy.dotify.api.formatter.Section;
+import org.daisy.dotify.api.formatter.Volume;
 import org.daisy.dotify.api.writer.PagedMediaWriter;
 import org.daisy.dotify.api.writer.Row;
 import org.daisy.dotify.formatter.impl.row.RowImpl;
