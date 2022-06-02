@@ -1,4 +1,4 @@
-package org.daisy.dotify.api.formatter;
+package org.daisy.dotify.formatter.impl.common;
 
 import org.daisy.dotify.api.writer.Row;
 

@@ -5,7 +5,7 @@
  * <p>The main class is {@link org.daisy.dotify.formatter.impl.sheet.SheetDataSource}. Uses the
  * {@link org.daisy.dotify.formatter.impl.page} package to layout a {@link
  * org.daisy.dotify.formatter.impl.page.BlockSequence} into {@link
- * org.daisy.dotify.api.formatter.Page}s.</p>
+ * org.daisy.dotify.formatter.impl.common.Page}s.</p>
  *
  * <p>Also contains some classes related to volume breaking.</p>
  *

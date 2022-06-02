@@ -3,7 +3,6 @@ package org.daisy.dotify.formatter.impl.page;
 import org.daisy.dotify.api.formatter.BlockPosition;
 import org.daisy.dotify.api.formatter.FallbackRule;
 import org.daisy.dotify.api.formatter.FormattingTypes.BreakBefore;
-import org.daisy.dotify.api.formatter.Page;
 import org.daisy.dotify.api.formatter.PageAreaProperties;
 import org.daisy.dotify.api.formatter.RenameFallbackRule;
 import org.daisy.dotify.api.formatter.TransitionBuilderProperties.ApplicationRange;
@@ -40,7 +39,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
- * <p>Given a {@link BlockSequence}, produces {@link Page}
+ * <p>Given a {@link BlockSequence}, produces {@link org.daisy.dotify.formatter.impl.common.Page}
  * objects one by one. The pages are obtained through a {@link #nextPage(int, boolean, Optional,
  * boolean, boolean) "iterator" interface}.</p>
  *

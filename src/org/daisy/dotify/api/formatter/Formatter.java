@@ -79,10 +79,4 @@ public interface Formatter {
      */
     public void write(PagedMediaWriter writer);
 
-    /**
-     * Generates the final volumes and caches the result for future calls of this method.
-     *
-     * @return returns the final generated volumes
-     */
-    public Iterable<? extends Volume> getVolumes();
 }
