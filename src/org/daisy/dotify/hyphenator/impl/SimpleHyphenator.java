@@ -29,6 +29,13 @@ public class SimpleHyphenator extends AbstractHyphenator {
     private final Map<String, short[]> hyphenWords = new HashMap<>();
 
     /*
+    We want to keep track of the shortest word in our hyphenWords map so we don't look for words that can't
+    be there.
+     */
+    private int minWordLen = 0;
+
+
+    /*
     We want to keep track of the longest word in our hyphenWords map so we don't look for words that can't
     be there.
      */
@@ -107,6 +114,7 @@ public class SimpleHyphenator extends AbstractHyphenator {
             }
 
             String simpleWord = simpleWord(line);
+            minWordLen = Math.min(minWordLen, simpleWord.length());
             maxWordLen = Math.max(maxWordLen, simpleWord.length());
             hyphenWords.put(simpleWord, shortMask(line, simpleWord.length()));
         }
@@ -128,7 +136,7 @@ public class SimpleHyphenator extends AbstractHyphenator {
         if (hyphenWords.containsKey(word)) {
             allPieces.add(new MaskPiece(0, hyphenWords.get(word)));
         }
-        for (int wLen = 1; wLen < Math.min(word.length(), maxWordLen); wLen++) {
+        for (int wLen = minWordLen; wLen < Math.min(word.length(), maxWordLen); wLen++) {
             for (int pos = 0; pos < word.length() - wLen + 1; pos++) {
                 String wordPiece = word.substring(pos, pos + wLen);
                 if (hyphenWords.containsKey(wordPiece)) {
