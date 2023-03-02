@@ -2,7 +2,6 @@ package org.daisy.dotify.hyphenator.impl;
 
 import org.daisy.dotify.api.hyphenator.HyphenatorInterface;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -10,7 +9,6 @@ import static org.junit.Assert.assertEquals;
 /**
  * This class tests the JHyphenator against the same phrases we use for the new SimpleHyphenator.
  */
-@Ignore
 public class SimpleHyphenatorSETestJHyphen {
     private HyphenatorInterface hyphenator;
 
