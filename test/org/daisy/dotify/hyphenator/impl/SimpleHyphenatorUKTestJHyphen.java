@@ -1,14 +1,19 @@
 package org.daisy.dotify.hyphenator.impl;
 
 import org.daisy.dotify.api.hyphenator.HyphenatorInterface;
+import org.junit.Assume;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
+
+import java.io.File;
 
 import static org.junit.Assert.assertEquals;
 
 /**
  * This class tests the JHyphenator against the same phrases we use for the new SimpleHyphenator.
  */
+@Ignore
 public class SimpleHyphenatorUKTestJHyphen {
     private HyphenatorInterface hyphenator;
 
@@ -26,6 +31,8 @@ public class SimpleHyphenatorUKTestJHyphen {
 
     @Test
     public void testComplicatedWords() {
+        Assume.assumeTrue(new File("/usr/share/hyphen/hyph_en_GB.dic").exists());
+
         assertEquals("Hy\u00ADphen\u00ADa\u00ADtion", hyph("Hyphenation"));
         assertEquals("Lit\u00ADer\u00ADally", hyph("Literally"));
         assertEquals("Ironic", hyph("Ironic"));

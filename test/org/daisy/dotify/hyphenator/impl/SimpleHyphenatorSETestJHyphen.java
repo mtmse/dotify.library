@@ -1,8 +1,12 @@
 package org.daisy.dotify.hyphenator.impl;
 
 import org.daisy.dotify.api.hyphenator.HyphenatorInterface;
+import org.junit.Assume;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
+
+import java.io.File;
 
 import static org.junit.Assert.assertEquals;
 
@@ -25,6 +29,8 @@ public class SimpleHyphenatorSETestJHyphen {
     }
 
     public void testComplicatedWords() {
+        Assume.assumeTrue(new File("/usr/share/hyphen/hyph_sv_SE.dic").exists());
+
         assertEquals("Im\u00ADper\u00ADti\u00ADnent", hyph("Impertinent"));
         assertEquals("He\u00ADge\u00ADmo\u00ADni", hyph("Hegemoni"));
         assertEquals("Ver\u00ADse\u00ADrad", hyph("Verserad"));
@@ -69,6 +75,8 @@ public class SimpleHyphenatorSETestJHyphen {
 
     @Test
     public void testCLITestCase() {
+        Assume.assumeTrue(new File("/usr/share/hyphen/hyph_sv_SE.dic").exists());
+
         assertEquals("av\u00ADstav\u00ADnings\u00ADreg\u00ADler", hyph("avstavningsregler"));
         assertEquals(
             "⠠⠤den här bo\u00ADken är en rö\u00ADra⠱, sä\u00ADger någ\u00ADra " +

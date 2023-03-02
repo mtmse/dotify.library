@@ -2,7 +2,6 @@ package org.daisy.dotify.hyphenator.impl;
 
 import org.daisy.dotify.api.hyphenator.HyphenatorConfigurationException;
 import org.junit.Assume;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
