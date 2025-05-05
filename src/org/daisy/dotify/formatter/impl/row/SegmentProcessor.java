@@ -567,7 +567,19 @@ class SegmentProcessor {
                 }
                 return layoutTextSegment(ts, fromIndex, len);
             case Leader:
-                return layoutLeaderSegment((LeaderSegment) s);
+                try {
+                    if (currentLeader != null) {
+                        return layoutLeader();
+                    }
+                    return Optional.empty();
+                } finally {
+                    try {
+                        currentLeader = nextLeaders.getCurrentLeader();
+                    } catch (NoSuchElementException e) {
+                        throw new RuntimeException("coding error");
+                    }
+                    nextLeaders.removeLeader();
+                }
             case PageReference:
                 return layoutPageSegment((PageNumberReference) s);
             case MarkerReference:
@@ -654,26 +666,6 @@ class SegmentProcessor {
             return Optional.of(current);
         }
         return Optional.empty();
-    }
-
-    /*
-     * Add the leader segment to leader manager, and if a leader was already present, convert
-     * `layoutOrApplyAfterLeader' to a CurrentResult and return it.
-     */
-    private Optional<CurrentResult> layoutLeaderSegment(LeaderSegment ls) {
-        try {
-            if (currentLeader != null) {
-                return layoutLeader();
-            }
-            return Optional.empty();
-        } finally {
-            try {
-                currentLeader = nextLeaders.getCurrentLeader();
-            } catch (NoSuchElementException e) {
-                throw new RuntimeException("coding error");
-            }
-            nextLeaders.removeLeader();
-        }
     }
 
     private Optional<CurrentResult> layoutPageSegment(PageNumberReference rs) {
