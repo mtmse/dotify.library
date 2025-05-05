@@ -391,7 +391,7 @@ class SegmentProcessor {
                     break;
                 }
                 case Leader: {
-                    LeaderSegment ls = (LeaderSegment)s;
+                    LeaderSegment ls = (LeaderSegment) s;
                     // translate pattern
                     String pattern = ls.getPattern();
                     try {
@@ -985,7 +985,7 @@ class SegmentProcessor {
                 for (Iterator<FollowingText> i = followingContent.iterator(); i.hasNext();) {
                     FollowingText t = i.next();
                     if (t instanceof Segment) {
-                        Segment s = (Segment)t;
+                        Segment s = (Segment) t;
                         switch (s.getSegmentType()) {
                         case NewLine:
                             return spec;
@@ -995,7 +995,7 @@ class SegmentProcessor {
                             while (i.hasNext()) {
                                 t = i.next();
                                 if (t instanceof Segment) {
-                                    s = (Segment)t;
+                                    s = (Segment) t;
                                     switch (s.getSegmentType()) {
                                     case NewLine:
                                     case Leader:
@@ -1094,8 +1094,9 @@ class SegmentProcessor {
             this.mode = mode;
             this.first = true;
             this.leader = leader != null ? new LeaderManager() : null;
-            if (this.leader != null)
+            if (this.leader != null) {
                 this.leader.addLeader(leader);
+            }
             this.nextTabStop = nextTabStop;
         }
 
@@ -1349,10 +1350,11 @@ class SegmentProcessor {
                         }
                     }
                 }
-                if (!onLastRow)
+                if (!onLastRow) {
                     // The current segment and remainder of the block might not all fit on this row,
                     // but they might fit exactly after trailing spaces are trimmed.
                     flushRow = true;
+                }
             }
             // break line
             String next = null;
