@@ -11,7 +11,6 @@ import org.daisy.dotify.api.translator.DefaultAttributeWithContext;
 import org.daisy.dotify.api.translator.Translatable;
 import org.daisy.dotify.api.translator.TranslatableWithContext;
 import org.daisy.dotify.api.translator.TranslationException;
-import org.daisy.dotify.api.writer.Row;
 import org.daisy.dotify.common.text.StringTools;
 import org.daisy.dotify.formatter.impl.common.FormatterCoreContext;
 import org.daisy.dotify.formatter.impl.search.CrossReferenceHandler;

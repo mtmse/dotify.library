@@ -17,7 +17,6 @@ import org.daisy.dotify.formatter.impl.search.VolumeKeepPriority;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Used by {@link RowGroupDataSource} to generate {@link RowGroup}s from a {@link Block}.

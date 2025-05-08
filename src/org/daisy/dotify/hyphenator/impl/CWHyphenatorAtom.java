@@ -3,7 +3,6 @@ package org.daisy.dotify.hyphenator.impl;
 import org.daisy.dotify.api.hyphenator.HyphenatorConfigurationException;
 import org.daisy.dotify.common.text.SplitResult;
 import org.daisy.dotify.common.text.StringSplitter;
-import org.daisy.dotify.formatter.impl.obfl.ObflParserImpl;
 
 import java.io.IOException;
 import java.io.InputStream;

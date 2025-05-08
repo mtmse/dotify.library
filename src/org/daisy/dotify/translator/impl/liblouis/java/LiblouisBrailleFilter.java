@@ -1,7 +1,6 @@
 package org.daisy.dotify.translator.impl.liblouis.java;
 
 import org.daisy.dotify.common.text.StringFilter;
-import org.daisy.dotify.hyphenator.impl.LatexRulesLocator;
 
 import java.util.ArrayList;
 import java.util.HashMap;

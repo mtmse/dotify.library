@@ -14,7 +14,6 @@ import org.daisy.dotify.api.formatter.VolumeTemplateProperties;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactoryMakerService;
 import org.daisy.dotify.api.translator.TextBorderFactoryMakerService;
 import org.daisy.dotify.api.writer.PagedMediaWriter;
-import org.daisy.dotify.api.writer.PagedMediaWriterFactoryMaker;
 import org.daisy.dotify.formatter.impl.common.Volume;
 import org.daisy.dotify.formatter.impl.common.WriterHandler;
 import org.daisy.dotify.formatter.impl.page.BlockSequence;

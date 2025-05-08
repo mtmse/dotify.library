@@ -6,7 +6,6 @@ import org.daisy.dotify.api.writer.Row;
 import org.daisy.dotify.formatter.impl.segment.MarkerSegment;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**

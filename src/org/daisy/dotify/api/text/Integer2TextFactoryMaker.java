@@ -1,6 +1,5 @@
 package org.daisy.dotify.api.text;
 
-import org.daisy.dotify.api.table.TableCatalog;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;

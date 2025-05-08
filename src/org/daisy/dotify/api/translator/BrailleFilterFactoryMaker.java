@@ -1,6 +1,5 @@
 package org.daisy.dotify.api.translator;
 
-import org.daisy.dotify.api.text.Integer2TextFactoryMaker;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;

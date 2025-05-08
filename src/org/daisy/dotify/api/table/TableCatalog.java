@@ -2,7 +2,6 @@ package org.daisy.dotify.api.table;
 
 import org.daisy.dotify.api.factory.FactoryCatalog;
 import org.daisy.dotify.api.factory.FactoryProperties;
-import org.daisy.dotify.api.hyphenator.HyphenatorFactoryMaker;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
