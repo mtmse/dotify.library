@@ -573,7 +573,7 @@ class SegmentProcessor {
             currentRow.addExternalReference(externalReference);
             externalReference = null;
         }
-        RowImpl r = new RowImpl(currentRow);
+        RowImpl r = currentRow;
         rowsFlushed = true;
         //Make calculations for underlining
         int width = r.getChars().length();
@@ -1143,7 +1143,7 @@ class SegmentProcessor {
                 int align = leaderManager.getLeaderAlign(btr.countRemaining()); // space after leader before tab stop
                 if (leaderPos - align < preTabPos) {
                     // if tab position has been passed try on a new row
-                    return Optional.ofNullable(flushCurrentRow());
+                    return Optional.of(flushCurrentRow());
                 } else {
                     tabSpace = leaderManager.getLeaderPattern(leaderPos - preTabPos - align); // leader length
                 }
@@ -1210,7 +1210,7 @@ class SegmentProcessor {
                     if (available < 0 || btr.hasNext()) {
                         if (lineProps.getReservedWidth() > 0) {
                             // if width is temporarily reduced try the next line
-                            return Optional.ofNullable(flushCurrentRow());
+                            return Optional.of(flushCurrentRow());
                         }
                         int rightMargin = currentRow.getRightMargin().getContent().length();
                         throw new RuntimeException(
@@ -1229,7 +1229,7 @@ class SegmentProcessor {
                     if (available < 0) {
                         if (lineProps.getReservedWidth() > 0) {
                             // if width is temporarily reduced try the next line
-                            return Optional.ofNullable(flushCurrentRow());
+                            return Optional.of(flushCurrentRow());
                         }
                         int rightMargin = currentRow.getRightMargin().getContent().length();
                         throw new RuntimeException(
@@ -1293,7 +1293,7 @@ class SegmentProcessor {
                 && !onLastRow
                 && !btr.hasNext()
             ) {
-                return Optional.ofNullable(flushCurrentRow());
+                return Optional.of(flushCurrentRow());
             }
             // Returning empty value means that currentRow has been updated but we don't want to
             // flush it yet because a next segment might add to the same row.
