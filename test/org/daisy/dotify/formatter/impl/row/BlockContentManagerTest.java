@@ -43,7 +43,9 @@ public class BlockContentManagerTest {
                 new TextSegment("... ", new TextProperties.Builder("sv-SE").build())
             );
         }
-        RowDataProperties rdp = new RowDataProperties.Builder().firstLineIndent(1).textIndent(3).build();
+        RowDataProperties rdp = new RowDataProperties();
+        rdp.setFirstLineIndent(1);
+        rdp.setTextIndent(3);
         CrossReferenceHandler refs = mock(CrossReferenceHandler.class);
         DefaultContext context = createContext();
         AbstractBlockContentManager m = new BlockContentManager(
@@ -84,7 +86,9 @@ public class BlockContentManagerTest {
             new TextSegment("...", new TextProperties.Builder("sv-SE").build())
         );
 
-        RowDataProperties rdp = new RowDataProperties.Builder().firstLineIndent(1).textIndent(3).build();
+        RowDataProperties rdp = new RowDataProperties();
+        rdp.setFirstLineIndent(1);
+        rdp.setTextIndent(3);
         CrossReferenceHandler refs = mock(CrossReferenceHandler.class);
         DefaultContext context = createContext();
         AbstractBlockContentManager m = new BlockContentManager(null, 10, segments, rdp, refs, context, c);
@@ -109,7 +113,9 @@ public class BlockContentManagerTest {
         segments.push(new NewLineSegment());
         segments.push(new TextSegment("...", new TextProperties.Builder("sv-SE").build()));
 
-        RowDataProperties rdp = new RowDataProperties.Builder().firstLineIndent(1).textIndent(3).build();
+        RowDataProperties rdp = new RowDataProperties();
+        rdp.setFirstLineIndent(1);
+        rdp.setTextIndent(3);
         CrossReferenceHandler refs = mock(CrossReferenceHandler.class);
         DefaultContext context = createContext();
         AbstractBlockContentManager m = new BlockContentManager(null, 10, segments, rdp, refs, context, c);

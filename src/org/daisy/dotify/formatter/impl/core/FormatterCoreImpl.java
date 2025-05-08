@@ -124,31 +124,31 @@ public class FormatterCoreImpl extends Stack<Block> implements FormatterCore, Bl
             addToBlockIndent(propsContext.peek().getBlockProperties().getBlockIndent());
         }
 
-        RowDataProperties.Builder rdp = new RowDataProperties.Builder()
-                .textIndent(p.getTextBlockProperties().getTextIndent())
-                .firstLineIndent(p.getTextBlockProperties().getFirstLineIndent())
-                .rightTextIndent(p.getTextBlockProperties().getRightTextIndent())
-                .align(p.getTextBlockProperties().getAlignment())
-                .rowSpacing(p.getTextBlockProperties().getRowSpacing())
-                .orphans(p.getOrphans())
-                .widows(p.getWidows())
-                .blockIndent(blockIndent)
-                .blockIndentParent(blockIndentParent.peek())
-                .margins(
-                    new BlockMargin(
-                        new Margin(Type.LEFT, leftMarginComps),
-                        new Margin(Type.RIGHT, rightMarginComps),
-                        fc.getSpaceCharacter()
-                    )
-                )
-                .outerSpaceBefore(p.getMargin().getTopSpacing())
-                .underlineStyle(p.getUnderlineStyle())
-                .displayWhen(p.getDisplayWhen());
+        RowDataProperties rdp = new RowDataProperties();
+        rdp.setTextIndent(p.getTextBlockProperties().getTextIndent());
+        rdp.setFirstLineIndent(p.getTextBlockProperties().getFirstLineIndent());
+        rdp.setRightTextIndent(p.getTextBlockProperties().getRightTextIndent());
+        rdp.setAlign(p.getTextBlockProperties().getAlignment());
+        rdp.setRowSpacing(p.getTextBlockProperties().getRowSpacing());
+        rdp.setOrphans(p.getOrphans());
+        rdp.setWidows(p.getWidows());
+        rdp.setBlockIndent(blockIndent);
+        rdp.setBlockIndentParent(blockIndentParent.peek());
+        rdp.setMargins(
+            new BlockMargin(
+                new Margin(Type.LEFT, leftMarginComps),
+                new Margin(Type.RIGHT, rightMarginComps),
+                fc.getSpaceCharacter()
+            )
+        );
+        rdp.setOuterSpaceBefore(p.getMargin().getTopSpacing());
+        rdp.setUnderlineStyle(p.getUnderlineStyle());
+        rdp.setDisplayWhen(p.getDisplayWhen());
         // We don't get the volume keep priority from block properties,
         // because it could have been inherited from an ancestor
         AncestorContext ac = new AncestorContext(p, inheritVolumeKeepPriority(p.getVolumeKeepPriority()));
         setPrecedingVolumeKeepAfterPriority(ac.getVolumeKeepPriority());
-        Block c = newBlock(blockId, rdp.build());
+        Block c = newBlock(blockId, rdp);
         if (
             propsContext.size() > 0 &&
             propsContext.peek().getBlockProperties().getListType() != FormattingTypes.ListStyle.NONE
@@ -198,17 +198,17 @@ public class FormatterCoreImpl extends Stack<Block> implements FormatterCore, Bl
         c.setAvoidVolumeBreakAfterPriority(-1); // value will be overwritten later
         propsContext.push(ac);
         Block bi = getCurrentBlock();
-        RowDataProperties.Builder builder = new RowDataProperties.Builder(bi.getRowDataProperties());
+        RowDataProperties rdp2 = bi.getRowDataProperties();
         if (p.getTextBorderStyle() != null) {
             TextBorderStyle t = p.getTextBorderStyle();
             if (t.getTopLeftCorner().length() + t.getTopBorder().length() + t.getTopRightCorner().length() > 0) {
-                builder.leadingDecoration(
+                rdp2.setLeadingDecoration(
                     new SingleLineDecoration(t.getTopLeftCorner(), t.getTopBorder(), t.getTopRightCorner())
                 );
             }
         }
-        builder.innerSpaceBefore(p.getPadding().getTopSpacing());
-        bi.setRowDataProperties(builder.build());
+        rdp2.setInnerSpaceBefore(p.getPadding().getTopSpacing());
+        bi.setRowDataProperties(rdp2);
         //firstRow = true;
     }
 
@@ -252,7 +252,7 @@ public class FormatterCoreImpl extends Stack<Block> implements FormatterCore, Bl
             AncestorContext ac = propsContext.pop();
             BlockProperties p = ac.getBlockProperties();
             Block bi = getCurrentBlock();
-            RowDataProperties.Builder builder = new RowDataProperties.Builder(bi.getRowDataProperties());
+            RowDataProperties rdp = bi.getRowDataProperties();
             if (p.getTextBorderStyle() != null) {
                 TextBorderStyle t = p.getTextBorderStyle();
                 if (
@@ -260,15 +260,15 @@ public class FormatterCoreImpl extends Stack<Block> implements FormatterCore, Bl
                     t.getBottomBorder().length() +
                     t.getBottomRightCorner().length() > 0
                 ) {
-                    builder.trailingDecoration(
+                    rdp.setTrailingDecoration(
                         new SingleLineDecoration(t.getBottomLeftCorner(), t.getBottomBorder(), t.getBottomRightCorner())
                     );
                 }
             }
-            builder.innerSpaceAfter(p.getPadding().getBottomSpacing()).
-                    outerSpaceAfter(bi.getRowDataProperties().getOuterSpaceAfter() + p.getMargin().getBottomSpacing());
+            rdp.setInnerSpaceAfter(p.getPadding().getBottomSpacing());
+            rdp.setOuterSpaceAfter(bi.getRowDataProperties().getOuterSpaceAfter() + p.getMargin().getBottomSpacing());
             bi.setKeepWithPreviousSheets(p.getKeepWithPreviousSheets());
-            bi.setRowDataProperties(builder.build());
+            bi.setRowDataProperties(rdp);
         }
         leftMarginComps.pop();
         rightMarginComps.pop();
@@ -279,24 +279,24 @@ public class FormatterCoreImpl extends Stack<Block> implements FormatterCore, Bl
             Keep keep = p.getKeepType();
             int next = p.getKeepWithNext();
             subtractFromBlockIndent(p.getBlockIndent());
-            RowDataProperties.Builder rdp = new RowDataProperties.Builder().
-                    textIndent(p.getTextBlockProperties().getTextIndent()).
-                    firstLineIndent(p.getTextBlockProperties().getFirstLineIndent()).
-                    rightTextIndent(p.getTextBlockProperties().getRightTextIndent()).
-                    align(p.getTextBlockProperties().getAlignment()).
-                    rowSpacing(p.getTextBlockProperties().getRowSpacing()).
-                    orphans(p.getOrphans()).
-                    widows(p.getWidows()).
-                    blockIndent(blockIndent).
-                    blockIndentParent(blockIndentParent.peek()).
-                    margins(new BlockMargin(
-                            new Margin(Type.LEFT, leftMarginComps),
-                            new Margin(Type.RIGHT, rightMarginComps),
-                            fc.getSpaceCharacter()
-                    )).
-                    underlineStyle(p.getUnderlineStyle()).
-                    displayWhen(p.getDisplayWhen());
-            Block c = newBlock(null, rdp.build());
+            RowDataProperties rdp = new RowDataProperties();
+            rdp.setTextIndent(p.getTextBlockProperties().getTextIndent());
+            rdp.setFirstLineIndent(p.getTextBlockProperties().getFirstLineIndent());
+            rdp.setRightTextIndent(p.getTextBlockProperties().getRightTextIndent());
+            rdp.setAlign(p.getTextBlockProperties().getAlignment());
+            rdp.setRowSpacing(p.getTextBlockProperties().getRowSpacing());
+            rdp.setOrphans(p.getOrphans());
+            rdp.setWidows(p.getWidows());
+            rdp.setBlockIndent(blockIndent);
+            rdp.setBlockIndentParent(blockIndentParent.peek());
+            rdp.setMargins(new BlockMargin(
+                new Margin(Type.LEFT, leftMarginComps),
+                new Margin(Type.RIGHT, rightMarginComps),
+                fc.getSpaceCharacter()
+            ));
+            rdp.setUnderlineStyle(p.getUnderlineStyle());
+            rdp.setDisplayWhen(p.getDisplayWhen());
+            Block c = newBlock(null, rdp);
             c.setKeepType(keep);
             c.setKeepWithNext(next);
             // We don't get the volume keep priority from the BlockProperties,
@@ -350,9 +350,9 @@ public class FormatterCoreImpl extends Stack<Block> implements FormatterCore, Bl
         Block bl = getCurrentBlock();
         if (listItem != null) {
             //append to this block
-            RowDataProperties.Builder builder = new RowDataProperties.Builder(bl.getRowDataProperties());
-            builder.listProperties(new ListItem(listItem.getLabel(), listItem.getType()));
-            bl.setRowDataProperties(builder.build());
+            RowDataProperties rdp = bl.getRowDataProperties();
+            rdp.setListProperties(new ListItem(listItem.getLabel(), listItem.getType()));
+            bl.setRowDataProperties(rdp);
             //list item has been used now, discard
             listItem = null;
         }
@@ -498,20 +498,20 @@ public class FormatterCoreImpl extends Stack<Block> implements FormatterCore, Bl
         rightMarginComps.push(
             new MarginComponent(rb, props.getMargin().getRightSpacing(), props.getPadding().getRightSpacing())
         );
-        RowDataProperties.Builder rdp = new RowDataProperties.Builder()
+        RowDataProperties rdp = new RowDataProperties();
                 //text properties are not relevant here, since a table block doesn't support mixed content
                 //textIndent, firstLineIndent, align, orphans, widows, blockIndent and blockIndentParent
                 //rowSpacing is handled by the table itself
-                .margins(new BlockMargin(
-                        new Margin(Type.LEFT, leftMarginComps),
-                        new Margin(Type.RIGHT, rightMarginComps),
-                        fc.getSpaceCharacter()
-                ))
+        rdp.setMargins(new BlockMargin(
+            new Margin(Type.LEFT, leftMarginComps),
+            new Margin(Type.RIGHT, rightMarginComps),
+            fc.getSpaceCharacter()
+        ));
                 //all margins are set here, because the table is an opaque block
-                .outerSpaceBefore(props.getMargin().getTopSpacing())
-                .outerSpaceAfter(props.getMargin().getBottomSpacing())
-                .innerSpaceBefore(props.getPadding().getTopSpacing())
-                .innerSpaceAfter(props.getPadding().getBottomSpacing());
+        rdp.setOuterSpaceBefore(props.getMargin().getTopSpacing());
+        rdp.setOuterSpaceAfter(props.getMargin().getBottomSpacing());
+        rdp.setInnerSpaceBefore(props.getPadding().getTopSpacing());
+        rdp.setInnerSpaceAfter(props.getPadding().getBottomSpacing());
         leftMarginComps.pop();
         rightMarginComps.pop();
         if (borderStyle != null) {
@@ -520,7 +520,7 @@ public class FormatterCoreImpl extends Stack<Block> implements FormatterCore, Bl
                 borderStyle.getTopBorder().length() +
                 borderStyle.getTopRightCorner().length() > 0
             ) {
-                rdp.leadingDecoration(
+                rdp.setLeadingDecoration(
                     new SingleLineDecoration(
                         borderStyle.getTopLeftCorner(),
                         borderStyle.getTopBorder(),
@@ -533,7 +533,7 @@ public class FormatterCoreImpl extends Stack<Block> implements FormatterCore, Bl
                 borderStyle.getBottomBorder().length() +
                 borderStyle.getBottomRightCorner().length() > 0
             ) {
-                rdp.trailingDecoration(
+                rdp.setTrailingDecoration(
                     new SingleLineDecoration(
                         borderStyle.getBottomLeftCorner(),
                         borderStyle.getBottomBorder(),
@@ -545,7 +545,7 @@ public class FormatterCoreImpl extends Stack<Block> implements FormatterCore, Bl
         table = new Table(
             fc,
             props,
-            rdp.build(),
+            rdp,
             fc.getTextBorderFactoryMakerService(),
             fc.getTranslatorMode(),
             scenario

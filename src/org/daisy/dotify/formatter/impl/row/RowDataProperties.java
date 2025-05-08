@@ -14,216 +14,34 @@ import java.util.Collections;
  * @author Joel Håkansson
  */
 public final class RowDataProperties {
-    private final int blockIndent, blockIndentParent;
-    private final BlockMargin margins;
-    private final ListItem listProps;
-    private final int textIndent;
-    private final int firstLineIndent;
-    private final int rightTextIndent;
-    private final Alignment align;
-    private final Float rowSpacing;
-    private final int outerSpaceBefore;
-    private final int outerSpaceAfter;
-    private final int innerSpaceBefore;
-    private final int innerSpaceAfter;
-    private final int orphans;
-    private final int widows;
-    private final SingleLineDecoration leadingDecoration;
-    private final SingleLineDecoration trailingDecoration;
-    private final String underlineStyle;
-    private final Object externalReference;
-    private final Condition displayWhen;
+    private int blockIndent = 0;
+    private int blockIndentParent = 0;
+    private int textIndent = 0;
+    private int firstLineIndent = 0;
+    private int rightTextIndent = 0;
+    private int outerSpaceBefore = 0;
+    private int outerSpaceAfter = 0;
+    private int innerSpaceBefore = 0;
+    private int innerSpaceAfter = 0;
+    private int orphans = 0;
+    private int widows = 0;
+    private Alignment align = Alignment.LEFT;
+    private Float rowSpacing = null;
+    private BlockMargin margins = new BlockMargin(
+            new Margin(Type.LEFT, Collections.emptyList()),
+            new Margin(Type.RIGHT, Collections.emptyList()),
+            // Space character doesn't matter, because the margin is empty
+            ' ');
 
+    private SingleLineDecoration leadingDecoration = null;
+    private SingleLineDecoration trailingDecoration = null;
+    private String underlineStyle = null;
 
-    /**
-     * TODO: Write java doc.
-     */
-    public static class Builder {
-        private int blockIndent = 0;
-        private int blockIndentParent = 0;
-        private int textIndent = 0;
-        private int firstLineIndent = 0;
-        private int rightTextIndent = 0;
-        private int outerSpaceBefore = 0;
-        private int outerSpaceAfter = 0;
-        private int innerSpaceBefore = 0;
-        private int innerSpaceAfter = 0;
-        private int orphans = 0;
-        private int widows = 0;
-        private Alignment align = Alignment.LEFT;
-        private Float rowSpacing = null;
-        private BlockMargin margins = new BlockMargin(
-                new Margin(Type.LEFT, Collections.emptyList()),
-                new Margin(Type.RIGHT, Collections.emptyList()),
-                // Space character doesn't matter, because the margin is empty
-                ' ');
+    private ListItem listProps = null;
+    private Object externalReference = null;
+    private Condition displayWhen = null;
 
-        private SingleLineDecoration leadingDecoration = null;
-        private SingleLineDecoration trailingDecoration = null;
-        private String underlineStyle = null;
-
-        private ListItem listProps = null;
-        private Object externalReference = null;
-        private Condition displayWhen = null;
-
-        public Builder() {
-        }
-
-        public Builder(RowDataProperties template) {
-            this.blockIndent = template.blockIndent;
-            this.blockIndentParent = template.blockIndentParent;
-            this.margins = template.margins;
-            this.listProps = template.listProps;
-            this.textIndent = template.textIndent;
-            this.firstLineIndent = template.firstLineIndent;
-            this.rightTextIndent = template.rightTextIndent;
-            this.align = template.align;
-            this.rowSpacing = template.rowSpacing;
-            this.outerSpaceBefore = template.outerSpaceBefore;
-            this.outerSpaceAfter = template.outerSpaceAfter;
-            this.innerSpaceBefore = template.innerSpaceBefore;
-            this.innerSpaceAfter = template.innerSpaceAfter;
-            this.leadingDecoration = template.leadingDecoration;
-            this.trailingDecoration = template.trailingDecoration;
-            this.orphans = template.orphans;
-            this.widows = template.widows;
-            this.underlineStyle = template.underlineStyle;
-            this.displayWhen = template.displayWhen;
-            this.externalReference = template.externalReference;
-        }
-
-        public Builder blockIndent(int value) {
-            blockIndent = value;
-            return this;
-        }
-
-        public Builder blockIndentParent(int value) {
-            blockIndentParent = value;
-            return this;
-        }
-
-        public Builder textIndent(int textIndent) {
-            this.textIndent = textIndent;
-            return this;
-        }
-
-        public Builder firstLineIndent(int firstLineIndent) {
-            this.firstLineIndent = firstLineIndent;
-            return this;
-        }
-
-        public Builder rightTextIndent(int rightTextIndent) {
-            this.rightTextIndent = rightTextIndent;
-            return this;
-        }
-
-        public Builder align(FormattingTypes.Alignment align) {
-            this.align = align;
-            return this;
-        }
-
-        public Builder rowSpacing(Float value) {
-            this.rowSpacing = value;
-            return this;
-        }
-
-        public Builder margins(BlockMargin value) {
-            margins = value;
-            return this;
-        }
-
-        public Builder listProperties(ListItem value) {
-            listProps = value;
-            return this;
-        }
-
-        public Builder outerSpaceBefore(int value) {
-            this.outerSpaceBefore = value;
-            return this;
-        }
-
-        public Builder outerSpaceAfter(int value) {
-            this.outerSpaceAfter = value;
-            return this;
-        }
-
-        public Builder leadingDecoration(SingleLineDecoration value) {
-            this.leadingDecoration = value;
-            return this;
-        }
-
-        public Builder innerSpaceBefore(int value) {
-            this.innerSpaceBefore = value;
-            return this;
-        }
-
-        public Builder trailingDecoration(SingleLineDecoration value) {
-            this.trailingDecoration = value;
-            return this;
-        }
-
-        public Builder innerSpaceAfter(int value) {
-            this.innerSpaceAfter = value;
-            return this;
-        }
-
-        public Builder orphans(int value) {
-            this.orphans = value;
-            return this;
-        }
-
-        public Builder widows(int value) {
-            this.widows = value;
-            return this;
-        }
-
-        public Builder externalReference(Object externalReference) {
-            this.externalReference = externalReference;
-            return this;
-        }
-
-        public Builder underlineStyle(String value) {
-            if (value != null && value.length() != 1) {
-                throw new IllegalArgumentException(
-                    "Value should be either null or a single-character string, but got: " + value
-                );
-            }
-            this.underlineStyle = value;
-            return this;
-        }
-
-        public Builder displayWhen(Condition value) {
-            this.displayWhen = value;
-            return this;
-        }
-
-        public RowDataProperties build() {
-            return new RowDataProperties(this);
-        }
-    }
-
-    private RowDataProperties(Builder builder) {
-        this.blockIndent = builder.blockIndent;
-        this.blockIndentParent = builder.blockIndentParent;
-        this.margins = builder.margins;
-        this.listProps = builder.listProps;
-        this.textIndent = builder.textIndent;
-        this.firstLineIndent = builder.firstLineIndent;
-        this.rightTextIndent = builder.rightTextIndent;
-        this.align = builder.align;
-        this.rowSpacing = builder.rowSpacing;
-        this.outerSpaceBefore = builder.outerSpaceBefore;
-        this.outerSpaceAfter = builder.outerSpaceAfter;
-        this.innerSpaceBefore = builder.innerSpaceBefore;
-        this.innerSpaceAfter = builder.innerSpaceAfter;
-        this.leadingDecoration = builder.leadingDecoration;
-        this.trailingDecoration = builder.trailingDecoration;
-        this.orphans = builder.orphans;
-        this.widows = builder.widows;
-        this.underlineStyle = builder.underlineStyle;
-        this.displayWhen = builder.displayWhen;
-        this.externalReference = builder.externalReference;
-    }
+    public RowDataProperties() {}
 
     RowImpl configureNewEmptyRowBuilder(MarginProperties left, MarginProperties right) {
         RowImpl row = new RowImpl("");
@@ -449,4 +267,79 @@ public final class RowDataProperties {
                 + ", trailingDecoration=" + trailingDecoration + ", underlineStyle=" + underlineStyle + "]";
     }
 
+    public void setTextIndent(int textIndent) {
+        this.textIndent = textIndent;
+    }
+
+    public void setFirstLineIndent(int firstLineIndent) {
+        this.firstLineIndent = firstLineIndent;
+    }
+
+    public void setRightTextIndent(int rightTextIndent) {
+        this.rightTextIndent = rightTextIndent;
+    }
+
+    public void setAlign(Alignment alignment) {
+        this.align = alignment;
+    }
+
+    public void setRowSpacing(Float rowSpacing) {
+        this.rowSpacing = rowSpacing;
+    }
+
+    public void setOrphans(int orphans) {
+        this.orphans = orphans;
+    }
+
+    public void setWidows(int widows) {
+        this.widows = widows;
+    }
+
+    public void setBlockIndent(int blockIndent) {
+        this.blockIndent = blockIndent;
+    }
+
+    public void setBlockIndentParent(Integer peek) {
+        this.blockIndentParent = peek;
+    }
+
+    public void setMargins(BlockMargin blockMargin) {
+        this.margins = blockMargin;
+    }
+
+    public void setOuterSpaceBefore(int topSpacing) {
+        this.outerSpaceBefore = topSpacing;
+    }
+
+    public void setUnderlineStyle(String underlineStyle) {
+        this.underlineStyle = underlineStyle;
+    }
+
+    public void setDisplayWhen(Condition displayWhen) {
+        this.displayWhen = displayWhen;
+    }
+
+    public void setInnerSpaceBefore(int topSpacing) {
+        this.innerSpaceBefore = topSpacing;
+    }
+
+    public void setLeadingDecoration(SingleLineDecoration singleLineDecoration) {
+        this.leadingDecoration = singleLineDecoration;
+    }
+
+    public void setTrailingDecoration(SingleLineDecoration singleLineDecoration) {
+        this.trailingDecoration = singleLineDecoration;
+    }
+
+    public void setInnerSpaceAfter(int bottomSpacing) {
+        this.innerSpaceAfter = bottomSpacing;
+    }
+
+    public void setOuterSpaceAfter(int i) {
+        this.outerSpaceAfter = i;
+    }
+
+    public void setListProperties(ListItem listItem) {
+        this.listProps = listItem;
+    }
 }

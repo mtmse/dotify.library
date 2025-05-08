@@ -35,7 +35,7 @@ public class SegmentProcessorTest {
 
     final String loc = "und";
     final String mode = "bypass";
-    final RowDataProperties rdp = new RowDataProperties.Builder().build();
+    final RowDataProperties rdp = new RowDataProperties();
     final FormatterConfiguration conf = new FormatterConfiguration.Builder(loc, mode).build();
     final DefaultMarkerProcessor mp = new DefaultMarkerProcessor.Builder()
             .addDictionary("em", (str, ta) -> new Marker("x", "y"))

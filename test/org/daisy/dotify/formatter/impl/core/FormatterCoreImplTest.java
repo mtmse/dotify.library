@@ -59,14 +59,19 @@ public class FormatterCoreImplTest {
         Margin leftInner = new Margin(Type.LEFT, leftComps);
         Margin rightInner = new Margin(Type.RIGHT, rightComps);
 
-        RowDataProperties expectedOuter =
-                new RowDataProperties.Builder().rowSpacing(1.0f).firstLineIndent(1).orphans(2).widows(2)
-                .margins(new BlockMargin(left, right, ' '))
-                .build();
-        RowDataProperties expectedInner =
-                new RowDataProperties.Builder().rowSpacing(2.0f).firstLineIndent(2).orphans(3).widows(3)
-                .margins(new BlockMargin(leftInner, rightInner, ' '))
-                .build();
+        RowDataProperties expectedOuter = new RowDataProperties();
+        expectedOuter.setRowSpacing(1.0f);
+        expectedOuter.setFirstLineIndent(1);
+        expectedOuter.setOrphans(2);
+        expectedOuter.setWidows(2);
+        expectedOuter.setMargins(new BlockMargin(left, right, ' '));
+
+        RowDataProperties expectedInner = new RowDataProperties();
+        expectedInner.setRowSpacing(2.0f);
+        expectedInner.setFirstLineIndent(2);
+        expectedInner.setOrphans(3);
+        expectedInner.setWidows(3);
+        expectedInner.setMargins(new BlockMargin(leftInner, rightInner, ' '));
 
         //Test
         assertEquals(3, formatter.size());
