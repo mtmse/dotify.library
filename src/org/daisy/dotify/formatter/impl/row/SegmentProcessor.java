@@ -11,6 +11,7 @@ import org.daisy.dotify.api.translator.DefaultAttributeWithContext;
 import org.daisy.dotify.api.translator.Translatable;
 import org.daisy.dotify.api.translator.TranslatableWithContext;
 import org.daisy.dotify.api.translator.TranslationException;
+import org.daisy.dotify.api.writer.Row;
 import org.daisy.dotify.common.text.StringTools;
 import org.daisy.dotify.formatter.impl.common.FormatterCoreContext;
 import org.daisy.dotify.formatter.impl.search.CrossReferenceHandler;
@@ -64,7 +65,7 @@ class SegmentProcessor {
      * Is only non-null if the previous getNext() call returned an empty result, or if the next
      * result is being created in getNext().
      */
-    private RowImpl.Builder currentRow;
+    private RowImpl currentRow;
     /*
      * Markers, anchors and identifiers that are not associated with a particular row.
      */
@@ -171,7 +172,7 @@ class SegmentProcessor {
         // Context is mutable, but for now we assume that the same context should be used.
         this.context = template.context;
         this.processorContext = template.processorContext;
-        this.currentRow = template.currentRow == null ? null : new RowImpl.Builder(template.currentRow);
+        this.currentRow = template.currentRow == null ? null : new RowImpl(template.currentRow);
         this.groupAnchors = new ArrayList<>(template.groupAnchors);
         this.groupMarkers = new ArrayList<>(template.groupMarkers);
         this.groupIdentifiers = new ArrayList<>(template.groupIdentifiers);
@@ -573,7 +574,7 @@ class SegmentProcessor {
             currentRow.addExternalReference(externalReference);
             externalReference = null;
         }
-        RowImpl r = currentRow.build();
+        RowImpl r = new RowImpl(currentRow);
         rowsFlushed = true;
         //Make calculations for underlining
         int width = r.getChars().length();
@@ -1151,7 +1152,7 @@ class SegmentProcessor {
 
             // Size of content already present in row. If called from startNewRow() currentRow does
             // not include the left text indent, otherwise it does.
-            int contentLen = StringTools.length(tabSpace) + StringTools.length(currentRow.getText());
+            int contentLen = StringTools.length(tabSpace) + StringTools.length(currentRow.getChars());
             boolean force = contentLen == 0;
             int availableIfLastRow = row.getMaxLength(currentRow) - contentLen;
             // check whether we are on the last row of the block (only matters if there is a
@@ -1242,16 +1243,16 @@ class SegmentProcessor {
                         );
                     }
                 }
-                currentRow.text(row.getLeftIndent() + currentRow.getText() + tabSpace + next);
+                currentRow.setChars(row.getLeftIndent() + currentRow.getChars() + tabSpace + next);
                 if (!tabSpace.isEmpty()) {
-                    currentRow.leaderSpace(currentRow.getLeaderSpace() + tabSpace.length());
+                    currentRow.setLeaderSpace(currentRow.getLeaderSpace() + tabSpace.length());
                 }
                 // tabSpace has been inserted, discard the leader now
                 leaderManager.removeLeader();
             } else if (!next.isEmpty()) {
 
                 // If there is no leader, just insert any content that fits on the line.
-                currentRow.text(row.getLeftIndent() + currentRow.getText() + next);
+                currentRow.setChars(row.getLeftIndent() + currentRow.getChars() + next);
             } else if (available < 0 || (available == 0 && contentLen == 0 && btr.hasNext())) {
 
                 // If no text fits on the line because there is no available space, this is either
@@ -1274,8 +1275,8 @@ class SegmentProcessor {
                     + ")"
                 );
             } else {
-                currentRow.text(
-                    row.getLeftIndent() + trailingWsBraillePattern.matcher(currentRow.getText()).replaceAll(""));
+                currentRow.setChars(
+                    row.getLeftIndent() + trailingWsBraillePattern.matcher(currentRow.getChars()).replaceAll(""));
             }
             if (btr instanceof AggregatedBrailleTranslatorResult) {
                 AggregatedBrailleTranslatorResult abtr = ((AggregatedBrailleTranslatorResult) btr);
@@ -1392,21 +1393,21 @@ class SegmentProcessor {
                 ) {
                     throw new RuntimeException("coding error");
                 }
-                return Optional.of(
-                        new RowImpl.Builder(
-                            StringTools.fill(
-                                    processorContext.getSpaceCharacter(),
-                                    unusedLeft - processorContext.getMargins().getLeftMargin().getContent().length()
-                            ) +
-                            StringTools.fill(
-                                processorContext.getRowDataProps().getUnderlineStyle(),
-                                processorContext.getFlowWidth() - unusedLeft - unusedRight
-                            )
-                        )
-                        .leftMargin(processorContext.getMargins().getLeftMargin())
-                        .rightMargin(processorContext.getMargins().getRightMargin())
-                        .adjustedForMargin(true)
-                        .build());
+                RowImpl row = new RowImpl(
+                    StringTools.fill(
+                        processorContext.getSpaceCharacter(),
+                        unusedLeft - processorContext.getMargins().getLeftMargin().getContent().length()
+                    ) +
+                    StringTools.fill(
+                        processorContext.getRowDataProps().getUnderlineStyle(),
+                        processorContext.getFlowWidth() - unusedLeft - unusedRight
+                    )
+                );
+                row.setLeftMargin(processorContext.getMargins().getLeftMargin());
+                row.setRightMargin(processorContext.getMargins().getRightMargin());
+                row.setAdjustedForMargin(true);
+
+                return Optional.of(row);
             }
             return Optional.empty();
         }

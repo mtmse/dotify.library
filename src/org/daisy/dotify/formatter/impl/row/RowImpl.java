@@ -3,6 +3,7 @@ package org.daisy.dotify.formatter.impl.row;
 import org.daisy.dotify.api.formatter.FormattingTypes.Alignment;
 import org.daisy.dotify.api.formatter.Marker;
 import org.daisy.dotify.api.writer.Row;
+import org.daisy.dotify.formatter.impl.segment.MarkerSegment;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,277 +15,19 @@ import java.util.List;
  * @author Joel Håkansson
  */
 public final class RowImpl implements Row {
-    private final String chars;
-    private final List<Marker> markers;
-    private final List<String> anchors;
-    private final List<String> identifiers;
-    private final MarginProperties leftMargin;
-    private final MarginProperties rightMargin;
-    private final Alignment alignment;
-    private final Float rowSpacing;
-    private final boolean adjustedForMargin;
-    private final boolean allowsBreakAfter;
-    private final int leaderSpace;
-    private final Object externalReference;
-    private final boolean invisible;
-
-    /**
-     * TODO: Write java doc.
-     */
-    public static class Builder {
-        private String chars;
-        private List<Marker> markers = new ArrayList<>();
-        private List<String> anchors = new ArrayList<>();
-        private List<String> identifiers = new ArrayList<>();
-        private MarginProperties leftMargin = MarginProperties.EMPTY_MARGIN;
-        private MarginProperties rightMargin = MarginProperties.EMPTY_MARGIN;
-        private Alignment alignment = Alignment.LEFT;
-        private Float rowSpacing = null;
-        private boolean adjustedForMargin = false;
-        private boolean allowsBreakAfter = true;
-        private int leaderSpace = 0;
-        private boolean built = false;
-        private Object externalReference;
-        private boolean invisible;
-
-        public Builder(String chars) {
-            this.chars = chars;
-        }
-
-        public Builder(RowImpl template) {
-            this.chars = template.chars;
-            this.markers = new ArrayList<>(template.markers);
-            this.anchors = new ArrayList<>(template.anchors);
-            this.identifiers = new ArrayList<>(template.identifiers);
-            this.leftMargin = template.leftMargin;
-            this.rightMargin = template.rightMargin;
-            this.alignment = template.alignment;
-            this.rowSpacing = template.rowSpacing;
-            this.adjustedForMargin = template.adjustedForMargin;
-            this.allowsBreakAfter = template.allowsBreakAfter;
-            this.leaderSpace = template.leaderSpace;
-            this.externalReference = template.externalReference;
-            this.invisible = template.invisible;
-        }
-
-        Builder(RowImpl.Builder template) {
-            this.chars = template.chars;
-            this.markers = new ArrayList<>(template.markers);
-            this.anchors = new ArrayList<>(template.anchors);
-            this.identifiers = new ArrayList<>(template.identifiers);
-            this.leftMargin = template.leftMargin;
-            this.rightMargin = template.rightMargin;
-            this.alignment = template.alignment;
-            this.rowSpacing = template.rowSpacing;
-            this.adjustedForMargin = template.adjustedForMargin;
-            this.allowsBreakAfter = template.allowsBreakAfter;
-            this.leaderSpace = template.leaderSpace;
-            this.externalReference = template.externalReference;
-            this.invisible = template.invisible;
-        }
-
-        public Builder text(String value) {
-            this.chars = value;
-            return this;
-        }
-
-        //TODO: this isn't according to the builder pattern, but we'll allow it as a transition
-        String getText() {
-            return chars;
-        }
-
-        public Builder leftMargin(MarginProperties value) {
-            this.leftMargin = value;
-            return this;
-        }
-
-        //TODO: this isn't according to the builder pattern, but we'll allow it as a transition
-        MarginProperties getLeftMargin() {
-            return leftMargin;
-        }
-
-        public Builder rightMargin(MarginProperties value) {
-            this.rightMargin = value;
-            return this;
-        }
-
-        //TODO: this isn't according to the builder pattern, but we'll allow it as a transition
-        MarginProperties getRightMargin() {
-            return rightMargin;
-        }
-
-        public Builder alignment(Alignment value) {
-            this.alignment = value;
-            return this;
-        }
-
-        public Builder rowSpacing(Float value) {
-            this.rowSpacing = value;
-            return this;
-        }
-
-        public Builder adjustedForMargin(boolean value) {
-            this.adjustedForMargin = value;
-            return this;
-        }
-
-        public Builder allowsBreakAfter(boolean value) {
-            this.allowsBreakAfter = value;
-            return this;
-        }
-
-        public Builder addAnchors(List<String> refs) {
-            assertNotBuilt();
-            anchors.addAll(refs);
-            return this;
-        }
-
-        /**
-         * Adds an anchor to the Row.
-         *
-         * @param ref the anchor
-         * @return returns this builder
-         */
-        Builder addAnchor(String ref) {
-            assertNotBuilt();
-            anchors.add(ref);
-            return this;
-        }
-
-        public void addAnchors(int index, List<String> refs) {
-            assertNotBuilt();
-            anchors.addAll(index, refs);
-        }
-
-        public void leaderSpace(int value) {
-            this.leaderSpace = value;
-        }
-
-        //TODO: this isn't according to the builder pattern, but we'll allow it as a transition
-        public int getLeaderSpace() {
-            return leaderSpace;
-        }
-
-        /**
-         * Add a collection of markers to the Row.
-         *
-         * @param list the list of markers
-         * @return returns this builder
-         */
-        public Builder addMarkers(List<Marker> list) {
-            assertNotBuilt();
-            markers.addAll(list);
-            return this;
-        }
-
-        /**
-         * Add a marker to the Row.
-         *
-         * @param value the marker
-         * @return returns this builder
-         */
-        Builder addMarker(Marker value) {
-            assertNotBuilt();
-            markers.add(value);
-            return this;
-        }
-
-        /**
-         * Add a collection of markers to the Row.
-         *
-         * @param index the position in the marker list to insert the markers
-         * @param list  the list of markers
-         * @throws IndexOutOfBoundsException if the index is out of range
-         *                                   (<code>index &lt; 0 || index &gt; getMarkers().size()</code>)
-         */
-        public void addMarkers(int index, List<Marker> list) {
-            assertNotBuilt();
-            markers.addAll(index, list);
-        }
-
-        /**
-         * Add a collection of identifiers to the Row.
-         *
-         * @param refs a list of identifiers
-         * @return returns this builder
-         */
-        public Builder addIdentifiers(List<String> refs) {
-            assertNotBuilt();
-            identifiers.addAll(refs);
-            return this;
-        }
-
-        /**
-         * Add an external reference object that will flow though the framework to the PEF file.
-         *
-         * @param externalReference External reference object
-         * @return returns this builder
-         */
-        public Builder addExternalReference(Object externalReference) {
-            this.externalReference = externalReference;
-            return this;
-        }
-
-        /**
-         * Add an identifier to the Row.
-         *
-         * @param id the identifier
-         * @return returns this builder
-         */
-        Builder addIdentifier(String id) {
-            assertNotBuilt();
-            identifiers.add(id);
-            return this;
-        }
-
-        /**
-         * Add a collection of identifiers to the Row.
-         *
-         * @param index the position in the identifier list to insert the identifiers
-         * @param list  the list of identifiers
-         * @throws IndexOutOfBoundsException if the index is out of range
-         *                                   (<code>index &lt; 0 || index &gt; getIdentifiers().size()</code>)
-         */
-        public void addIdentifiers(int index, List<String> list) {
-            assertNotBuilt();
-            identifiers.addAll(index, list);
-        }
-
-        private void assertNotBuilt() {
-            // We're using this method to check if the builder has been used instead of
-            // copying the internal lists. This is assumed to be faster.
-            if (built) {
-                throw new IllegalStateException("Cannot build more than once.");
-            }
-        }
-
-        public Builder invisible(boolean b) {
-            this.invisible = b;
-            return this;
-        }
-
-        public RowImpl build() {
-            assertNotBuilt();
-            built = true;
-            return new RowImpl(this);
-        }
-    }
-
-    private RowImpl(Builder builder) {
-        this.chars = builder.chars;
-        this.markers = Collections.unmodifiableList(builder.markers);
-        this.anchors = Collections.unmodifiableList(builder.anchors);
-        this.identifiers = Collections.unmodifiableList(builder.identifiers);
-        this.leftMargin = builder.leftMargin;
-        this.rightMargin = builder.rightMargin;
-        this.alignment = builder.alignment;
-        this.rowSpacing = builder.rowSpacing;
-        this.adjustedForMargin = builder.adjustedForMargin;
-        this.allowsBreakAfter = builder.allowsBreakAfter;
-        this.leaderSpace = builder.leaderSpace;
-        this.externalReference = builder.externalReference;
-        this.invisible = builder.invisible;
-    }
+    private String chars;
+    private List<Marker> markers = new ArrayList<>();
+    private List<String> anchors = new ArrayList<>();
+    private List<String> identifiers = new ArrayList<>();
+    private MarginProperties leftMargin = MarginProperties.EMPTY_MARGIN;
+    private MarginProperties rightMargin = MarginProperties.EMPTY_MARGIN;
+    private Alignment alignment = Alignment.LEFT;
+    private Float rowSpacing = null;
+    private boolean adjustedForMargin = false;
+    private boolean allowsBreakAfter = true;
+    private int leaderSpace = 0;
+    private Object externalReference;
+    private boolean invisible = false;
 
     /**
      * Create a new Row.
@@ -295,11 +38,27 @@ public final class RowImpl implements Row {
         this(chars, new MarginProperties(), new MarginProperties());
     }
 
+    public RowImpl(RowImpl r) {
+        this.chars = r.chars;
+        this.markers = new ArrayList<>(r.markers);
+        this.anchors = new ArrayList<>(r.anchors);
+        this.identifiers = new ArrayList<>(r.identifiers);
+        this.leftMargin = r.leftMargin;
+        this.rightMargin = r.rightMargin;
+        this.alignment = r.alignment;
+        this.rowSpacing = r.rowSpacing;
+        this.adjustedForMargin = r.adjustedForMargin;
+        this.allowsBreakAfter = r.allowsBreakAfter;
+        this.leaderSpace = r.leaderSpace;
+        this.externalReference = r.externalReference;
+        this.invisible = r.invisible;
+    }
+
     public RowImpl(String chars, MarginProperties leftMargin, MarginProperties rightMargin) {
         this.chars = chars;
-        this.markers = Collections.emptyList();
-        this.anchors = Collections.emptyList();
-        this.identifiers = Collections.emptyList();
+        this.markers = new ArrayList<>();
+        this.anchors = new ArrayList<>();
+        this.identifiers = new ArrayList<>();
         this.leftMargin = leftMargin;
         this.rightMargin = rightMargin;
         this.alignment = Alignment.LEFT;
@@ -310,7 +69,6 @@ public final class RowImpl implements Row {
         this.externalReference = null;
         this.invisible = false;
     }
-
     /**
      * Create a new empty Row.
      */
@@ -514,4 +272,79 @@ public final class RowImpl implements Row {
         return true;
     }
 
+    public void setLeftMargin(MarginProperties left) {
+        this.leftMargin = left;
+    }
+
+    public void setRightMargin(MarginProperties right) {
+        this.rightMargin = right;
+    }
+
+    public void setAlignment(Alignment alignment) {
+        this.alignment = alignment;
+    }
+
+    public void setRowSpacing(Float rowSpacing) {
+        this.rowSpacing = rowSpacing;
+    }
+
+    public void addExternalReference(Object externalReference) {
+        this.externalReference = externalReference;
+    }
+
+    public void setAdjustedForMargin(boolean b) {
+        this.adjustedForMargin = b;
+    }
+
+    public void setInvisible(boolean invisible) {
+        this.invisible = invisible;
+    }
+
+    public void addAnchors(List<String> anchors) {
+        this.anchors.addAll(anchors);
+    }
+
+    public void addAnchors(int index, List<String> groupAnchors) {
+        this.anchors.addAll(index, groupAnchors);
+    }
+
+    public void addMarkers(List<Marker> markersList) {
+        this.markers.addAll(markersList);
+    }
+
+    public void addMarkers(int index, List<Marker> groupMarkers) {
+        this.markers.addAll(index, groupMarkers);
+    }
+
+    public void addIdentifiers(List<String> identifiers) {
+        this.identifiers.addAll(identifiers);
+    }
+
+    public void addIdentifiers(int index, List<String> groupIdentifiers) {
+        this.identifiers.addAll(index, groupIdentifiers);
+    }
+
+    public void setAllowsBreakAfter(boolean allowsBreakAfter) {
+        this.allowsBreakAfter = allowsBreakAfter;
+    }
+
+    public void addMarker(MarkerSegment marker) {
+        this.markers.add(marker);
+    }
+
+    public void addAnchor(String referenceID) {
+        this.anchors.add(referenceID);
+    }
+
+    public void addIdentifier(String name) {
+        this.identifiers.add(name);
+    }
+
+    public void setChars(String s) {
+        this.chars = s;
+    }
+
+    public void setLeaderSpace(int i) {
+        this.leaderSpace = i;
+    }
 }

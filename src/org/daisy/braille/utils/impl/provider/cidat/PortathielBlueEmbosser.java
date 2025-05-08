@@ -144,7 +144,7 @@ public class PortathielBlueEmbosser extends CidatEmbosser {
             throw new UnsupportedPaperException("Lines per page = " + linesPerPage + ", must be in [10,31]");
         }
 
-        StringBuffer header = new StringBuffer();
+        StringBuilder header = new StringBuilder();
         byte[] bytes;
 
         if (transparentMode) {

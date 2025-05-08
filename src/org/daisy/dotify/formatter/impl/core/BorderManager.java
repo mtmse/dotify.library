@@ -110,22 +110,25 @@ public class BorderManager {
         if (rs != null) {
             RowImpl s = null;
             for (int i = 0; i < rs.lines - 1; i++) {
-                s = new RowImpl.Builder(border.addBorderToRow(lastRow.getLeftMargin().getContent(),
-                        lastRow.getRightMargin().getContent())).rowSpacing(rs.spacing).build();
+                s = new RowImpl(
+                    border.addBorderToRow(lastRow.getLeftMargin().getContent(),
+                    lastRow.getRightMargin().getContent())
+                );
+                s.setRowSpacing(rs.spacing);
                 addRowInner(s);
             }
         }
 
-        RowImpl.Builder r2Builder = addBorders(row);
+        RowImpl r2 = addBorders(row);
         Float rs2 = row.getRowSpacing();
         if (!TextBorderStyle.NONE.equals(borderStyle)) {
             // distribute row spacing
             rs = LayoutMaster.distributeRowSpacing(master.getRowSpacing(), rs2, true);
-            r2Builder.rowSpacing(rs.spacing);
+            r2.setRowSpacing(rs.spacing);
         } else {
-            r2Builder.rowSpacing(rs2);
+            r2.setRowSpacing(rs2);
         }
-        lastRow = r2Builder.build();
+        lastRow = r2;
         addRowInner(lastRow);
     }
 
@@ -169,7 +172,8 @@ public class BorderManager {
 
     private void addTopBorder() {
         DistributedRowSpacing rs = LayoutMaster.distributeRowSpacing(master.getRowSpacing(), true);
-        RowImpl r = new RowImpl.Builder(border.getTopBorder()).rowSpacing(rs.spacing).build();
+        RowImpl r = new RowImpl(border.getTopBorder());
+        r.setRowSpacing(rs.spacing);
         addRowInner(r);
     }
 
@@ -185,17 +189,16 @@ public class BorderManager {
             int index = ret2.size() - 1;
             RowImpl last = (RowImpl) ret2.get(index);
             // Create a builder copy for editing
-            RowImpl.Builder lastB = new RowImpl.Builder(last);
             if (master.getRowSpacing() != 1) {
                 // set row spacing on the last row to 1.0
-                lastB.rowSpacing(1f);
+                last.setRowSpacing(1f);
             } else if (last.getRowSpacing() != null) {
                 // ignore row spacing on the last row if overall row spacing is
                 // 1.0
-                lastB.rowSpacing(null);
+                last.setRowSpacing(null);
             }
             // Update the row
-            ret2.set(index, lastB.build());
+            ret2.set(index, last);
         }
     }
 
@@ -204,7 +207,7 @@ public class BorderManager {
         hc.addRow(r);
     }
 
-    private RowImpl.Builder addBorders(RowImpl row) {
+    private RowImpl addBorders(RowImpl row) {
         String res = "";
         if (row.getChars().length() > 0) {
             // remove trailing whitespace
@@ -238,9 +241,10 @@ public class BorderManager {
                 "Row is too long (" + rowWidth + "/" + master.getPageWidth() + ") '" + res + "'"
             );
         }
-        return new RowImpl.Builder(res)
-                .invisible(row.isInvisible())
-                .addExternalReference(row.getExternalReference());
+        RowImpl rowImpl = new RowImpl(res);
+        rowImpl.setInvisible(row.isInvisible());
+        rowImpl.addExternalReference(row.getExternalReference());
+        return rowImpl;
     }
 
 }

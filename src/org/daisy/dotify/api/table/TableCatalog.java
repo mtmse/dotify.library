@@ -2,6 +2,7 @@ package org.daisy.dotify.api.table;
 
 import org.daisy.dotify.api.factory.FactoryCatalog;
 import org.daisy.dotify.api.factory.FactoryProperties;
+import org.daisy.dotify.api.hyphenator.HyphenatorFactoryMaker;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
@@ -25,16 +26,15 @@ import java.util.logging.Logger;
  */
 @Component
 public class TableCatalog implements FactoryCatalog<Table>, TableCatalogService {
+    private static final Logger logger = Logger.getLogger(TableCatalog.class.getCanonicalName());
     private final List<TableProvider> providers;
     private final Map<String, TableProvider> map;
-    private final Logger logger;
 
     /**
      * Creates a new empty instance. This method is public because it is required by OSGi.
      * In an SPI context, use newInstance()
      */
     public TableCatalog() {
-        logger = Logger.getLogger(this.getClass().getCanonicalName());
         providers = new CopyOnWriteArrayList<>();
         map = Collections.synchronizedMap(new HashMap<String, TableProvider>());
     }

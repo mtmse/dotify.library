@@ -225,12 +225,15 @@ public final class RowDataProperties {
         this.externalReference = builder.externalReference;
     }
 
-    RowImpl.Builder configureNewEmptyRowBuilder(MarginProperties left, MarginProperties right) {
-        return new RowImpl.Builder("").leftMargin(left).rightMargin(right)
-                .alignment(getAlignment())
-                .rowSpacing(getRowSpacing())
-                .addExternalReference(getExternalReference())
-                .adjustedForMargin(true);
+    RowImpl configureNewEmptyRowBuilder(MarginProperties left, MarginProperties right) {
+        RowImpl row = new RowImpl("");
+        row.setLeftMargin(left);
+        row.setRightMargin(right);
+        row.setAlignment(getAlignment());
+        row.setRowSpacing(getRowSpacing());
+        row.addExternalReference(getExternalReference());
+        row.setAdjustedForMargin(true);
+        return row;
     }
 
     public int getBlockIndent() {

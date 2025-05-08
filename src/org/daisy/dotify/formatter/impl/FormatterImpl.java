@@ -14,6 +14,7 @@ import org.daisy.dotify.api.formatter.VolumeTemplateProperties;
 import org.daisy.dotify.api.translator.BrailleTranslatorFactoryMakerService;
 import org.daisy.dotify.api.translator.TextBorderFactoryMakerService;
 import org.daisy.dotify.api.writer.PagedMediaWriter;
+import org.daisy.dotify.api.writer.PagedMediaWriterFactoryMaker;
 import org.daisy.dotify.formatter.impl.common.Volume;
 import org.daisy.dotify.formatter.impl.common.WriterHandler;
 import org.daisy.dotify.formatter.impl.page.BlockSequence;
@@ -43,10 +44,10 @@ import java.util.logging.Logger;
  * @author Joel Håkansson
  */
 public class FormatterImpl implements Formatter {
+    private static final Logger logger = Logger.getLogger(FormatterImpl.class.getCanonicalName());
     private static final int MAX_ITERATIONS = 200;
 
     private final Stack<VolumeTemplate> volumeTemplates;
-    private final Logger logger;
 
     private boolean unopened;
     private final Stack<BlockSequence> blocks;
@@ -88,8 +89,6 @@ public class FormatterImpl implements Formatter {
         this.blocks = new Stack<>();
         this.unopened = true;
         this.volumeTemplates = new Stack<>();
-
-        this.logger = Logger.getLogger(this.getClass().getCanonicalName());
     }
 
 

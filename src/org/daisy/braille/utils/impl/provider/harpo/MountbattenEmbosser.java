@@ -211,7 +211,7 @@ public class MountbattenEmbosser extends AbstractEmbosser {
         // PageFormat page = getPageFormat();
         // double paperLenght = page.getHeight();
 
-        StringBuffer header = new StringBuffer();
+        StringBuilder header = new StringBuilder();
 
         // header.append("{std}");                 // Factory settings
         // header.append("{adv}");                 // Advanced mode
@@ -231,7 +231,7 @@ public class MountbattenEmbosser extends AbstractEmbosser {
 
     private byte[] getMountbattenFooter() {
 
-        StringBuffer footer = new StringBuffer();
+        StringBuilder footer = new StringBuilder();
 
         // footer.append("{restore}");                 // Restore the default settings
 

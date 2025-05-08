@@ -1,5 +1,6 @@
 package org.daisy.dotify.api.translator;
 
+import org.daisy.dotify.api.text.Integer2TextFactoryMaker;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
@@ -31,17 +32,15 @@ import java.util.logging.Logger;
  * @author Joel Håkansson
  */
 @Component
-public class BrailleFilterFactoryMaker implements
-        BrailleFilterFactoryMakerService {
+public class BrailleFilterFactoryMaker implements BrailleFilterFactoryMakerService {
+    private static final Logger logger = Logger.getLogger(BrailleFilterFactoryMaker.class.getCanonicalName());
     private final List<BrailleFilterFactoryService> factories;
     private final Map<String, BrailleFilterFactoryService> map;
-    private final Logger logger;
 
     /**
      * Creates a new braille filter factory maker.
      */
     public BrailleFilterFactoryMaker() {
-        logger = Logger.getLogger(this.getClass().getCanonicalName());
         factories = new CopyOnWriteArrayList<>();
         this.map = Collections.synchronizedMap(new HashMap<String, BrailleFilterFactoryService>());
     }

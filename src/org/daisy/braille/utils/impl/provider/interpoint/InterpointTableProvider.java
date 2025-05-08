@@ -105,7 +105,7 @@ public class InterpointTableProvider implements TableProvider {
                         String table = " a,b.k;l\"cif|msp!e:h*o+r>djg`ntq'1?2-u(v$3960x~&<5/8)z={\u007f4w7#y}%";
                         // TODO: add patterns U+2840 - U+28ff
 
-                        StringBuffer sb = new StringBuffer();
+                        StringBuilder sb = new StringBuilder();
                         sb.append(table);
                         return new EmbosserBrailleConverter(
                             sb.toString(),

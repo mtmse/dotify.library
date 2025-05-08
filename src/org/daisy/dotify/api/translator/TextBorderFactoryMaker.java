@@ -29,14 +29,13 @@ import java.util.logging.Logger;
  */
 @Component
 public class TextBorderFactoryMaker implements TextBorderFactoryMakerService {
+    private static final Logger logger = Logger.getLogger(TextBorderFactoryMaker.class.getCanonicalName());
     private final List<TextBorderFactoryService> factories;
-    private final Logger logger;
 
     /**
      * Creates a new text border factory maker.
      */
     public TextBorderFactoryMaker() {
-        logger = Logger.getLogger(TextBorderFactoryMaker.class.getCanonicalName());
         factories = new CopyOnWriteArrayList<>();
     }
 

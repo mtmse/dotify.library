@@ -9,16 +9,13 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 class LatexHyphenatorCore {
-
-
+    private static final Logger logger = Logger.getLogger(LatexHyphenatorCore.class.getCanonicalName());
     private static LatexHyphenatorCore instance;
 
     private final Map<String, HyphenationConfig> map;
-    private final Logger logger;
     private final LatexRulesLocator locator;
 
     private LatexHyphenatorCore() {
-        logger = Logger.getLogger(this.getClass().getCanonicalName());
         map = new HashMap<>();
         locator = new LatexRulesLocator();
     }

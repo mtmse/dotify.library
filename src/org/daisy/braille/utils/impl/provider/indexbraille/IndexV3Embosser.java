@@ -156,7 +156,7 @@ public class IndexV3Embosser extends IndexEmbosser {
         double iPart;
         double fPart;
 
-        StringBuffer header = new StringBuffer();
+        StringBuilder header = new StringBuilder();
 
         header.append((char) 0x1b);
         header.append("D");              // Activate temporary formatting properties of a document

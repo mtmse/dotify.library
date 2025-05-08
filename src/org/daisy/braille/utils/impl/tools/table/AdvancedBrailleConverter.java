@@ -164,7 +164,7 @@ public class AdvancedBrailleConverter implements BrailleConverter {
 
     @Override
     public String toText(String braille) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         String t;
         for (char c : braille.toCharArray()) {
             t = toText(c);

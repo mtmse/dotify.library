@@ -3,14 +3,18 @@ package org.daisy.dotify.hyphenator.impl;
 import org.daisy.dotify.api.hyphenator.HyphenatorConfigurationException;
 import org.daisy.dotify.common.text.SplitResult;
 import org.daisy.dotify.common.text.StringSplitter;
+import org.daisy.dotify.formatter.impl.obfl.ObflParserImpl;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 class CWHyphenatorAtom {
+    private static final Logger logger = Logger.getLogger(CWHyphenatorAtom.class.getCanonicalName());
     static final String DICTIONARY_KEY = "dictionary";
     static final String EXCEPTIONS_FILE_KEY = "exceptions-file";
     static final String DECOMPOUND_LIMIT_KEY = "decompound-limit";
@@ -20,8 +24,8 @@ class CWHyphenatorAtom {
     private static final int DEFAULT_DECOMPOUND_LIMIT = 6;
     private static final int DEFAULT_MINIMUM_WORD_LENGTH = 2;
     private static final double DEFAULT_EVALUATE_THRESHOLD = 0.5;
+    private static final Pattern wordPattern = Pattern.compile("\\p{L}+");
 
-    private final Logger logger;
     private final HyphenationConfig base;
     private final Properties exceptions;
     private final String dictionaryPath;
@@ -34,8 +38,6 @@ class CWHyphenatorAtom {
 
 
     CWHyphenatorAtom(String subPath, String locale) throws HyphenatorConfigurationException {
-        logger = Logger.getLogger(this.getClass().getCanonicalName());
-
         Properties imp;
         if (subPath == null) {
             throw new LatexHyphenatorConfigurationException("Locale not supported: " + locale);
@@ -87,15 +89,15 @@ class CWHyphenatorAtom {
 
     private Properties loadProperties(String path) {
         Properties ret = new Properties();
-        try {
-            URL propertiesURL = this.getClass().getResource(path);
-            if (propertiesURL != null) {
-                ret.loadFromXML(propertiesURL.openStream());
-            } else {
-                logger.warning("Cannot locate properties file: " + path);
-            }
+        URL url = CWHyphenatorAtom.class.getResource(path);
+        if (url == null) {
+            logger.warning("Cannot locate properties file: " + path);
+            return ret;
+        }
+        try (InputStream in = url.openStream()) {           //  ❰❰ try-with-resources
+            ret.loadFromXML(in);
         } catch (IOException e) {
-            logger.warning("Failed to load properties file: " + path);
+            logger.log(Level.WARNING, "Failed to load properties file: " + path, e);
         }
         return ret;
     }
@@ -121,8 +123,8 @@ class CWHyphenatorAtom {
                     logger.log(Level.WARNING, "Failed to read dictionary: " + dictionaryPath, e);
                 }
             }
-            StringBuffer output = new StringBuffer();
-            for (SplitResult sr : StringSplitter.split(input, "\\p{L}+")) {
+            StringBuilder output = new StringBuilder();
+            for (SplitResult sr : StringSplitter.split(input, wordPattern)) {
                 if (sr.isMatch()) {
                     String word = sr.getText();
                     if (exceptions.containsKey(word)) {

@@ -381,7 +381,7 @@ class Table extends Block {
             }
             if (tableRowHasData) {
                 // modify last row
-                result.add(new RowImpl.Builder(result.remove(result.size() - 1)).allowsBreakAfter(true).build());
+                result.get(result.size() - 1).setAllowsBreakAfter(true);
             }
             if (addBorder && r < td.getGridHeight() - 1 && tableProps.getTableRowSpacing() > 0) {
                 // separate, do next border
@@ -561,14 +561,15 @@ class Table extends Block {
             }
             j += cr.getInfo().getColSpan() - 1;
         }
-        RowImpl row = new RowImpl.Builder(tableRow.toString()).leftMargin(leftMargin).rightMargin(rightMargin)
-                .rowSpacing(tableProps.getRowSpacing())
-                .adjustedForMargin(true)
-                .allowsBreakAfter(allowsBreakAfter)
-                .addMarkers(markers)
-                .addAnchors(anchors)
-                .addIdentifiers(identifiers)
-                .build();
+        RowImpl row = new RowImpl(tableRow.toString());
+        row.setLeftMargin(leftMargin);
+        row.setRightMargin(rightMargin);
+        row.setRowSpacing(tableProps.getRowSpacing());
+        row.setAdjustedForMargin(true);
+        row.addAnchors(anchors);
+        row.addMarkers(markers);
+        row.addIdentifiers(identifiers);
+        row.setAllowsBreakAfter(allowsBreakAfter);
         return row;
     }
 

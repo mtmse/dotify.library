@@ -174,7 +174,6 @@ public class PageImpl implements Page {
     }
 
     private RowImpl addMarginRegion(final RowImpl r) {
-        RowImpl.Builder b = new RowImpl.Builder(r);
         MarkerRef rf = name -> {
             if (r.hasMarkerWithName(name)) {
                 return true;
@@ -188,17 +187,18 @@ public class PageImpl implements Page {
             }
             return false;
         };
-        MarginProperties margin = r.getLeftMargin();
+        MarginProperties leftMargin = r.getLeftMargin();
         for (MarginRegion mr : template.getLeftMarginRegion()) {
-            margin = getMarginRegionValue(mr, rf, false).append(margin);
+            leftMargin = getMarginRegionValue(mr, rf, false).append(leftMargin);
         }
-        b.leftMargin(margin);
-        margin = r.getRightMargin();
+        MarginProperties rightMargin = r.getRightMargin();
         for (MarginRegion mr : template.getRightMarginRegion()) {
-            margin = margin.append(getMarginRegionValue(mr, rf, true));
+            rightMargin = rightMargin.append(getMarginRegionValue(mr, rf, true));
         }
-        b.rightMargin(margin);
-        return b.build();
+        r.setAdjustedForMargin(false);
+        r.setLeftMargin(leftMargin);
+        r.setRightMargin(rightMargin);
+        return r;
     }
 
     private MarginProperties getMarginRegionValue(

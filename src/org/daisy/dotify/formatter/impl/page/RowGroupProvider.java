@@ -282,14 +282,16 @@ class RowGroupProvider {
      */
     private RowImpl makeInvisible(RowImpl row) {
         if (invisible) {
-            row = new RowImpl.Builder(row).invisible(true).build();
+            row.setInvisible(true);
         }
         return row;
     }
 
     private List<RowImpl> makeInvisible(List<RowImpl> rows) {
         if (invisible && rows.size() > 0) {
-            rows = rows.stream().map(this::makeInvisible).collect(Collectors.toList());
+            for (RowImpl row : rows) {
+                row.setInvisible(true);
+            }
         }
         return rows;
     }

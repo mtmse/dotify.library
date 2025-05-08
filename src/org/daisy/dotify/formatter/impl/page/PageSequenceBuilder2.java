@@ -810,10 +810,10 @@ public class PageSequenceBuilder2 {
                 j--;
                 if ((i == 0 && j == 0)) {
                     // clone the row as not to append the margins twice
-                    RowImpl.Builder b = new RowImpl.Builder(r);
+                    //RowImpl b = new RowImpl(r);
                     // this is the last row; set row spacing to 1 because this is how sph treated it
-                    b.rowSpacing(null);
-                    p.newRow(b.build());
+                    r.setRowSpacing(null);
+                    p.newRow(r);
                 } else {
                     p.newRow(r);
                 }

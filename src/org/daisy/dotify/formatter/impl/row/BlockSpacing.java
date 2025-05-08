@@ -33,20 +33,20 @@ class BlockSpacing {
             if (margins.getLeftMargin().isSpaceOnly() && margins.getRightMargin().isSpaceOnly()) {
                 for (int i = 0; i < rdp.getInnerSpaceAfter(); i++) {
                     skippablePostContentRowsBuilder.add(
-                        rdp.configureNewEmptyRowBuilder(margin, margins.getRightMargin()).build()
+                        rdp.configureNewEmptyRowBuilder(margin, margins.getRightMargin())
                     );
                 }
             } else {
                 for (int i = 0; i < rdp.getInnerSpaceAfter(); i++) {
                     postContentRowsBuilder.add(
-                        rdp.configureNewEmptyRowBuilder(margin, margins.getRightMargin()).build()
+                        rdp.configureNewEmptyRowBuilder(margin, margins.getRightMargin())
                     );
                 }
             }
         } else {
             for (int i = 0; i < rdp.getInnerSpaceAfter(); i++) {
                 postContentRowsBuilder.add(
-                    rdp.configureNewEmptyRowBuilder(margin, margins.getRightMargin()).build()
+                    rdp.configureNewEmptyRowBuilder(margin, margins.getRightMargin())
                 );
             }
             postContentRowsBuilder.add(
@@ -63,13 +63,13 @@ class BlockSpacing {
         if (margins.getLeftParent().isSpaceOnly() && margins.getRightParent().isSpaceOnly()) {
             for (int i = 0; i < rdp.getOuterSpaceAfter(); i++) {
                 skippablePostContentRowsBuilder.add(
-                    rdp.configureNewEmptyRowBuilder(margins.getLeftParent(), margins.getRightParent()).build()
+                    rdp.configureNewEmptyRowBuilder(margins.getLeftParent(), margins.getRightParent())
                 );
             }
         } else {
             for (int i = 0; i < rdp.getOuterSpaceAfter(); i++) {
                 postContentRowsBuilder.add(
-                    rdp.configureNewEmptyRowBuilder(margins.getLeftParent(), margins.getRightParent()).build()
+                    rdp.configureNewEmptyRowBuilder(margins.getLeftParent(), margins.getRightParent())
                 );
             }
         }
@@ -84,10 +84,11 @@ class BlockSpacing {
     ) {
         List<RowImpl> ret = new ArrayList<>();
         for (int i = 0; i < rdp.getOuterSpaceBefore(); i++) {
-            RowImpl row = new RowImpl.Builder("").leftMargin(leftParent).rightMargin(rightParent)
-                    .rowSpacing(rdp.getRowSpacing())
-                    .adjustedForMargin(true)
-                    .build();
+            RowImpl row = new RowImpl("");
+            row.setLeftMargin(leftParent);
+            row.setRightMargin(rightParent);
+            row.setRowSpacing(rdp.getRowSpacing());
+            row.setAdjustedForMargin(true);
             ret.add(row);
         }
         return Collections.unmodifiableList(ret);
@@ -114,7 +115,7 @@ class BlockSpacing {
                 margins.getLeftMargin().getContent() + StringTools.fill(spaceCharacter, rdp.getTextIndent()),
                 margins.getLeftMargin().isSpaceOnly()
             );
-            ret.add(rdp.configureNewEmptyRowBuilder(margin, margins.getRightMargin()).build());
+            ret.add(rdp.configureNewEmptyRowBuilder(margin, margins.getRightMargin()));
         }
         return Collections.unmodifiableList(ret);
     }
@@ -128,15 +129,12 @@ class BlockSpacing {
     ) {
         int w = flowWidth - rightParent.getContent().length() - leftParent.getContent().length();
         int aw = w - d.getLeftCorner().length() - d.getRightCorner().length();
-        RowImpl row = new RowImpl.Builder(
-            d.getLeftCorner() + StringTools.fill(d.getLinePattern(), aw) + d.getRightCorner()
-        )
-            .leftMargin(leftParent)
-            .rightMargin(rightParent)
-            .alignment(rdp.getAlignment())
-            .rowSpacing(rdp.getRowSpacing())
-            .adjustedForMargin(true)
-            .build();
+        RowImpl row = new RowImpl(d.getLeftCorner() + StringTools.fill(d.getLinePattern(), aw) + d.getRightCorner());
+        row.setLeftMargin(leftParent);
+        row.setRightMargin(rightParent);
+        row.setAlignment(rdp.getAlignment());
+        row.setRowSpacing(rdp.getRowSpacing());
+        row.setAdjustedForMargin(true);
         return row;
     }
 

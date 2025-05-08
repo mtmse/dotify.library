@@ -11,11 +11,10 @@ import java.nio.charset.Charset;
 import java.util.logging.Logger;
 
 class LiblouisFileReader {
+    private static final Logger logger = Logger.getLogger(LiblouisFileReader.class.getCanonicalName());
     private final ResourceResolver rr;
     private final LiblouisBrailleFilter.Builder cr;
     private final BrailleNotationConverter nc;
-
-    private final Logger logger;
 
     /**
      * Creates a new empty filter.
@@ -26,7 +25,6 @@ class LiblouisFileReader {
         this.rr = resolver;
         this.cr = new LiblouisBrailleFilter.Builder();
         this.nc = new BrailleNotationConverter("-");
-        this.logger = Logger.getLogger(this.getClass().getCanonicalName());
     }
 
     public LiblouisFileReader() {

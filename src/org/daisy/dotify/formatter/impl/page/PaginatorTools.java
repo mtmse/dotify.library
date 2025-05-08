@@ -124,7 +124,7 @@ class PaginatorTools {
         String padding
     ) throws PaginatorToolsException {
         double target = width / (double) units.size();
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         int used = 0;
         for (int i = 0; i < units.size(); i++) {
             int spacing = (int) Math.round((i + 1) * target) - used;
@@ -175,7 +175,7 @@ class PaginatorTools {
             case UNISIZE_TABLE_CELL:
                 return distributeTable(units, width, padding);
             default:
-                StringBuffer b = new StringBuffer();
+                StringBuilder b = new StringBuilder();
                 for (String s : distributeRetain(units, width, padding, mode)) {
                     b.append(s);
                 }
@@ -210,7 +210,7 @@ class PaginatorTools {
     static String distribute(Collection<TabStopString> units) {
         TreeSet<TabStopString> sortedUnits = new TreeSet<>();
         sortedUnits.addAll(units);
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         int used = 0;
         for (TabStopString t : sortedUnits) {
             used = sb.codePointCount(0, sb.length());

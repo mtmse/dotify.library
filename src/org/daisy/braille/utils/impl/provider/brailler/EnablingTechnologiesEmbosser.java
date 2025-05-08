@@ -278,7 +278,7 @@ public abstract class EnablingTechnologiesEmbosser extends AbstractEmbosser {
         int pageLenght = (int) Math.ceil(paperLenght / EmbosserTools.INCH_IN_MM - 3);
         int topOffFormOffset = (int) Math.ceil(marginTop * getCellHeight() / EmbosserTools.INCH_IN_MM * 10);
 
-        StringBuffer header = new StringBuffer();
+        StringBuilder header = new StringBuilder();
 
         header.append(new char[]{0x1b, 0x00});                                                   // Reset system
         header.append(new char[]{0x1b, 0x01});

@@ -1,5 +1,6 @@
 package org.daisy.dotify.api.writer;
 
+import org.daisy.dotify.api.translator.TextBorderFactoryMaker;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
@@ -24,17 +25,15 @@ import java.util.logging.Logger;
  * @author Joel Håkansson
  */
 @Component
-public class PagedMediaWriterFactoryMaker implements
-        PagedMediaWriterFactoryMakerService {
+public class PagedMediaWriterFactoryMaker implements PagedMediaWriterFactoryMakerService {
+    private static final Logger logger = Logger.getLogger(PagedMediaWriterFactoryMaker.class.getCanonicalName());
     private final List<PagedMediaWriterFactoryService> filters;
     private final Map<String, PagedMediaWriterFactoryService> map;
-    private final Logger logger;
 
     /**
      * Creates a new paged media writer factory maker.
      */
     public PagedMediaWriterFactoryMaker() {
-        logger = Logger.getLogger(this.getClass().getCanonicalName());
         filters = new CopyOnWriteArrayList<>();
         this.map = Collections.synchronizedMap(new HashMap<String, PagedMediaWriterFactoryService>());
     }

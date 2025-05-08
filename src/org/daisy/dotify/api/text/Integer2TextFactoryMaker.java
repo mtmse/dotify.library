@@ -1,5 +1,6 @@
 package org.daisy.dotify.api.text;
 
+import org.daisy.dotify.api.table.TableCatalog;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
@@ -24,17 +25,15 @@ import java.util.logging.Logger;
  * @author Joel Håkansson
  */
 @Component
-public class Integer2TextFactoryMaker implements
-        Integer2TextFactoryMakerService {
+public class Integer2TextFactoryMaker implements Integer2TextFactoryMakerService {
+    private static final Logger logger = Logger.getLogger(Integer2TextFactoryMaker.class.getCanonicalName());
     private final List<Integer2TextFactoryService> filters;
     private final Map<String, Integer2TextFactoryService> map;
-    private final Logger logger;
 
     /**
      * Creates a new integer to text factory maker.
      */
     public Integer2TextFactoryMaker() {
-        logger = Logger.getLogger(this.getClass().getCanonicalName());
         filters = new CopyOnWriteArrayList<>();
         this.map = Collections.synchronizedMap(new HashMap<String, Integer2TextFactoryService>());
     }

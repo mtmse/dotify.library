@@ -321,7 +321,7 @@ public class EmbosserTableProvider implements TableProvider {
                             (char) 31, (char) 211, (char) 23, (char) 29, (char) 223, (char) 25, (char) 220,
                             (char) 203
                     };
-                        StringBuffer sb = new StringBuffer();
+                        StringBuilder sb = new StringBuilder();
                         sb.append(table);
                         return new EmbosserBrailleConverter(
                             sb.toString(),

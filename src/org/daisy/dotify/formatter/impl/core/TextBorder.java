@@ -109,7 +109,7 @@ class TextBorder {
     }
 
     public String addBorderToRow(String text, String innerRightBorder) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append(leftBorder);
         sb.append(text);
         if (pad) {
@@ -144,7 +144,7 @@ class TextBorder {
         String fillCharacter,
         boolean pad
     ) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append(leftBorder);
         sb.append(text);
         if (pad) {

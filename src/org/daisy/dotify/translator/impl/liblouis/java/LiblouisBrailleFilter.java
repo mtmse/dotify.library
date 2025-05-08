@@ -1,6 +1,7 @@
 package org.daisy.dotify.translator.impl.liblouis.java;
 
 import org.daisy.dotify.common.text.StringFilter;
+import org.daisy.dotify.hyphenator.impl.LatexRulesLocator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,7 +24,7 @@ public class LiblouisBrailleFilter implements StringFilter {
      * Provides a builder for liblouis braille filters.
      */
     public static class Builder {
-        private final Logger logger;
+        private static final Logger logger = Logger.getLogger(Builder.class.getCanonicalName());
         private final Map<Integer, Substitution> mSubstitutionTable;
         //Braille Indicators
         private String numsign = "";
@@ -40,7 +41,6 @@ public class LiblouisBrailleFilter implements StringFilter {
          */
         public Builder() {
             this.mSubstitutionTable = new HashMap<>();
-            this.logger = Logger.getLogger(this.getClass().getCanonicalName());
         }
 
         /**

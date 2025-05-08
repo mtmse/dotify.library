@@ -58,7 +58,7 @@ class CapitalizationMarkers implements StringFilter {
     }
 
     private String addCapitalizationMarkers(String input) {
-        StringBuffer ret = new StringBuffer();
+        StringBuilder ret = new StringBuilder();
         // Match an upper case sequence with whitespace, '-' or '/' in between,
         // if preceded by beginning of input or any non letter character and
         // followed by end of input or any non letter character except a digit or 0x283c
@@ -95,7 +95,7 @@ class CapitalizationMarkers implements StringFilter {
     }
 
     private String markAsWords(String s) {
-        StringBuffer ret = new StringBuffer();
+        StringBuilder ret = new StringBuilder();
         // Split on words, or word like character groups (such as passwords)
         for (SplitResult tr : StringSplitter.split(s, WORDS)) {
             String t = tr.getText();

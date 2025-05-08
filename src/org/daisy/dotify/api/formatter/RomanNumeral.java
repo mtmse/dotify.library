@@ -3,7 +3,7 @@ package org.daisy.dotify.api.formatter;
 /**
  * Provides a static method for converting binary integers to Roman numbers.
  * <p>http://leepoint.net/notes-java/examples/components/romanNumerals/romanNumeral.html</p>
- * <p>Illustrates: Static inner value class, StringBuffer, throw exceptions.</p>
+ * <p>Illustrates: Static inner value class, StringBuilder, throw exceptions.</p>
  * <p>2006-12-29 - Placed in public domain.</p>
  *
  * @author Fred Swartz
@@ -33,7 +33,7 @@ class RomanNumeral {
         if (n >= 4000 || n < 1) {
             throw new NumberFormatException("Numbers must be in range 1-3999");
         }
-        StringBuffer result = new StringBuffer(10);
+        StringBuilder result = new StringBuilder(10);
 
         //... Start with largest value, and work toward smallest.
         for (RomanValue equiv : ROMAN_VALUE_TABLE) {

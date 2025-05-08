@@ -20,7 +20,7 @@ class RowInfo {
      * @param row a row
      * @return the space available on the row for content and right text indent.
      */
-    int getMaxLength(RowImpl.Builder row) {
+    int getMaxLength(RowImpl row) {
         int maxLenText = available - row.getLeftMargin().getContent().length() - StringTools.length(leftIndent);
         if (maxLenText < 1) {
             throw new RuntimeException("Cannot continue layout: No space left for characters.");
@@ -32,11 +32,11 @@ class RowInfo {
      * @param row a row
      * @return the column after the last character in the row (including left margin and left text indent)
      */
-    int getPreTabPosition(RowImpl.Builder row) {
+    int getPreTabPosition(RowImpl row) {
         return
             row.getLeftMargin().getContent().length() +
             StringTools.length(leftIndent) +
-            StringTools.length(row.getText());
+            StringTools.length(row.getChars());
     }
 
     public String getLeftIndent() {

@@ -1,5 +1,6 @@
 package org.daisy.dotify.api.hyphenator;
 
+import org.daisy.dotify.api.embosser.EmbosserCatalog;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
@@ -25,15 +26,14 @@ import java.util.logging.Logger;
  */
 @Component
 public class HyphenatorFactoryMaker implements HyphenatorFactoryMakerService {
+    private static final Logger logger = Logger.getLogger(HyphenatorFactoryMaker.class.getCanonicalName());
     private final List<HyphenatorFactoryService> filters;
     private final Map<String, HyphenatorFactoryService> map;
-    private final Logger logger;
 
     /**
      * Creates a new formatter factory maker.
      */
     public HyphenatorFactoryMaker() {
-        logger = Logger.getLogger(this.getClass().getCanonicalName());
         filters = new CopyOnWriteArrayList<>();
         this.map = Collections.synchronizedMap(new HashMap<String, HyphenatorFactoryService>());
     }

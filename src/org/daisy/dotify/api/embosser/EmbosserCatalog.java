@@ -26,16 +26,15 @@ import java.util.logging.Logger;
 //TODO: use EmbosserService instead of Embosser and enable OSGi support
 @Component
 public class EmbosserCatalog implements FactoryCatalog<Embosser>, EmbosserCatalogService {
+    private static final Logger logger = Logger.getLogger(EmbosserCatalog.class.getCanonicalName());
     private final List<EmbosserProvider> providers;
     private final Map<String, EmbosserProvider> map;
-    private final Logger logger;
 
     /**
      * Creates a new empty instance. This method is public because it is required by OSGi.
      * In an SPI context, use newInstance()
      */
     public EmbosserCatalog() {
-        logger = Logger.getLogger(this.getClass().getCanonicalName());
         providers = new CopyOnWriteArrayList<>();
         map = Collections.synchronizedMap(new HashMap<String, EmbosserProvider>());
     }

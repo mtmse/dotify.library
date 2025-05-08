@@ -31,17 +31,15 @@ import java.util.logging.Logger;
  * @author Joel Håkansson
  */
 @Component
-public class BrailleTranslatorFactoryMaker implements
-        BrailleTranslatorFactoryMakerService {
+public class BrailleTranslatorFactoryMaker implements BrailleTranslatorFactoryMakerService {
+    private static final Logger logger = Logger.getLogger(BrailleTranslatorFactoryMaker.class.getCanonicalName());
     private final List<BrailleTranslatorFactoryService> factories;
     private final Map<String, BrailleTranslatorFactoryService> map;
-    private final Logger logger;
 
     /**
      * Creates a new braille translator factory maker.
      */
     public BrailleTranslatorFactoryMaker() {
-        logger = Logger.getLogger(this.getClass().getCanonicalName());
         factories = new CopyOnWriteArrayList<>();
         this.map = Collections.synchronizedMap(new HashMap<String, BrailleTranslatorFactoryService>());
     }

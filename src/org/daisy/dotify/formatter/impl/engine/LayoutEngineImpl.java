@@ -11,6 +11,7 @@ import org.daisy.dotify.api.obfl.ObflParserFactoryService;
 import org.daisy.dotify.api.writer.MetaDataItem;
 import org.daisy.dotify.api.writer.PagedMediaWriter;
 import org.daisy.dotify.api.writer.PagedMediaWriterException;
+import org.daisy.dotify.formatter.impl.FormatterImpl;
 import org.daisy.dotify.formatter.impl.common.FactoryManager;
 
 import java.io.File;
@@ -34,6 +35,7 @@ import javax.xml.stream.XMLStreamException;
  * @author Joel Håkansson
  */
 class LayoutEngineImpl implements FormatterEngine {
+    private static final Logger logger = Logger.getLogger(LayoutEngineImpl.class.getCanonicalName());
     private static final String DC_NS = "http://purl.org/dc/elements/1.1/";
     private static final QName DC_IDENTIFIER = new QName(DC_NS, "identifier");
     private static final QName DC_DATE = new QName(DC_NS, "date");
@@ -41,7 +43,6 @@ class LayoutEngineImpl implements FormatterEngine {
     private final FormatterConfiguration config;
     private final PagedMediaWriter writer;
     private final ObflParserFactoryService obflFactory;
-    private final Logger logger;
     private final FactoryManager fm;
 
     /**
@@ -80,7 +81,6 @@ class LayoutEngineImpl implements FormatterEngine {
         this.config = config;
         this.writer = writer;
         this.obflFactory = obflFactory;
-        this.logger = Logger.getLogger(LayoutEngineImpl.class.getCanonicalName());
         this.fm = fm;
     }
 

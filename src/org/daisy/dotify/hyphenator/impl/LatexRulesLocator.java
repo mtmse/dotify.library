@@ -14,14 +14,13 @@ import java.util.logging.Logger;
  * @author Joel Håkansson
  */
 public class LatexRulesLocator {
-    private final Logger logger;
+    private static final Logger logger = Logger.getLogger(LatexRulesLocator.class.getCanonicalName());
     private final Properties locales = new Properties();
 
     /**
      * Creates a new instance.
      */
     public LatexRulesLocator() {
-        logger = Logger.getLogger(this.getClass().getCanonicalName());
         try {
             URL localesURL = getCatalogResourceURL();
             if (localesURL != null) {

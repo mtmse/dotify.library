@@ -10,15 +10,14 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 class CWHyphenatorCore {
+    private static final Logger logger = Logger.getLogger(CWHyphenatorCore.class.getCanonicalName());
     private static CWHyphenatorCore instance;
     private final Properties tables;
     private final Map<String, CWHyphenatorAtom> map;
-    private final Logger logger;
 
     private CWHyphenatorCore() {
         tables = loadProperties("compound-catalog.xml");
         map = new HashMap<>();
-        logger = Logger.getLogger(this.getClass().getCanonicalName());
     }
 
     boolean supportsLocale(String locale) {

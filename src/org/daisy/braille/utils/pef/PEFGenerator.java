@@ -300,7 +300,7 @@ public class PEFGenerator {
         List<String> chart = new ArrayList<>();
         char c = (char) 0x2800;
         for (int i = 0; i < 8; i++) {
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             for (int j = 0; j < 7; j++) {
                 sb.append(c++);
                 sb.append('\u2800');

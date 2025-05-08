@@ -140,7 +140,7 @@ public class ImpactoEmbosser extends CidatEmbosser {
             throw new UnsupportedPaperException("Lines per page = " + linesPerPage + ", must be in [12,43]");
         }
 
-        StringBuffer header = new StringBuffer();
+        StringBuilder header = new StringBuilder();
 
         header.append((char) 0x1b);
         header.append(')');                          // Transparent mode ON

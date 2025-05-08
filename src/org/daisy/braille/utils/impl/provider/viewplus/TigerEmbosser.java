@@ -294,7 +294,7 @@ public class TigerEmbosser extends AbstractEmbosser {
             throw new UnsupportedPaperException("Form lenght cannot > 21 inch");
         }
 
-        StringBuffer header = new StringBuffer();
+        StringBuilder header = new StringBuilder();
 
         header.append((char) 0x1b);
         header.append('@');                              // System reset

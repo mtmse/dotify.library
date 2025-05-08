@@ -103,6 +103,7 @@ import javax.xml.xpath.XPathExpressionException;
  * @author Joel Håkansson
  */
 public class ObflParserImpl extends XMLParserBase implements ObflParser {
+    private static final Logger logger = Logger.getLogger(ObflParserImpl.class.getCanonicalName());
 
     /*
      * List<MetaDataItem> objects are not only used to pass meta elements from OBFL to PEF but also
@@ -116,7 +117,6 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
     private String mode;
     private boolean hyphGlobal;
     private boolean markCapitalLettersGlobal;
-    private final Logger logger;
     private final FactoryManager fm;
     private boolean normalizeSpace = true;
 
@@ -132,7 +132,6 @@ public class ObflParserImpl extends XMLParserBase implements ObflParser {
      */
     public ObflParserImpl(FactoryManager fm) {
         this.fm = fm;
-        this.logger = Logger.getLogger(this.getClass().getCanonicalName());
     }
 
     public void setNormalizeSpace(boolean value) {

@@ -62,11 +62,11 @@ class FieldResolver {
             Optional<String> x =
                 r.map(v -> {
                     BorderManager bm = new BorderManager(mp, fcontext, 0, 0);
-                    bm.addRow(new RowImpl.Builder(v.getChars())
-                        .leftMargin(v.getLeftMargin())
-                        .rightMargin(v.getRightMargin())
-                        .alignment(v.getAlignment())
-                        .build());
+                    RowImpl row = new RowImpl(v.getChars());
+                    row.setLeftMargin(v.getLeftMargin());
+                    row.setRightMargin(v.getRightMargin());
+                    row.setAlignment(v.getAlignment());
+                    bm.addRow(row);
                     return bm.getRows().get(0).getChars();
                 });
             String data = distribute(
@@ -78,17 +78,16 @@ class FieldResolver {
                 x
             );
 
-            RowImpl.Builder builder = r.map(v ->
-                    new RowImpl.Builder(data)
-                            .addAnchors(v.getAnchors())
-                            .addMarkers(v.getMarkers())
-                            .addIdentifiers(v.getIdentifiers())
-                            .adjustedForMargin(true)
-            )
-                    .orElse(new RowImpl.Builder(data));
-            return builder
-                    .rowSpacing(field.getRowSpacing())
-                    .build();
+            RowImpl row = r.map(v -> {
+                RowImpl innerRow = new RowImpl(data);
+                innerRow.addAnchors(v.getAnchors());
+                innerRow.addMarkers(v.getMarkers());
+                innerRow.addIdentifiers(v.getIdentifiers());
+                innerRow.setAdjustedForMargin(true);
+                return innerRow;
+            }).orElse(new RowImpl(data));
+            row.setRowSpacing(field.getRowSpacing());
+            return row;
         } catch (PaginatorToolsException e) {
             throw new PaginatorException("Error while rendering header/footer", e);
         }

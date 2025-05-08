@@ -148,7 +148,7 @@ public class EmbosserBrailleConverter implements BrailleConverter {
 
     @Override
     public String toBraille(String text) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (char c : text.toCharArray()) {
             sb.append(toBraille(c));
         }
@@ -180,7 +180,7 @@ public class EmbosserBrailleConverter implements BrailleConverter {
 
     @Override
     public String toText(String braille) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         Character t;
         for (char c : braille.toCharArray()) {
             t = toText(c);

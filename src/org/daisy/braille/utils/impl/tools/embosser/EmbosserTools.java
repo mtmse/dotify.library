@@ -41,7 +41,7 @@ public class EmbosserTools {
      *                                  specified by <code>size</code>.
      */
     public static byte[] toBytes(int val, int size) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         String s = "" + val;
         if (s.length() > size) {
             throw new IllegalArgumentException("Number is too big.");

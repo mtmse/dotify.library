@@ -143,7 +143,7 @@ public class IndexV2Embosser extends IndexEmbosser {
 
     private byte[] getIndexV2Header(int cellsInWidth, boolean eightDots) {
 
-        StringBuffer header = new StringBuffer();
+        StringBuilder header = new StringBuilder();
 
         header.append((char) 0x1b);
         header.append((char) 0x0f);
