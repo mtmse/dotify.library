@@ -71,4 +71,16 @@ public class LeaderTest extends AbstractFormatterEngineTest {
             false
         );
     }
+
+    @Test
+    public void testLeaderKeepTogether() throws
+            LayoutEngineException,
+            IOException,
+            PagedMediaWriterConfigurationException {
+        testPEF(
+            "resource-files/leader-keep-together-input.obfl",
+            "resource-files/leader-keep-together-expected.pef",
+            false
+        );
+    }
 }
