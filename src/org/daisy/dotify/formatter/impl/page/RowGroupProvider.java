@@ -46,7 +46,7 @@ class RowGroupProvider {
     private final OrphanWidowControl owc;
     private final boolean otherData;
     private DefaultContext context;
-    private int rowIndex;
+    private boolean firstRow;
     private int phase;
     private int keepWithNext;
     private final boolean invisible;
@@ -58,7 +58,7 @@ class RowGroupProvider {
         this.bc = template.bc;
         this.owc = template.owc;
         this.otherData = template.otherData;
-        this.rowIndex = template.rowIndex;
+        this.firstRow = template.firstRow;
         this.phase = template.phase;
         this.keepWithNext = template.keepWithNext;
         this.invisible = template.invisible;
@@ -70,7 +70,7 @@ class RowGroupProvider {
         this.bcm = bcm;
         this.bc = bc;
         this.phase = 0;
-        this.rowIndex = 0;
+        this.firstRow = true;
         this.owc = new OrphanWidowControl(g.getRowDataProperties().getOrphans(),
             g.getRowDataProperties().getWidows(),
             bc.getRefs().getRowCount(g.getBlockAddress()));
@@ -185,7 +185,7 @@ class RowGroupProvider {
             Optional<RowImpl> rt;
             if ((rt = bcm.getNext(lineProps)).isPresent()) {
                 RowImpl r = rt.get();
-                rowIndex++;
+                owc.increaseRowCount();
                 boolean hasNext = bcm.hasNext();
                 if (!hasNext) {
                     //we're at the last line, this should be kept with the next block's first line
@@ -200,14 +200,15 @@ class RowGroupProvider {
                         .skippable(false)
                         .breakable(
                             r.allowsBreakAfter() &&
-                            owc.allowsBreakAfter(rowIndex - 1) &&
+                            owc.allowsBreakAfter() &&
                             keepWithNext <= 0 &&
                             (Keep.AUTO == g.getKeepType() || !hasNext) &&
                             (hasNext || !bcm.hasPostContentRows())
                         );
-                if (rowIndex == 1) { //First item
+                if (firstRow) {
                     setPropertiesForFirstContentRowGroup(rgb, bc.getRefs(), g);
                 }
+                firstRow = false;
                 keepWithNext = keepWithNext - 1;
                 return setPropertiesThatDependOnHasNext(rgb, hasNext(), g).build();
             } else {

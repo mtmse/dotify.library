@@ -7,15 +7,16 @@ package org.daisy.dotify.formatter.impl.page;
  */
 class OrphanWidowControl {
     private final int orphans, widows, size;
+    private int rowCount = 0;
 
     /**
      * Creates a new instance.
      *
-     * @param orphans the minimum number of paragraph-opening lines that may appear by
+     * @param orphans the minimum number of block-opening lines that may appear by
      *                themselves at the bottom of a page.
-     * @param widows  the minimum number of paragraph-ending lines that may fall at the
+     * @param widows  the minimum number of block-ending lines that may fall at the
      *                beginning of the following page.
-     * @param size    the number of lines in the paragraph
+     * @param size    the expected total number of rows in the block
      */
     OrphanWidowControl(int orphans, int widows, int size) {
         this.orphans = orphans;
@@ -24,20 +25,24 @@ class OrphanWidowControl {
     }
 
     /**
-     * Returns true if break is allowed after the specified index, zero based.
+     * Specify that a new row was added to the block
      *
-     * @param index the index
-     * @return true if break is allowed after the specified index, false otherwise
-     * @throws IndexOutOfBoundsException if index is &gt;= size or &lt; 0
+     * @return the current number of rows in the block
      */
-    boolean allowsBreakAfter(int index) {
-        if (index < 0) {
-            throw new IndexOutOfBoundsException();
-        }
-        if (index >= size - 1) { // the last index always allows breaking after
+    int increaseRowCount() {
+        return ++rowCount;
+    }
+
+    /**
+     * Returns true if a break is allowed after the current row.
+     *
+     * @return true if a break is allowed after the current row, false otherwise
+     */
+    boolean allowsBreakAfter() {
+        if (rowCount >= size) {
             return true;
         } else {
-            return (index >= (orphans - 1) && widows < (size - index));
+            return rowCount >= orphans && widows <= size - rowCount;
         }
     }
 }
