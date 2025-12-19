@@ -22,20 +22,18 @@ import java.util.function.Consumer;
  */
 final class BlockProcessor {
     protected RowGroupProvider rowGroupProvider;
-    private final Stack<OrphanWidowControl> owcStack;
+    private final Stack<OrphanWidowControl> owcStack = new Stack<>();
 
     BlockProcessor() {
-        this.owcStack = new Stack<>();
     }
 
     BlockProcessor(BlockProcessor template) {
-        this.owcStack = new Stack<>();
-        OrphanWidowControl owc = null;
-        for (OrphanWidowControl o : template.owcStack) {
-            owcStack.add((owc = new OrphanWidowControl(o, owc)));
+        OrphanWidowControl lastOwc = null;
+        for (OrphanWidowControl owc : template.owcStack) {
+            owcStack.add((lastOwc = new OrphanWidowControl(owc, lastOwc)));
         }
         this.rowGroupProvider = template.rowGroupProvider != null
-            ? new RowGroupProvider(template.rowGroupProvider, owc)
+            ? new RowGroupProvider(template.rowGroupProvider, lastOwc)
             : null;
     }
 

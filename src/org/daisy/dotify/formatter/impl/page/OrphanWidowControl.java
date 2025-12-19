@@ -79,7 +79,7 @@ class OrphanWidowControl {
     /**
      * Returns true if a break is allowed after the current row.
      *
-     * @return true if a break is allowed after the current row, false otherwise
+     * @return whether a break is allowed after the current row
      */
     boolean allowsBreakAfter() {
         if (parent != null && !parent.allowsBreakAfter()) {
