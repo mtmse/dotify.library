@@ -378,6 +378,7 @@ public class VolumeProvider {
     boolean done() {
         crh.commitBreakable();
         crh.commitTransitionProperties();
+        crh.commitRowCount(); // for orphan control
         crh.trimPageDetails();
         crh.setVolumeCount(groups.getVolumeCount());
         crh.setSheetsInDocument(groups.countTotalSheets());
