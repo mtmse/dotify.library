@@ -22,6 +22,13 @@ public class BlockContentManager extends AbstractBlockContentManager {
     private final List<RowImpl> rows;
     private final SegmentProcessor sp;
     private int rowIndex;
+    // Caches the result of the SegmentProcessor probe in hasNext() for the case where all
+    // buffered rows have been consumed and we must peek ahead. The probe is expensive because
+    // it requires a full SegmentProcessor copy. Between the two hasNext() calls that occur
+    // per row in RowGroupProvider, sp's state does not advance, so the second call is always
+    // redundant. null means "no cached value". Must be cleared by reset(), setContext(), and
+    // ensureBuffer() (after sp.getNext() advances sp's state) to prevent stale results.
+    private Boolean hasNextCache;
 
     public BlockContentManager(
         String blockId,
@@ -57,10 +64,12 @@ public class BlockContentManager extends AbstractBlockContentManager {
 
     private void initFields() {
         rowIndex = 0;
+        hasNextCache = null;
     }
 
     @Override
     public void setContext(DefaultContext context) {
+        hasNextCache = null;
         this.sp.setContext(context);
     }
 
@@ -85,6 +94,7 @@ public class BlockContentManager extends AbstractBlockContentManager {
                 return false;
             }
             sp.getNext(lineProps).ifPresent(v -> rows.add(v));
+            hasNextCache = null;
         }
         return rows.size() >= index;
     }
@@ -120,7 +130,11 @@ public class BlockContentManager extends AbstractBlockContentManager {
             if (!sp.hasMoreData()) {
                 return false;
             } else {
-                return new SegmentProcessor(sp).getNext(LineProperties.DEFAULT).isPresent();
+                if (hasNextCache != null) {
+                    return hasNextCache;
+                }
+                hasNextCache = new SegmentProcessor(sp).getNext(LineProperties.DEFAULT).isPresent();
+                return hasNextCache;
             }
         } else if (diff < 0) {
             // The next value should always follow the size of the last produced result.
