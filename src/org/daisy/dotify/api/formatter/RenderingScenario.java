@@ -23,6 +23,12 @@ public interface RenderingScenario {
      * variables (which might, for example, include the total height
      * of the rendered result).
      *
+     * <p>The {@code variables} map is <em>ephemeral</em>: it is valid only for
+     * the duration of this call. Implementations must read all required values
+     * from the map before returning and must not retain a reference to the map
+     * or pass it to any code that outlives this call. The map contents are
+     * undefined after this method returns.</p>
+     *
      * @param variables the variables to use when calculating the cost
      * @return returns the cost for this scenario
      */

@@ -28,6 +28,10 @@ class ScenarioProcessor {
     private float minWidth = 0;
     private double forceCount = 0;
     private Map<String, ScenarioData> states;
+    // Reused across calculateCost() calls to avoid per-call HashMap allocation.
+    // The map is populated immediately before each call and must not be retained
+    // by any RenderingScenario.calculateCost() implementation (see Javadoc).
+    private final Map<String, Double> costParams = new HashMap<>(4);
 
     ScenarioProcessor() {
         data = new ScenarioData();
@@ -100,7 +104,10 @@ class ScenarioProcessor {
                     } else {
                         //TODO: measure, evaluate
                         float size = data.calcSize() - height;
-                        double ncost = current.calculateCost(setParams(size, minWidth, forceCount));
+                        costParams.put("total-height", (double) size);
+                        costParams.put("min-block-width", (double) minWidth);
+                        costParams.put("forced-break-count", forceCount);
+                        double ncost = current.calculateCost(costParams);
                         if (ncost < cost) {
                             //if better, store
                             cost = ncost;
@@ -136,7 +143,10 @@ class ScenarioProcessor {
             } else {
                 //if not better
                 float size = data.calcSize() - height;
-                double ncost = current.calculateCost(setParams(size, minWidth, forceCount));
+                costParams.put("total-height", (double) size);
+                costParams.put("min-block-width", (double) minWidth);
+                costParams.put("forced-break-count", forceCount);
+                double ncost = current.calculateCost(costParams);
                 if (ncost > cost) {
                     restoreState(scenario);
                 }
@@ -164,14 +174,6 @@ class ScenarioProcessor {
     List<RowGroupSequence> processResult() {
         finishBlockProcessing();
         return data.getDataGroups();
-    }
-
-    private static Map<String, Double> setParams(double height, double minBlockWidth, double forceCount) {
-        Map<String, Double> params = new HashMap<>();
-        params.put("total-height", height);
-        params.put("min-block-width", minBlockWidth);
-        params.put("forced-break-count", forceCount);
-        return params;
     }
 
 }
