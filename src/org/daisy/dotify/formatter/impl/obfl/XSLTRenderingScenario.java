@@ -5,19 +5,11 @@ import org.daisy.dotify.api.formatter.FormatterException;
 import org.daisy.dotify.api.formatter.RenderingScenario;
 import org.daisy.dotify.api.formatter.TextProperties;
 import org.daisy.dotify.api.obfl.Expression;
-import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Map;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.events.XMLEvent;
 import javax.xml.transform.Transformer;
@@ -57,13 +49,8 @@ public class XSLTRenderingScenario implements RenderingScenario {
             ByteArrayOutputStream os = new ByteArrayOutputStream();
             t.transform(new DOMSource(node), new StreamResult(os));
 
-            //TODO: could event reader report the errors reported by the dom parser?
-            // Specifically, more than one root node.
-            newDocumentFromInputStream(
-                new ByteArrayInputStream(os.toByteArray()), parser.getFactoryManager().getDocumentBuilderFactory()
-            );
-
-            //render
+            // The StAX parser handles most malformed-XML cases; multiple-root-element
+            // output is checked explicitly after the main loop (see below).
             XMLInputFactory factory = parser.getFactoryManager().getXmlInputFactory();
             XMLEventIterator input = new XMLEventReaderAdapter(
                 factory.createXMLEventReader(new ByteArrayInputStream(os.toByteArray()))
@@ -87,25 +74,21 @@ public class XSLTRenderingScenario implements RenderingScenario {
                     ObflParserImpl.report(event);
                 }
             }
-        } catch (FormatterException e) {
-            throw e;
+            // Verify the transform produced exactly one root element. A valid XML document
+            // may not have multiple root elements; some StAX parsers do not enforce this,
+            // so we check by draining any trailing events after the first root element ends.
+            while (input.hasNext()) {
+                XMLEvent trailing = input.nextEvent();
+                if (trailing.isStartElement()) {
+                    throw new RuntimeException(
+                        "XSLT result must have exactly one root element; found a second <"
+                        + trailing.asStartElement().getName().getLocalPart() + ">"
+                    );
+                }
+            }
         } catch (Exception e) {
             throw new FormatterException(e);
         }
-    }
-
-    private static Document newDocumentFromInputStream(
-        InputStream in,
-        DocumentBuilderFactory factory
-    ) throws FormatterException {
-        Document ret = null;
-        try {
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            ret = builder.parse(new InputSource(in));
-        } catch (ParserConfigurationException | SAXException | IOException e) {
-            throw new FormatterException(e);
-        }
-        return ret;
     }
 
     @Override
