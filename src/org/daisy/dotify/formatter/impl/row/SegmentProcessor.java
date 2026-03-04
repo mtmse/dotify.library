@@ -62,6 +62,13 @@ class SegmentProcessor {
      */
     private final boolean hasDynamicContent;
     private final SegmentProcessorContext processorContext;
+    /**
+     * One pre-built {@link Leader} per {@link LeaderSegment} in {@code segments}, in segment order.
+     * Built once in the constructor by translating each leader pattern through the appropriate
+     * {@code BrailleTranslator}. Reused on every {@code reset()} to avoid repeated translation
+     * and object allocation for patterns that are constant across layout iterations.
+     */
+    private final List<Leader> preBuiltLeaders;
 
     private int segmentIndex;
     /**
@@ -171,6 +178,7 @@ class SegmentProcessor {
             return "";
         };
         this.expressionResolver = (e) -> e.getExpression().render(getContext());
+        this.preBuiltLeaders = buildLeaders(this.segments, this.processorContext);
         initFields();
     }
 
@@ -204,6 +212,7 @@ class SegmentProcessor {
         this.hasSignificantContent = template.hasSignificantContent;
         this.hasDynamicContent = template.hasDynamicContent;
         this.blockId = template.blockId;
+        this.preBuiltLeaders = template.preBuiltLeaders; // immutable; safe to share
         this.pagenumResolver = template.pagenumResolver;
         // can't simply copy because getContext() of template would be used
         this.markerRefResolver = (ref) -> {
@@ -357,6 +366,36 @@ class SegmentProcessor {
         return rdp.getUnderlineStyle() != null;
     }
 
+    private static List<Leader> buildLeaders(
+        List<Segment> segments,
+        SegmentProcessorContext processorContext
+    ) {
+        List<Leader> result = new ArrayList<>();
+        for (Segment s : segments) {
+            if (s.getSegmentType() == SegmentType.Leader) {
+                LeaderSegment ls = (LeaderSegment) s;
+                String pattern = ls.getPattern();
+                try {
+                    pattern = processorContext
+                        .getFormatterContext()
+                        .getTranslator(ls.getTextProperties().getTranslationMode())
+                        .translate(Translatable.text(pattern).build())
+                        .getTranslatedRemainder();
+                } catch (TranslationException e) {
+                    throw new RuntimeException(e);
+                }
+                result.add(
+                    new Leader.Builder()
+                              .pattern(pattern)
+                              .position(ls.getPosition())
+                              .align(ls.getAlignment())
+                              .build()
+                );
+            }
+        }
+        return Collections.unmodifiableList(result);
+    }
+
     private void initFields() {
         segmentIndex = 0;
         currentRow = null;
@@ -390,29 +429,14 @@ class SegmentProcessor {
                     e.setResolver(expressionResolver);
                     break;
                 }
-                case Leader: {
-                    LeaderSegment ls = (LeaderSegment) s;
-                    // translate pattern
-                    String pattern = ls.getPattern();
-                    try {
-                        pattern = processorContext
-                            .getFormatterContext()
-                            .getTranslator(ls.getTextProperties().getTranslationMode())
-                            .translate(Translatable.text(pattern).build()).getTranslatedRemainder();
-                    } catch (TranslationException e) {
-                        throw new RuntimeException(e);
-                    }
-                    // add to leader manager
-                    nextLeaders.addLeader(
-                        new Leader.Builder()
-                                  .pattern(pattern)
-                                  .position(ls.getPosition())
-                                  .align(ls.getAlignment())
-                                  .build());
-                    break;
-                }
                 default:
             }
+        }
+        // Repopulate the leader manager from the pre-built cache. Translation was performed once
+        // at construction time; reusing the same Leader instances avoids repeated translator calls
+        // and object allocation across layout iterations.
+        for (Leader leader : preBuiltLeaders) {
+            nextLeaders.addLeader(leader);
         }
         // produce group markers and anchors
         getNext(false, LineProperties.DEFAULT);
