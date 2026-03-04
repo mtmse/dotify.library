@@ -154,6 +154,14 @@ class RowGroupDataSource implements SplitPointDataSource<RowGroup, RowGroupDataS
         this.reservedWidths = func;
     }
 
+    void addToGroup(RowGroup rg) {
+        data.addToGroup(rg);
+    }
+
+    int getGroupUnitSizeSum() {
+        return data.getGroupUnitSizeSum();
+    }
+
     /**
      * <p>Sets the hyphenate last line property.</p>
      *
@@ -184,8 +192,9 @@ class RowGroupDataSource implements SplitPointDataSource<RowGroup, RowGroupDataS
                 Block b = data.getBlocks().get(blockIndex);
                 blockIndex++;
                 offsetInBlock = 0;
-                modifyContext(c -> c.topOfPage(data.getGroup() == null ||
-                                               data.getGroup().stream().allMatch(v -> v.getUnitSize() == 0)));
+                // A non-zero unit-size sum means at least one visible row has been placed,
+                // so we are no longer at the top of the page.
+                modifyContext(c -> c.topOfPage(data.getGroup() == null || data.getGroupUnitSizeSum() == 0));
                 blockProcessor.loadBlock(master, b, getContext(), hasSequence(), hasResult(),
                                          this::newRowGroupSequence, v -> { });
             }
@@ -198,7 +207,7 @@ class RowGroupDataSource implements SplitPointDataSource<RowGroup, RowGroupDataS
                     .reservedWidth(reservedWidths.apply(data))
                     .lineBlockLocation(new BlockLineLocation(blockProcessor.getBlockAddress(), offsetInBlock))
                     .build());
-            added.ifPresent(rg -> data.getGroup().add(rg));
+            added.ifPresent(this::addToGroup);
             offsetInBlock += added.map(v -> v.getRows().size()).orElse(0);
         }
         return true;

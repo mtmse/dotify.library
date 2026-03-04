@@ -16,6 +16,9 @@ class RowGroupSequence {
     private final BreakBefore breakBefore;
     private VerticalSpacing vSpacing;
     private List<RowGroup> group;
+    // Running sum of (int) rg.getUnitSize() for all row groups in the group list.
+    // Maintained incrementally by addToGroup() and recomputed by setGroup().
+    private int groupUnitSizeSum;
 
     public RowGroupSequence(BreakBefore breakBefore, VerticalSpacing vSpacing) {
         this(breakBefore, vSpacing, new ArrayList<>(), new ArrayList<>());
@@ -31,6 +34,13 @@ class RowGroupSequence {
         this.group = group;
         this.vSpacing = vSpacing;
         this.breakBefore = breakBefore;
+        int sum = 0;
+        if (group != null) {
+            for (RowGroup rg : group) {
+                sum += (int) rg.getUnitSize();
+            }
+        }
+        this.groupUnitSizeSum = sum;
     }
 
     /**
@@ -53,14 +63,25 @@ class RowGroupSequence {
             for (RowGroup rg : template.group) {
                 group.add(new RowGroup(rg));
             }
+            // All row groups are copied with identical unit sizes, so the sum is unchanged.
+            this.groupUnitSizeSum = template.groupUnitSizeSum;
         } else {
             if (template.group == null) {
                 this.group = null;
+                this.groupUnitSizeSum = 0;
             } else if (template.group.size() > offset) {
                 this.group = new ArrayList<>(
                         offset > 0 ? template.group.subList(offset, template.group.size()) : template.group);
+                // Recompute the sum for the retained sublist. This loop runs in O(n - offset),
+                // the same cost as the subList copy above, so it introduces no additional asymptotic work.
+                int sum = 0;
+                for (RowGroup rg : this.group) {
+                    sum += (int) rg.getUnitSize();
+                }
+                this.groupUnitSizeSum = sum;
             } else {
                 this.group = new ArrayList<>();
+                this.groupUnitSizeSum = 0;
             }
         }
         this.vSpacing = vs;
@@ -73,6 +94,37 @@ class RowGroupSequence {
 
     void setGroup(List<RowGroup> value) {
         this.group = value;
+        int sum = 0;
+        if (value != null) {
+            for (RowGroup rg : value) {
+                sum += (int) rg.getUnitSize();
+            }
+        }
+        this.groupUnitSizeSum = sum;
+    }
+
+    /**
+     * Appends a row group to the group list and updates the running unit-size sum.
+     * Prefer this method over {@link #getGroup()}.add() to keep the sum consistent.
+     *
+     * @param rg the row group to append
+     */
+    void addToGroup(RowGroup rg) {
+        if (group == null) {
+            group = new ArrayList<>();
+        }
+        group.add(rg);
+        groupUnitSizeSum += (int) rg.getUnitSize();
+    }
+
+    /**
+     * Returns the sum of <code>(int) rg.getUnitSize()</code> for every row group currently
+     * in the group list. Equivalent to iterating the list and summing, but O(1).
+     *
+     * @return the accumulated unit-size sum
+     */
+    int getGroupUnitSizeSum() {
+        return groupUnitSizeSum;
     }
 
     List<Block> getBlocks() {

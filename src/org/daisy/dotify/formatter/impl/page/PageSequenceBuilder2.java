@@ -424,9 +424,11 @@ public class PageSequenceBuilder2 {
                     // the top of the sequence, in terms of rows with normal row spacing. Note that it
                     // is not accurate if the sequence contains collapsing margins. It is also not
                     // totally accurate if non-integer row spacings are used.
-                    int pos = seq.getGroup() == null ? 0 : (int) Math.floor(
-                        seq.getGroup().stream().mapToDouble(v -> (int) v.getUnitSize()).sum());
-                    return master.getFlowWidth() - fieldResolver.getWidth(current.getPageNumber(), pos);
+                    //
+                    // getGroupUnitSizeSum() returns the running sum of (int) rg.getUnitSize() across
+                    // all row groups added so far — identical to the previous stream sum, but O(1).
+                    return master.getFlowWidth() - fieldResolver.getWidth(
+                        current.getPageNumber(), seq.getGroupUnitSizeSum());
                 }
             );
             Optional<Boolean> blockBoundary = Optional.empty();

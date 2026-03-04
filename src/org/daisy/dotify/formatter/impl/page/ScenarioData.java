@@ -40,9 +40,7 @@ class ScenarioData {
     float calcSize() {
         float size = 0;
         for (RowGroupSequence rgs : dataGroups) {
-            for (RowGroup rg : rgs.getGroup()) {
-                size += rg.getUnitSize();
-            }
+            size += rgs.getGroupUnitSizeSum();
         }
         return size;
     }
@@ -80,7 +78,7 @@ class ScenarioData {
         );
         while (blockProcessor.hasNextInBlock()) {
             blockProcessor.getNextRowGroup(bc, LineProperties.DEFAULT)
-                    .ifPresent(rg -> dataGroups.peek().getGroup().add(rg));
+                    .ifPresent(rg -> dataGroups.peek().addToGroup(rg));
         }
 
         dataGroups.peek().getBlocks().add(g);
