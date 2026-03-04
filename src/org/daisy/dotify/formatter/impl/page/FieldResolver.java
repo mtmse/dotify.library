@@ -23,7 +23,9 @@ import org.daisy.dotify.formatter.impl.search.CrossReferenceHandler;
 import org.daisy.dotify.formatter.impl.search.PageDetails;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -34,6 +36,13 @@ class FieldResolver {
     private final FormatterContext fcontext;
     private final CrossReferenceHandler crh;
     private final PageDetails detailsTemplate;
+    // Caches the result of getAvailableForNoField() for each (pageNumber, normalizedRowOffset)
+    // pair. The key encodes both values as a single long: the upper 44 bits hold the page
+    // number and the lower 20 bits hold the row offset after modulo (row offsets are bounded
+    // by flowHeight, which is typically 25–40, so 20 bits is far more than enough). No
+    // explicit invalidation is needed: FieldResolver is reconstructed on every layout pass
+    // by PageSequenceBuilder2, so a stale entry from a previous iteration can never survive.
+    private final Map<Long, Integer> fieldWidthCache = new HashMap<>();
 
     FieldResolver(
         LayoutMaster master,
@@ -267,20 +276,29 @@ class FieldResolver {
         if (flowHeader + flowFooter > 0) {
             int flowHeight = master.getFlowHeight(p);
             rowOffset = rowOffset % flowHeight;
+            long cacheKey = ((long) details.getPageNumber() << 20) | (rowOffset & 0xFFFFF);
+            Integer cached = fieldWidthCache.get(cacheKey);
+            if (cached != null) {
+                return cached;
+            }
             if (rowOffset < flowHeader) {
                 //this is a shared row
                 int start = p.getHeader().size() - flowHeader;
-                return getAvailableForNoField(
+                int result = getAvailableForNoField(
                     details,
                     p.getHeader().get(start + rowOffset)
                 );
+                fieldWidthCache.put(cacheKey, result);
+                return result;
             } else if (rowOffset >= flowHeight - flowFooter) {
                 //this is a shared row
                 int rowsLeftOnPage = flowHeight - rowOffset;
-                return getAvailableForNoField(
+                int result = getAvailableForNoField(
                     details,
                     p.getFooter().get(flowFooter - rowsLeftOnPage)
                 );
+                fieldWidthCache.put(cacheKey, result);
+                return result;
             } else {
                 return master.getFlowWidth();
             }
