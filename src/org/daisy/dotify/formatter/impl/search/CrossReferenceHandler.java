@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -186,10 +187,14 @@ public class CrossReferenceHandler {
     // once, because we need the minimum value across iterations, but without taking into
     // account any intermediary values.
     public void commitRowCount() {
-        while (!rowCount.uncommitted.isEmpty()) {
-            BlockAddress blockId = rowCount.uncommitted.keySet().iterator().next();
-            int value = rowCount.uncommitted.remove(blockId);
-
+        Iterator<Map.Entry<BlockAddress, Integer>> it = rowCount.uncommitted.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<BlockAddress, Integer> entry = it.next();
+            BlockAddress blockId = entry.getKey();
+            int value = entry.getValue();
+            // Remove from uncommitted before calling rowCount.put(): put() throws if the key
+            // is still present in uncommitted when it checks containsKey().
+            it.remove();
             // The row count is used by the page break algorithm in the next iteration to
             // determine/estimate how many widow lines a block will have. The actual row count can
             // differ however, for instance due to changes in hyphenation (hyphenation may be suppressed

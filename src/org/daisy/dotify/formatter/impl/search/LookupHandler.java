@@ -2,6 +2,7 @@ package org.daisy.dotify.formatter.impl.search;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -143,10 +144,13 @@ class LookupHandler<K, V> {
      * Commits values stored with keep.
      */
     void commit() {
-        while (!uncommitted.isEmpty()) {
-            K key = uncommitted.keySet().iterator().next();
-            V value = uncommitted.remove(key);
-            put(key, value);
+        Iterator<Map.Entry<K, V>> it = uncommitted.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<K, V> entry = it.next();
+            // Remove from uncommitted before calling put(): put() throws if the key
+            // is still present in uncommitted when it checks containsKey().
+            it.remove();
+            put(entry.getKey(), entry.getValue());
         }
     }
 
