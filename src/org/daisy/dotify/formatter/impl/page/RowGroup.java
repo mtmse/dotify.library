@@ -57,9 +57,12 @@ class RowGroup implements SplitPointUnit {
         Builder(float rowDefault, List<RowImpl> rows) {
             this.rows = rows;
             this.rowDefault = rowDefault;
-            this.markers = new ArrayList<>();
-            this.anchors = new ArrayList<>();
-            this.identifiers = new ArrayList<>();
+            // Collections.emptyList() is used as a safe, non-allocating sentinel.
+            // All three setters unconditionally replace the field, so the immutable
+            // default is never mutated in-place. The copy constructor is unaffected.
+            this.markers = Collections.emptyList();
+            this.anchors = Collections.emptyList();
+            this.identifiers = Collections.emptyList();
         }
 
         Builder add(RowImpl value) {
@@ -157,12 +160,24 @@ class RowGroup implements SplitPointUnit {
         this.unitSize = calcUnitSize(builder.rowDefault, rows);
         this.lastUnitSize = unitSize == 0 ? 0 : unitSize -
               (rows.isEmpty() ? 0 : Math.max(0, getRowSpacing(builder.rowDefault, rows.get(rows.size() - 1)) - 1));
-        this.ids = new ArrayList<>();
         this.lazyCollapse = builder.lazyCollapse;
-        ids.addAll(builder.anchors);
-        for (RowImpl r : rows) {
-            ids.addAll(r.getAnchors());
+        // Allocate ids only when anchor data is actually present; the common case
+        // (body-text rows with no anchors) avoids the ArrayList allocation entirely.
+        List<String> ids = null;
+        if (!builder.anchors.isEmpty()) {
+            ids = new ArrayList<>(builder.anchors);
         }
+        for (RowImpl r : rows) {
+            List<String> rowAnchors = r.getAnchors();
+            if (!rowAnchors.isEmpty()) {
+                if (ids == null) {
+                    ids = new ArrayList<>(rowAnchors);
+                } else {
+                    ids.addAll(rowAnchors);
+                }
+            }
+        }
+        this.ids = (ids != null) ? ids : Collections.emptyList();
         this.keepWithNextSheets = builder.keepWithNextSheets;
         this.keepWithPreviousSheets = builder.keepWithPreviousSheets;
         this.avoidVolumeBreakAfterPriority = builder.avoidVolumeBreakAfterPriority;
