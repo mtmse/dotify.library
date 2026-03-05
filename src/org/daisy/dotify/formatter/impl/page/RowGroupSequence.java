@@ -49,10 +49,10 @@ class RowGroupSequence {
     private RowGroupSequence(RowGroupSequence template, VerticalSpacing vs, int offset, boolean deepMode) {
         this.blocks = deepMode ? new ArrayList<>(template.blocks) : template.blocks;
         if (deepMode) {
-            this.group = new ArrayList<>();
-            for (RowGroup rg : template.group) {
-                group.add(new RowGroup(rg));
-            }
+            // RowGroup is effectively immutable (all fields are final and no caller mutates the
+            // lists returned by its getters), so the element objects can be shared.  A new list
+            // container is required so that add() calls on one snapshot do not affect another.
+            this.group = template.group == null ? null : new ArrayList<>(template.group);
         } else {
             if (template.group == null) {
                 this.group = null;
