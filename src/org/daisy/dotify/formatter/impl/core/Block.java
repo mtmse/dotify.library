@@ -263,14 +263,23 @@ public abstract class Block {
 
     public AbstractBlockContentManager getBlockContentManager(BlockContext context) {
         if (!context.equals(this.context)) {
-            //invalidate, if existing
-            rdm = null;
+            // Volatile blocks must be fully reconstructed because their content
+            // depends on cross-reference values that change between iterations.
+            // Non-volatile blocks can reuse their BCM since their rendered output
+            // is context-independent, but must be reconstructed if flowWidth changes
+            // because row breaking depends on available width.
+            boolean flowWidthChanged = this.context != null
+                    && context.getFlowWidth() != this.context.getFlowWidth();
+            if (isVolatile() || flowWidthChanged) {
+                rdm = null;
+            }
         }
         this.context = context;
         if (rdm == null || isVolatile()) {
             rdm = newBlockContentManager(context);
         } else {
             rdm.reset();
+            rdm.setContext(contextWithMeta(DefaultContext.from(context).build()));
         }
         return rdm;
     }
