@@ -284,6 +284,9 @@ public abstract class Block {
     }
 
     public DefaultContext contextWithMeta(DefaultContext dc) {
+        if (metaVolume == null && metaPage == null) {
+            return dc;
+        }
         return DefaultContext
                 .from(dc)
                 .metaVolume(metaVolume)

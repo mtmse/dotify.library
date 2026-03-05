@@ -118,8 +118,9 @@ class RowGroupProvider {
     }
 
     public RowGroup next(DefaultContext context, LineProperties lineProps) {
-        if (this.context == null || !this.context.equals(context)) {
-            this.context = g.contextWithMeta(context);
+        DefaultContext newContext = g.contextWithMeta(context);
+        if (!newContext.equals(this.context)) {
+            this.context = newContext;
             bcm.setContext(this.context);
         }
         RowGroup b = nextInner(lineProps);
