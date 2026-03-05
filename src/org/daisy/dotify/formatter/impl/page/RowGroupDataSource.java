@@ -184,8 +184,17 @@ class RowGroupDataSource implements SplitPointDataSource<RowGroup, RowGroupDataS
                 Block b = data.getBlocks().get(blockIndex);
                 blockIndex++;
                 offsetInBlock = 0;
-                modifyContext(c -> c.topOfPage(data.getGroup() == null ||
-                                               data.getGroup().stream().allMatch(v -> v.getUnitSize() == 0)));
+                // topOfPage is monotonic within a page: it starts true and becomes false after
+                // the first visible row group is added. Once false it stays false because row
+                // groups are only appended, never removed. Skip both the stream evaluation and
+                // the BlockContext rebuild when the value is already false.
+                if (bc.isTopOfPage()) {
+                    boolean stillTopOfPage = data.getGroup() == null
+                            || data.getGroup().stream().allMatch(v -> v.getUnitSize() == 0);
+                    if (!stillTopOfPage) {
+                        modifyContext(c -> c.topOfPage(false));
+                    }
+                }
                 blockProcessor.loadBlock(master, b, getContext(), hasSequence(), hasResult(),
                                          this::newRowGroupSequence, v -> { });
             }
