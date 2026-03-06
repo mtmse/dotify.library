@@ -414,21 +414,29 @@ public class PageSequenceBuilder2 {
                     );
                 }
             );
-            data.setReservedWidths(
-                // This function returns the space that header or footer fields take up in the next row
-                // of a given RowGroupSequence when all the rows of the sequence would be added to the
-                // page. (RowGroupDataSource needs this information in order to know where to break the
-                // line.)
-                seq -> {
-                    // This is an approximation of the vertical position of the next row measured from
-                    // the top of the sequence, in terms of rows with normal row spacing. Note that it
-                    // is not accurate if the sequence contains collapsing margins. It is also not
-                    // totally accurate if non-integer row spacings are used.
-                    int pos = seq.getGroup() == null ? 0 : (int) Math.floor(
-                        seq.getGroup().stream().mapToDouble(v -> (int) v.getUnitSize()).sum());
-                    return master.getFlowWidth() - fieldResolver.getWidth(current.getPageNumber(), pos);
-                }
-            );
+            if (combinableHeaderAndFooterLines > 0) {
+                data.setReservedWidths(
+                    // This function returns the space that header or footer fields take up in the
+                    // next row of a given RowGroupSequence when all the rows of the sequence would
+                    // be added to the page. (RowGroupDataSource needs this information in order to
+                    // know where to break the line.)
+                    seq -> {
+                        // This is an approximation of the vertical position of the next row
+                        // measured from the top of the sequence, in terms of rows with normal row
+                        // spacing. Note that it is not accurate if the sequence contains collapsing
+                        // margins. It is also not totally accurate if non-integer row spacings are
+                        // used.
+                        int pos = seq.getGroup() == null ? 0 : (int) Math.floor(
+                            seq.getGroup().stream().mapToDouble(v -> (int) v.getUnitSize()).sum());
+                        return master.getFlowWidth()
+                            - fieldResolver.getWidth(current.getPageNumber(), pos);
+                    }
+                );
+            } else {
+                // When there are no combinable header/footer rows, the reserved width is always
+                // zero because fieldResolver.getWidth() returns master.getFlowWidth() in this case.
+                data.setReservedWidths(seq -> 0);
+            }
             Optional<Boolean> blockBoundary = Optional.empty();
             if (!data.isEmpty()) {
                 RowGroupDataSource copy = new RowGroupDataSource(data);
