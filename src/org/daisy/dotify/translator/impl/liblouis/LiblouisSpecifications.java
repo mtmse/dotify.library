@@ -133,6 +133,13 @@ enum LiblouisSpecifications {
         specs.put(new TranslatorSpecification("no", TranslatorMode.Builder.withType(TranslatorType.CONTRACTED).build()), "no.tbl");
         specs.put(new TranslatorSpecification("no", TranslatorMode.Builder.withGrade(3.0).build()), "no.tbl");
         specs.put(new TranslatorSpecification("no", TranslatorMode.Builder.withGrade(2.0).build()), "no-no-g2.ctb");
+        // Swedish - uses sv-g0.utb (official from Punktskriftsn<C3><A4>mnden, 2022)
+        specs.put(new TranslatorSpecification("sv", TranslatorMode.Builder.withType(TranslatorType.UNCONTRACTED).build()), "sv-mtm-g0.utb");
+        specs.put(new TranslatorSpecification("sv", TranslatorMode.Builder.withGrade(1.0).build()), "sv-mtm-g0.utb");
+        specs.put(new TranslatorSpecification("sv-SE", TranslatorMode.Builder.withType(TranslatorType.UNCONTRACTED).build()), "sv-mtm-g0.utb");
+        specs.put(new TranslatorSpecification("sv-SE", TranslatorMode.Builder.withGrade(1.0).build()), "sv-mtm-g0.utb");
+        specs.put(new TranslatorSpecification("sv", TranslatorMode.Builder.withType(TranslatorType.CONTRACTED).build()), "sv-g1.ctb");
+        specs.put(new TranslatorSpecification("sv-SE", TranslatorMode.Builder.withType(TranslatorType.CONTRACTED).build()), "sv-g1.ctb");
         specs.put(new TranslatorSpecification("or", TranslatorMode.Builder.withGrade(1.0).build()), "or.tbl");
         specs.put(new TranslatorSpecification("pa", TranslatorMode.Builder.withGrade(1.0).build()), "pa.tbl");
         specs.put(new TranslatorSpecification("pl", TranslatorMode.Builder.withGrade(1.0).build()), "pl.tbl");
