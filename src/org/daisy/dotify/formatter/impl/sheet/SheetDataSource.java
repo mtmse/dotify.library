@@ -48,7 +48,8 @@ import java.util.Optional;
  */
 public class SheetDataSource implements SplitPointDataSource<Sheet, SheetDataSource> {
     //Global state
-    private final PageCounter pageCounter;
+    private final PageCounter pageCounter; // keeps track of initial-page-number and the number of
+                                           // pages produced
     private final FormatterContext context;
     //Input data
     private DefaultContext rcontext;
@@ -62,7 +63,7 @@ public class SheetDataSource implements SplitPointDataSource<Sheet, SheetDataSou
     private SectionProperties sectionProperties;
     private int sheetIndex; // sheets created from current sequence or being created
     private Deque<SheetIdentity> previousSheets; // all sheets created from the current sequence
-    private int pageIndex;
+    private int pageIndex; // keeps track of whether we are on a right- or left-hand page
     private String counter;
     private int initialPageOffset;
     private boolean volBreakAllowed;
@@ -218,7 +219,16 @@ public class SheetDataSource implements SplitPointDataSource<Sheet, SheetDataSou
             }
             if (psb == null || !psb.hasNext()) {
                 if (s != null) {
-                    //Last page in the sequence doesn't need volume keep priority
+                    // This is the last page in the sequence.
+                    if (sheetBuffer.size() + 1 == index) {
+                        // In case the volume is filled exactly with this sequence, we will exit the
+                        // loop here. We pad the last sheet with empty pages to make sure that, when
+                        // VolumeProvider adds an empty sheet to make the total number of sheets a
+                        // multiple of two, we don't come one page short.
+                        // If we are not right before a volume break, we don't pad the last sheet in
+                        // order to be in line with the OBFL spec.
+                        s = pad(s);
+                    }
                     sheetBuffer.add(s.build());
                     previousSheets.push(si);
                     s = null;
@@ -270,7 +280,7 @@ public class SheetDataSource implements SplitPointDataSource<Sheet, SheetDataSou
             while (psb.hasNext() && currentSize == sheetBuffer.size()) {
                 if (!sectionProperties.duplex() || pageIndex % 2 == 0 || volumeEnded || s == null) {
                     if (s != null) {
-                        sheetBuffer.add(s.build());
+                        sheetBuffer.add(pad(s).build());
                         previousSheets.push(si);
                         s = null;
                         if (volumeEnded) {
@@ -440,6 +450,25 @@ public class SheetDataSource implements SplitPointDataSource<Sheet, SheetDataSou
         }
     }
 
+    /**
+     * Pad sheet with empty pages.
+     */
+    private Sheet.Builder pad(Sheet.Builder s) {
+        if (psb == null) {
+            throw new IllegalStateException();
+        }
+        if (s.size() == 0) {
+            s.add(psb.getEmptyPage(initialPageOffset));
+            pageCounter.increasePageCount();
+            pageIndex++;
+        }
+        if (s.size() == 1 && s.getSectionProperties().duplex()) {
+            s.add(psb.getEmptyPage(initialPageOffset));
+            pageCounter.increasePageCount();
+            pageIndex++;
+        }
+        return s;
+    }
     @Override
     public SplitResult<Sheet, SheetDataSource> split(int atIndex) {
         if (!allowsSplit) {
