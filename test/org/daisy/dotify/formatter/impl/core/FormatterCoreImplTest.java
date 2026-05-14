@@ -104,10 +104,10 @@ public class FormatterCoreImplTest {
         assertEquals(5, formatter.size());
         // in block 1 before block 2: empty
         assertEquals(1, (int) formatter.get(0).getAvoidVolumeBreakInsidePriority());
-        assertEquals(3, (int) formatter.get(0).getAvoidVolumeBreakAfterPriority());
+        assertEquals(2, (int) formatter.get(0).getAvoidVolumeBreakAfterPriority());
         // in block 2 before block 3: empty
         assertEquals(2, (int) formatter.get(1).getAvoidVolumeBreakInsidePriority());
-        assertEquals(3, (int) formatter.get(1).getAvoidVolumeBreakAfterPriority());
+        assertEquals(2, (int) formatter.get(1).getAvoidVolumeBreakAfterPriority());
         // in block 3
         assertEquals(3, (int) formatter.get(2).getAvoidVolumeBreakInsidePriority());
         assertEquals(2, (int) formatter.get(2).getAvoidVolumeBreakAfterPriority());
@@ -121,6 +121,39 @@ public class FormatterCoreImplTest {
 
     @Test
     public void testVolumeKeepProperties_02() {
+        //Setup
+        FormatterCoreImpl formatter = new FormatterCoreImpl(context);
+        formatter.startBlock(new BlockProperties.Builder().volumeKeepPriority(3).build()); // start block 1
+        formatter.startBlock(new BlockProperties.Builder().volumeKeepPriority(2).build()); // start block 2
+        formatter.startBlock(new BlockProperties.Builder().volumeKeepPriority(1).build()); // start block 3
+        formatter.addChars("  ", UND_TEXT_PROPERTIES);
+        formatter.endBlock(); // end block 3
+        formatter.addChars("  ", UND_TEXT_PROPERTIES);
+        formatter.endBlock(); // end block 2
+        formatter.addChars("  ", UND_TEXT_PROPERTIES);
+        formatter.endBlock(); // end block 1
+
+        //Test
+        assertEquals(5, formatter.size());
+        // in block 1 before block 2: empty
+        assertEquals(3, (int) formatter.get(0).getAvoidVolumeBreakInsidePriority());
+        assertEquals(3, (int) formatter.get(0).getAvoidVolumeBreakAfterPriority());
+        // in block 2 before block 3: empty
+        assertEquals(2, (int) formatter.get(1).getAvoidVolumeBreakInsidePriority());
+        assertEquals(2, (int) formatter.get(1).getAvoidVolumeBreakAfterPriority());
+        // in block 3
+        assertEquals(1, (int) formatter.get(2).getAvoidVolumeBreakInsidePriority());
+        assertEquals(2, (int) formatter.get(2).getAvoidVolumeBreakAfterPriority());
+        // in block 2 after block 3
+        assertEquals(2, (int) formatter.get(3).getAvoidVolumeBreakInsidePriority());
+        assertEquals(3, (int) formatter.get(3).getAvoidVolumeBreakAfterPriority());
+        // in block 1 after block 2
+        assertEquals(3, (int) formatter.get(4).getAvoidVolumeBreakInsidePriority());
+        assertEquals(null, formatter.get(4).getAvoidVolumeBreakAfterPriority());
+    }
+
+    @Test
+    public void testVolumeKeepProperties_03() {
         //Setup
         FormatterCoreImpl formatter = new FormatterCoreImpl(context);
         formatter.startBlock(new BlockProperties.Builder().volumeKeepPriority(1).build()); // start block 1
@@ -141,11 +174,10 @@ public class FormatterCoreImplTest {
         // in block 3: empty
         assertEquals(3, (int) formatter.get(2).getAvoidVolumeBreakInsidePriority());
         assertEquals(null, formatter.get(2).getAvoidVolumeBreakAfterPriority());
-
     }
 
     @Test
-    public void testVolumeKeepProperties_03() {
+    public void testVolumeKeepProperties_04() {
         //Setup
         FormatterCoreImpl formatter = new FormatterCoreImpl(context);
         formatter.startBlock(new BlockProperties.Builder().volumeKeepPriority(1).build()); // start block 1
@@ -185,7 +217,7 @@ public class FormatterCoreImplTest {
     }
 
     @Test
-    public void testVolumeKeepProperties_04() {
+    public void testVolumeKeepProperties_05() {
         //Setup
         FormatterCoreImpl formatter = new FormatterCoreImpl(context);
         formatter.startBlock(new BlockProperties.Builder().volumeKeepPriority(1).build()); // start block 1
