@@ -347,7 +347,8 @@ public class SheetDataSource implements SplitPointDataSource<Sheet, SheetDataSou
                 boolean hyphenateLastLine =
                     context.getConfiguration().allowsEndingPageOnHyphen()
                         && (context.getConfiguration().allowsEndingVolumeOnHyphen()
-                                || sheetBuffer.size() != index - 1
+                                // allowsSplit means we are not breaking the volume
+                                || allowsSplit || sheetBuffer.size() != index - 1
                                 || (sectionProperties.duplex() && pageIndex % 2 == 0));
 
                 PageImpl p = psb.nextPage(

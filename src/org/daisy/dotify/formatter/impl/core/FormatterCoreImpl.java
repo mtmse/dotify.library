@@ -148,8 +148,8 @@ public class FormatterCoreImpl extends Stack<Block> implements FormatterCore, Bl
                 .displayWhen(p.getDisplayWhen());
         // We don't get the volume keep priority from block properties,
         // because it could have been inherited from an ancestor
+        setPrecedingVolumeKeepAfterPriority(getCurrentVolumeKeepPriority());
         AncestorContext ac = new AncestorContext(p, inheritVolumeKeepPriority(p.getVolumeKeepPriority()));
-        setPrecedingVolumeKeepAfterPriority(ac.getVolumeKeepPriority());
         if (
             propsContext.size() > 0 &&
             propsContext.peek().getBlockProperties().getListType() != FormattingTypes.ListStyle.NONE
