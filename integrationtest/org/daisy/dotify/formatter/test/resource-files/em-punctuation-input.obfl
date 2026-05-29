@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<obfl version="2011-1" xml:lang="en" xmlns="http://www.daisy.org/ns/2011/obfl">
+    <meta xmlns:dc="http://purl.org/dc/elements/1.1/">
+        <dc:title>Tests em tags variable</dc:title>
+        <dc:description>Tests that em tags don't add an extra space before a punctuation.</dc:description>
+    </meta>
+    <layout-master name="main" page-width="20" page-height="6" inner-margin="0" outer-margin="0" row-spacing="1" duplex="true">
+        <default-template>
+            <header/>
+            <footer/>
+        </default-template>
+    </layout-master>
+    <sequence master="main" initial-page-number="1">
+        <block first-line-indent="2">Så det finns ingen <style name="em">han</style>.</block>
+        <block first-line-indent="2">Så det finns ingen <style name="strong">han</style>.</block>
+    </sequence>
+</obfl>
+
+
