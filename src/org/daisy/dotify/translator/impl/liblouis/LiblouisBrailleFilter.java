@@ -116,14 +116,28 @@ class LiblouisBrailleFilter implements BrailleFilter {
             text = h.hyphenate(text);
         }
 
+        // Soft hyphens that appear in the source text must reach Liblouis as
+        // inter-character break candidates, not as translatable characters. They are
+        // turned into LIBLOUIS_SOFT_HYPEN flags by toLiblouisSpecification when they
+        // are present in hyphStr but not in inputStr, so strip them out of inputStr
+        // here. keptInputPositions records the surviving positions so the per-character
+        // typeForm array can be rebuilt to match the stripped input length.
+        String originalInput = specification.getText();
+        int[] keptInputPositions = positionsWithoutSoftHyphen(originalInput);
+        String inputForLiblouis = stripSoftHyphens(originalInput);
+
         // Only style attributes from Liblouis itself are processed here
-        LiblouisTranslatable louisSpec = toLiblouisSpecification(text, specification.getText());
+        LiblouisTranslatable louisSpec = toLiblouisSpecification(text, inputForLiblouis);
         TextAttribute ta = specification.getAttributes();
         Typeform[] typeForm;
         if (ta == null) {
             typeForm = new Typeform[louisSpec.getCharAtts().length];
         } else {
-            typeForm = toTypeForm(ta, typeformMap);
+            Typeform[] fullTypeForm = toTypeForm(ta, typeformMap);
+            typeForm = new Typeform[keptInputPositions.length];
+            for (int i = 0; i < keptInputPositions.length; i++) {
+                typeForm[i] = fullTypeForm[keptInputPositions[i]];
+            }
         }
 
         try {
@@ -173,7 +187,13 @@ class LiblouisBrailleFilter implements BrailleFilter {
         }
         p.flush();
 
-        String strIn = p.textB.toString();
+        // See the soft-hyphen handling in filter(Translatable) for the rationale.
+        // strIn (the text going to Liblouis) is stripped of source soft hyphens;
+        // keptInputPositions maps back to the original (un-stripped) position so the
+        // per-character typeForm can be extracted from typeForm2.
+        String strInRaw = p.textB.toString();
+        int[] keptInputPositions = positionsWithoutSoftHyphen(strInRaw);
+        String strIn = stripSoftHyphens(strInRaw);
         String strHyph = p.hyphB.toString();
 
         LiblouisTranslatable louisSpec = toLiblouisSpecification(strHyph, strIn);
@@ -193,8 +213,10 @@ class LiblouisBrailleFilter implements BrailleFilter {
             TextAttribute ta = DefaultMarkerProcessor.toTextAttribute(specification.getAttributes().get(), textsI);
             Typeform[] typeForm2 = toTypeForm(ta, typeformMap);
             int start = preceding.stream().mapToInt(v -> v.length()).sum();
-            int end = start + strIn.length();
-            typeForm = Arrays.copyOfRange(typeForm2, start, end);
+            typeForm = new Typeform[keptInputPositions.length];
+            for (int k = 0; k < keptInputPositions.length; k++) {
+                typeForm[k] = typeForm2[start + keptInputPositions[k]];
+            }
         } else {
             typeForm = new Typeform[louisSpec.getCharAtts().length];
         }
@@ -282,6 +304,43 @@ class LiblouisBrailleFilter implements BrailleFilter {
             hyphB.append(hyphText);
         }
 
+    }
+
+    /** The Unicode soft hyphen code point (U+00AD). Kept as an escape — the literal
+     *  character is invisible and easily lost to editors or copy-paste pipelines. */
+    private static final char SOFT_HYPHEN_CHAR = '\u00ad';
+    private static final String SOFT_HYPHEN_STRING = "\u00ad";
+
+    /** Returns the input with all U+00AD (soft hyphen) code points removed. */
+    static String stripSoftHyphens(String s) {
+        if (s.indexOf(SOFT_HYPHEN_CHAR) < 0) {
+            return s;
+        }
+        return s.replace(SOFT_HYPHEN_STRING, "");
+    }
+
+    /**
+     * Returns the indexes of {@code s} whose character is not a soft hyphen.
+     * Parallel to {@link #stripSoftHyphens(String)}: the i-th entry of the returned
+     * array is the original-string position of the i-th character of the stripped string.
+     * Used to re-align per-character data (e.g. type forms) when soft hyphens are
+     * stripped before being sent to Liblouis.
+     */
+    static int[] positionsWithoutSoftHyphen(String s) {
+        int n = s.length();
+        int[] kept = new int[n];
+        int k = 0;
+        for (int i = 0; i < n; i++) {
+            if (s.charAt(i) != SOFT_HYPHEN_CHAR) {
+                kept[k++] = i;
+            }
+        }
+        if (k == n) {
+            return kept;
+        }
+        int[] trimmed = new int[k];
+        System.arraycopy(kept, 0, trimmed, 0, k);
+        return trimmed;
     }
 
     /**
