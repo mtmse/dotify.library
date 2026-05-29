@@ -83,9 +83,34 @@ public class LiblouisBrailleFilterTest {
         String input = "hyphenate";
         String hyph = "hy\u00adphen\u00adate";
         String res = LiblouisBrailleFilter.toBrailleFilterString(input, input,
-            new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8}, new int[]{0, 1, 0, 0, 0, 1, 0, 0}
+            new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8}, new int[]{0, 1, 0, 0, 0, 1, 0, 0}, 0
         );
         assertEquals(hyph, res);
+    }
+
+    @Test
+    public void testToBrailleFilterStringAppendsTrailingSoftHyphen() {
+        // A soft hyphen at the very end of the hyphenated source cannot be encoded in
+        // interCharAttr (which only covers positions between two cells) \u2014 it must be
+        // carried through as a trailing attribute and appended after the last cell.
+        String input = "ab";
+        String res = LiblouisBrailleFilter.toBrailleFilterString(input, input,
+            new int[]{0, 1}, new int[]{0}, 1  // 1 == LIBLOUIS_SOFT_HYPEN
+        );
+        assertEquals("ab\u00ad", res);
+    }
+
+    @Test
+    public void testToLiblouisSpecificationCapturesTrailingSoftHyphen() {
+        // hyphStr ends with a soft hyphen after the last input character; that break
+        // candidate must surface as the LiblouisTranslatable's trailingAtt rather than
+        // being silently dropped.
+        String input = "ab";
+        String hyph = "ab\u00ad";
+        LiblouisTranslatable hp = LiblouisBrailleFilter.toLiblouisSpecification(hyph, input);
+        assertEquals(input, hp.getText());
+        assertArrayEquals(new int[]{0}, hp.getInterCharAtts());
+        assertEquals(1, hp.getTrailingAtt());  // 1 == LIBLOUIS_SOFT_HYPEN
     }
 
 

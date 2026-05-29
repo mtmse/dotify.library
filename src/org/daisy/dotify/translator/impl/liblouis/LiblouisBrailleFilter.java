@@ -149,7 +149,8 @@ class LiblouisBrailleFilter implements BrailleFilter {
                     louisSpec.getCharAtts(),
                     louisSpec.getInterCharAtts(),
                     new UnicodeBrailleDisplayTable(Fallback.MASK)
-                )
+                ),
+                louisSpec.getTrailingAtt()
             );
         } catch (org.liblouis.TranslationException | DisplayException e) {
             throw new LiblouisBrailleFilterException(e);
@@ -230,7 +231,8 @@ class LiblouisBrailleFilter implements BrailleFilter {
                     louisSpec.getCharAtts(),
                     louisSpec.getInterCharAtts(),
                     new UnicodeBrailleDisplayTable(Fallback.MASK)
-                )
+                ),
+                louisSpec.getTrailingAtt()
             );
         } catch (org.liblouis.TranslationException | DisplayException e) {
             throw new LiblouisBrailleFilterException(e);
@@ -385,7 +387,25 @@ class LiblouisBrailleFilter implements BrailleFilter {
                 interCharAttr[i] = flag;
             }
         }
-        return new LiblouisTranslatable(inputStr, charAtts, interCharAttr);
+
+        // Any break-attribute characters that appear in hyphStr AFTER the last
+        // input character are not captured by interCharAttr (which only covers
+        // positions strictly between two input chars). Scan the tail of cpHyph
+        // and record a single trailing flag so toBrailleFilterString can emit
+        // the corresponding sentinel after the last output cell.
+        //
+        // Note: the for-loop above increments j one position past cpInput[last]
+        // in cpHyph, so the scan starts at j - 1 (the position immediately
+        // following the last matched input char).
+        int trailingAtt = LIBLOUIS_NO_BREAKPOINT;
+        for (int k = j - 1; k < cpHyph.length; k++) {
+            if (cpHyph[k] == SOFT_HYPHEN) {
+                trailingAtt = LIBLOUIS_SOFT_HYPEN;
+            } else if (cpHyph[k] == ZERO_WIDTH_SPACE && trailingAtt != LIBLOUIS_SOFT_HYPEN) {
+                trailingAtt = LIBLOUIS_ZERO_WIDTH_SPACE;
+            }
+        }
+        return new LiblouisTranslatable(inputStr, charAtts, interCharAttr, trailingAtt);
     }
 
     /**
@@ -420,9 +440,9 @@ class LiblouisBrailleFilter implements BrailleFilter {
         return ret;
     }
 
-    private static String toBrailleFilterString(String input, TranslationResult res) {
+    private static String toBrailleFilterString(String input, TranslationResult res, int trailingAtt) {
         return toBrailleFilterString(
-            input, res.getBraille(), res.getCharacterAttributes(), res.getInterCharacterAttributes()
+            input, res.getBraille(), res.getCharacterAttributes(), res.getInterCharacterAttributes(), trailingAtt
         );
     }
 
@@ -432,9 +452,13 @@ class LiblouisBrailleFilter implements BrailleFilter {
      *
      * @param str           the Liblouis string
      * @param interCharAttr the inter char attributes.
+     * @param trailingAtt   the break-attribute flag for the position after the last output cell.
+     *                      Used when the source hyphenated string ended with a soft hyphen or
+     *                      zero-width space, which is not representable in {@code interCharAttr}
+     *                      because the latter only covers positions <em>between</em> two cells.
      * @return a string
      */
-    static String toBrailleFilterString(String input, String str, int[] charAtts, int[] interCharAttr) {
+    static String toBrailleFilterString(String input, String str, int[] charAtts, int[] interCharAttr, int trailingAtt) {
         StringBuilder sb = new StringBuilder();
         int[] inputCodePoints = input.codePoints().toArray();
         int[] codePoints = str.codePoints().toArray();
@@ -471,6 +495,16 @@ class LiblouisBrailleFilter implements BrailleFilter {
                     default:
                 }
             }
+        }
+        // Trailing break candidate that fell off the end of interCharAttr \u2014 see Javadoc.
+        switch (trailingAtt) {
+            case LIBLOUIS_SOFT_HYPEN:
+                sb.append('\u00ad');
+                break;
+            case LIBLOUIS_ZERO_WIDTH_SPACE:
+                sb.append('\u200b');
+                break;
+            default:
         }
         return sb.toString();
     }
