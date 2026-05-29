@@ -349,6 +349,23 @@ class LiblouisBrailleFilter implements BrailleFilter {
      * Maps a translatable and the corresponding hyphenated string to a set of data that can be
      * used with Liblouis. The hyphenated string is used to set the intercharacter attributes.
      *
+     * <p>The algorithm walks {@code cpHyph} and {@code cpInput} in lockstep:
+     * <ul>
+     *   <li>For each input character, advance past it in {@code cpHyph} (the two
+     *       must match — otherwise the inputs are inconsistent).</li>
+     *   <li>Then scan forward through any soft-hyphen or zero-width-space characters
+     *       in {@code cpHyph} until the next non-break-attribute character. The
+     *       highest-priority flag encountered becomes either the inter-character
+     *       attribute between input[i] and input[i+1], or — for the last input
+     *       character — the trailing attribute after the last output cell.</li>
+     * </ul>
+     * Earlier versions of this routine used a "look-ahead" form (advance until
+     * {@code cpHyph[j] == cpInput[i+1]}), which silently failed when two adjacent
+     * input characters were identical (e.g. already-braille content like
+     * "{@code ⠤­⠤­⠤}", where input is "{@code ⠤⠤⠤}"): the look-ahead exited
+     * immediately because {@code cpHyph[j]} already matched {@code cpInput[i+1]},
+     * dropping the intervening soft hyphen.
+     *
      * @param hyphStr  the hyphenated string
      * @param inputStr the input string
      * @return hyphenation information
@@ -364,45 +381,55 @@ class LiblouisBrailleFilter implements BrailleFilter {
 
         int[] cpHyph = hyphStr.codePoints().toArray();
         int[] cpInput = inputStr.codePoints().toArray();
-        int j = 0;
-        int flag;
         int[] interCharAttr = new int[cpInput.length - 1];
         int[] charAtts = new int[cpInput.length];
+        int trailingAtt = LIBLOUIS_NO_BREAKPOINT;
 
+        int j = 0;
         for (int i = 0; i < cpInput.length; i++) {
             charAtts[i] = i;
-            flag = LIBLOUIS_NO_BREAKPOINT;
-            while (j < cpHyph.length && i < cpInput.length - 1 && cpInput[i + 1] != cpHyph[j]) {
-                if (cpHyph[j] == SOFT_HYPHEN) {
-                    flag = LIBLOUIS_SOFT_HYPEN;
-                } else if (cpHyph[j] == ZERO_WIDTH_SPACE && flag != LIBLOUIS_SOFT_HYPEN) {
-                    flag = LIBLOUIS_ZERO_WIDTH_SPACE;
-                } else if (cpInput[i] != cpHyph[j] && cpInput[i + 1] != cpHyph[j + 1]) {
-                    throw new RuntimeException("'" + hyphStr + ":" + inputStr + "'");
-                }
-                j++;
+
+            // cpHyph[j] should match cpInput[i] — advance past it.
+            if (j >= cpHyph.length || cpHyph[j] != cpInput[i]) {
+                throw new RuntimeException(
+                    "Mismatch at input position " + i + ", hyph position " + j
+                    + ": '" + hyphStr + "':'" + inputStr + "'"
+                );
             }
             j++;
+
+            // Scan any break-attribute chars between input[i] and input[i+1] (or
+            // after the last input char) and record the strongest flag seen.
+            //
+            // The look-ahead check `cpInput[i+1] == cpHyph[j]` is necessary because
+            // inputStr is allowed to contain SOFT_HYPHEN and ZERO_WIDTH_SPACE
+            // characters as regular content (e.g. when the caller has explicit
+            // soft hyphens in source text that match positions already accounted
+            // for in inputStr). When cpHyph[j] is a break-attr character that
+            // also appears at the next position in cpInput, it is NOT an extra
+            // break-attr inserted by the hyphenator — it is the next input
+            // character itself, which we will pick up on the next outer iteration.
+            int flag = LIBLOUIS_NO_BREAKPOINT;
+            while (j < cpHyph.length) {
+                if (i + 1 < cpInput.length && cpInput[i + 1] == cpHyph[j]) {
+                    break;
+                }
+                if (cpHyph[j] == SOFT_HYPHEN) {
+                    flag = LIBLOUIS_SOFT_HYPEN;
+                    j++;
+                } else if (cpHyph[j] == ZERO_WIDTH_SPACE && flag != LIBLOUIS_SOFT_HYPEN) {
+                    flag = LIBLOUIS_ZERO_WIDTH_SPACE;
+                    j++;
+                } else {
+                    break;
+                }
+            }
             if (i < cpInput.length - 1) {
                 interCharAttr[i] = flag;
-            }
-        }
-
-        // Any break-attribute characters that appear in hyphStr AFTER the last
-        // input character are not captured by interCharAttr (which only covers
-        // positions strictly between two input chars). Scan the tail of cpHyph
-        // and record a single trailing flag so toBrailleFilterString can emit
-        // the corresponding sentinel after the last output cell.
-        //
-        // Note: the for-loop above increments j one position past cpInput[last]
-        // in cpHyph, so the scan starts at j - 1 (the position immediately
-        // following the last matched input char).
-        int trailingAtt = LIBLOUIS_NO_BREAKPOINT;
-        for (int k = j - 1; k < cpHyph.length; k++) {
-            if (cpHyph[k] == SOFT_HYPHEN) {
-                trailingAtt = LIBLOUIS_SOFT_HYPEN;
-            } else if (cpHyph[k] == ZERO_WIDTH_SPACE && trailingAtt != LIBLOUIS_SOFT_HYPEN) {
-                trailingAtt = LIBLOUIS_ZERO_WIDTH_SPACE;
+            } else {
+                // After the last input char — any remaining break attributes in
+                // cpHyph become the trailing attribute.
+                trailingAtt = flag;
             }
         }
         return new LiblouisTranslatable(inputStr, charAtts, interCharAttr, trailingAtt);

@@ -113,6 +113,24 @@ public class LiblouisBrailleFilterTest {
         assertEquals(1, hp.getTrailingAtt());  // 1 == LIBLOUIS_SOFT_HYPEN
     }
 
+    @Test
+    public void testToLiblouisSpecificationHandlesRepeatedCharsWithSoftHyphensBetween() {
+        // Regression test for an algorithm bug that previously dropped soft hyphens
+        // between two identical input characters. The earlier "look-ahead" form
+        // exited immediately at i=0 because cpHyph[j] already matched cpInput[i+1]
+        // (both being '\u2824' = \u2824), so it never observed the '\u00ad' in between.
+        //
+        // This shape appears for OBFL block content that contains pre-rendered
+        // braille cells with embedded soft hyphens, e.g.
+        //   <block>\u2824\u00ad\u2824\u00ad\u2824</block>
+        String input = "\u2824\u2824\u2824";          // \u2824\u2824\u2824
+        String hyph  = "\u2824\u00ad\u2824\u00ad\u2824"; // \u2824\u00ad\u2824\u00ad\u2824
+        LiblouisTranslatable hp = LiblouisBrailleFilter.toLiblouisSpecification(hyph, input);
+        assertEquals(input, hp.getText());
+        assertArrayEquals(new int[]{1, 1}, hp.getInterCharAtts()); // both = LIBLOUIS_SOFT_HYPEN
+        assertEquals(0, hp.getTrailingAtt());
+    }
+
 
     @Test
     public void testToBrailleFilterStringShouldNotCrash() {
