@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -533,7 +534,52 @@ class LiblouisBrailleFilter implements BrailleFilter {
                 break;
             default:
         }
-        return sb.toString();
+        return stripStraySpaceAfterEmphasizedWord(sb.toString());
+    }
+
+    // Cells liblouis can emit as terminal punctuation in Swedish braille.
+    // Used to identify "<emph-word-prefix><word>\u2800<punct>" sequences
+    // where the \u2800 is a spurious word-boundary marker injected by
+    // liblouis at the end of an emphasized word.
+    private static final String SWEDISH_TERMINAL_PUNCT_CELLS = "\u2804\u2802\u2806\u2812\u2816\u2826\u2830\u2834\u283e";
+
+    // Italic single-word emphasis: prefix \u2820\u2804 (dots 6, dots 3 \u2014 see
+    // `begemphword italic 6-3` in sv-mtm-g0.utb), then non-space word cells,
+    // then a spurious \u2800, then a terminal-punctuation cell. Drop the
+    // \u2800. The non-greedy [^\u2800]+? avoids consuming a legitimate space.
+    private static final Pattern STRAY_SPACE_AFTER_ITALIC_WORD = Pattern.compile(
+        "(\u2820\u2804[^\u2800]+?)\u2800([" + SWEDISH_TERMINAL_PUNCT_CELLS + "])");
+
+    // Bold single-word emphasis: prefix \u2828 (dots 46 \u2014 see `begemphword
+    // bold 46` in sv-mtm-g0.utb). \u2828 also appears as the *first* cell of
+    // the two-cell multi-word bold start \u2828\u2828, but the multi-word
+    // form's trailing space (if any) is followed by a letter, not punct,
+    // so the regex naturally won't match there.
+    private static final Pattern STRAY_SPACE_AFTER_BOLD_WORD = Pattern.compile(
+        "(\u2828[^\u2800]+?)\u2800([" + SWEDISH_TERMINAL_PUNCT_CELLS + "])");
+
+    /**
+     * Removes the spurious word-boundary space cell that liblouis injects
+     * after an emphasized single word when that word is followed immediately
+     * by terminal punctuation in the source \u2014 e.g. {@code <em>ord</em>.}
+     * would otherwise emit {@code \u2820\u2804\u2815\u2817\u2819\u2800\u2804} (with a {@code \u2800} between
+     * "ord" and the period). The MTM spec (\u00a73.4.1) and the legacy
+     * SwedishMarkerProcessor both expect {@code \u2820\u2804\u2815\u2817\u2819\u2804} (no space).
+     *
+     * Triggered after we dropped {@code noemphchars italic \s.,:;!?} from
+     * the table because that directive \u2014 while suppressing this artifact \u2014
+     * also caused liblouis to glue trailing punctuation into the last word
+     * of multi-word emphasis phrases, mispositioning the phrase-end marker
+     * (the "r\u00f6ra" pattern). See BREAKING_CHANGES.md item 6.
+     */
+    private static String stripStraySpaceAfterEmphasizedWord(String s) {
+        // Bail out cheaply when neither pattern can possibly match.
+        if (s.indexOf('\u2800') < 0) {
+            return s;
+        }
+        s = STRAY_SPACE_AFTER_ITALIC_WORD.matcher(s).replaceAll("$1$2");
+        s = STRAY_SPACE_AFTER_BOLD_WORD.matcher(s).replaceAll("$1$2");
+        return s;
     }
 
 }
