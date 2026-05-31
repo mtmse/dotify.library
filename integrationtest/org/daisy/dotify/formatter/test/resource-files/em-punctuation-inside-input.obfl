@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<obfl version="2011-1" xml:lang="sv" xmlns="http://www.daisy.org/ns/2011/obfl">
+    <meta xmlns:dc="http://purl.org/dc/elements/1.1/">
+        <dc:title>Tests em tag spanning a sentence with trailing period inside</dc:title>
+        <dc:description>The whole sentence including the final period is inside the em span; the end-marker must follow the period.</dc:description>
+    </meta>
+    <layout-master name="main" page-width="28" page-height="20" inner-margin="0" outer-margin="0" row-spacing="1" duplex="true">
+        <default-template>
+            <header/>
+            <footer/>
+        </default-template>
+    </layout-master>
+    <sequence master="main" initial-page-number="1">
+        <block><style name="em">Till Sara Mondani, som alltid kunde nysta fram historier.</style></block>
+    </sequence>
+</obfl>

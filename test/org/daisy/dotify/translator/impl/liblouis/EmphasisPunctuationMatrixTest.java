@@ -33,10 +33,10 @@ import static org.junit.Assert.fail;
  * The legacy {@code SwedishBrailleTranslator} is also run for every case and
  * its output is written next to the liblouis output in the side-by-side
  * report file (see {@link #REPORT_PATH}). Those legacy values are <em>not</em>
- * asserted — for the comma-INSIDE-em cases the two paths legitimately
- * diverge (the legacy preserves source-markup boundary literally; the new
- * pipeline cannot recover that distinction at pass2 time and accepts the
- * "always swap" trade-off documented in §3.4.2 commentary).
+ * asserted, but the liblouis path now matches the legacy placement for the
+ * comma/period-INSIDE cases: when the punctuation carries the emphasis type
+ * form, the end-marker ⠱ follows it (recovered from the attribute-derived
+ * emphasis mask), preserving the source-markup boundary as the spec intends.
  *
  * Spec references are MTM <em>Svenska skrivregler för punktskrift</em>
  * (2009 / 2024 reissue), §3.4 <em>Tecken för stilsorter</em>.
@@ -129,17 +129,16 @@ public class EmphasisPunctuationMatrixTest {
                 .build(8),
             "⠠⠤⠞⠧⠡⠀⠕⠗⠙⠱⠂");
 
-        // <em>två ord,</em>  — comma INSIDE the em span. Spec arguably
-        // wants ⠱ AFTER the comma (preserving the markup boundary
-        // literally, as the legacy does), but the new pipeline cannot
-        // distinguish this from the previous case at pass2 time and
-        // accepts the always-swap trade-off — documented in
-        // BREAKING_CHANGES.md item 6.
+        // <em>två ord,</em>  — comma INSIDE the em span. Because the comma
+        // carries the em type form, the end-marker ⠱ goes AFTER it,
+        // preserving the markup boundary as the legacy translator and the
+        // spec (§3.4.2) do. The emphasis mask, derived from the attribute
+        // tree, lets the liblouis pipeline recover this distinction.
         run("multi-word em, comma INSIDE", "två ord,",
             new DefaultTextAttribute.Builder()
                 .add(new DefaultTextAttribute.Builder("em").build(8))
                 .build(8),
-            "⠠⠤⠞⠧⠡⠀⠕⠗⠙⠱⠂");
+            "⠠⠤⠞⠧⠡⠀⠕⠗⠙⠂⠱");
 
         // <em>en längre fras med flera ord</em>,  — the "röra"
         // regression pattern reported by the external test suite.
@@ -151,13 +150,46 @@ public class EmphasisPunctuationMatrixTest {
                 .build(29),
             "⠠⠤⠑⠝⠀⠇⠜⠝⠛⠗⠑⠀⠋⠗⠁⠎⠀⠍⠑⠙⠀⠋⠇⠑⠗⠁⠀⠕⠗⠙⠱⠂");
 
-        // <em>en längre fras med flera ord,</em>  — same always-swap
-        // trade-off as the multi-word comma-INSIDE case above.
+        // <em>en längre fras med flera ord,</em>  — comma INSIDE the span;
+        // end-marker goes after the comma, same as the multi-word case above.
         run("long em phrase, comma INSIDE", longPhrase,
             new DefaultTextAttribute.Builder()
                 .add(new DefaultTextAttribute.Builder("em").build(29))
                 .build(29),
-            "⠠⠤⠑⠝⠀⠇⠜⠝⠛⠗⠑⠀⠋⠗⠁⠎⠀⠍⠑⠙⠀⠋⠇⠑⠗⠁⠀⠕⠗⠙⠱⠂");
+            "⠠⠤⠑⠝⠀⠇⠜⠝⠛⠗⠑⠀⠋⠗⠁⠎⠀⠍⠑⠙⠀⠋⠇⠑⠗⠁⠀⠕⠗⠙⠂⠱");
+
+        // <em>Till Sara Mondani, … historier.</em>  — the real-world
+        // regression: the whole sentence, including the trailing period, is
+        // inside the em span. The period is emphasized, so the end-marker ⠱
+        // follows it (…⠄⠱). The internal comma after "Mondani" is followed by
+        // a space, not the end-marker, so it is unaffected.
+        String sentence = "Till Sara Mondani, som alltid kunde nysta fram historier.";
+        run("whole-sentence em, period INSIDE", sentence,
+            new DefaultTextAttribute.Builder()
+                .add(new DefaultTextAttribute.Builder("em").build(sentence.length()))
+                .build(sentence.length()),
+            "⠠⠤⠠⠞⠊⠇⠇⠀⠠⠎⠁⠗⠁⠀⠠⠍⠕⠝⠙⠁⠝⠊⠂⠀⠎⠕⠍⠀⠁⠇⠇⠞⠊⠙⠀⠅⠥⠝⠙⠑⠀⠝⠽⠎⠞⠁⠀⠋⠗⠁⠍⠀⠓⠊⠎⠞⠕⠗⠊⠑⠗⠄⠱");
+
+        // Same sentence, but the trailing period is OUTSIDE the em span. The
+        // period is not emphasized, so the end-marker stays before it (…⠱⠄) —
+        // unchanged from the previous behaviour.
+        String sentenceBody = "Till Sara Mondani, som alltid kunde nysta fram historier";
+        run("whole-sentence em, period OUTSIDE", sentenceBody + ".",
+            new DefaultTextAttribute.Builder()
+                .add(new DefaultTextAttribute.Builder("em").build(sentenceBody.length()))
+                .add(1)
+                .build(sentenceBody.length() + 1),
+            "⠠⠤⠠⠞⠊⠇⠇⠀⠠⠎⠁⠗⠁⠀⠠⠍⠕⠝⠙⠁⠝⠊⠂⠀⠎⠕⠍⠀⠁⠇⠇⠞⠊⠙⠀⠅⠥⠝⠙⠑⠀⠝⠽⠎⠞⠁⠀⠋⠗⠁⠍⠀⠓⠊⠎⠞⠕⠗⠊⠑⠗⠱⠄");
+
+        // <em>ab cû,</em>  — multi-word em ending in a literal 'û' before an
+        // in-span comma. 'û' renders as ⠈⠥ (not ⠱), so it is never mistaken
+        // for the inserted end-marker; the marker still lands after the
+        // emphasized comma.
+        run("multi-word em ending in û, comma INSIDE", "ab cû,",
+            new DefaultTextAttribute.Builder()
+                .add(new DefaultTextAttribute.Builder("em").build(6))
+                .build(6),
+            "⠠⠤⠁⠃⠀⠉⠈⠥⠂⠱");
 
         // ===== single-word strong =====
 
@@ -180,13 +212,13 @@ public class EmphasisPunctuationMatrixTest {
                 .build(9),
             "⠨⠨⠞⠧⠡⠀⠋⠑⠞⠁⠱⠂");
 
-        // <strong>två feta,</strong>  — comma INSIDE the strong span;
-        // same always-swap trade-off as the em comma-INSIDE cases.
+        // <strong>två feta,</strong>  — comma INSIDE the strong span; the
+        // end-marker goes after the comma, same as the em comma-INSIDE cases.
         run("multi-word strong, comma INSIDE", "två feta,",
             new DefaultTextAttribute.Builder()
                 .add(new DefaultTextAttribute.Builder("strong").build(9))
                 .build(9),
-            "⠨⠨⠞⠧⠡⠀⠋⠑⠞⠁⠱⠂");
+            "⠨⠨⠞⠧⠡⠀⠋⠑⠞⠁⠂⠱");
 
         // ===== em embedded in surrounding text =====
 

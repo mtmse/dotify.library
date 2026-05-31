@@ -83,7 +83,8 @@ public class LiblouisBrailleFilterTest {
         String input = "hyphenate";
         String hyph = "hy\u00adphen\u00adate";
         String res = LiblouisBrailleFilter.toBrailleFilterString(input, input,
-            new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8}, new int[]{0, 1, 0, 0, 0, 1, 0, 0}, 0
+            new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8}, new int[]{0, 1, 0, 0, 0, 1, 0, 0}, 0,
+            new boolean[9]
         );
         assertEquals(hyph, res);
     }
@@ -95,7 +96,8 @@ public class LiblouisBrailleFilterTest {
         // carried through as a trailing attribute and appended after the last cell.
         String input = "ab";
         String res = LiblouisBrailleFilter.toBrailleFilterString(input, input,
-            new int[]{0, 1}, new int[]{0}, 1  // 1 == LIBLOUIS_SOFT_HYPEN
+            new int[]{0, 1}, new int[]{0}, 1,  // 1 == LIBLOUIS_SOFT_HYPEN
+            new boolean[2]
         );
         assertEquals("ab\u00ad", res);
     }

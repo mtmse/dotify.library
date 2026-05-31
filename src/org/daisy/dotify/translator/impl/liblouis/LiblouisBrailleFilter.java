@@ -22,10 +22,12 @@ import org.liblouis.Typeform;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -131,13 +133,18 @@ class LiblouisBrailleFilter implements BrailleFilter {
         LiblouisTranslatable louisSpec = toLiblouisSpecification(text, inputForLiblouis);
         TextAttribute ta = specification.getAttributes();
         Typeform[] typeForm;
+        boolean[] isEmphasized;
         if (ta == null) {
             typeForm = new Typeform[louisSpec.getCharAtts().length];
+            isEmphasized = new boolean[louisSpec.getCharAtts().length];
         } else {
             Typeform[] fullTypeForm = toTypeForm(ta, typeformMap);
+            boolean[] fullMask = emphasizedMask(ta);
             typeForm = new Typeform[keptInputPositions.length];
+            isEmphasized = new boolean[keptInputPositions.length];
             for (int i = 0; i < keptInputPositions.length; i++) {
                 typeForm[i] = fullTypeForm[keptInputPositions[i]];
+                isEmphasized[i] = fullMask[keptInputPositions[i]];
             }
         }
 
@@ -151,7 +158,8 @@ class LiblouisBrailleFilter implements BrailleFilter {
                     louisSpec.getInterCharAtts(),
                     new UnicodeBrailleDisplayTable(Fallback.MASK)
                 ),
-                louisSpec.getTrailingAtt()
+                louisSpec.getTrailingAtt(),
+                isEmphasized
             );
         } catch (org.liblouis.TranslationException | DisplayException e) {
             throw new LiblouisBrailleFilterException(e);
@@ -201,6 +209,7 @@ class LiblouisBrailleFilter implements BrailleFilter {
         LiblouisTranslatable louisSpec = toLiblouisSpecification(strHyph, strIn);
 
         Typeform[] typeForm;
+        boolean[] isEmphasized;
 
         if (specification.getAttributes().isPresent()) {
             List<String> preceding = specification.getPrecedingText().stream().map(
@@ -214,13 +223,17 @@ class LiblouisBrailleFilter implements BrailleFilter {
             ).collect(Collectors.toList());
             TextAttribute ta = DefaultMarkerProcessor.toTextAttribute(specification.getAttributes().get(), textsI);
             Typeform[] typeForm2 = toTypeForm(ta, typeformMap);
+            boolean[] fullMask = emphasizedMask(ta);
             int start = preceding.stream().mapToInt(v -> v.length()).sum();
             typeForm = new Typeform[keptInputPositions.length];
+            isEmphasized = new boolean[keptInputPositions.length];
             for (int k = 0; k < keptInputPositions.length; k++) {
                 typeForm[k] = typeForm2[start + keptInputPositions[k]];
+                isEmphasized[k] = fullMask[start + keptInputPositions[k]];
             }
         } else {
             typeForm = new Typeform[louisSpec.getCharAtts().length];
+            isEmphasized = new boolean[louisSpec.getCharAtts().length];
         }
 
         try {
@@ -233,10 +246,49 @@ class LiblouisBrailleFilter implements BrailleFilter {
                     louisSpec.getInterCharAtts(),
                     new UnicodeBrailleDisplayTable(Fallback.MASK)
                 ),
-                louisSpec.getTrailingAtt()
+                louisSpec.getTrailingAtt(),
+                isEmphasized
             );
         } catch (org.liblouis.TranslationException | DisplayException e) {
             throw new LiblouisBrailleFilterException(e);
+        }
+    }
+
+    // Dictionary identifiers whose spans are terminated by the multi-word emphasis
+    // end-marker ⠱. Caps come from letter case (not a TextAttribute) and are excluded.
+    private static final Set<String> EMPHASIS_IDENTIFIERS =
+        new HashSet<>(Arrays.asList("em", "strong", "italic", "bold"));
+
+    /**
+     * Builds a per-character mask of which positions fall inside an emphasis span, by
+     * walking the {@link TextAttribute} tree. A position is emphasized when it (or one of
+     * its ancestors) carries a dictionary identifier in {@link #EMPHASIS_IDENTIFIERS}.
+     *
+     * <p>This must be derived from the attribute tree rather than from the
+     * {@link Typeform}[] array: {@code Typeform.add(...)} loses the type form name and
+     * {@code Typeform} uses identity equality, so an emphasized and a plain type form
+     * cannot be told apart once combined.
+     */
+    private static boolean[] emphasizedMask(TextAttribute attr) {
+        boolean[] mask = new boolean[attr.getWidth()];
+        fillEmphasizedMask(attr, mask, 0, false);
+        return mask;
+    }
+
+    private static void fillEmphasizedMask(TextAttribute attr, boolean[] mask, int offset, boolean inherited) {
+        boolean emphasized = inherited
+            || (attr.getDictionaryIdentifier() != null
+                && EMPHASIS_IDENTIFIERS.contains(attr.getDictionaryIdentifier()));
+        if (attr.hasChildren()) {
+            int childOffset = offset;
+            for (TextAttribute child : attr) {
+                fillEmphasizedMask(child, mask, childOffset, emphasized);
+                childOffset += child.getWidth();
+            }
+        } else {
+            for (int i = 0; i < attr.getWidth(); i++) {
+                mask[offset + i] = emphasized;
+            }
         }
     }
 
@@ -468,10 +520,28 @@ class LiblouisBrailleFilter implements BrailleFilter {
         return ret;
     }
 
-    private static String toBrailleFilterString(String input, TranslationResult res, int trailingAtt) {
+    private static String toBrailleFilterString(
+        String input, TranslationResult res, int trailingAtt, boolean[] isEmphasized
+    ) {
         return toBrailleFilterString(
-            input, res.getBraille(), res.getCharacterAttributes(), res.getInterCharacterAttributes(), trailingAtt
+            input, res.getBraille(), res.getCharacterAttributes(), res.getInterCharacterAttributes(),
+            trailingAtt, isEmphasized
         );
+    }
+
+    // The multi-word emphasis end-marker cell (⠱, dots 1-5-6 — see `endemph italic 1-5-6`
+    // and `endemph bold 1-5-6` in sv-mtm-g0.utb). Liblouis emits it immediately after the
+    // last emphasized word and before any trailing punctuation, regardless of whether the
+    // punctuation is inside or outside the emphasized span.
+    private static final int EMPHASIS_END_MARKER = '⠱';
+
+    // Terminal punctuation that, when it is part of the emphasized span, the MTM spec
+    // (§3.4.2) places after the end-marker. Judged from the source character (locale
+    // agnostic) rather than the braille cell.
+    private static final String SWAPPABLE_PUNCTUATION = ".,;:!?";
+
+    private static boolean isSwappablePunctuation(int codePoint) {
+        return codePoint <= Character.MAX_VALUE && SWAPPABLE_PUNCTUATION.indexOf((char) codePoint) >= 0;
     }
 
     /**
@@ -486,10 +556,15 @@ class LiblouisBrailleFilter implements BrailleFilter {
      *                      because the latter only covers positions <em>between</em> two cells.
      * @return a string
      */
-    static String toBrailleFilterString(String input, String str, int[] charAtts, int[] interCharAttr, int trailingAtt) {
+    static String toBrailleFilterString(
+        String input, String str, int[] charAtts, int[] interCharAttr, int trailingAtt, boolean[] isEmphasized
+    ) {
         StringBuilder sb = new StringBuilder();
         int[] inputCodePoints = input.codePoints().toArray();
         int[] codePoints = str.codePoints().toArray();
+        // Recover the emphasis-span boundary that Liblouis discards: when the end-marker is
+        // followed by punctuation that is part of the span, move the marker after it.
+        moveEndMarkerPastInSpanPunctuation(codePoints, charAtts, interCharAttr, inputCodePoints, isEmphasized);
         int prvInputIndex = -1;
         int inputIndex, inputCP;
         for (int outputIndex = 0; outputIndex < codePoints.length; outputIndex++) {
@@ -535,6 +610,87 @@ class LiblouisBrailleFilter implements BrailleFilter {
             default:
         }
         return stripStraySpaceAfterEmphasizedWord(sb.toString());
+    }
+
+    /**
+     * Moves the multi-word emphasis end-marker past trailing punctuation that is part of
+     * the emphasized span, in place. Liblouis always emits the marker before trailing
+     * punctuation (e.g. {@code <em>två ord,</em>} → {@code …⠙⠱⠂}); the MTM spec (§3.4.2)
+     * and the legacy translator put it after punctuation that is inside the span
+     * ({@code …⠙⠂⠱}).
+     *
+     * <p>Detection relies on two facts established by probing sv-mtm-g0.utb: the inserted
+     * end-marker's character attribute points to the <em>following</em> punctuation's
+     * source index, and a real source letter that happens to render as {@code ⠱} would map
+     * to itself (a letter, not punctuation). So a {@code ⠱} cell is only treated as the
+     * end-marker when its source character is swappable punctuation that is also
+     * emphasized — which excludes both the punctuation-OUTSIDE case and any literal letter.
+     *
+     * <p>The swap is skipped unless the inter-character attributes around the moved region
+     * are all {@link #LIBLOUIS_NO_BREAKPOINT}; a soft hyphen / zero-width space between a
+     * word's terminal punctuation and the end-marker does not occur in practice, and the
+     * guard keeps the reordering from disturbing break candidates.
+     *
+     * @param codePoints     the Liblouis output cells (mutated)
+     * @param charAtts       output-cell → input-index map (mutated in lockstep)
+     * @param interCharAttr  inter-cell break attributes (read for the safety guard)
+     * @param inputCodePoints the Liblouis input characters
+     * @param isEmphasized   per-input-character emphasis mask
+     */
+    private static void moveEndMarkerPastInSpanPunctuation(
+        int[] codePoints, int[] charAtts, int[] interCharAttr, int[] inputCodePoints, boolean[] isEmphasized
+    ) {
+        for (int k = 0; k < codePoints.length - 1; k++) {
+            if (codePoints[k] != EMPHASIS_END_MARKER) {
+                continue;
+            }
+            if (!isInSpanPunctuation(charAtts[k], inputCodePoints, isEmphasized)) {
+                continue;
+            }
+            // Find the end of the contiguous run of in-span punctuation cells following
+            // the marker. The marker shares the first punctuation's source index, so the
+            // run starts at k+1.
+            int end = k + 1;
+            while (end < codePoints.length
+                    && isInSpanPunctuation(charAtts[end], inputCodePoints, isEmphasized)) {
+                end++;
+            }
+            // end is now one past the last in-span punctuation cell; the marker moves to
+            // end-1. Bail out if any break attribute sits in the region we would reorder.
+            if (!interCharAttributesClear(interCharAttr, k, end - 1)) {
+                continue;
+            }
+            rotateLeft(codePoints, k, end - 1);
+            rotateLeft(charAtts, k, end - 1);
+            k = end - 1;
+        }
+    }
+
+    /** True when the source character behind an output cell is emphasized swappable punctuation. */
+    private static boolean isInSpanPunctuation(int inputIndex, int[] inputCodePoints, boolean[] isEmphasized) {
+        return inputIndex >= 0 && inputIndex < inputCodePoints.length
+            && inputIndex < isEmphasized.length
+            && isEmphasized[inputIndex]
+            && isSwappablePunctuation(inputCodePoints[inputIndex]);
+    }
+
+    /** True when every inter-character attribute in {@code [from, to)} is a no-breakpoint. */
+    private static boolean interCharAttributesClear(int[] interCharAttr, int from, int to) {
+        for (int i = from; i < to && i < interCharAttr.length; i++) {
+            if (interCharAttr[i] != LIBLOUIS_NO_BREAKPOINT) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /** Rotates {@code array[from..to]} left by one, so {@code array[from]} ends up at {@code to}. */
+    private static void rotateLeft(int[] array, int from, int to) {
+        int first = array[from];
+        for (int i = from; i < to; i++) {
+            array[i] = array[i + 1];
+        }
+        array[to] = first;
     }
 
     // Cells liblouis can emit as terminal punctuation in Swedish braille.

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pef version="2008-1" xmlns="http://www.daisy.org/ns/2008/pef">
+<head>
+<meta xmlns:dc="http://purl.org/dc/elements/1.1/">
+<dc:format>application/x-pef+xml</dc:format>
+<dc:identifier>identifier?</dc:identifier>
+<dc:date>2026-05-31</dc:date>
+<dc:title>Tests em tag spanning a sentence with trailing period inside</dc:title>
+<dc:description>The whole sentence including the final period is inside the em span; the end-marker must follow the period.</dc:description>
+</meta>
+</head>
+<body>
+<volume cols="28" rows="20" rowgap="0" duplex="true">
+<section>
+<page>
+<row>⠠⠤⠠⠞⠊⠇⠇⠀⠠⠎⠁⠗⠁⠀⠠⠍⠕⠝⠙⠁⠝⠊⠂⠀⠎⠕⠍</row>
+<row>⠁⠇⠇⠞⠊⠙⠀⠅⠥⠝⠙⠑⠀⠝⠽⠎⠞⠁⠀⠋⠗⠁⠍⠀⠓⠊⠎⠤</row>
+<row>⠞⠕⠗⠊⠑⠗⠄⠱</row>
+</page>
+</section>
+</volume>
+</body>
+</pef>
