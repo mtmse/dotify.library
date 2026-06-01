@@ -56,6 +56,20 @@
       `em-punctuation-inside-expected.pef`, with the final row ending `…⠞⠕⠗⠊⠑⠗⠄⠱`.
 - [x] 4.3 Add a test method in `EmTagTest` that runs the new fixture through `testPEF`.
 
+## 6. Partial-word emphasis injected-space fix (folded in)
+
+- [x] 6.1 Probe confirmed: liblouis injects a blank cell (⠀) when single-word emphasis
+      ends mid-word; the blank's source char is the emphasized letter (non-whitespace).
+      Legacy translator produces no such blank.
+- [x] 6.2 In the reconstruction loop, drop an output ⠀ cell whose source character is
+      non-whitespace AND emphasized (the injected mid-word boundary). Real spaces have a
+      whitespace source char and are preserved by the existing branch.
+- [x] 6.3 Matrix rows: partial-word strong (D]en, De]n) and partial-word em (d]et) assert
+      the intact-word output; the existing `ord mer text` row guards real-space preservation.
+- [x] 6.4 Integration: `em-partial-word-input.obfl` + expected PEF, exercised by a new
+      `EmTagTest` method (the user's `<strong>D</strong>en lysande …` case).
+- [x] 6.5 Full in-repo suite green after the change.
+
 ## 5. Docs and verification
 
 - [~] 5.1 BREAKING_CHANGES.md is NOT on this branch — it lives on

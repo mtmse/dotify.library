@@ -535,6 +535,9 @@ class LiblouisBrailleFilter implements BrailleFilter {
     // punctuation is inside or outside the emphasized span.
     private static final int EMPHASIS_END_MARKER = '⠱';
 
+    // The empty braille cell (⠀, U+2800) — a blank/space cell.
+    private static final int BRAILLE_BLANK = '⠀';
+
     // Terminal punctuation that, when it is part of the emphasized span, the MTM spec
     // (§3.4.2) places after the end-marker. Judged from the source character (locale
     // agnostic) rather than the braille cell.
@@ -583,7 +586,17 @@ class LiblouisBrailleFilter implements BrailleFilter {
                 prvInputIndex = inputIndex;
             } else {
                 prvInputIndex = -1;
-                sb.appendCodePoint(codePoints[outputIndex]);
+                // Liblouis injects a word-boundary blank cell when single-word emphasis
+                // (⠨ bold / ⠠⠄ italic) ends mid-word, e.g. <strong>D</strong>en →
+                // ⠨⠠⠙⠀⠑⠝. The blank's source character is a non-space emphasized letter,
+                // so drop it; the legacy translator and the spec produce no space here.
+                // A real space has a whitespace source character and is handled above, so
+                // legitimate spaces between words are preserved.
+                boolean injectedEmphasisBlank =
+                    codePoints[outputIndex] == BRAILLE_BLANK && isEmphasized[inputIndex];
+                if (!injectedEmphasisBlank) {
+                    sb.appendCodePoint(codePoints[outputIndex]);
+                }
             }
             if (outputIndex < interCharAttr.length) {
                 switch (interCharAttr[outputIndex]) {

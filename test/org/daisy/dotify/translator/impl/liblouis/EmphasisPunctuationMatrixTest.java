@@ -220,6 +220,40 @@ public class EmphasisPunctuationMatrixTest {
                 .build(9),
             "⠨⠨⠞⠧⠡⠀⠋⠑⠞⠁⠂⠱");
 
+        // ===== partial-word emphasis =====
+        //
+        // When emphasis covers only part of a word, liblouis injects a
+        // word-boundary blank cell where the emphasis ends mid-word
+        // (e.g. <strong>D</strong>en → ⠨⠠⠙⠀⠑⠝). That spurious blank is
+        // dropped so the word stays intact (⠨⠠⠙⠑⠝), matching the legacy
+        // translator. The blank's source character is an emphasized letter;
+        // a real space between words has a whitespace source and is kept.
+
+        // <strong>D</strong>en  — strong over the first letter only.
+        run("partial-word strong, letters follow", "Den",
+            new DefaultTextAttribute.Builder()
+                .add(new DefaultTextAttribute.Builder("strong").build(1))
+                .add(2)
+                .build(3),
+            "⠨⠠⠙⠑⠝");
+
+        // <strong>De</strong>n  — strong over the first two letters.
+        run("partial-word strong, ends after two letters", "Den",
+            new DefaultTextAttribute.Builder()
+                .add(new DefaultTextAttribute.Builder("strong").build(2))
+                .add(1)
+                .build(3),
+            "⠨⠠⠙⠑⠝");
+
+        // <em>d</em>et  — italic over the first letter only (lowercase to
+        // keep the caps marker out of the picture).
+        run("partial-word em, letters follow", "det",
+            new DefaultTextAttribute.Builder()
+                .add(new DefaultTextAttribute.Builder("em").build(1))
+                .add(2)
+                .build(3),
+            "⠠⠄⠙⠑⠞");
+
         // ===== em embedded in surrounding text =====
 
         // Han sa <em>nej</em>.  — single-word em mid-sentence; the

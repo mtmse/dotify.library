@@ -27,6 +27,10 @@ suite, blocking any further regression analysis until it is resolved.
 - Add an integration PEF fixture and `EmTagTest` case for the whole-sentence em with a
   period inside the span.
 - Update `BREAKING_CHANGES.md` item 6 to record that the always-swap trade-off is reverted.
+- Fix a related, pre-existing Liblouis bug: **partial-word emphasis** (emphasis covering
+  only part of a word, e.g. `<strong>D</strong>en`) injected a word-boundary blank cell
+  mid-word (`⠨⠠⠙⠀⠑⠝`). Drop that injected blank so the word stays intact (`⠨⠠⠙⠑⠝`),
+  matching the legacy translator. Real spaces (whitespace source character) are preserved.
 
 ## Capabilities
 

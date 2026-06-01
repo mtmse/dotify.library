@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<obfl version="2011-1" xml:lang="sv" xmlns="http://www.daisy.org/ns/2011/obfl">
+    <meta xmlns:dc="http://purl.org/dc/elements/1.1/">
+        <dc:title>Tests partial-word emphasis</dc:title>
+        <dc:description>Emphasis covering only part of a word must not inject a word-boundary space.</dc:description>
+    </meta>
+    <layout-master name="main" page-width="30" page-height="20" inner-margin="0" outer-margin="0" row-spacing="1" duplex="true">
+        <default-template><header/><footer/></default-template>
+    </layout-master>
+    <sequence master="main" initial-page-number="1">
+        <block><style name="strong">D</style>en lysande blå himlen</block>
+    </sequence>
+</obfl>

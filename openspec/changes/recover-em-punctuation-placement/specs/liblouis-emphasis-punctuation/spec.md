@@ -57,3 +57,26 @@ superset across locales.
 - **WHEN** the input is `ord.` with italic emphasis covering `ord`
 - **THEN** the output is `⠠⠄⠕⠗⠙⠄`, unchanged from prior behavior (single-word emphasis has
   no end-marker)
+
+### Requirement: Partial-word emphasis does not introduce a word-boundary space
+
+The system SHALL NOT introduce a word-boundary blank when single-word emphasis (`⠨` bold /
+`⠠⠄` italic) covers only part of a word. Liblouis injects such a blank where the emphasis
+ends mid-word; it MUST be dropped so the word stays intact, matching the legacy
+`SwedishBrailleTranslator`. A blank cell whose source character is whitespace is a real
+space and MUST be preserved.
+
+#### Scenario: Strong over the first letter of a word
+
+- **WHEN** the input is `Den` with bold emphasis covering only `D`
+- **THEN** the output is `⠨⠠⠙⠑⠝` (no blank between the emphasized `D` and the rest of the word)
+
+#### Scenario: Emphasis ending after two letters of a word
+
+- **WHEN** the input is `Den` with bold emphasis covering `De`
+- **THEN** the output is `⠨⠠⠙⠑⠝`
+
+#### Scenario: Real space after an emphasized word is preserved
+
+- **WHEN** the input is `ord mer text` with italic emphasis covering `ord`
+- **THEN** the output is `⠠⠄⠕⠗⠙⠀⠍⠑⠗⠀⠞⠑⠭⠞` (the space between `ord` and `mer` is kept)

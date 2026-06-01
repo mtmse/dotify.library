@@ -26,6 +26,22 @@ public class EmTagTest extends AbstractFormatterEngineTest {
     }
 
     /**
+     * Emphasis covering only the first letter of a word must not inject a word-boundary
+     * space mid-word: <strong>D</strong>en lysande … → ⠨⠠⠙⠑⠝ … (not ⠨⠠⠙⠀⠑⠝).
+     */
+    @Test
+    public void testPartialWordEmphasisDoesNotInjectSpace() throws
+            LayoutEngineException,
+            IOException,
+            PagedMediaWriterConfigurationException {
+        testPEF(
+                "resource-files/em-partial-word-input.obfl",
+                "resource-files/em-partial-word-expected.pef",
+                false
+        );
+    }
+
+    /**
      * A whole sentence is wrapped in an em tag, with the final period inside the span.
      * The phrase wraps across rows; the end-marker must follow the period
      * (…⠞⠕⠗⠊⠑⠗⠄⠱), matching the legacy translator and MTM §3.4.2.
