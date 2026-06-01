@@ -55,3 +55,7 @@ suite, blocking any further regression analysis until it is resolved.
 - **Out of scope / unaffected**: the separate caps end-marker gap (e.g. `ISBN-centralen`,
   where Liblouis omits `⠱` entirely); translator selection/priority between the legacy and
   Liblouis factories; any public API signatures.
+- **Deferred findings** (from synthetic fuzzing; recorded in design.md, not fixed here):
+  combined bold+italic emits indicators in a fixed order so italic-outer
+  (`<em><strong>…`) diverges from the legacy outer-first order; and emphasis on a
+  whitespace-only span is ignored. Both are separate from this change.

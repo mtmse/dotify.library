@@ -106,3 +106,25 @@ affected region is `LIBLOUIS_NO_BREAKPOINT`**, and skip (leaving prior output) o
 - Final punctuation set for the swap: start from `SWEDISH_TERMINAL_PUNCT_CELLS` mapped to
   source chars; confirm against regression samples whether closing quotes/parentheses
   inside a span also need it.
+
+## Deferred findings (synthetic fuzzing, not fixed in this change)
+
+A synthetic sweep of 276 emphasis × case × placement combinations against the staging
+table (`LOUIS_TABLEPATH=/tmp/sv-louis-staging`, JDK 11) confirmed **zero spurious spaces**
+across all single-word emphasis sub-ranges (em/strong, start/mid/end, nested) and that all
+caps divergences from the legacy translator are the known `lencapsphrase 2` / C.C.W.
+trade-off. Two genuine divergences were found and **deliberately left unfixed** (decision
+recorded with the user); they are separate concerns from end-marker placement and
+partial-word spacing:
+
+- **Combined bold+italic indicator order when italic is the outer style.** For
+  `<em><strong>word</strong></em>` liblouis emits `⠨⠠⠄word` (bold-then-italic) while the
+  legacy translator and the §3.4.4 outer-first convention give `⠠⠄⠨word`
+  (italic-then-bold). Also affects multi-word (`⠨⠨⠠⠤…` vs `⠠⠤⠨⠨…`). `<strong><em>…`
+  (bold outer) coincidentally matches. Root cause: the two styles are merged into one
+  bitwise `Typeform` before translation, so liblouis cannot recover the source nesting
+  order and emits a fixed canonical order; the legacy path preserves markup nesting.
+  Fixable in Java by reordering the combined prefix cells using the `TextAttribute` nesting
+  order, but deferred pending evidence that nested bold+italic appears in the corpus.
+- **Emphasis applied to a whitespace-only span** (`a<em> </em>b`): liblouis ignores it,
+  legacy emits emphasis markers around the space. Degenerate input; low priority.
