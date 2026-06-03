@@ -66,8 +66,8 @@ dependencies {
     compile 'org.osgi:osgi.core:6.0.0'
     compile 'org.osgi:osgi.annotation:6.0.1'
 
-    compile 'org.liblouis:liblouis-java:5.2.0'
-    compile 'org.liblouis:liblouis-java:5.2.0:resources'
+    compile 'org.liblouis:liblouis-java:5.2.1'
+    compile 'org.liblouis:liblouis-java:5.2.1:resources'
     testImplementation group: "junit", name: "junit", version: "4.12"
     compile group: "com.googlecode.texhyphj", name: "texhyphj", version: "1.2"
     compile 'org.daisy.bindings:jhyphen:1.0.2'
