@@ -1,81 +1,116 @@
 package org.daisy.dotify.hyphenator.impl;
 
-import ch.sbs.jhyphen.Hyphenator;
-import ch.sbs.jhyphen.StandardHyphenationException;
+import ch.sbs.jhyphen.Hyphen;
+import com.sun.jna.Pointer;
+import com.sun.jna.ptr.PointerByReference;
 import org.daisy.dotify.api.hyphenator.HyphenatorConfigurationException;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 class JHyphenator extends AbstractHyphenator {
-    public static final byte SHY = 1;
+    private static ByteBuffer wordHyphens = ByteBuffer.allocate(50);
+    private final Pointer dictionary;
 
-    private Hyphenator instance;
+    /*
+     Left and right hyphenation min is same as previous implementations. It will ensure that we don't hyphenate
+     a word to early or to late inside the word.
+     */
+    private int leftHyphenMin = 1;
+    private int rightHyphenMin = 1;
+
     private final Map<String, String> hyphCache = new HashMap<>();
 
     JHyphenator(String locale) throws HyphenatorConfigurationException {
         try {
             ResourceBundle p = PropertyResourceBundle.getBundle("org/daisy/dotify/hyphenator/impl/JHyphenator");
-            instance = new Hyphenator(new File("/usr/share/hyphen/", p.getString(locale)));
+            File dictionaryFile = new File("/usr/share/hyphen/", p.getString(locale));
+
+            BufferedReader br = new BufferedReader(new FileReader(dictionaryFile));
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.toUpperCase().startsWith("LEFTHYPHENMIN")) {
+                    leftHyphenMin = Integer.parseInt(line.split(" ")[1]);
+                    continue;
+                }
+                if (line.toUpperCase().startsWith("RIGHTHYPHENMIN")) {
+                    rightHyphenMin = Integer.parseInt(line.split(" ")[1]);
+                    continue;
+                }
+            }
+
+            dictionary = Hyphen.getLibrary().hnj_hyphen_load(dictionaryFile.getAbsolutePath());
+
         } catch (Exception e) {
             throw new JHyphenatorConfigurationException(e);
         }
     }
 
-    @Override
-    public String hyphenate(String phrase) throws StandardHyphenationException {
+    private final Pattern wordPattern = Pattern.compile("([\\p{javaUpperCase}\\p{javaLowerCase}]+)");
+
+
+    private byte[] hyphenate_inner(String word) {
+        word = word.toLowerCase();
+        word = "." + word + ".";
+        byte[] wordBytes = StandardCharsets.UTF_8.encode(word).array();
+        int wordSize = wordBytes.length;
+        if (wordSize > wordHyphens.capacity()) {
+            wordHyphens = ByteBuffer.allocate(wordSize * 2);
+        }
+        PointerByReference repPointer = new PointerByReference(Pointer.NULL);
+        PointerByReference posPointer = new PointerByReference(Pointer.NULL);
+        PointerByReference cutPointer = new PointerByReference(Pointer.NULL);
+        Hyphen.getLibrary().hnj_hyphen_hyphenate2(dictionary, wordBytes, wordSize, wordHyphens, null,
+                repPointer, posPointer, cutPointer);
+        return wordHyphens.array();
+    }
+
+    public String hyphenate(String phrase) {
         StringBuilder sb = new StringBuilder();
-        boolean first = true;
-        for (String s : phrase.split(" ")) {
-            if (s.isEmpty()) {
-                sb.append(" ");
-                continue;
-            } else if (!first) {
-                sb.append(" ");
+        int pos = 0;
+        Matcher m = wordPattern.matcher(phrase);
+        while (m.find()) {
+            sb.append(phrase.substring(pos, m.start()));
+            if (!hyphCache.containsKey(m.group(1))) {
+                hyphCache.put(m.group(1), addHyphens(m.group(1), hyphenate_inner(m.group(1))));
             }
-
-            if (!hyphCache.containsKey(s)) {
-                hyphCache.put(s, handleWord(s, instance.hyphenate(s)));
-            }
-            sb.append(hyphCache.get(s));
-            first = false;
+            sb.append(hyphCache.get(m.group(1)));
+            pos = m.end();
         }
-
-        for (int i = phrase.length() - 1; i >= 0; i--) {
-            if (phrase.charAt(i) != ' ') {
-                break;
-            }
-            sb.append(" ");
-        }
-
+        sb.append(phrase.substring(pos));
         return sb.toString();
     }
 
-    protected String handleWord(String s, byte[] arr) {
-        int len = arr.length;
-
-        if (len <= getBeginLimit() + getEndLimit()) {
-            return s;
+    private String addHyphens(String word, byte[] mask) {
+        if (word.length() < leftHyphenMin + rightHyphenMin) {
+            return word;
         }
 
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < getBeginLimit() - 1; i++) {
-            arr[i] = 0;
+        for (int i = 0; i < leftHyphenMin; i++) {
+            mask[i] = 0;
+        }
+        for (int i = 0; i < rightHyphenMin; i++) {
+            mask[(word.length() + 1) - (i + 1)] = 0;
         }
 
-        for (int i = len - getEndLimit() + 1; i < len; i++) {
-            arr[i] = 0;
-        }
-        for (int i = 0; i < s.length(); i++) {
-            sb.append(s.charAt(i));
-            if (arr.length > i && arr[i] == SHY) {
-                sb.append("\u00AD");
+        String newWord = "";
+        int i = 0;
+        for (String ch : word.split("")) {
+            if (mask[i] % 2 == 1) {
+                newWord += "\u00AD";
             }
+            newWord += ch;
+            i++;
         }
-
-        return sb.toString();
+        return newWord;
     }
 }

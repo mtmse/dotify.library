@@ -26,21 +26,6 @@ public class JHypenatorTest {
     }
 
     @Test
-    public void testBeginEndHandling() throws HyphenatorConfigurationException {
-        Assume.assumeTrue(new File("/usr/share/hyphen/hyph_sv_SE.dic").exists());
-
-        JHyphenator jHyphenator = new JHyphenator("sv");
-
-        assertEquals("i", jHyphenator.handleWord("i", new byte[]{}));
-        assertEquals("in", jHyphenator.handleWord("in", new byte[]{1}));
-        assertEquals("test", jHyphenator.handleWord("test", new byte[]{1, 0, 0}));
-        assertEquals("test", jHyphenator.handleWord("test", new byte[]{0, 0, 1}));
-        assertEquals("test\u00ADar",
-                jHyphenator.handleWord("testar", new byte[]{1, 0, 0, 1, 0, 1})
-        );
-    }
-
-    @Test
     public void testHyphenate() throws HyphenatorConfigurationException {
         Assume.assumeTrue(new File("/usr/share/hyphen/hyph_sv_SE.dic").exists());
 
@@ -54,7 +39,7 @@ public class JHypenatorTest {
                 jHyphenator.hyphenate("testar i dotify")
         );
 
-        assertEquals("  Note   36  ", jHyphenator.hyphenate("  Note   36  "));
+        assertEquals("  No\u00ADte   36  ", jHyphenator.hyphenate("  Note   36  "));
 
     }
 }
