@@ -130,8 +130,8 @@ enum LiblouisSpecifications {
         specs.put(new TranslatorSpecification("no", TranslatorMode.Builder.withGrade(1.0).build()), "no-no-g1.ctb");
         specs.put(new TranslatorSpecification("no", TranslatorMode.Builder.withType(TranslatorType.UNCONTRACTED).dotsPerCell(DotsPerCell.EIGHT).build()), "no-no-8dot.utb");
         specs.put(new TranslatorSpecification("no", TranslatorMode.Builder.withGrade(0.0).dotsPerCell(DotsPerCell.EIGHT).build()), "no-no-8dot.utb");
-        specs.put(new TranslatorSpecification("no", TranslatorMode.Builder.withType(TranslatorType.CONTRACTED).build()), "no.tbl");
-        specs.put(new TranslatorSpecification("no", TranslatorMode.Builder.withGrade(3.0).build()), "no.tbl");
+        specs.put(new TranslatorSpecification("no", TranslatorMode.Builder.withType(TranslatorType.CONTRACTED).build()), "no-no-g3.ctb");
+        specs.put(new TranslatorSpecification("no", TranslatorMode.Builder.withGrade(3.0).build()), "no-no-g3.ctb");
         specs.put(new TranslatorSpecification("no", TranslatorMode.Builder.withGrade(2.0).build()), "no-no-g2.ctb");
         specs.put(new TranslatorSpecification("or", TranslatorMode.Builder.withGrade(1.0).build()), "or.tbl");
         specs.put(new TranslatorSpecification("pa", TranslatorMode.Builder.withGrade(1.0).build()), "pa.tbl");
