@@ -1,0 +1,32 @@
+<obfl xmlns="http://www.daisy.org/ns/2011/obfl" version="2011-1" xml:lang="en">
+	<meta xmlns:dc="http://purl.org/dc/elements/1.1/">
+		<dc:title>Volume keep with previous, start of block test</dc:title>
+		<dc:description>Tests that keep-with-previous-sheets does not keep a block with the sheets before it.
+		One short block is one sheet. A 4-sheet block with keep-with-previous-sheets="1" starts right after the target size of the
+		first volume. Only the end of the block is kept with its previous sheet, so the volumes are 10 and 4 sheets,
+		the same as without the keep-with-previous-sheets.</dc:description>
+	</meta>
+	<layout-master name="body" page-width="10" page-height="6" duplex="false">
+		<default-template>
+			<header/>
+			<footer/>
+		</default-template>
+	</layout-master>
+	<volume-template sheets-in-volume-max="10">
+		<pre-content/>
+		<post-content/>
+	</volume-template>
+	<sequence master="body">
+		<block>⠿⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠿</block>
+		<block>⠿⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠿</block>
+		<block>⠿⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠿</block>
+		<block>⠿⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠿</block>
+		<block>⠿⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠿</block>
+		<block>⠿⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠿</block>
+		<block>⠿⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠿</block>
+		<block>⠿⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠿</block>
+		<block>⠿⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠿</block>
+		<block>⠿⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠿</block>
+		<block keep-with-previous-sheets="1">⠿⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠿</block>
+	</sequence>
+</obfl>

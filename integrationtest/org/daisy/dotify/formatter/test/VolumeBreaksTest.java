@@ -165,7 +165,7 @@ public class VolumeBreaksTest extends AbstractFormatterEngineTest {
         );
     }
 
-    @Test @Ignore
+    @Test
     public void testVolumeKeepPrevious() throws
             LayoutEngineException,
             IOException,
@@ -173,6 +173,102 @@ public class VolumeBreaksTest extends AbstractFormatterEngineTest {
         testPEF(
             "resource-files/volume-break/volume-breaks-keep-previous-input.obfl",
             "resource-files/volume-break/volume-breaks-keep-previous-expected.pef",
+            false
+        );
+    }
+
+    @Test
+    public void testVolumeKeepPreviousStart() throws
+            LayoutEngineException,
+            IOException,
+            PagedMediaWriterConfigurationException {
+        testPEF(
+            "resource-files/volume-break/volume-breaks-keep-previous-start-input.obfl",
+            "resource-files/volume-break/volume-breaks-keep-previous-start-expected.pef",
+            false
+        );
+    }
+
+    @Test
+    public void testVolumeKeepPreviousContainer() throws
+            LayoutEngineException,
+            IOException,
+            PagedMediaWriterConfigurationException {
+        testPEF(
+            "resource-files/volume-break/volume-breaks-keep-previous-container-input.obfl",
+            "resource-files/volume-break/volume-breaks-keep-previous-container-expected.pef",
+            false
+        );
+    }
+
+    @Test
+    public void testVolumeKeepPreviousContainerFullPage() throws
+            LayoutEngineException,
+            IOException,
+            PagedMediaWriterConfigurationException {
+        testPEF(
+            "resource-files/volume-break/volume-breaks-keep-previous-container-full-page-input.obfl",
+            "resource-files/volume-break/volume-breaks-keep-previous-container-full-page-expected.pef",
+            false
+        );
+    }
+
+    @Test
+    public void testVolumeKeepPreviousOneSheetBlocks() throws
+            LayoutEngineException,
+            IOException,
+            PagedMediaWriterConfigurationException {
+        testPEF(
+            "resource-files/volume-break/volume-breaks-keep-previous-one-sheet-blocks-input.obfl",
+            "resource-files/volume-break/volume-breaks-keep-previous-one-sheet-blocks-expected.pef",
+            false
+        );
+    }
+
+    @Test
+    public void testVolumeKeepPreviousClamp() throws
+            LayoutEngineException,
+            IOException,
+            PagedMediaWriterConfigurationException {
+        testPEF(
+            "resource-files/volume-break/volume-breaks-keep-previous-clamp-input.obfl",
+            "resource-files/volume-break/volume-breaks-keep-previous-clamp-expected.pef",
+            false
+        );
+    }
+
+    @Test
+    public void testVolumeKeepPreviousNestedStart() throws
+            LayoutEngineException,
+            IOException,
+            PagedMediaWriterConfigurationException {
+        testPEF(
+            "resource-files/volume-break/volume-breaks-keep-previous-nested-start-input.obfl",
+            "resource-files/volume-break/volume-breaks-keep-previous-nested-start-expected.pef",
+            false
+        );
+    }
+
+    @Test
+    public void testVolumeKeepPreviousNested() throws
+            LayoutEngineException,
+            IOException,
+            PagedMediaWriterConfigurationException {
+        testPEF(
+            "resource-files/volume-break/volume-breaks-keep-previous-nested-input.obfl",
+            "resource-files/volume-break/volume-breaks-keep-previous-nested-expected.pef",
+            false
+        );
+    }
+
+    @Test
+    public void testVolumeKeepPreviousDuplex() throws
+            LayoutEngineException,
+            IOException,
+            PagedMediaWriterConfigurationException {
+        testPEF(
+            "resource-files/volume-break/volume-breaks-keep-previous-duplex-input.obfl",
+            "resource-files/volume-break/volume-breaks-keep-previous-duplex-expected.pef",
             false
         );
     }

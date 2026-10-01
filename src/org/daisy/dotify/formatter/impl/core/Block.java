@@ -9,6 +9,11 @@ import org.daisy.dotify.formatter.impl.search.BlockAddress;
 import org.daisy.dotify.formatter.impl.search.DefaultContext;
 import org.daisy.dotify.formatter.impl.segment.Segment;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * <p>Provides a block of rows and the properties associated with it.</p>
  * <p><b>Note that this class does not map directly to OBFL blocks.</b>
@@ -26,7 +31,8 @@ public abstract class Block {
     private FormattingTypes.BreakBefore breakBefore;
     private FormattingTypes.Keep keep;
     private int keepWithNext;
-    private int keepWithPreviousSheets;
+    private Map<BlockAddress, Integer> keepWithPreviousSheets;
+    private List<BlockAddress> keepWithPreviousSheetsScopes;
     private int keepWithNextSheets;
     private Integer avoidVolumeBreakInsidePriority;
     private Integer avoidVolumeBreakAfterPriority;
@@ -47,7 +53,8 @@ public abstract class Block {
         this.breakBefore = FormattingTypes.BreakBefore.AUTO;
         this.keep = FormattingTypes.Keep.AUTO;
         this.keepWithNext = 0;
-        this.keepWithPreviousSheets = 0;
+        this.keepWithPreviousSheets = Collections.emptyMap();
+        this.keepWithPreviousSheetsScopes = Collections.emptyList();
         this.keepWithNextSheets = 0;
         this.avoidVolumeBreakInsidePriority = null;
         this.avoidVolumeBreakAfterPriority = null;
@@ -68,6 +75,7 @@ public abstract class Block {
         this.keep = template.keep;
         this.keepWithNext = template.keepWithNext;
         this.keepWithPreviousSheets = template.keepWithPreviousSheets;
+        this.keepWithPreviousSheetsScopes = template.keepWithPreviousSheetsScopes;
         this.keepWithNextSheets = template.keepWithNextSheets;
         this.avoidVolumeBreakInsidePriority = template.avoidVolumeBreakInsidePriority;
         this.avoidVolumeBreakAfterPriority = template.avoidVolumeBreakAfterPriority;
@@ -208,8 +216,24 @@ public abstract class Block {
         return keepWithNext;
     }
 
-    public int getKeepWithPreviousSheets() {
+    /**
+     * Gets the keep-with-previous-sheets values of the OBFL blocks that end with this block.
+     *
+     * @return a map from the scope of each such OBFL block (see {@link
+     *         #getKeepWithPreviousSheetsScopes()}) to its keep-with-previous-sheets value
+     */
+    public Map<BlockAddress, Integer> getKeepWithPreviousSheets() {
         return keepWithPreviousSheets;
+    }
+
+    /**
+     * Gets the scopes of the OBFL blocks with keep-with-previous-sheets that this block is part of.
+     * A scope is identified by the address of the first block created for the OBFL block.
+     *
+     * @return the scopes, outermost first
+     */
+    public List<BlockAddress> getKeepWithPreviousSheetsScopes() {
+        return keepWithPreviousSheetsScopes;
     }
 
     public int getKeepWithNextSheets() {
@@ -236,8 +260,14 @@ public abstract class Block {
         this.keepWithNext = keepWithNext;
     }
 
-    void setKeepWithPreviousSheets(int keepWithPreviousSheets) {
-        this.keepWithPreviousSheets = keepWithPreviousSheets;
+    void addKeepWithPreviousSheets(BlockAddress scope, int keepWithPreviousSheets) {
+        Map<BlockAddress, Integer> m = new HashMap<>(this.keepWithPreviousSheets);
+        m.merge(scope, keepWithPreviousSheets, Math::max);
+        this.keepWithPreviousSheets = Collections.unmodifiableMap(m);
+    }
+
+    void setKeepWithPreviousSheetsScopes(List<BlockAddress> scopes) {
+        this.keepWithPreviousSheetsScopes = Collections.unmodifiableList(scopes);
     }
 
     void setKeepWithNextSheets(int keepWithNextSheets) {

@@ -43,6 +43,7 @@ import org.daisy.dotify.formatter.impl.segment.NewLineSegment;
 import org.daisy.dotify.formatter.impl.segment.PageNumberReference;
 import org.daisy.dotify.formatter.impl.segment.TextSegment;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -189,6 +190,11 @@ public class FormatterCoreImpl extends Stack<Block> implements FormatterCore, Bl
         }
         propsContext.push(ac);
         Block c = newBlock(blockId, rdp.build());
+        if (p.getKeepWithPreviousSheets() > 0) {
+            // This block opens a new keep-with-previous-sheets scope, starting with c
+            ac.setKeepWithPreviousSheetsScope(c.getBlockAddress());
+            c.setKeepWithPreviousSheetsScopes(getKeepWithPreviousSheetsScopes());
+        }
         c.setBreakBeforeType(p.getBreakBeforeType());
         c.setKeepType(p.getKeepType());
         c.setKeepWithNext(p.getKeepWithNext());
@@ -270,7 +276,9 @@ public class FormatterCoreImpl extends Stack<Block> implements FormatterCore, Bl
             }
             builder.innerSpaceAfter(p.getPadding().getBottomSpacing()).
                     outerSpaceAfter(bi.getRowDataProperties().getOuterSpaceAfter() + p.getMargin().getBottomSpacing());
-            bi.setKeepWithPreviousSheets(p.getKeepWithPreviousSheets());
+            if (ac.getKeepWithPreviousSheetsScope() != null) {
+                bi.addKeepWithPreviousSheets(ac.getKeepWithPreviousSheetsScope(), p.getKeepWithPreviousSheets());
+            }
             bi.setRowDataProperties(builder.build());
         }
         leftMarginComps.pop();
@@ -315,8 +323,22 @@ public class FormatterCoreImpl extends Stack<Block> implements FormatterCore, Bl
         currentBlockAddress = new BlockAddress(groupNumber, currentBlockAddress.getBlockNumber() + 1);
         block.setBlockAddress(currentBlockAddress);
         block.setTreeInfo(blocksClosedSinceLastNewBlock, propsContext.size());
+        block.setKeepWithPreviousSheetsScopes(getKeepWithPreviousSheetsScopes());
         blocksClosedSinceLastNewBlock = 0;
         return this.push(block);
+    }
+
+    /**
+     * Gets the keep-with-previous-sheets scopes of the currently open blocks, outermost first.
+     */
+    private List<BlockAddress> getKeepWithPreviousSheetsScopes() {
+        List<BlockAddress> scopes = new ArrayList<>();
+        for (AncestorContext ac : propsContext) {
+            if (ac.getKeepWithPreviousSheetsScope() != null) {
+                scopes.add(ac.getKeepWithPreviousSheetsScope());
+            }
+        }
+        return scopes;
     }
 
     public Block getCurrentBlock() {
@@ -561,6 +583,7 @@ public class FormatterCoreImpl extends Stack<Block> implements FormatterCore, Bl
         );
         currentBlockAddress = new BlockAddress(groupNumber, currentBlockAddress.getBlockNumber() + 1);
         table.setBlockAddress(currentBlockAddress);
+        table.setKeepWithPreviousSheetsScopes(getKeepWithPreviousSheetsScopes());
         add(table);
         //no need to create and configure a regular block (as is done in startBlock)
         //if there is a list item, we ignore it

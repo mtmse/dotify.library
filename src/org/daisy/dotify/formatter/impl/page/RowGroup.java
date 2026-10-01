@@ -5,12 +5,14 @@ import org.daisy.dotify.api.writer.Row;
 import org.daisy.dotify.common.splitter.SplitPointUnit;
 import org.daisy.dotify.formatter.impl.row.LineProperties;
 import org.daisy.dotify.formatter.impl.row.RowImpl;
+import org.daisy.dotify.formatter.impl.search.BlockAddress;
 import org.daisy.dotify.formatter.impl.search.VolumeKeepPriority;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -25,7 +27,9 @@ class RowGroup implements SplitPointUnit {
     private final float unitSize, lastUnitSize;
     private final boolean breakable, skippable, collapsible, lazyCollapse;
     private final List<String> ids;
-    private final int keepWithNextSheets, keepWithPreviousSheets;
+    private final int keepWithNextSheets;
+    private final Map<BlockAddress, Integer> keepWithPreviousSheets;
+    private final List<BlockAddress> keepWithPreviousSheetsScopes;
     private final VolumeKeepPriority avoidVolumeBreakAfterPriority;
     private final boolean lastInBlock;
     private final boolean mergeable;
@@ -38,7 +42,9 @@ class RowGroup implements SplitPointUnit {
         private List<String> identifiers;
         private final float rowDefault;
         private boolean breakable = false, skippable = false, collapsible = false;
-        private int keepWithNextSheets = 0, keepWithPreviousSheets = 0;
+        private int keepWithNextSheets = 0;
+        private Map<BlockAddress, Integer> keepWithPreviousSheets = Collections.emptyMap();
+        private List<BlockAddress> keepWithPreviousSheetsScopes = Collections.emptyList();
         private boolean lazyCollapse = true;
         private VolumeKeepPriority avoidVolumeBreakAfterPriority = VolumeKeepPriority.empty();
         private boolean lastInBlock = false;
@@ -112,8 +118,25 @@ class RowGroup implements SplitPointUnit {
             return this;
         }
 
-        Builder keepWithPreviousSheets(int value) {
-            this.keepWithPreviousSheets = value;
+        /**
+         * Sets the keep-with-previous-sheets values of the OBFL blocks that end with this row group.
+         *
+         * @param value a map from keep-with-previous-sheets scope to value
+         * @return this builder
+         */
+        Builder keepWithPreviousSheets(Map<BlockAddress, Integer> value) {
+            this.keepWithPreviousSheets = Objects.requireNonNull(value);
+            return this;
+        }
+
+        /**
+         * Sets the keep-with-previous-sheets scopes that this row group's rows belong to.
+         *
+         * @param value the scopes
+         * @return this builder
+         */
+        Builder keepWithPreviousSheetsScopes(List<BlockAddress> value) {
+            this.keepWithPreviousSheetsScopes = Objects.requireNonNull(value);
             return this;
         }
 
@@ -165,6 +188,7 @@ class RowGroup implements SplitPointUnit {
         }
         this.keepWithNextSheets = builder.keepWithNextSheets;
         this.keepWithPreviousSheets = builder.keepWithPreviousSheets;
+        this.keepWithPreviousSheetsScopes = builder.keepWithPreviousSheetsScopes;
         this.avoidVolumeBreakAfterPriority = builder.avoidVolumeBreakAfterPriority;
         this.lastInBlock = builder.lastInBlock;
         this.mergeable = builder.mergeable;
@@ -189,6 +213,7 @@ class RowGroup implements SplitPointUnit {
         this.lazyCollapse = template.lazyCollapse;
         this.keepWithNextSheets = template.keepWithNextSheets;
         this.keepWithPreviousSheets = template.keepWithPreviousSheets;
+        this.keepWithPreviousSheetsScopes = template.keepWithPreviousSheetsScopes;
         this.avoidVolumeBreakAfterPriority = template.avoidVolumeBreakAfterPriority;
         this.lastInBlock = template.lastInBlock;
         this.mergeable = template.mergeable;
@@ -313,8 +338,12 @@ class RowGroup implements SplitPointUnit {
         return keepWithNextSheets;
     }
 
-    public int getKeepWithPreviousSheets() {
+    public Map<BlockAddress, Integer> getKeepWithPreviousSheets() {
         return keepWithPreviousSheets;
+    }
+
+    public List<BlockAddress> getKeepWithPreviousSheetsScopes() {
+        return keepWithPreviousSheetsScopes;
     }
 
     /**

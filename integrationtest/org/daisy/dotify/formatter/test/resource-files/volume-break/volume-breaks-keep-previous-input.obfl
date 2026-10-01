@@ -1,10 +1,11 @@
 <obfl xmlns="http://www.daisy.org/ns/2011/obfl" version="2011-1" xml:lang="en">
 	<meta xmlns:dc="http://purl.org/dc/elements/1.1/">
 		<dc:title>Volume keep with previous test</dc:title>
-		<dc:description>Tests that keep-with-previous-sheets work. In this test, 7 sheets in each volume is optimal.
-		The maximum is set to 10 sheets in each volume, which (by the current configuration of the implementation)
-		allows for 2 pages deviation. This is sufficient to shift the balance by 1 page to accommodate
-		keep-with-previous-sheets.</dc:description>
+		<dc:description>Tests that keep-with-previous-sheets keeps the end of a block with its previous sheet.
+		One short block is one sheet. A 5-sheet block with keep-with-previous-sheets="1" occupies sheets 7-11.
+		Without the keep-with-previous-sheets, the first volume would be 10 sheets (the target size) and the second
+		would be 4 sheets, starting with the last sheet of the block.
+		With the keep-with-previous-sheets, the first volume is 9 sheets and the second 5 sheets.</dc:description>
 	</meta>
 	<layout-master name="body" page-width="10" page-height="6" duplex="false">
 		<default-template>
@@ -21,10 +22,9 @@
 		<block>⠿⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠿</block>
 		<block>⠿⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠿</block>
 		<block>⠿⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠿</block>
-		<block keep-with-previous-sheets="1">⠿⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠿</block>
 		<block>⠿⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠿</block>
 		<block>⠿⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠿</block>
-		<block>⠿⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠿</block>
+		<block keep-with-previous-sheets="1">⠿⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠿</block>
 		<block>⠿⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠿</block>
 		<block>⠿⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠿</block>
 		<block>⠿⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠿</block>

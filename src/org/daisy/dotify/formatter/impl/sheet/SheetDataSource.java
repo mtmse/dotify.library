@@ -12,6 +12,7 @@ import org.daisy.dotify.formatter.impl.page.BlockSequence;
 import org.daisy.dotify.formatter.impl.page.PageImpl;
 import org.daisy.dotify.formatter.impl.page.PageSequenceBuilder2;
 import org.daisy.dotify.formatter.impl.page.RestartPaginationException;
+import org.daisy.dotify.formatter.impl.search.BlockAddress;
 import org.daisy.dotify.formatter.impl.search.BlockLineLocation;
 import org.daisy.dotify.formatter.impl.search.DefaultContext;
 import org.daisy.dotify.formatter.impl.search.DocumentSpace;
@@ -23,8 +24,10 @@ import org.daisy.dotify.formatter.impl.search.VolumeKeepPriority;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -63,6 +66,9 @@ public class SheetDataSource implements SplitPointDataSource<Sheet, SheetDataSou
     private SectionProperties sectionProperties;
     private int sheetIndex; // sheets created from current sequence or being created
     private Deque<SheetIdentity> previousSheets; // all sheets created from the current sequence
+    // first and last sheet (sheetIndex) with content rows of each keep-with-previous-sheets scope
+    private Map<BlockAddress, Integer> keepScopeFirstSheet;
+    private Map<BlockAddress, Integer> keepScopeLastSheet;
     private int pageIndex; // keeps track of whether we are on a right- or left-hand page
     private String counter;
     private int initialPageOffset;
@@ -95,6 +101,8 @@ public class SheetDataSource implements SplitPointDataSource<Sheet, SheetDataSou
         this.sectionProperties = null;
         this.sheetIndex = 0;
         this.previousSheets = new LinkedList<>();
+        this.keepScopeFirstSheet = new HashMap<>();
+        this.keepScopeLastSheet = new HashMap<>();
         this.pageIndex = 0;
         this.counter = null;
         this.initialPageOffset = 0;
@@ -133,6 +141,8 @@ public class SheetDataSource implements SplitPointDataSource<Sheet, SheetDataSou
         this.sheetIndex = template.sheetIndex;
         this.pageIndex = template.pageIndex;
         this.previousSheets = new LinkedList<>(template.previousSheets);
+        this.keepScopeFirstSheet = new HashMap<>(template.keepScopeFirstSheet);
+        this.keepScopeLastSheet = new HashMap<>(template.keepScopeLastSheet);
         if (template.sheetBuffer.size() > offset) {
             this.sheetBuffer = new ArrayList<>(template.sheetBuffer.subList(offset, template.sheetBuffer.size()));
         } else {
@@ -310,6 +320,8 @@ public class SheetDataSource implements SplitPointDataSource<Sheet, SheetDataSou
                 if (!previousSheets.isEmpty()) {
                     previousSheets = new LinkedList<>();
                 }
+                keepScopeFirstSheet = new HashMap<>();
+                keepScopeLastSheet = new HashMap<>();
             }
             int currentSize = sheetBuffer.size();
             while (psb.hasNext() && currentSize == sheetBuffer.size()) {
@@ -430,7 +442,7 @@ public class SheetDataSource implements SplitPointDataSource<Sheet, SheetDataSou
                     }
                     s.breakable(br);
                 }
-                keepWithPreviousSheets(previousSheets, p.keepPreviousSheets(), rcontext);
+                keepWithPreviousSheets(p);
                 volBreakAllowed &= p.allowsVolumeBreak();
                 if (!sectionProperties.duplex() || pageIndex % 2 == 1 || volumeEnded) {
                     rcontext.getRefs().keepBreakable(si, volBreakAllowed);
@@ -467,19 +479,53 @@ public class SheetDataSource implements SplitPointDataSource<Sheet, SheetDataSou
     }
 
     /**
-     * Keep the sheet that is currently being built together with the <code>n</code> previous
-     * sheets.
+     * Apply keep-with-previous-sheets for the OBFL blocks that end on page <code>p</code>, which is
+     * on the sheet currently being built. The last sheet with content of such a block is kept together
+     * with the <code>n</code> sheets before it, but never with sheets before the block's first sheet
+     * with content.
+     *
+     * @param p The page that was just added to the sheet currently being built.
+     */
+    private void keepWithPreviousSheets(PageImpl p) {
+        // Record the sheets on which each keep-with-previous-sheets scope has content
+        for (BlockAddress scope : p.keepPreviousSheetsScopes()) {
+            keepScopeFirstSheet.putIfAbsent(scope, sheetIndex);
+            keepScopeLastSheet.put(scope, sheetIndex);
+        }
+        // Keep the last sheet of each block ending here with at most n of its own previous sheets
+        for (Map.Entry<BlockAddress, Integer> keep : p.keepPreviousSheets().entrySet()) {
+            Integer first = keepScopeFirstSheet.get(keep.getKey());
+            if (first == null) {
+                // the block has no content rows, so there is nothing to keep
+                continue;
+            }
+            int last = keepScopeLastSheet.get(keep.getKey());
+            int n = Math.min(keep.getValue(), last - first);
+            keepWithPreviousSheets(previousSheets, sheetIndex - last, n, rcontext);
+        }
+    }
+
+    /**
+     * Keep a sheet together with the <code>n</code> sheets before it.
      *
      * @param previousSheets All the sheets previously created from the current block sequence,
      *                       starting with the most recent one (the one before the sheet we are
      *                       currently building).
-     * @param n              The number of sheets to keep together, excluding the one currently
-     *                       being built.
+     * @param skip           How many sheets before the one currently being built the sheet to
+     *                       keep is. 0 means the sheet currently being built.
+     * @param n              The number of sheets to keep together, excluding the sheet to keep.
      * @param rcontext       The current {@link DefaultContext}.
      */
-    private static void keepWithPreviousSheets(Iterable<SheetIdentity> previousSheets, int n, DefaultContext rcontext) {
+    private static void keepWithPreviousSheets(
+        Iterable<SheetIdentity> previousSheets,
+        int skip,
+        int n,
+        DefaultContext rcontext
+    ) {
         for (SheetIdentity s : previousSheets) {
-            if (n > 0) {
+            if (skip > 0) {
+                skip--;
+            } else if (n > 0) {
                 rcontext.getRefs().keepBreakable(s, false);
                 n--;
             } else {
