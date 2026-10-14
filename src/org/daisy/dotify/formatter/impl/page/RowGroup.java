@@ -118,25 +118,13 @@ class RowGroup implements SplitPointUnit {
             return this;
         }
 
-        /**
-         * Sets the keep-with-previous-sheets values of the OBFL blocks that end with this row group.
-         *
-         * @param value a map from keep-with-previous-sheets scope to value
-         * @return this builder
-         */
         Builder keepWithPreviousSheets(Map<BlockAddress, Integer> value) {
-            this.keepWithPreviousSheets = Objects.requireNonNull(value);
+            this.keepWithPreviousSheets = value;
             return this;
         }
 
-        /**
-         * Sets the keep-with-previous-sheets scopes that this row group's rows belong to.
-         *
-         * @param value the scopes
-         * @return this builder
-         */
         Builder keepWithPreviousSheetsScopes(List<BlockAddress> value) {
-            this.keepWithPreviousSheetsScopes = Objects.requireNonNull(value);
+            this.keepWithPreviousSheetsScopes = value;
             return this;
         }
 

@@ -191,7 +191,6 @@ public class FormatterCoreImpl extends Stack<Block> implements FormatterCore, Bl
         propsContext.push(ac);
         Block c = newBlock(blockId, rdp.build());
         if (p.getKeepWithPreviousSheets() > 0) {
-            // This block opens a new keep-with-previous-sheets scope, starting with c
             ac.setKeepWithPreviousSheetsScope(c.getBlockAddress());
             c.setKeepWithPreviousSheetsScopes(getKeepWithPreviousSheetsScopes());
         }

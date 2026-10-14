@@ -219,8 +219,7 @@ public abstract class Block {
     /**
      * Gets the keep-with-previous-sheets values of the OBFL blocks that end with this block.
      *
-     * @return a map from the scope of each such OBFL block (see {@link
-     *         #getKeepWithPreviousSheetsScopes()}) to its keep-with-previous-sheets value
+     * @return a map from scope (see {@link #getKeepWithPreviousSheetsScopes()}) to value
      */
     public Map<BlockAddress, Integer> getKeepWithPreviousSheets() {
         return keepWithPreviousSheets;
@@ -262,7 +261,7 @@ public abstract class Block {
 
     void addKeepWithPreviousSheets(BlockAddress scope, int keepWithPreviousSheets) {
         Map<BlockAddress, Integer> m = new HashMap<>(this.keepWithPreviousSheets);
-        m.merge(scope, keepWithPreviousSheets, Math::max);
+        m.put(scope, keepWithPreviousSheets);
         this.keepWithPreviousSheets = Collections.unmodifiableMap(m);
     }
 

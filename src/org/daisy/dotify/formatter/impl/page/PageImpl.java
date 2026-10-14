@@ -28,7 +28,7 @@ import org.daisy.dotify.formatter.impl.search.VolumeKeepPriority;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -91,7 +91,7 @@ public class PageImpl implements Page {
         this.flowHeight = master.getFlowHeight(template);
         this.isVolBreakAllowed = true;
         this.keepPreviousSheets = new HashMap<>();
-        this.keepPreviousSheetsScopes = new LinkedHashSet<>();
+        this.keepPreviousSheetsScopes = new HashSet<>();
         this.volumeBreakAfterPriority = VolumeKeepPriority.empty();
         if (master.duplex() && details.getPageId().getOrdinal() % 2 == 1) {
             this.finalRows = new BorderManager(master, fcontext, master.getOuterMargin(), master.getInnerMargin());
@@ -478,7 +478,7 @@ public class PageImpl implements Page {
     }
 
     void addKeepWithPreviousSheets(Map<BlockAddress, Integer> value) {
-        value.forEach((scope, n) -> keepPreviousSheets.merge(scope, n, Math::max));
+        keepPreviousSheets.putAll(value);
     }
 
     void addKeepWithPreviousSheetsScopes(List<BlockAddress> scopes) {
@@ -494,9 +494,7 @@ public class PageImpl implements Page {
     }
 
     /**
-     * Gets the keep-with-previous-sheets values of the OBFL blocks that end on this page.
-     *
-     * @return a map from keep-with-previous-sheets scope to value
+     * Gets the keep-with-previous-sheets values of the OBFL blocks that end on this page, by scope.
      */
     public Map<BlockAddress, Integer> keepPreviousSheets() {
         return keepPreviousSheets;
@@ -504,8 +502,6 @@ public class PageImpl implements Page {
 
     /**
      * Gets the keep-with-previous-sheets scopes that have content rows on this page.
-     *
-     * @return the scopes
      */
     public Set<BlockAddress> keepPreviousSheetsScopes() {
         return keepPreviousSheetsScopes;

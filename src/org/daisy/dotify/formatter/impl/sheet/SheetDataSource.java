@@ -496,7 +496,7 @@ public class SheetDataSource implements SplitPointDataSource<Sheet, SheetDataSou
         for (Map.Entry<BlockAddress, Integer> keep : p.keepPreviousSheets().entrySet()) {
             Integer first = keepScopeFirstSheet.get(keep.getKey());
             if (first == null) {
-                // the block has no content rows, so there is nothing to keep
+                // no content rows, so nothing to keep
                 continue;
             }
             int last = keepScopeLastSheet.get(keep.getKey());
