@@ -327,9 +327,6 @@ public class FormatterCoreImpl extends Stack<Block> implements FormatterCore, Bl
         return this.push(block);
     }
 
-    /**
-     * Gets the keep-with-previous-sheets scopes of the currently open blocks, outermost first.
-     */
     private List<BlockAddress> getKeepWithPreviousSheetsScopes() {
         List<BlockAddress> scopes = new ArrayList<>();
         for (AncestorContext ac : propsContext) {

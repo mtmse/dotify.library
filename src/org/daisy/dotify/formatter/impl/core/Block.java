@@ -216,21 +216,10 @@ public abstract class Block {
         return keepWithNext;
     }
 
-    /**
-     * Gets the keep-with-previous-sheets values of the OBFL blocks that end with this block.
-     *
-     * @return a map from scope (see {@link #getKeepWithPreviousSheetsScopes()}) to value
-     */
     public Map<BlockAddress, Integer> getKeepWithPreviousSheets() {
         return keepWithPreviousSheets;
     }
 
-    /**
-     * Gets the scopes of the OBFL blocks with keep-with-previous-sheets that this block is part of.
-     * A scope is identified by the address of the first block created for the OBFL block.
-     *
-     * @return the scopes, outermost first
-     */
     public List<BlockAddress> getKeepWithPreviousSheetsScopes() {
         return keepWithPreviousSheetsScopes;
     }

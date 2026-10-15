@@ -493,16 +493,10 @@ public class PageImpl implements Page {
         return isVolBreakAllowed;
     }
 
-    /**
-     * Gets the keep-with-previous-sheets values of the OBFL blocks that end on this page, by scope.
-     */
     public Map<BlockAddress, Integer> keepPreviousSheets() {
         return keepPreviousSheets;
     }
 
-    /**
-     * Gets the keep-with-previous-sheets scopes that have content rows on this page.
-     */
     public Set<BlockAddress> keepPreviousSheetsScopes() {
         return keepPreviousSheetsScopes;
     }
