@@ -21,13 +21,19 @@ import org.daisy.dotify.formatter.impl.core.PageTemplate;
 import org.daisy.dotify.formatter.impl.core.PaginatorException;
 import org.daisy.dotify.formatter.impl.row.MarginProperties;
 import org.daisy.dotify.formatter.impl.row.RowImpl;
+import org.daisy.dotify.formatter.impl.search.BlockAddress;
 import org.daisy.dotify.formatter.impl.search.PageDetails;
 import org.daisy.dotify.formatter.impl.search.VolumeKeepPriority;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -57,7 +63,8 @@ public class PageImpl implements Page {
 
     private boolean hasRows;
     private boolean isVolBreakAllowed;
-    private int keepPreviousSheets;
+    private Map<BlockAddress, Integer> keepWithPreviousSheets;
+    private Set<BlockAddress> keepWithPreviousSheetsScopes;
     private VolumeKeepPriority volumeBreakAfterPriority;
     private final BrailleTranslator filter;
 
@@ -84,7 +91,8 @@ public class PageImpl implements Page {
         this.template = master.getTemplate(details.getPageNumber());
         this.flowHeight = master.getFlowHeight(template);
         this.isVolBreakAllowed = true;
-        this.keepPreviousSheets = 0;
+        this.keepWithPreviousSheets = Collections.emptyMap();
+        this.keepWithPreviousSheetsScopes = Collections.emptySet();
         this.volumeBreakAfterPriority = VolumeKeepPriority.empty();
         if (master.duplex() && details.getPageId().getOrdinal() % 2 == 1) {
             this.finalRows = new BorderManager(master, fcontext, master.getOuterMargin(), master.getInnerMargin());
@@ -470,8 +478,24 @@ public class PageImpl implements Page {
         return flowHeight;
     }
 
-    void setKeepWithPreviousSheets(int value) {
-        keepPreviousSheets = Math.max(value, keepPreviousSheets);
+    void addKeepWithPreviousSheets(BlockAddress scope, int value) {
+        if (scope == null) {
+            return;
+        }
+        if (keepWithPreviousSheets.isEmpty()) {
+            keepWithPreviousSheets = new HashMap<>();
+        }
+        keepWithPreviousSheets.put(scope, value);
+    }
+
+    void addKeepWithPreviousSheetsScopes(List<BlockAddress> scopes) {
+        if (scopes.isEmpty()) {
+            return;
+        }
+        if (keepWithPreviousSheetsScopes.isEmpty()) {
+            keepWithPreviousSheetsScopes = new HashSet<>();
+        }
+        keepWithPreviousSheetsScopes.addAll(scopes);
     }
 
     void setAllowsVolumeBreak(boolean value) {
@@ -482,8 +506,12 @@ public class PageImpl implements Page {
         return isVolBreakAllowed;
     }
 
-    public int keepPreviousSheets() {
-        return keepPreviousSheets;
+    public Map<BlockAddress, Integer> getKeepWithPreviousSheets() {
+        return keepWithPreviousSheets;
+    }
+
+    public Set<BlockAddress> getKeepWithPreviousSheetsScopes() {
+        return keepWithPreviousSheetsScopes;
     }
 
     PageTemplate getPageTemplate() {

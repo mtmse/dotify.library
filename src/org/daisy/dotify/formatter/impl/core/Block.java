@@ -9,6 +9,9 @@ import org.daisy.dotify.formatter.impl.search.BlockAddress;
 import org.daisy.dotify.formatter.impl.search.DefaultContext;
 import org.daisy.dotify.formatter.impl.segment.Segment;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * <p>Provides a block of rows and the properties associated with it.</p>
  * <p><b>Note that this class does not map directly to OBFL blocks.</b>
@@ -27,6 +30,8 @@ public abstract class Block {
     private FormattingTypes.Keep keep;
     private int keepWithNext;
     private int keepWithPreviousSheets;
+    private BlockAddress keepWithPreviousSheetsScope;
+    private List<BlockAddress> keepWithPreviousSheetsScopes;
     private int keepWithNextSheets;
     private Integer avoidVolumeBreakInsidePriority;
     private Integer avoidVolumeBreakAfterPriority;
@@ -48,6 +53,8 @@ public abstract class Block {
         this.keep = FormattingTypes.Keep.AUTO;
         this.keepWithNext = 0;
         this.keepWithPreviousSheets = 0;
+        this.keepWithPreviousSheetsScope = null;
+        this.keepWithPreviousSheetsScopes = Collections.emptyList();
         this.keepWithNextSheets = 0;
         this.avoidVolumeBreakInsidePriority = null;
         this.avoidVolumeBreakAfterPriority = null;
@@ -68,6 +75,8 @@ public abstract class Block {
         this.keep = template.keep;
         this.keepWithNext = template.keepWithNext;
         this.keepWithPreviousSheets = template.keepWithPreviousSheets;
+        this.keepWithPreviousSheetsScope = template.keepWithPreviousSheetsScope;
+        this.keepWithPreviousSheetsScopes = template.keepWithPreviousSheetsScopes;
         this.keepWithNextSheets = template.keepWithNextSheets;
         this.avoidVolumeBreakInsidePriority = template.avoidVolumeBreakInsidePriority;
         this.avoidVolumeBreakAfterPriority = template.avoidVolumeBreakAfterPriority;
@@ -212,6 +221,14 @@ public abstract class Block {
         return keepWithPreviousSheets;
     }
 
+    public BlockAddress getKeepWithPreviousSheetsScope() {
+        return keepWithPreviousSheetsScope;
+    }
+
+    public List<BlockAddress> getKeepWithPreviousSheetsScopes() {
+        return keepWithPreviousSheetsScopes;
+    }
+
     public int getKeepWithNextSheets() {
         return keepWithNextSheets;
     }
@@ -236,8 +253,13 @@ public abstract class Block {
         this.keepWithNext = keepWithNext;
     }
 
-    void setKeepWithPreviousSheets(int keepWithPreviousSheets) {
+    void setKeepWithPreviousSheets(BlockAddress scope, int keepWithPreviousSheets) {
+        this.keepWithPreviousSheetsScope = scope;
         this.keepWithPreviousSheets = keepWithPreviousSheets;
+    }
+
+    void setKeepWithPreviousSheetsScopes(List<BlockAddress> scopes) {
+        this.keepWithPreviousSheetsScopes = scopes;
     }
 
     void setKeepWithNextSheets(int keepWithNextSheets) {

@@ -5,6 +5,7 @@ import org.daisy.dotify.api.writer.Row;
 import org.daisy.dotify.common.splitter.SplitPointUnit;
 import org.daisy.dotify.formatter.impl.row.LineProperties;
 import org.daisy.dotify.formatter.impl.row.RowImpl;
+import org.daisy.dotify.formatter.impl.search.BlockAddress;
 import org.daisy.dotify.formatter.impl.search.VolumeKeepPriority;
 
 import java.util.ArrayList;
@@ -26,6 +27,8 @@ class RowGroup implements SplitPointUnit {
     private final boolean breakable, skippable, collapsible, lazyCollapse;
     private final List<String> ids;
     private final int keepWithNextSheets, keepWithPreviousSheets;
+    private final BlockAddress keepWithPreviousSheetsScope;
+    private final List<BlockAddress> keepWithPreviousSheetsScopes;
     private final VolumeKeepPriority avoidVolumeBreakAfterPriority;
     private final boolean lastInBlock;
     private final boolean mergeable;
@@ -39,6 +42,8 @@ class RowGroup implements SplitPointUnit {
         private final float rowDefault;
         private boolean breakable = false, skippable = false, collapsible = false;
         private int keepWithNextSheets = 0, keepWithPreviousSheets = 0;
+        private BlockAddress keepWithPreviousSheetsScope = null;
+        private List<BlockAddress> keepWithPreviousSheetsScopes = Collections.emptyList();
         private boolean lazyCollapse = true;
         private VolumeKeepPriority avoidVolumeBreakAfterPriority = VolumeKeepPriority.empty();
         private boolean lastInBlock = false;
@@ -112,8 +117,14 @@ class RowGroup implements SplitPointUnit {
             return this;
         }
 
-        Builder keepWithPreviousSheets(int value) {
+        Builder keepWithPreviousSheets(BlockAddress scope, int value) {
+            this.keepWithPreviousSheetsScope = scope;
             this.keepWithPreviousSheets = value;
+            return this;
+        }
+
+        Builder keepWithPreviousSheetsScopes(List<BlockAddress> value) {
+            this.keepWithPreviousSheetsScopes = value;
             return this;
         }
 
@@ -165,6 +176,8 @@ class RowGroup implements SplitPointUnit {
         }
         this.keepWithNextSheets = builder.keepWithNextSheets;
         this.keepWithPreviousSheets = builder.keepWithPreviousSheets;
+        this.keepWithPreviousSheetsScope = builder.keepWithPreviousSheetsScope;
+        this.keepWithPreviousSheetsScopes = builder.keepWithPreviousSheetsScopes;
         this.avoidVolumeBreakAfterPriority = builder.avoidVolumeBreakAfterPriority;
         this.lastInBlock = builder.lastInBlock;
         this.mergeable = builder.mergeable;
@@ -189,6 +202,8 @@ class RowGroup implements SplitPointUnit {
         this.lazyCollapse = template.lazyCollapse;
         this.keepWithNextSheets = template.keepWithNextSheets;
         this.keepWithPreviousSheets = template.keepWithPreviousSheets;
+        this.keepWithPreviousSheetsScope = template.keepWithPreviousSheetsScope;
+        this.keepWithPreviousSheetsScopes = template.keepWithPreviousSheetsScopes;
         this.avoidVolumeBreakAfterPriority = template.avoidVolumeBreakAfterPriority;
         this.lastInBlock = template.lastInBlock;
         this.mergeable = template.mergeable;
@@ -315,6 +330,14 @@ class RowGroup implements SplitPointUnit {
 
     public int getKeepWithPreviousSheets() {
         return keepWithPreviousSheets;
+    }
+
+    public BlockAddress getKeepWithPreviousSheetsScope() {
+        return keepWithPreviousSheetsScope;
+    }
+
+    public List<BlockAddress> getKeepWithPreviousSheetsScopes() {
+        return keepWithPreviousSheetsScopes;
     }
 
     /**

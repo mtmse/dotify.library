@@ -321,7 +321,9 @@ public class BlockProperties implements Cloneable {
         /**
          * Sets the keep with previous sheets property for the block.
          * In other words, the number of previous sheets to keep in the
-         * same volume as the end of this block.
+         * same volume as the end of this block. Only sheets of the block
+         * itself are kept, so a block that fits on one sheet is not kept
+         * with anything.
          *
          * @param keepWithPreviousSheets the number of sheets
          * @return returns this object

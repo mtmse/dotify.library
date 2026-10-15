@@ -165,7 +165,7 @@ public class VolumeBreaksTest extends AbstractFormatterEngineTest {
         );
     }
 
-    @Test @Ignore
+    @Test
     public void testVolumeKeepPrevious() throws
             LayoutEngineException,
             IOException,
@@ -173,6 +173,42 @@ public class VolumeBreaksTest extends AbstractFormatterEngineTest {
         testPEF(
             "resource-files/volume-break/volume-breaks-keep-previous-input.obfl",
             "resource-files/volume-break/volume-breaks-keep-previous-expected.pef",
+            false
+        );
+    }
+
+    @Test
+    public void testVolumeKeepPreviousFullPage() throws
+            LayoutEngineException,
+            IOException,
+            PagedMediaWriterConfigurationException {
+        testPEF(
+            "resource-files/volume-break/volume-breaks-keep-previous-full-page-input.obfl",
+            "resource-files/volume-break/volume-breaks-keep-previous-full-page-expected.pef",
+            false
+        );
+    }
+
+    @Test
+    public void testVolumeKeepPreviousOneSheetChapters() throws
+            LayoutEngineException,
+            IOException,
+            PagedMediaWriterConfigurationException {
+        testPEF(
+            "resource-files/volume-break/volume-breaks-keep-previous-one-sheet-chapters-input.obfl",
+            "resource-files/volume-break/volume-breaks-keep-previous-one-sheet-chapters-expected.pef",
+            false
+        );
+    }
+
+    @Test
+    public void testVolumeKeepPreviousDuplex() throws
+            LayoutEngineException,
+            IOException,
+            PagedMediaWriterConfigurationException {
+        testPEF(
+            "resource-files/volume-break/volume-breaks-keep-previous-duplex-input.obfl",
+            "resource-files/volume-break/volume-breaks-keep-previous-duplex-expected.pef",
             false
         );
     }

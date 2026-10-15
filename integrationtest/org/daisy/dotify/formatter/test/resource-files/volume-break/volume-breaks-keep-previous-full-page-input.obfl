@@ -1,0 +1,30 @@
+<obfl xmlns="http://www.daisy.org/ns/2011/obfl" version="2011-1" xml:lang="en">
+	<meta xmlns:dc="http://purl.org/dc/elements/1.1/">
+		<dc:title>Volume keep with previous, full last page test</dc:title>
+		<dc:description>One short block is one sheet. The block with keep-with-previous-sheets="1" has three
+		children and fills sheets 3-5. Its last page is full, so the block ends exactly where the next block starts.
+		The keep must still apply to the block's own last sheet, not to the next block.
+		Without the keep, the volumes would be 4 and 3 sheets. With it, they are 3 and 4 sheets.</dc:description>
+	</meta>
+	<layout-master name="body" page-width="10" page-height="6" duplex="false">
+		<default-template>
+			<header/>
+			<footer/>
+		</default-template>
+	</layout-master>
+	<volume-template sheets-in-volume-max="4">
+		<pre-content/>
+		<post-content/>
+	</volume-template>
+	<sequence master="body">
+		<block>⠿⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠿</block>
+		<block>⠿⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠿</block>
+		<block keep-with-previous-sheets="1">
+			<block>⠿⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠿</block>
+			<block>⠿⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠿</block>
+			<block>⠿⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠿</block>
+		</block>
+		<block>⠿⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠿</block>
+		<block>⠿⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠤ ⠤⠿</block>
+	</sequence>
+</obfl>

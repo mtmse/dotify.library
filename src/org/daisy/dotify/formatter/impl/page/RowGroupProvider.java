@@ -159,6 +159,7 @@ class RowGroupProvider {
             if (bcm.hasInnerPreContentRows()) {
                 return setPropertiesThatDependOnHasNext(
                     new RowGroup.Builder(master.getRowSpacing(), makeInvisible(bcm.getInnerPreContentRows()))
+                        .keepWithPreviousSheetsScopes(g.getKeepWithPreviousSheetsScopes())
                         .mergeable(false)
                         .lineProperties(lineProps)
                         .collapsible(false)
@@ -182,7 +183,7 @@ class RowGroupProvider {
                         .breakable(false),
                     bc.getRefs(),
                     g
-                );
+                ).keepWithPreviousSheets(g.getKeepWithPreviousSheetsScope(), g.getKeepWithPreviousSheets());
                 return setPropertiesThatDependOnHasNext(rgb, hasNext(), g).build();
             }
         }
@@ -198,6 +199,7 @@ class RowGroupProvider {
                     owc.storeRowCount(bc.getRefs());
                 }
                 RowGroup.Builder rgb = new RowGroup.Builder(master.getRowSpacing()).add(r)
+                        .keepWithPreviousSheetsScopes(g.getKeepWithPreviousSheetsScopes())
                         .mergeable(bcm.supportsVariableWidth())
                         .lineProperties(lineProps)
                         .collapsible(false)
@@ -212,6 +214,10 @@ class RowGroupProvider {
                 if (firstRow) {
                     setPropertiesForFirstContentRowGroup(rgb, bc.getRefs(), g);
                 }
+                if (!hasNext && !bcm.hasPostContentRows()) {
+                    // this is the last row of the block
+                    rgb.keepWithPreviousSheets(g.getKeepWithPreviousSheetsScope(), g.getKeepWithPreviousSheets());
+                }
                 firstRow = false;
                 keepWithNext = keepWithNext - 1;
                 return setPropertiesThatDependOnHasNext(rgb, hasNext(), g).build();
@@ -224,6 +230,8 @@ class RowGroupProvider {
             if (bcm.hasPostContentRows()) {
                 return setPropertiesThatDependOnHasNext(
                     new RowGroup.Builder(master.getRowSpacing(), makeInvisible(bcm.getPostContentRows()))
+                        .keepWithPreviousSheetsScopes(g.getKeepWithPreviousSheetsScopes())
+                        .keepWithPreviousSheets(g.getKeepWithPreviousSheetsScope(), g.getKeepWithPreviousSheets())
                         .mergeable(false)
                         .lineProperties(lineProps)
                         .collapsible(false)
@@ -264,8 +272,7 @@ class RowGroupProvider {
         return rgb.markers(crh.getGroupMarkers(g.getBlockAddress()))
             .anchors(crh.getGroupAnchors(g.getBlockAddress()))
             .identifiers(crh.getGroupIdentifiers(g.getBlockAddress()))
-            .keepWithNextSheets(g.getKeepWithNextSheets())
-            .keepWithPreviousSheets(g.getKeepWithPreviousSheets());
+            .keepWithNextSheets(g.getKeepWithNextSheets());
     }
 
     private static RowGroup.Builder setPropertiesThatDependOnHasNext(RowGroup.Builder rgb, boolean hasNext, Block g) {
