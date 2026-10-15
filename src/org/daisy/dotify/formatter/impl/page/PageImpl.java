@@ -27,6 +27,7 @@ import org.daisy.dotify.formatter.impl.search.VolumeKeepPriority;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -62,8 +63,8 @@ public class PageImpl implements Page {
 
     private boolean hasRows;
     private boolean isVolBreakAllowed;
-    private final Map<BlockAddress, Integer> keepPreviousSheets;
-    private final Set<BlockAddress> keepPreviousSheetsScopes;
+    private Map<BlockAddress, Integer> keepPreviousSheets;
+    private Set<BlockAddress> keepPreviousSheetsScopes;
     private VolumeKeepPriority volumeBreakAfterPriority;
     private final BrailleTranslator filter;
 
@@ -90,8 +91,8 @@ public class PageImpl implements Page {
         this.template = master.getTemplate(details.getPageNumber());
         this.flowHeight = master.getFlowHeight(template);
         this.isVolBreakAllowed = true;
-        this.keepPreviousSheets = new HashMap<>();
-        this.keepPreviousSheetsScopes = new HashSet<>();
+        this.keepPreviousSheets = Collections.emptyMap();
+        this.keepPreviousSheetsScopes = Collections.emptySet();
         this.volumeBreakAfterPriority = VolumeKeepPriority.empty();
         if (master.duplex() && details.getPageId().getOrdinal() % 2 == 1) {
             this.finalRows = new BorderManager(master, fcontext, master.getOuterMargin(), master.getInnerMargin());
@@ -477,11 +478,23 @@ public class PageImpl implements Page {
         return flowHeight;
     }
 
-    void addKeepWithPreviousSheets(Map<BlockAddress, Integer> value) {
-        keepPreviousSheets.putAll(value);
+    void addKeepWithPreviousSheets(BlockAddress scope, int value) {
+        if (scope == null) {
+            return;
+        }
+        if (keepPreviousSheets.isEmpty()) {
+            keepPreviousSheets = new HashMap<>();
+        }
+        keepPreviousSheets.put(scope, value);
     }
 
     void addKeepWithPreviousSheetsScopes(List<BlockAddress> scopes) {
+        if (scopes.isEmpty()) {
+            return;
+        }
+        if (keepPreviousSheetsScopes.isEmpty()) {
+            keepPreviousSheetsScopes = new HashSet<>();
+        }
         keepPreviousSheetsScopes.addAll(scopes);
     }
 

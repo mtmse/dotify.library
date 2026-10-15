@@ -44,6 +44,7 @@ import org.daisy.dotify.formatter.impl.segment.PageNumberReference;
 import org.daisy.dotify.formatter.impl.segment.TextSegment;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -276,7 +277,7 @@ public class FormatterCoreImpl extends Stack<Block> implements FormatterCore, Bl
             builder.innerSpaceAfter(p.getPadding().getBottomSpacing()).
                     outerSpaceAfter(bi.getRowDataProperties().getOuterSpaceAfter() + p.getMargin().getBottomSpacing());
             if (ac.getKeepWithPreviousSheetsScope() != null) {
-                bi.addKeepWithPreviousSheets(ac.getKeepWithPreviousSheetsScope(), p.getKeepWithPreviousSheets());
+                bi.setKeepWithPreviousSheets(ac.getKeepWithPreviousSheetsScope(), p.getKeepWithPreviousSheets());
             }
             bi.setRowDataProperties(builder.build());
         }
@@ -328,13 +329,16 @@ public class FormatterCoreImpl extends Stack<Block> implements FormatterCore, Bl
     }
 
     private List<BlockAddress> getKeepWithPreviousSheetsScopes() {
-        List<BlockAddress> scopes = new ArrayList<>();
+        List<BlockAddress> scopes = null;
         for (AncestorContext ac : propsContext) {
             if (ac.getKeepWithPreviousSheetsScope() != null) {
+                if (scopes == null) {
+                    scopes = new ArrayList<>();
+                }
                 scopes.add(ac.getKeepWithPreviousSheetsScope());
             }
         }
-        return scopes;
+        return scopes == null ? Collections.emptyList() : Collections.unmodifiableList(scopes);
     }
 
     public Block getCurrentBlock() {

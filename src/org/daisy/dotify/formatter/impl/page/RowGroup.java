@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -27,8 +26,8 @@ class RowGroup implements SplitPointUnit {
     private final float unitSize, lastUnitSize;
     private final boolean breakable, skippable, collapsible, lazyCollapse;
     private final List<String> ids;
-    private final int keepWithNextSheets;
-    private final Map<BlockAddress, Integer> keepWithPreviousSheets;
+    private final int keepWithNextSheets, keepWithPreviousSheets;
+    private final BlockAddress keepWithPreviousSheetsScope;
     private final List<BlockAddress> keepWithPreviousSheetsScopes;
     private final VolumeKeepPriority avoidVolumeBreakAfterPriority;
     private final boolean lastInBlock;
@@ -42,8 +41,8 @@ class RowGroup implements SplitPointUnit {
         private List<String> identifiers;
         private final float rowDefault;
         private boolean breakable = false, skippable = false, collapsible = false;
-        private int keepWithNextSheets = 0;
-        private Map<BlockAddress, Integer> keepWithPreviousSheets = Collections.emptyMap();
+        private int keepWithNextSheets = 0, keepWithPreviousSheets = 0;
+        private BlockAddress keepWithPreviousSheetsScope = null;
         private List<BlockAddress> keepWithPreviousSheetsScopes = Collections.emptyList();
         private boolean lazyCollapse = true;
         private VolumeKeepPriority avoidVolumeBreakAfterPriority = VolumeKeepPriority.empty();
@@ -118,7 +117,8 @@ class RowGroup implements SplitPointUnit {
             return this;
         }
 
-        Builder keepWithPreviousSheets(Map<BlockAddress, Integer> value) {
+        Builder keepWithPreviousSheets(BlockAddress scope, int value) {
+            this.keepWithPreviousSheetsScope = scope;
             this.keepWithPreviousSheets = value;
             return this;
         }
@@ -176,6 +176,7 @@ class RowGroup implements SplitPointUnit {
         }
         this.keepWithNextSheets = builder.keepWithNextSheets;
         this.keepWithPreviousSheets = builder.keepWithPreviousSheets;
+        this.keepWithPreviousSheetsScope = builder.keepWithPreviousSheetsScope;
         this.keepWithPreviousSheetsScopes = builder.keepWithPreviousSheetsScopes;
         this.avoidVolumeBreakAfterPriority = builder.avoidVolumeBreakAfterPriority;
         this.lastInBlock = builder.lastInBlock;
@@ -201,6 +202,7 @@ class RowGroup implements SplitPointUnit {
         this.lazyCollapse = template.lazyCollapse;
         this.keepWithNextSheets = template.keepWithNextSheets;
         this.keepWithPreviousSheets = template.keepWithPreviousSheets;
+        this.keepWithPreviousSheetsScope = template.keepWithPreviousSheetsScope;
         this.keepWithPreviousSheetsScopes = template.keepWithPreviousSheetsScopes;
         this.avoidVolumeBreakAfterPriority = template.avoidVolumeBreakAfterPriority;
         this.lastInBlock = template.lastInBlock;
@@ -326,8 +328,12 @@ class RowGroup implements SplitPointUnit {
         return keepWithNextSheets;
     }
 
-    public Map<BlockAddress, Integer> getKeepWithPreviousSheets() {
+    public int getKeepWithPreviousSheets() {
         return keepWithPreviousSheets;
+    }
+
+    public BlockAddress getKeepWithPreviousSheetsScope() {
+        return keepWithPreviousSheetsScope;
     }
 
     public List<BlockAddress> getKeepWithPreviousSheetsScopes() {

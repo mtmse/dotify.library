@@ -82,7 +82,7 @@ class RowGroupProvider {
         this.otherData = !bc.getRefs().getGroupAnchors(g.getBlockAddress()).isEmpty() ||
             !bc.getRefs().getGroupMarkers(g.getBlockAddress()).isEmpty() ||
             !bc.getRefs().getGroupIdentifiers(g.getBlockAddress()).isEmpty() ||
-            g.getKeepWithNextSheets() > 0 || !g.getKeepWithPreviousSheets().isEmpty();
+            g.getKeepWithNextSheets() > 0 || g.getKeepWithPreviousSheets() > 0;
         this.keepWithNext = keepWithNext;
         Condition dc = g.getRowDataProperties().getDisplayWhen();
         this.invisible = dc != null && !dc.evaluate(bc);
@@ -183,7 +183,7 @@ class RowGroupProvider {
                         .breakable(false),
                     bc.getRefs(),
                     g
-                ).keepWithPreviousSheets(g.getKeepWithPreviousSheets());
+                ).keepWithPreviousSheets(g.getKeepWithPreviousSheetsScope(), g.getKeepWithPreviousSheets());
                 return setPropertiesThatDependOnHasNext(rgb, hasNext(), g).build();
             }
         }
@@ -216,7 +216,7 @@ class RowGroupProvider {
                 }
                 if (!hasNext && !bcm.hasPostContentRows()) {
                     // this is the last row of the block
-                    rgb.keepWithPreviousSheets(g.getKeepWithPreviousSheets());
+                    rgb.keepWithPreviousSheets(g.getKeepWithPreviousSheetsScope(), g.getKeepWithPreviousSheets());
                 }
                 firstRow = false;
                 keepWithNext = keepWithNext - 1;
@@ -231,7 +231,7 @@ class RowGroupProvider {
                 return setPropertiesThatDependOnHasNext(
                     new RowGroup.Builder(master.getRowSpacing(), makeInvisible(bcm.getPostContentRows()))
                         .keepWithPreviousSheetsScopes(g.getKeepWithPreviousSheetsScopes())
-                        .keepWithPreviousSheets(g.getKeepWithPreviousSheets())
+                        .keepWithPreviousSheets(g.getKeepWithPreviousSheetsScope(), g.getKeepWithPreviousSheets())
                         .mergeable(false)
                         .lineProperties(lineProps)
                         .collapsible(false)
