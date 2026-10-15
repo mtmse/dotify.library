@@ -33,12 +33,6 @@ class AncestorContext {
         listIterator = value;
     }
 
-    /**
-     * Gets the scope of this block's keep-with-previous-sheets, i.e. the address of the first
-     * block created for it.
-     *
-     * @return the scope, or null if the block has no keep-with-previous-sheets
-     */
     public BlockAddress getKeepWithPreviousSheetsScope() {
         return keepWithPreviousSheetsScope;
     }
