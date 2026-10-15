@@ -63,8 +63,8 @@ public class PageImpl implements Page {
 
     private boolean hasRows;
     private boolean isVolBreakAllowed;
-    private Map<BlockAddress, Integer> keepPreviousSheets;
-    private Set<BlockAddress> keepPreviousSheetsScopes;
+    private Map<BlockAddress, Integer> keepWithPreviousSheets;
+    private Set<BlockAddress> keepWithPreviousSheetsScopes;
     private VolumeKeepPriority volumeBreakAfterPriority;
     private final BrailleTranslator filter;
 
@@ -91,8 +91,8 @@ public class PageImpl implements Page {
         this.template = master.getTemplate(details.getPageNumber());
         this.flowHeight = master.getFlowHeight(template);
         this.isVolBreakAllowed = true;
-        this.keepPreviousSheets = Collections.emptyMap();
-        this.keepPreviousSheetsScopes = Collections.emptySet();
+        this.keepWithPreviousSheets = Collections.emptyMap();
+        this.keepWithPreviousSheetsScopes = Collections.emptySet();
         this.volumeBreakAfterPriority = VolumeKeepPriority.empty();
         if (master.duplex() && details.getPageId().getOrdinal() % 2 == 1) {
             this.finalRows = new BorderManager(master, fcontext, master.getOuterMargin(), master.getInnerMargin());
@@ -482,20 +482,20 @@ public class PageImpl implements Page {
         if (scope == null) {
             return;
         }
-        if (keepPreviousSheets.isEmpty()) {
-            keepPreviousSheets = new HashMap<>();
+        if (keepWithPreviousSheets.isEmpty()) {
+            keepWithPreviousSheets = new HashMap<>();
         }
-        keepPreviousSheets.put(scope, value);
+        keepWithPreviousSheets.put(scope, value);
     }
 
     void addKeepWithPreviousSheetsScopes(List<BlockAddress> scopes) {
         if (scopes.isEmpty()) {
             return;
         }
-        if (keepPreviousSheetsScopes.isEmpty()) {
-            keepPreviousSheetsScopes = new HashSet<>();
+        if (keepWithPreviousSheetsScopes.isEmpty()) {
+            keepWithPreviousSheetsScopes = new HashSet<>();
         }
-        keepPreviousSheetsScopes.addAll(scopes);
+        keepWithPreviousSheetsScopes.addAll(scopes);
     }
 
     void setAllowsVolumeBreak(boolean value) {
@@ -506,12 +506,12 @@ public class PageImpl implements Page {
         return isVolBreakAllowed;
     }
 
-    public Map<BlockAddress, Integer> keepPreviousSheets() {
-        return keepPreviousSheets;
+    public Map<BlockAddress, Integer> getKeepWithPreviousSheets() {
+        return keepWithPreviousSheets;
     }
 
-    public Set<BlockAddress> keepPreviousSheetsScopes() {
-        return keepPreviousSheetsScopes;
+    public Set<BlockAddress> getKeepWithPreviousSheetsScopes() {
+        return keepWithPreviousSheetsScopes;
     }
 
     PageTemplate getPageTemplate() {

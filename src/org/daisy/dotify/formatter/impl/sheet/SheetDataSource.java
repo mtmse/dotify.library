@@ -487,11 +487,11 @@ public class SheetDataSource implements SplitPointDataSource<Sheet, SheetDataSou
      * @param p The page that was just added to the sheet currently being built.
      */
     private void keepWithPreviousSheets(PageImpl p) {
-        for (BlockAddress scope : p.keepPreviousSheetsScopes()) {
+        for (BlockAddress scope : p.getKeepWithPreviousSheetsScopes()) {
             keepScopeFirstSheet.putIfAbsent(scope, sheetIndex);
             keepScopeLastSheet.put(scope, sheetIndex);
         }
-        for (Map.Entry<BlockAddress, Integer> keep : p.keepPreviousSheets().entrySet()) {
+        for (Map.Entry<BlockAddress, Integer> keep : p.getKeepWithPreviousSheets().entrySet()) {
             Integer first = keepScopeFirstSheet.get(keep.getKey());
             if (first == null) {
                 continue;
